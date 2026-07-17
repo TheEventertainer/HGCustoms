@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | HG Customs</title>
+    <!-- Google Fonts for typography matching the clean sans-serif and elegant script -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+    <!-- FontAwesome for header/footer icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --text-dark: #000000;
+            --text-muted: #555555;
+            --bg-light: #f9f9f9;
+            --border-color: #e5e5e5;
+            --font-sans: 'Inter', sans-serif;
+            --font-script: 'Playfair Display', serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-dark);
+            background-color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Top Announcement Bar --- */
+        .announcement-bar {
+            background-color: #000000;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 20px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #333;
+        }
+
+        .announcement-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .announcement-item:hover {
+            opacity: 0.8;
+        }
+
+        .announcement-item i {
+            font-size: 16px;
+        }
+
+        .announcement-text span {
+            display: block;
+            color: #ccc;
+            font-size: 10px;
+            text-transform: none;
+            margin-top: 2px;
+        }
+
+        /* --- Main Header / Navigation --- */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            background: #fff;
+        }
+
+        .logo img {
+            height: 55px;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding-bottom: 4px;
+            transition: border-color 0.3s;
+        }
+
+        .nav-links .active a, .nav-links a:hover {
+            border-bottom: 2px solid #000;
+        }
+
+        .nav-links i {
+            font-size: 10px;
+            margin-left: 3px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            font-size: 18px;
+        }
+
+        .header-actions a {
+            color: var(--text-dark);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .cart-icon .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #000;
+            color: #fff;
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* --- About Content Section --- */
+        .about-container {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 0 40px;
+            flex-grow: 1;
+        }
+
+        .about-container h1 {
+            font-size: 36px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .about-content p {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        /* Brand Signature Accent Box */
+        .brand-accent-box {
+            background-color: var(--bg-light);
+            padding: 40px;
+            border-left: 4px solid #000000;
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .brand-accent-quote {
+            font-family: var(--font-script);
+            font-style: italic;
+            font-size: 28px;
+            line-height: 1.4;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .brand-accent-sub {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .about-content h2 {
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 40px 0 15px 0;
+        }
+
+        /* --- Footer Section --- */
+        .site-footer {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .copyright-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .footer-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 12px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-dark);
+        }
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 992px) {
+            .announcement-bar { flex-direction: column; gap: 15px; align-items: center; text-align: center;}
+            .main-header { padding: 20px; flex-direction: column; gap: 15px; }
+            .nav-links { gap: 15px; }
+            .about-container { margin: 40px auto; padding: 0 20px; }
+            .about-container h1 { font-size: 28px; }
+            .brand-accent-box { padding: 25px 15px; }
+            .brand-accent-quote { font-size: 22px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .footer-links { justify-content: center; flex-wrap: wrap; gap: 15px; }
+        }
+
+        @media (max-width: 576px) {
+            .nav-links { display: none; }
+            .main-header { flex-direction: row; justify-content: space-between; padding: 15px 20px; }
+            .logo img { height: 40px; }
+            .header-actions { gap: 15px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Announcement Bar -->
+    <div class="announcement-bar">
+        <a href="shipping-info.html" class="announcement-item">
+            <i class="fa-solid fa-truck"></i>
+            <div class="announcement-text">
+                FREE UK DELIVERY <span>On orders over £50</span>
+            </div>
+        </a>
+        <a href="about-us.html" class="announcement-item">
+            <i class="fa-regular fa-clock"></i>
+            <div class="announcement-text">
+                FAST TURNAROUND <span>Quick & reliable</span>
+            </div>
+        </a>
+        <a href="custom-products.html" class="announcement-item">
+            <i class="fa-regular fa-circle-check"></i>
+            <div class="announcement-text">
+                MADE JUST FOR YOU <span>Unique. Personal. Yours.</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="main-header">
+        <div class="logo">
+            <a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop <i class="fa-solid fa-chevron-down"></i></a></li>
+                <li><a href="custom-products.html">Custom Products <i class="fa-solid fa-chevron-down"></i></a></li>
+                <li class="active"><a href="about-us.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <a href="search.html" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href="account.html" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+            <a href="cart.html" class="cart-icon" aria-label="Cart">
+                <i class="fa-solid fa-basket-shopping"></i>
+                <span class="cart-count">0</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- About Us Content Section -->
+    <main class="about-container">
+        <h1>Our Story</h1>
+        
+        <div class="about-content">
+            <p>Welcome to HG Customs. We believe that everyday items shouldn't be plain, generic, or mass-produced. Our mission is simple: to help you bring your ideas to life through high-quality, customized craftsmanship.</p>
+            
+            <p>What started out as a passion project focused on creating custom gifts for friends and family has quickly evolved into a dedicated online storefront. Today, we specialize in high-grade custom printed mugs, tailored t-shirts, and everyday bespoke products designed uniquely by you and brought to life by us.</p>
+            
+            <div class="brand-accent-box">
+                <div class="brand-accent-quote">"Made your way, just for you."</div>
+                <div class="brand-accent-sub">The HG Customs Philosophy</div>
+            </div>
+            
+            <h2>The Craftsmanship Promise</h2>
+            <p>We approach every order individually. Unlike large automation warehouses, we take the time to review your text submissions, align your digital designs correctly, and thoroughly inspect every individual product before it leaves our workspace. We source premium inks, high-grade apparel blends, and sturdy ceramics to ensure your customized memories are built to last.</p>
+            
+            <h2>Why Choose HG Customs?</h2>
+            <p>We are a small, customer-focused operation based right here in the UK. That means when you send us a message, you speak directly with the creators making your items. We offer reliable, fast turnaround speeds, free UK tracking on orders over £50, and a deep commitment to making sure you are completely satisfied with your custom product.</p>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <div class="copyright-text">
+                &copy; 2026 HG Customs. All rights reserved.
+            </div>
+            <ul class="footer-links">
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="terms-of-service.html">Terms of Service</a></li>
+                <li><a href="refund-policy.html">Refund Policy</a></li>
+                <li><a href="shipping-info.html">Shipping Info</a></li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>
