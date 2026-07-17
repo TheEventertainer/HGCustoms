@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Custom Show & Band Merchandise | HG Customs</title>
+    <title>Band & Show Merch | HG Customs</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -67,11 +67,14 @@
             padding: 20px 40px;
             border-bottom: 1px solid var(--border-color);
             background: #fff;
+            position: relative;
+            z-index: 100;
         }
 
         .logo img { height: 55px; display: block; }
 
-        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
+        .nav-links > li { position: relative; padding: 10px 0; }
 
         .nav-links a {
             text-decoration: none;
@@ -83,10 +86,27 @@
             padding-bottom: 4px;
         }
 
-        .nav-links a:hover { border-bottom: 2px solid #000; }
+        .nav-links > li.active > a, .nav-links a:hover { border-bottom: 2px solid #000; }
+        .nav-links i { font-size: 10px; margin-left: 5px; }
+
+        /* --- Dropdown Layout --- */
+        .dropdown-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            background-color: #ffffff; border: 1px solid var(--border-color);
+            min-width: 180px; list-style: none; display: flex; flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); opacity: 0; visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease; margin-top: 5px;
+        }
+
+        .dropdown-menu a {
+            display: block; padding: 12px 20px; font-size: 11px; font-weight: 600;
+            letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-dark);
+        }
+
+        .dropdown-menu a:hover { background-color: var(--bg-light); }
+        .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; }
 
         .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
-
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
 
         .cart-icon .cart-count {
@@ -113,8 +133,6 @@
         .category-hero p {
             font-size: 15px;
             color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto;
         }
 
         /* --- Catalog Product Grid --- */
@@ -153,8 +171,6 @@
             color: #aaa;
             text-transform: uppercase;
             letter-spacing: 1px;
-            text-align: center;
-            padding: 10px;
         }
 
         .product-title {
@@ -171,7 +187,7 @@
             font-weight: 700;
         }
 
-        /* --- Reusable Modal Pop-up Structure --- */
+        /* --- Reusable Modal Pop-up --- */
         .product-modal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -223,7 +239,6 @@
             color: #aaa;
         }
 
-        /* Custom Personalization Form Fields inside popup */
         .modal-details { display: flex; flex-direction: column; }
         .modal-title { font-size: 24px; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
         .modal-price { font-size: 18px; font-weight: 700; margin-bottom: 15px; }
@@ -293,66 +308,71 @@
         <nav>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="mugs.html">Mugs</a></li>
-                <li><a href="t-shirts.html">T-Shirts</a></li>
-                <li><a href="coasters.html">Coasters</a></li>
-                <li><a href="merchandise.html" style="border-bottom: 2px solid #000;">Merchandise</a></li>
+                <li class="has-dropdown active">
+                    <a href="#">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="mugs.html">Custom Mugs</a></li>
+                        <li><a href="t-shirts.html">Custom T-Shirts</a></li>
+                        <li><a href="coasters.html">Custom Coasters</a></li>
+                        <li><a href="merchandise.html">Band & Show Merch</a></li>
+                    </ul>
+                </li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
         <div class="header-actions">
             <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
             <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
-            <a href="#" class="cart-icon" aria-label="Cart">
+            <a href="cart.html" class="cart-icon" aria-label="Cart">
                 <i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span>
             </a>
         </div>
     </header>
 
-    <!-- Category Banner Placeholder -->
+    <!-- Category Banner -->
     <section class="category-hero">
-        <h1>Show & Band Merchandise</h1>
-        <p>Premium custom-made merchandise for theatre production groups, cast crews, and bands. Add your logos, tracklists, or cast listings.</p>
+        <h1>Band & Show Merchandise</h1>
+        <p>Bespoke promo setups and performance merch tailored exactly to your brand or event look.</p>
     </section>
 
     <!-- Products Grid Catalog -->
     <main class="catalog-container">
         <div class="product-grid">
-            <!-- Product Item 1 -->
-            <div class="product-card" onclick="openProductModal('Premium Cast & Crew Hoodie', '£32.00', 'Heavyweight 320gsm ultra-soft pullover hoodie. Perfect for backstage crew and cast listings. Upload your front artwork and include back-print text like cast names below.')">
-                <div class="product-image-wrapper">Cast Hoodie</div>
-                <div class="product-title">Premium Cast & Crew Hoodie</div>
-                <div class="product-price">£32.00</div>
+            <!-- Item 1 -->
+            <div class="product-card" onclick="openProductModal('Custom Tote Bag', '£6.99', 'Durable 100% cotton canvas tote bags with long handles. Perfect for gigs, conventions, and high-impact custom artwork printing.')">
+                <div class="product-image-wrapper">Merch Image 1</div>
+                <div class="product-title">Custom Tote Bag</div>
+                <div class="product-price">£6.99</div>
             </div>
-            <!-- Product Item 2 -->
-            <div class="product-card" onclick="openProductModal('Official Tour Zipper Hoodie', '£34.50', 'Full-zip front style hoodie with hidden earphone cord loops. Durable combed cotton blend built to withstand heavy wear on tour or long dress rehearsals.')">
-                <div class="product-image-wrapper">Tour Zip Hoodie</div>
-                <div class="product-title">Official Tour Zipper Hoodie</div>
-                <div class="product-price">£34.50</div>
+            <!-- Item 2 -->
+            <div class="product-card" onclick="openProductModal('Custom Button Badge Pack', '£4.49', 'A pack of four premium 38mm metal pin-back badges. Ideal for logos, slogans, and simple vibrant imagery.')">
+                <div class="product-image-wrapper">Merch Image 2</div>
+                <div class="product-title">Button Badge Pack (x4)</div>
+                <div class="product-price">£4.49</div>
             </div>
-            <!-- Product Item 3 -->
-            <div class="product-card" onclick="openProductModal('Custom Canvas Tote Bag', '£8.99', '100% heavy cotton canvas bag with reinforced cross-stitched handles. A perfect merchandise table item for theatre show programs or vinyl records.')">
-                <div class="product-image-wrapper">Merch Tote Bag</div>
-                <div class="product-title">Custom Canvas Tote Bag</div>
-                <div class="product-price">£8.99</div>
+            <!-- Item 3 -->
+            <div class="product-card" onclick="openProductModal('Bespoke Keyring', '£3.99', 'High-grade clear acrylic or metal border custom keyrings. Printed double-sided to feature text, dates, or graphical setups.')">
+                <div class="product-image-wrapper">Merch Image 3</div>
+                <div class="product-title">Bespoke Keyring</div>
+                <div class="product-price">£3.99</div>
             </div>
-            <!-- Product Item 4 -->
-            <div class="product-card" onclick="openProductModal('Souvenir Embroidered Beanie', '£12.00', 'Classic dual-layer knit beanie cap with a wide fold-over cuff. Ready to be configured with your band logo or production graphics.')">
-                <div class="product-image-wrapper">Embroidered Beanie</div>
-                <div class="product-title">Souvenir Embroidered Beanie</div>
-                <div class="product-price">£12.00</div>
+            <!-- Item 4 -->
+            <div class="product-card" onclick="openProductModal('Premium Pullover Hoodie', '£29.99', 'Heavyweight 300gsm brush-backed fleece hoodie. Includes custom front chest pocket prints and large back graphic positioning.')">
+                <div class="product-image-wrapper">Merch Image 4</div>
+                <div class="product-title">Premium Pullover Hoodie</div>
+                <div class="product-price">£29.99</div>
             </div>
-            <!-- Product Item 5 -->
-            <div class="product-card" onclick="openProductModal('Band & Crew Lanyard', '£3.50', 'High-density smooth polyester lanyard straps with a heavy-duty thumb trigger hook clip. Perfect for backstage access passes or front-of-house crew.')">
-                <div class="product-image-wrapper">Access Lanyard</div>
-                <div class="product-title">Band & Crew Access Lanyard</div>
-                <div class="product-price">£3.50</div>
+            <!-- Item 5 -->
+            <div class="product-card" onclick="openProductModal('Custom Die-Cut Sticker Pack', '£5.99', 'Ten individual weather-resistant vinyl die-cut stickers. Perfectly outlines your design shape with high gloss scaling.')">
+                <div class="product-image-wrapper">Merch Image 5</div>
+                <div class="product-title">Vinyl Sticker Pack (x10)</div>
+                <div class="product-price">£5.59</div>
             </div>
-            <!-- Product Item 6 -->
-            <div class="product-card" onclick="openProductModal('Custom Keepsake Enamel Pin', '£4.50', 'Premium stamped metal lapel base with custom protective enamel color mapping. Perfect limited-edition souvenir items for openings and tour tables.')">
-                <div class="product-image-wrapper">Enamel Pin</div>
-                <div class="product-title">Keepsake Enamel Pin</div>
-                <div class="product-price">£4.50</div>
+            <!-- Item 6 -->
+            <div class="product-card" onclick="openProductModal('Embroidered Classic Beanie', '£12.99', 'Warm, dual-layer knit classic cuffed beanie. Features high-density clean embroidery for text tags or clean iconography.')">
+                <div class="product-image-wrapper">Merch Image 6</div>
+                <div class="product-title">Embroidered Beanie</div>
+                <div class="product-price">£12.99</div>
             </div>
         </div>
     </main>
@@ -367,15 +387,14 @@
                 <div class="modal-price" id="modalPrice">£0.00</div>
                 <p class="modal-desc" id="modalDesc">Detailed explanation text regarding design specifications.</p>
                 
-                <!-- User Upload Actions -->
                 <div class="custom-form-group">
-                    <label for="userImage">1. Upload your logo / band / show artwork:</label>
+                    <label for="userImage">1. Upload your graphic design / image:</label>
                     <input type="file" id="userImage" accept="image/*">
                 </div>
                 
                 <div class="custom-form-group">
-                    <label for="userText">2. Custom Text / Cast List / Personalization details:</label>
-                    <input type="text" id="userText" placeholder="Enter tour dates, cast lists, custom text or billing details...">
+                    <label for="userText">2. Custom text / Personalization details:</label>
+                    <input type="text" id="userText" placeholder="Enter names, custom texts, or specific layout requests...">
                 </div>
 
                 <button class="add-to-basket-btn" onclick="addToBasketHandler()">Add to Basket</button>
@@ -388,15 +407,15 @@
         <div class="footer-bottom">
             <div class="copyright-text">&copy; 2026 HG Customs. All rights reserved.</div>
             <ul class="footer-links">
-                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                <li><a href="terms-of-service.html">Terms of Service</a></li>
-                <li><a href="refund-policy.html">Refund Policy</a></li>
-                <li><a href="shipping-info.html">Shipping Info</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Refund Policy</a></li>
+                <li><a href="#">Shipping Info</a></li>
             </ul>
         </div>
     </footer>
 
-    <!-- Modal Handling Logic -->
+    <!-- Modal Handling & LocalStorage Engine Logic -->
     <script>
         const modal = document.getElementById('productModal');
         
@@ -422,12 +441,38 @@
 
         function addToBasketHandler() {
             const title = document.getElementById('modalTitle').innerText;
+            const priceText = document.getElementById('modalPrice').innerText;
+            const price = parseFloat(priceText.replace('£', ''));
             const textInput = document.getElementById('userText').value;
             const fileInput = document.getElementById('userImage').files[0];
 
-            alert(`Added to basket: ${title}\nPersonalization: ${textInput ? textInput : "None"}\nFile Attached: ${fileInput ? fileInput.name : "No file uploaded"}`);
+            const cartItem = {
+                id: Date.now(),
+                title: title,
+                price: price,
+                personalization: textInput ? textInput : "None",
+                fileName: fileInput ? fileInput.name : "No file uploaded"
+            };
+
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            cart.push(cartItem);
+            localStorage.setItem('hg_cart', JSON.stringify(cart));
+
+            updateCartBadge();
+
+            alert(`Added ${title} to your basket!`);
             closeProductModal(null, true);
         }
+
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            const badges = document.querySelectorAll('.cart-count');
+            badges.forEach(badge => {
+                badge.innerText = cart.length;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', updateCartBadge);
     </script>
 </body>
 </html>
