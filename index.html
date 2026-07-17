@@ -149,6 +149,7 @@
 
         .hero-content {
             max-width: 450px;
+            z-index: 2;
         }
 
         .hero-sub {
@@ -295,7 +296,7 @@
             color: var(--text-dark);
         }
 
-        /* Responsive Tweaks */
+        /* --- Tablet Responsive Styles --- */
         @media (max-width: 992px) {
             .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center;}
             .main-header { padding: 20px; flex-direction: column; gap: 15px; }
@@ -305,6 +306,73 @@
             .prop-item:not(:last-child) { border-right: none; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
             .footer-bottom { flex-direction: column; text-align: center; }
             .footer-links { justify-content: center; flex-wrap: wrap; gap: 15px; }
+        }
+
+        /* --- Mobile Responsive Fixes --- */
+        @media (max-width: 576px) {
+            .nav-links {
+                display: none; /* Temporarily hiding menu on mobile until we make a toggle button */
+            }
+            .main-header {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 15px 20px;
+            }
+            .logo img {
+                height: 40px;
+            }
+            .header-actions {
+                gap: 15px;
+                font-size: 16px;
+            }
+            
+            /* Fixing the overlay crash in the Hero area */
+            .hero {
+                height: auto;
+                padding: 60px 20px;
+                background-position: center;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+            }
+            
+            /* Semi-transparent protective layer so text remains sharp over the image */
+            .hero::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255, 255, 255, 0.75);
+                z-index: 1;
+            }
+            
+            .hero-content {
+                max-width: 100%;
+            }
+            
+            .hero-title {
+                font-size: 34px;
+                line-height: 1.2;
+            }
+            
+            .hero-script {
+                font-size: 32px;
+                margin-bottom: 20px;
+            }
+            
+            .hero-description {
+                font-size: 14px;
+                margin-bottom: 25px;
+            }
+            
+            .hero-btn {
+                padding: 12px 24px;
+                font-size: 11px;
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
