@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Show & Band Merchandise | HG Customs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --text-dark: #000000;
+            --text-muted: #555555;
+            --bg-light: #f9f9f9;
+            --border-color: #e5e5e5;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-dark);
+            background-color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Top Announcement Bar --- */
+        .announcement-bar {
+            background-color: #000000;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 20px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #333;
+        }
+
+        .announcement-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .announcement-text span {
+            display: block;
+            color: #ccc;
+            font-size: 10px;
+            text-transform: none;
+            margin-top: 2px;
+        }
+
+        /* --- Main Header / Navigation --- */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            background: #fff;
+        }
+
+        .logo img { height: 55px; display: block; }
+
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a:hover { border-bottom: 2px solid #000; }
+
+        .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
+
+        .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
+
+        .cart-icon .cart-count {
+            position: absolute; top: -8px; right: -10px; background: #000; color: #fff;
+            font-size: 10px; width: 16px; height: 16px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-weight: bold;
+        }
+
+        /* --- Page Hero Banner --- */
+        .category-hero {
+            background-color: var(--bg-light);
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .category-hero h1 {
+            font-size: 36px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .category-hero p {
+            font-size: 15px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- Catalog Product Grid --- */
+        .catalog-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px 30px;
+        }
+
+        .product-card {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .product-image-wrapper {
+            background-color: var(--bg-light);
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .product-title {
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .product-price {
+            font-size: 14px;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        /* --- Reusable Modal Pop-up Structure --- */
+        .product-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .product-modal.is-active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-body {
+            background: #ffffff;
+            width: 100%;
+            max-width: 850px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 40px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px; right: 20px;
+            background: none; border: none;
+            font-size: 24px; cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .modal-image-view {
+            background-color: var(--bg-light);
+            aspect-ratio: 1 / 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        /* Custom Personalization Form Fields inside popup */
+        .modal-details { display: flex; flex-direction: column; }
+        .modal-title { font-size: 24px; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
+        .modal-price { font-size: 18px; font-weight: 700; margin-bottom: 15px; }
+        .modal-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 25px; }
+        
+        .custom-form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+        .custom-form-group label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .custom-form-group input[type="text"] { padding: 12px; border: 1px solid var(--border-color); font-family: var(--font-sans); }
+        .custom-form-group input[type="file"] { font-size: 13px; color: var(--text-muted); padding: 5px 0; }
+        
+        .add-to-basket-btn {
+            background-color: #000000; color: #ffffff; border: none;
+            padding: 15px; font-size: 12px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 2px; cursor: pointer;
+            transition: background-color 0.2s; margin-top: auto;
+        }
+        .add-to-basket-btn:hover { background-color: #222222; }
+
+        /* --- Footer Section --- */
+        .site-footer {
+            background-color: #ffffff; padding: 30px 40px;
+            border-top: 1px solid var(--border-color); margin-top: auto;
+        }
+
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .copyright-text { font-size: 12px; color: var(--text-muted); }
+        .footer-links { display: flex; list-style: none; gap: 20px; }
+        .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; }
+
+        /* --- Responsive Viewports --- */
+        @media (max-width: 992px) {
+            .announcement-bar { flex-direction: column; gap: 15px; align-items: center; }
+            .main-header { padding: 20px; flex-direction: column; gap: 15px; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .modal-body { grid-template-columns: 1fr; padding: 30px 20px; }
+        }
+
+        @media (max-width: 576px) {
+            .nav-links { display: none; }
+            .main-header { flex-direction: row; justify-content: space-between; padding: 15px 20px; }
+            .logo img { height: 40px; }
+            .product-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        <a href="shipping-info.html" class="announcement-item">
+            <i class="fa-solid fa-truck"></i>
+            <div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div>
+        </a>
+        <a href="about-us.html" class="announcement-item">
+            <i class="fa-regular fa-clock"></i>
+            <div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div>
+        </a>
+        <a href="custom-products.html" class="announcement-item">
+            <i class="fa-regular fa-circle-check"></i>
+            <div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div>
+        </a>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="main-header">
+        <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="mugs.html">Mugs</a></li>
+                <li><a href="t-shirts.html">T-Shirts</a></li>
+                <li><a href="coasters.html">Coasters</a></li>
+                <li><a href="merchandise.html" style="border-bottom: 2px solid #000;">Merchandise</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+            <a href="#" class="cart-icon" aria-label="Cart">
+                <i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Category Banner Placeholder -->
+    <section class="category-hero">
+        <h1>Show & Band Merchandise</h1>
+        <p>Premium custom-made merchandise for theatre production groups, cast crews, and bands. Add your logos, tracklists, or cast listings.</p>
+    </section>
+
+    <!-- Products Grid Catalog -->
+    <main class="catalog-container">
+        <div class="product-grid">
+            <!-- Product Item 1 -->
+            <div class="product-card" onclick="openProductModal('Premium Cast & Crew Hoodie', '£32.00', 'Heavyweight 320gsm ultra-soft pullover hoodie. Perfect for backstage crew and cast listings. Upload your front artwork and include back-print text like cast names below.')">
+                <div class="product-image-wrapper">Cast Hoodie</div>
+                <div class="product-title">Premium Cast & Crew Hoodie</div>
+                <div class="product-price">£32.00</div>
+            </div>
+            <!-- Product Item 2 -->
+            <div class="product-card" onclick="openProductModal('Official Tour Zipper Hoodie', '£34.50', 'Full-zip front style hoodie with hidden earphone cord loops. Durable combed cotton blend built to withstand heavy wear on tour or long dress rehearsals.')">
+                <div class="product-image-wrapper">Tour Zip Hoodie</div>
+                <div class="product-title">Official Tour Zipper Hoodie</div>
+                <div class="product-price">£34.50</div>
+            </div>
+            <!-- Product Item 3 -->
+            <div class="product-card" onclick="openProductModal('Custom Canvas Tote Bag', '£8.99', '100% heavy cotton canvas bag with reinforced cross-stitched handles. A perfect merchandise table item for theatre show programs or vinyl records.')">
+                <div class="product-image-wrapper">Merch Tote Bag</div>
+                <div class="product-title">Custom Canvas Tote Bag</div>
+                <div class="product-price">£8.99</div>
+            </div>
+            <!-- Product Item 4 -->
+            <div class="product-card" onclick="openProductModal('Souvenir Embroidered Beanie', '£12.00', 'Classic dual-layer knit beanie cap with a wide fold-over cuff. Ready to be configured with your band logo or production graphics.')">
+                <div class="product-image-wrapper">Embroidered Beanie</div>
+                <div class="product-title">Souvenir Embroidered Beanie</div>
+                <div class="product-price">£12.00</div>
+            </div>
+            <!-- Product Item 5 -->
+            <div class="product-card" onclick="openProductModal('Band & Crew Lanyard', '£3.50', 'High-density smooth polyester lanyard straps with a heavy-duty thumb trigger hook clip. Perfect for backstage access passes or front-of-house crew.')">
+                <div class="product-image-wrapper">Access Lanyard</div>
+                <div class="product-title">Band & Crew Access Lanyard</div>
+                <div class="product-price">£3.50</div>
+            </div>
+            <!-- Product Item 6 -->
+            <div class="product-card" onclick="openProductModal('Custom Keepsake Enamel Pin', '£4.50', 'Premium stamped metal lapel base with custom protective enamel color mapping. Perfect limited-edition souvenir items for openings and tour tables.')">
+                <div class="product-image-wrapper">Enamel Pin</div>
+                <div class="product-title">Keepsake Enamel Pin</div>
+                <div class="product-price">£4.50</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Shared Dynamic Modal Structure Box -->
+    <div class="product-modal" id="productModal" onclick="closeProductModal(event)">
+        <div class="modal-body" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeProductModal(force=true)">&times;</button>
+            <div class="modal-image-view" id="modalImageText">Product Image Placement</div>
+            <div class="modal-details">
+                <h2 class="modal-title" id="modalTitle">Product Title</h2>
+                <div class="modal-price" id="modalPrice">£0.00</div>
+                <p class="modal-desc" id="modalDesc">Detailed explanation text regarding design specifications.</p>
+                
+                <!-- User Upload Actions -->
+                <div class="custom-form-group">
+                    <label for="userImage">1. Upload your logo / band / show artwork:</label>
+                    <input type="file" id="userImage" accept="image/*">
+                </div>
+                
+                <div class="custom-form-group">
+                    <label for="userText">2. Custom Text / Cast List / Personalization details:</label>
+                    <input type="text" id="userText" placeholder="Enter tour dates, cast lists, custom text or billing details...">
+                </div>
+
+                <button class="add-to-basket-btn" onclick="addToBasketHandler()">Add to Basket</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Area -->
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <div class="copyright-text">&copy; 2026 HG Customs. All rights reserved.</div>
+            <ul class="footer-links">
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="terms-of-service.html">Terms of Service</a></li>
+                <li><a href="refund-policy.html">Refund Policy</a></li>
+                <li><a href="shipping-info.html">Shipping Info</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- Modal Handling Logic -->
+    <script>
+        const modal = document.getElementById('productModal');
+        
+        function openProductModal(title, price, description) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalPrice').innerText = price;
+            document.getElementById('modalDesc').innerText = description;
+            document.getElementById('modalImageText').innerText = title + " Preview Box";
+            
+            document.getElementById('userImage').value = "";
+            document.getElementById('userText').value = "";
+            
+            modal.classList.add('is-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal(e, force = false) {
+            if (force || e.target === modal) {
+                modal.classList.remove('is-active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function addToBasketHandler() {
+            const title = document.getElementById('modalTitle').innerText;
+            const textInput = document.getElementById('userText').value;
+            const fileInput = document.getElementById('userImage').files[0];
+
+            alert(`Added to basket: ${title}\nPersonalization: ${textInput ? textInput : "None"}\nFile Attached: ${fileInput ? fileInput.name : "No file uploaded"}`);
+            closeProductModal(null, true);
+        }
+    </script>
+</body>
+</html>
