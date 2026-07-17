@@ -6,7 +6,7 @@
     <title>Custom Mugs | HG Customs</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2 family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -67,11 +67,14 @@
             padding: 20px 40px;
             border-bottom: 1px solid var(--border-color);
             background: #fff;
+            position: relative;
+            z-index: 100;
         }
 
         .logo img { height: 55px; display: block; }
 
-        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
+        .nav-links > li { position: relative; padding: 10px 0; }
 
         .nav-links a {
             text-decoration: none;
@@ -83,10 +86,27 @@
             padding-bottom: 4px;
         }
 
-        .nav-links a:hover { border-bottom: 2px solid #000; }
+        .nav-links > li.active > a, .nav-links a:hover { border-bottom: 2px solid #000; }
+        .nav-links i { font-size: 10px; margin-left: 5px; }
+
+        /* --- Dropdown Layout --- */
+        .dropdown-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            background-color: #ffffff; border: 1px solid var(--border-color);
+            min-width: 180px; list-style: none; display: flex; flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); opacity: 0; visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease; margin-top: 5px;
+        }
+
+        .dropdown-menu a {
+            display: block; padding: 12px 20px; font-size: 11px; font-weight: 600;
+            letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-dark);
+        }
+
+        .dropdown-menu a:hover { background-color: var(--bg-light); }
+        .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; }
 
         .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
-
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
 
         .cart-icon .cart-count {
@@ -115,7 +135,7 @@
             color: var(--text-muted);
         }
 
-        /* --- Catalog Product Grid Grid --- */
+        /* --- Catalog Product Grid --- */
         .catalog-container {
             max-width: 1200px;
             margin: 50px auto;
@@ -167,7 +187,7 @@
             font-weight: 700;
         }
 
-        /* --- Reusable Modal Pop-up Structure --- */
+        /* --- Reusable Modal Pop-up --- */
         .product-modal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -219,7 +239,6 @@
             color: #aaa;
         }
 
-        /* Custom Personalization Form Fields inside popup */
         .modal-details { display: flex; flex-direction: column; }
         .modal-title { font-size: 24px; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
         .modal-price { font-size: 18px; font-weight: 700; margin-bottom: 15px; }
@@ -289,65 +308,70 @@
         <nav>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="mugs.html">Mugs</a></li>
-                <li><a href="t-shirts.html">T-Shirts</a></li>
-                <li><a href="coasters.html">Coasters</a></li>
-                <li><a href="merchandise.html">Merchandise</a></li>
+                <li class="has-dropdown active">
+                    <a href="#">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="mugs.html">Custom Mugs</a></li>
+                        <li><a href="t-shirts.html">Custom T-Shirts</a></li>
+                        <li><a href="coasters.html">Custom Coasters</a></li>
+                        <li><a href="merchandise.html">Band & Show Merch</a></li>
+                    </ul>
+                </li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
         <div class="header-actions">
             <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
             <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
-            <a href="#" class="cart-icon" aria-label="Cart">
+            <a href="cart.html" class="cart-icon" aria-label="Cart">
                 <i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span>
             </a>
         </div>
     </header>
 
-    <!-- Category Banner Placeholder -->
+    <!-- Category Banner -->
     <section class="category-hero">
         <h1>Custom Mugs</h1>
-        <p>High-quality ceramic mugs tailored perfectly to your custom image and personalization requests.</p>
+        <p>Premium quality ceramic and travel mugs customized with your unique artwork, photos, or text options.</p>
     </section>
 
     <!-- Products Grid Catalog -->
     <main class="catalog-container">
         <div class="product-grid">
-            <!-- Product Item 1 -->
-            <div class="product-card" onclick="openProductModal('Classic Custom Ceramic Mug', '£9.99', 'Our flagship 11oz gloss white ceramic mug. Microwave and dishwasher safe, perfect for printing clear photographic resolutions.')">
-                <div class="product-image-wrapper">Mug Image Placement 1</div>
-                <div class="product-title">Classic Ceramic Mug</div>
-                <div class="product-price">£9.99</div>
+            <!-- Item 1 -->
+            <div class="product-card" onclick="openProductModal('Classic 11oz Ceramic Mug', '£7.99', 'Our traditional white glossy ceramic coffee mug. Microwave and dishwasher safe structure setup, built for everyday use.')">
+                <div class="product-image-wrapper">Mug Image 1</div>
+                <div class="product-title">Classic 11oz Ceramic Mug</div>
+                <div class="product-price">£7.99</div>
             </div>
-            <!-- Product Item 2 -->
-            <div class="product-card" onclick="openProductModal('Custom Two-Tone Mug', '£11.49', 'Features a vibrant colored handle and matching inner wall styling. Sourced from high-grade durable earthenware.')">
-                <div class="product-image-wrapper">Mug Image Placement 2</div>
-                <div class="product-title">Two-Tone Accented Mug</div>
-                <div class="product-price">£11.49</div>
+            <!-- Item 2 -->
+            <div class="product-card" onclick="openProductModal('Two-Tone Accent Mug', '£8.99', 'Features a vibrant colored handle and inner base wall coating. Choose a custom tone combination that matches your graphic colors.')">
+                <div class="product-image-wrapper">Mug Image 2</div>
+                <div class="product-title">Two-Tone Accent Mug</div>
+                <div class="product-price">£8.99</div>
             </div>
-            <!-- Product Item 3 -->
-            <div class="product-card" onclick="openProductModal('Bespoke Travel Flask Mug', '£14.99', 'Insulated thermal inner structure with spill-proof lid protection. Excellent for daily commutes and on-the-go lifestyle designs.')">
-                <div class="product-image-wrapper">Mug Image Placement 3</div>
-                <div class="product-title">Bespoke Travel Flask</div>
+            <!-- Item 3 -->
+            <div class="product-card" onclick="openProductModal('Insulated Stainless Steel Travel Mug', '£14.99', 'Double-walled vacuum thermal build equipped with a secure snap-on top spill guard lid. Perfect for daily commutes.')">
+                <div class="product-image-wrapper">Mug Image 3</div>
+                <div class="product-title">Stainless Steel Travel Mug</div>
                 <div class="product-price">£14.99</div>
             </div>
-            <!-- Product Item 4 -->
-            <div class="product-card" onclick="openProductModal('Custom Magic Matte Mug', '£12.99', 'Heat-activated transformation layer shifts from solid pitch black into your custom high-definition print image when filled with hot liquid.')">
-                <div class="product-image-wrapper">Mug Image Placement 4</div>
-                <div class="product-title">Magic Color-Changing Mug</div>
-                <div class="product-price">£12.99</div>
-            </div>
-            <!-- Product Item 5 -->
-            <div class="product-card" onclick="openProductModal('Frosted Custom Glass Mug', '£11.99', 'Elegant semi-translucent frosted finish configuration. Gives custom quotes and graphics a highly modern premium aesthetic flare.')">
-                <div class="product-image-wrapper">Mug Image Placement 5</div>
-                <div class="product-title">Frosted Glass Mug</div>
+            <!-- Item 4 -->
+            <div class="product-card" onclick="openProductModal('Heat-Changing Magic Mug', '£11.99', 'Appears charcoal black when cold. Pours of hot liquids reveal your hidden embedded personalization designs beneath.')">
+                <div class="product-image-wrapper">Mug Image 4</div>
+                <div class="product-title">Magic Heat-Changing Mug</div>
                 <div class="product-price">£11.99</div>
             </div>
-            <!-- Product Item 6 -->
-            <div class="product-card" onclick="openProductModal('Rustic Custom Enamel Camp Mug', '£10.99', 'Lightweight, shatterproof stainless steel body coated in rustic white enamel finishing. Made for outdoor adventuring and camp-ready graphics.')">
-                <div class="product-image-wrapper">Mug Image Placement 6</div>
-                <div class="product-title">Enamel Camp Mug</div>
+            <!-- Item 5 -->
+            <div class="product-card" onclick="openProductModal('Rustic Enamel Campfire Mug', '£9.99', 'Lightweight, durable stainless steel coated with a classic white enamel finish and retro silver rim accents.')">
+                <div class="product-image-wrapper">Mug Image 5</div>
+                <div class="product-title">Rustic Enamel Camp Mug</div>
+                <div class="product-price">£9.99</div>
+            </div>
+            <!-- Item 6 -->
+            <div class="product-card" onclick="openProductModal('Jumbo 15oz Coffee Mug', '£10.99', 'An oversized ceramic profile option featuring a large comfortable loop handle layout for serious beverage lovers.')">
+                <div class="product-image-wrapper">Mug Image 6</div>
+                <div class="product-title">Jumbo 15oz Coffee Mug</div>
                 <div class="product-price">£10.99</div>
             </div>
         </div>
@@ -363,7 +387,6 @@
                 <div class="modal-price" id="modalPrice">£0.00</div>
                 <p class="modal-desc" id="modalDesc">Detailed explanation text regarding design specifications.</p>
                 
-                <!-- User Upload Actions -->
                 <div class="custom-form-group">
                     <label for="userImage">1. Upload your graphic design / image:</label>
                     <input type="file" id="userImage" accept="image/*">
@@ -384,15 +407,15 @@
         <div class="footer-bottom">
             <div class="copyright-text">&copy; 2026 HG Customs. All rights reserved.</div>
             <ul class="footer-links">
-                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                <li><a href="terms-of-service.html">Terms of Service</a></li>
-                <li><a href="refund-policy.html">Refund Policy</a></li>
-                <li><a href="shipping-info.html">Shipping Info</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Refund Policy</a></li>
+                <li><a href="#">Shipping Info</a></li>
             </ul>
         </div>
     </footer>
 
-    <!-- Modal Handling Logic -->
+    <!-- Modal Handling & LocalStorage Engine Logic -->
     <script>
         const modal = document.getElementById('productModal');
         
@@ -402,12 +425,11 @@
             document.getElementById('modalDesc').innerText = description;
             document.getElementById('modalImageText').innerText = title + " Preview Box";
             
-            // Clear inputs from any previous clicks
             document.getElementById('userImage').value = "";
             document.getElementById('userText').value = "";
             
             modal.classList.add('is-active');
-            document.body.style.overflow = 'hidden'; // Stop background scrolling
+            document.body.style.overflow = 'hidden';
         }
 
         function closeProductModal(e, force = false) {
@@ -419,12 +441,38 @@
 
         function addToBasketHandler() {
             const title = document.getElementById('modalTitle').innerText;
+            const priceText = document.getElementById('modalPrice').innerText;
+            const price = parseFloat(priceText.replace('£', ''));
             const textInput = document.getElementById('userText').value;
             const fileInput = document.getElementById('userImage').files[0];
 
-            alert(`Added to basket: ${title}\nPersonalization: ${textInput ? textInput : "None"}\nFile Attached: ${fileInput ? fileInput.name : "No file uploaded"}`);
+            const cartItem = {
+                id: Date.now(),
+                title: title,
+                price: price,
+                personalization: textInput ? textInput : "None",
+                fileName: fileInput ? fileInput.name : "No file uploaded"
+            };
+
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            cart.push(cartItem);
+            localStorage.setItem('hg_cart', JSON.stringify(cart));
+
+            updateCartBadge();
+
+            alert(`Added ${title} to your basket!`);
             closeProductModal(null, true);
         }
+
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            const badges = document.querySelectorAll('.cart-count');
+            badges.forEach(badge => {
+                badge.innerText = cart.length;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', updateCartBadge);
     </script>
 </body>
 </html>
