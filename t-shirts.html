@@ -8,301 +8,46 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        :root {
-            --text-dark: #000000;
-            --text-muted: #555555;
-            --bg-light: #f9f9f9;
-            --border-color: #e5e5e5;
-            --font-sans: 'Inter', sans-serif;
-        }
-
+        :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; --font-sans: 'Inter', sans-serif; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: var(--font-sans);
-            color: var(--text-dark);
-            background-color: #ffffff;
-            -webkit-font-smoothing: antialiased;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* --- Top Announcement Bar --- */
-        .announcement-bar {
-            background-color: #000000;
-            color: #ffffff;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 20px;
-            font-size: 11px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-bottom: 1px solid #333;
-        }
-
-        .announcement-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #ffffff;
-            text-decoration: none;
-        }
-
-        .announcement-text span {
-            display: block;
-            color: #ccc;
-            font-size: 10px;
-            text-transform: none;
-            margin-top: 2px;
-        }
-
-        /* --- Main Header / Navigation --- */
-        .main-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            border-bottom: 1px solid var(--border-color);
-            background: #fff;
-            position: relative;
-            z-index: 100;
-        }
-
+        body { font-family: var(--font-sans); color: var(--text-dark); background-color: #ffffff; -webkit-font-smoothing: antialiased; }
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 100; }
         .logo img { height: 55px; display: block; }
-
         .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
         .nav-links > li { position: relative; padding: 10px 0; }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 600;
-            font-size: 13px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding-bottom: 4px;
-        }
-
-        .nav-links > li.active > a, .nav-links a:hover { border-bottom: 2px solid #000; }
-        .nav-links i { font-size: 10px; margin-left: 5px; }
-
-        /* --- Dropdown Layout --- */
-        .dropdown-menu {
-            position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-            background-color: #ffffff; border: 1px solid var(--border-color);
-            min-width: 180px; list-style: none; display: flex; flex-direction: column;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); opacity: 0; visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease; margin-top: 5px;
-        }
-
-        .dropdown-menu a {
-            display: block; padding: 12px 20px; font-size: 11px; font-weight: 600;
-            letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-dark);
-        }
-
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid var(--border-color); list-style: none; min-width: 180px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: none; margin-top: 5px; }
+        .dropdown-menu a { display: block; padding: 12px 20px; font-size: 11px; text-decoration: none; color: var(--text-dark); }
         .dropdown-menu a:hover { background-color: var(--bg-light); }
-        .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; }
-
+        .has-dropdown:hover .dropdown-menu { display: flex; flex-direction: column; }
         .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
-
-        .cart-icon .cart-count {
-            position: absolute; top: -8px; right: -10px; background: #000; color: #fff;
-            font-size: 10px; width: 16px; height: 16px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-weight: bold;
-        }
-
-        /* --- Page Hero Banner --- */
-        .category-hero {
-            background-color: var(--bg-light);
-            text-align: center;
-            padding: 60px 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .category-hero h1 {
-            font-size: 36px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        .category-hero p {
-            font-size: 15px;
-            color: var(--text-muted);
-        }
-
-        /* --- Catalog Product Grid --- */
-        .catalog-container {
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 0 20px;
-            flex-grow: 1;
-            width: 100%;
-        }
-
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px 30px;
-        }
-
-        .product-card {
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .product-card:hover {
-            transform: translateY(-4px);
-        }
-
-        .product-image-wrapper {
-            background-color: var(--bg-light);
-            aspect-ratio: 1 / 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border-color);
-            margin-bottom: 15px;
-            font-size: 14px;
-            color: #aaa;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .product-title {
-            font-size: 15px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-        }
-
-        .product-price {
-            font-size: 14px;
-            color: var(--text-dark);
-            font-weight: 700;
-        }
-
-        /* --- Reusable Modal Pop-up --- */
-        .product-modal {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            padding: 20px;
-        }
-
-        .product-modal.is-active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-body {
-            background: #ffffff;
-            width: 100%;
-            max-width: 850px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            padding: 40px;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px; right: 20px;
-            background: none; border: none;
-            font-size: 24px; cursor: pointer;
-            color: var(--text-dark);
-        }
-
-        .modal-image-view {
-            background-color: var(--bg-light);
-            aspect-ratio: 1 / 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--border-color);
-            font-size: 14px;
-            color: #aaa;
-        }
-
-        .modal-details { display: flex; flex-direction: column; }
-        .modal-title { font-size: 24px; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
-        .modal-price { font-size: 18px; font-weight: 700; margin-bottom: 15px; }
-        .modal-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 25px; }
+        .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         
-        .custom-form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-        .custom-form-group label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .custom-form-group input[type="text"] { padding: 12px; border: 1px solid var(--border-color); font-family: var(--font-sans); }
-        .custom-form-group input[type="file"] { font-size: 13px; color: var(--text-muted); padding: 5px 0; }
+        .catalog-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .page-title { font-size: 28px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 30px; }
+        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        .product-card { border: 1px solid var(--border-color); padding: 15px; display: flex; flex-direction: column; }
+        .img-placeholder { background-color: var(--bg-light); aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; color: #aaa; margin-bottom: 15px; font-size: 14px; text-transform: uppercase; font-weight: 600; }
+        .prod-title { font-size: 14px; text-transform: uppercase; margin-bottom: 5px; }
+        .prod-price { font-weight: 700; font-size: 15px; margin-bottom: 15px; }
+        .btn-customize { background: #000; color: #fff; border: none; padding: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; text-align: center; margin-top: auto; }
         
-        .add-to-basket-btn {
-            background-color: #000000; color: #ffffff; border: none;
-            padding: 15px; font-size: 12px; font-weight: 600;
-            text-transform: uppercase; letter-spacing: 2px; cursor: pointer;
-            transition: background-color 0.2s; margin-top: auto;
-        }
-        .add-to-basket-btn:hover { background-color: #222222; }
-
-        /* --- Footer Section --- */
-        .site-footer {
-            background-color: #ffffff; padding: 30px 40px;
-            border-top: 1px solid var(--border-color); margin-top: auto;
-        }
-
-        .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .copyright-text { font-size: 12px; color: var(--text-muted); }
-        .footer-links { display: flex; list-style: none; gap: 20px; }
-        .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; }
-
-        /* --- Responsive Viewports --- */
-        @media (max-width: 992px) {
-            .announcement-bar { flex-direction: column; gap: 15px; align-items: center; }
-            .main-header { padding: 20px; flex-direction: column; gap: 15px; }
-            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-            .modal-body { grid-template-columns: 1fr; padding: 30px 20px; }
-        }
-
-        @media (max-width: 576px) {
-            .nav-links { display: none; }
-            .main-header { flex-direction: row; justify-content: space-between; padding: 15px 20px; }
-            .logo img { height: 40px; }
-            .product-grid { grid-template-columns: 1fr; }
-        }
+        .modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .modal.is-active { display: flex; }
+        .modal-content { background: #fff; max-width: 500px; width: 100%; padding: 30px; position: relative; border-radius: 4px; }
+        .modal-close { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 20px; cursor: pointer; }
+        .form-group { margin: 15px 0; display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .form-group input, .form-group textarea { padding: 10px; border: 1px solid var(--border-color); font-family: var(--font-sans); }
+        
+        @media (max-width: 992px) { .product-grid { grid-template-columns: repeat(2, 1fr); } .main-header { flex-direction: column; gap: 15px; } }
+        @media (max-width: 576px) { .product-grid { grid-template-columns: 1fr; } .nav-links { display: none; } .main-header { flex-direction: row; } }
     </style>
 </head>
 <body>
 
-    <!-- Announcement Bar -->
-    <div class="announcement-bar">
-        <a href="shipping-info.html" class="announcement-item">
-            <i class="fa-solid fa-truck"></i>
-            <div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div>
-        </a>
-        <a href="about-us.html" class="announcement-item">
-            <i class="fa-regular fa-clock"></i>
-            <div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div>
-        </a>
-        <a href="custom-products.html" class="announcement-item">
-            <i class="fa-regular fa-circle-check"></i>
-            <div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div>
-        </a>
-    </div>
-
-    <!-- Header Navigation -->
     <header class="main-header">
         <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a></div>
         <nav>
@@ -329,149 +74,88 @@
         </div>
     </header>
 
-    <!-- Category Banner -->
-    <section class="category-hero">
-        <h1>Custom T-Shirts</h1>
-        <p>Premium ringspun cotton graphic t-shirts personalized with high-fidelity custom prints or embroidered details.</p>
-    </section>
-
-    <!-- Products Grid Catalog -->
     <main class="catalog-container">
+        <h1 class="page-title">Custom Graphic Apparel</h1>
         <div class="product-grid">
-            <!-- Item 1 -->
-            <div class="product-card" onclick="openProductModal('Classic Crewneck T-Shirt', '£14.99', '100% combed ringspun soft cotton modern regular fit profile. Double-needle stitched sleeve and bottom hems for long-lasting structural durability.')">
-                <div class="product-image-wrapper">T-Shirt Image 1</div>
-                <div class="product-title">Classic Crewneck T-Shirt</div>
-                <div class="product-price">£14.99</div>
+            <div class="product-card">
+                <div class="img-placeholder">Classic Crewneck</div>
+                <div class="prod-title">Essential Cotton T-Shirt</div>
+                <div class="prod-price">£17.99</div>
+                <button class="btn-customize" onclick="openProductModal('Essential Cotton T-Shirt', '£17.99', '100% combed cotton ringspun apparel designed for durable premium print transfers.')">Design & Buy</button>
             </div>
-            <!-- Item 2 -->
-            <div class="product-card" onclick="openProductModal('Premium Heavyweight Tee', '£19.99', 'Thick 240gsm rugged vintage luxury layout structure. Built boxy with relaxed dropped shoulder points, optimized for street wear styling graphics.')">
-                <div class="product-image-wrapper">T-Shirt Image 2</div>
-                <div class="product-title">Premium Heavyweight Tee</div>
-                <div class="product-price">£19.99</div>
+            <div class="product-card">
+                <div class="img-placeholder">Heavyweight Tee</div>
+                <div class="prod-title">Streetwear Heavyweight Tee</div>
+                <div class="prod-price">£22.00</div>
+                <button class="btn-customize" onclick="openProductModal('Streetwear Heavyweight Tee', '£22.00', 'Thick 240gsm relaxed oversized box cut construction inspired by modern style profiles.')">Design & Buy</button>
             </div>
-            <!-- Item 3 -->
-            <div class="product-card" onclick="openProductModal('V-Neck Softstyle Shirt', '£14.99', 'Lightweight breathable luxury layout composition. Taped neck and shoulders provide a very smooth, comfortable contoured casual everyday wear setup.')">
-                <div class="product-image-wrapper">T-Shirt Image 3</div>
-                <div class="product-title">V-Neck Softstyle Shirt</div>
-                <div class="product-price">£14.99</div>
+            <div class="product-card">
+                <div class="img-placeholder">Pullover Hoodie</div>
+                <div class="prod-title">Premium Custom Hoodie</div>
+                <div class="prod-price">£34.99</div>
+                <button class="btn-customize" onclick="openProductModal('Premium Custom Hoodie', '£34.99', 'Comfy double-brushed inner fleece lining with reinforced kanga pockets.')">Design & Buy</button>
             </div>
-            <!-- Item 4 -->
-            <div class="product-card" onclick="openProductModal('Athletic Fit Performance Top', '£17.99', 'Moisture-wicking active dynamic panel stretch textiles. Keeps you lightweight and dry during high-output workouts or demanding stage performances.')">
-                <div class="product-image-wrapper">T-Shirt Image 4</div>
-                <div class="product-title">Athletic Performance Top</div>
-                <div class="product-price">£17.99</div>
-            </div>
-            <!-- Item 5 -->
-            <div class="product-card" onclick="openProductModal('Organic Cotton Eco Tee', '£18.99', '100% certified organic chemical-free sustainable cotton fibers. Exceptionally smooth base surface mapping layer perfect for intricate ink prints.')">
-                <div class="product-image-wrapper">T-Shirt Image 5</div>
-                <div class="product-title">Organic Cotton Eco Tee</div>
-                <div class="product-price">£18.99</div>
-            </div>
-            <!-- Item 6 -->
-            <div class="product-card" onclick="openProductModal('Long Sleeve Raglan Base', '£21.99', 'Classic baseball styling featuring contrast-colored three-quarter or full long-sleeve stitchings. Soft blend knit structure properties.')">
-                <div class="product-image-wrapper">T-Shirt Image 6</div>
-                <div class="product-title">Long Sleeve Raglan Base</div>
-                <div class="product-price">£21.99</div>
+            <div class="product-card">
+                <div class="img-placeholder">Longsleeve Shirt</div>
+                <div class="prod-title">Classic Longsleeve Shirt</div>
+                <div class="prod-price">£21.50</div>
+                <button class="btn-customize" onclick="openProductModal('Classic Longsleeve Shirt', '£21.50', 'Includes cuffed wrist articulation ideal for branding setups down both sleeves.')">Design & Buy</button>
             </div>
         </div>
     </main>
 
-    <!-- Shared Dynamic Modal Structure Box -->
-    <div class="product-modal" id="productModal" onclick="closeProductModal(event)">
-        <div class="modal-body" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeProductModal(force=true)">&times;</button>
-            <div class="modal-image-view" id="modalImageText">Product Image Placement</div>
-            <div class="modal-details">
-                <h2 class="modal-title" id="modalTitle">Product Title</h2>
-                <div class="modal-price" id="modalPrice">£0.00</div>
-                <p class="modal-desc" id="modalDesc">Detailed explanation text regarding design specifications.</p>
-                
-                <div class="custom-form-group">
-                    <label for="userImage">1. Upload your graphic design / image:</label>
-                    <input type="file" id="userImage" accept="image/*">
-                </div>
-                
-                <div class="custom-form-group">
-                    <label for="userText">2. Custom text / Personalization details:</label>
-                    <input type="text" id="userText" placeholder="Enter names, custom texts, or specific layout requests...">
-                </div>
-
-                <button class="add-to-basket-btn" onclick="addToBasketHandler()">Add to Basket</button>
+    <div class="modal" id="productModal" onclick="closeProductModal(event)">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeProductModal(null, true)">&times;</button>
+            <h2 id="modalTitle" style="text-transform:uppercase; font-size:18px; margin-bottom:10px;">Product</h2>
+            <div id="modalPrice" style="font-weight:700; margin-bottom:15px;">Price</div>
+            <p id="modalDesc" style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Desc</p>
+            <div id="modalImageText" class="img-placeholder" style="height:120px;">Preview Box</div>
+            
+            <div class="form-group">
+                <label for="userText">Your Custom Inscription Notes</label>
+                <textarea id="userText" rows="3" placeholder="Specify size (S, M, L, XL), garment color preference, and custom script text..."></textarea>
             </div>
+            <div class="form-group">
+                <label for="userImage">Upload Logo/Graphics Design File</label>
+                <input type="file" id="userImage" accept="image/*">
+            </div>
+            <button class="btn-customize" style="width:100%; margin-top:10px;" onclick="addToBasketHandler()">Add To Basket</button>
         </div>
     </div>
 
-    <!-- Footer Area -->
-    <footer class="site-footer">
-        <div class="footer-bottom">
-            <div class="copyright-text">&copy; 2026 HG Customs. All rights reserved.</div>
-            <ul class="footer-links">
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Refund Policy</a></li>
-                <li><a href="#">Shipping Info</a></li>
-            </ul>
+    <div id="helpChatWidget" style="position: fixed; bottom: 25px; right: 25px; z-index: 9999; font-family: 'Inter', sans-serif;">
+        <button onclick="toggleChatMenu()" style="background: #000; color: #fff; border: none; padding: 15px 20px; border-radius: 30px; font-weight: 600; font-size: 13px; letter-spacing: 1px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px;">
+            <i class="fa-regular fa-comments" style="font-size: 16px;"></i> Need Help?
+        </button>
+        <div id="chatChannelsMenu" style="display: none; position: absolute; bottom: 65px; right: 0; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); width: 220px; overflow: hidden; flex-direction: column;">
+            <div style="background: #000; color: #fff; padding: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; text-align: center;">Chat With Us</div>
+            <a href="https://wa.me/447000000000" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 15px; color: #000; text-decoration: none; font-size: 13px; font-weight: 600; border-bottom: 1px solid #f0f0f0;">
+                <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 18px;"></i> WhatsApp
+            </a>
+            <a href="https://m.me/yourpageusername" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 15px; color: #000; text-decoration: none; font-size: 13px; font-weight: 600;">
+                <i class="fa-brands fa-facebook-messenger" style="color: #006AFF; font-size: 18px;"></i> Messenger
+            </a>
         </div>
-    </footer>
+    </div>
 
-    <!-- Modal Handling & LocalStorage Engine Logic -->
     <script>
         const modal = document.getElementById('productModal');
-        
-        function openProductModal(title, price, description) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalPrice').innerText = price;
-            document.getElementById('modalDesc').innerText = description;
-            document.getElementById('modalImageText').innerText = title + " Preview Box";
-            
-            document.getElementById('userImage').value = "";
-            document.getElementById('userText').value = "";
-            
-            modal.classList.add('is-active');
-            document.body.style.overflow = 'hidden';
+        function openProductModal(t,p,d) {
+            document.getElementById('modalTitle').innerText = t; document.getElementById('modalPrice').innerText = p; document.getElementById('modalDesc').innerText = d; document.getElementById('modalImageText').innerText = t + " Preview Box";
+            document.getElementById('userImage').value = ""; document.getElementById('userText').value = "";
+            modal.classList.add('is-active'); document.body.style.overflow = 'hidden';
         }
-
-        function closeProductModal(e, force = false) {
-            if (force || e.target === modal) {
-                modal.classList.remove('is-active');
-                document.body.style.overflow = 'auto';
-            }
-        }
-
+        function closeProductModal(e, f = false) { if (f || e.target === modal) { modal.classList.remove('is-active'); document.body.style.overflow = 'auto'; } }
         function addToBasketHandler() {
-            const title = document.getElementById('modalTitle').innerText;
-            const priceText = document.getElementById('modalPrice').innerText;
-            const price = parseFloat(priceText.replace('£', ''));
-            const textInput = document.getElementById('userText').value;
-            const fileInput = document.getElementById('userImage').files[0];
-
-            const cartItem = {
-                id: Date.now(),
-                title: title,
-                price: price,
-                personalization: textInput ? textInput : "None",
-                fileName: fileInput ? fileInput.name : "No file uploaded"
-            };
-
-            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            cart.push(cartItem);
-            localStorage.setItem('hg_cart', JSON.stringify(cart));
-
-            updateCartBadge();
-
-            alert(`Added ${title} to your basket!`);
-            closeProductModal(null, true);
+            const t = document.getElementById('modalTitle').innerText, p = parseFloat(document.getElementById('modalPrice').innerText.replace('£', '')), txt = document.getElementById('userText').value, fl = document.getElementById('userImage').files[0];
+            const item = { id: Date.now(), title: t, price: p, personalization: txt ? txt : "None", fileName: fl ? fl.name : "No file uploaded" };
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || []; cart.push(item); localStorage.setItem('hg_cart', JSON.stringify(cart));
+            updateCartBadge(); alert(`Added ${t} to your basket!`); closeProductModal(null, true);
         }
-
-        function updateCartBadge() {
-            const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            const badges = document.querySelectorAll('.cart-count');
-            badges.forEach(badge => {
-                badge.innerText = cart.length;
-            });
-        }
-
+        function updateCartBadge() { const cart = JSON.parse(localStorage.getItem('hg_cart')) || []; const badges = document.querySelectorAll('.cart-count'); badges.forEach(b => b.innerText = cart.length); }
+        function toggleChatMenu() { const menu = document.getElementById('chatChannelsMenu'); menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'flex' : 'none'; }
+        document.addEventListener('click', function(e) { const w = document.getElementById('helpChatWidget'); if (!w.contains(e.target)) document.getElementById('chatChannelsMenu').style.display = 'none'; });
         document.addEventListener('DOMContentLoaded', updateCartBadge);
     </script>
 </body>
