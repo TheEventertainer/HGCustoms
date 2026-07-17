@@ -75,6 +75,8 @@
             padding: 20px 40px;
             border-bottom: 1px solid var(--border-color);
             background: #fff;
+            position: relative;
+            z-index: 100;
         }
 
         .logo img {
@@ -86,6 +88,12 @@
             display: flex;
             list-style: none;
             gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links > li {
+            position: relative;
+            padding: 10px 0;
         }
 
         .nav-links a {
@@ -99,13 +107,64 @@
             transition: border-color 0.3s;
         }
 
-        .nav-links .active a, .nav-links a:hover {
+        .nav-links > li > a:hover,
+        .nav-links > li.active > a {
             border-bottom: 2px solid #000;
         }
 
         .nav-links i {
             font-size: 10px;
-            margin-left: 3px;
+            margin-left: 5px;
+        }
+
+        /* --- Custom Products Dropdown Menu styling --- */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            min-width: 180px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            margin-top: 5px;
+        }
+
+        .dropdown-menu li {
+            border-bottom: 1px solid var(--bg-light);
+        }
+
+        .dropdown-menu li:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            transition: background-color 0.2s, color 0.2s;
+            white-space: nowrap;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: var(--bg-light);
+            color: #000000;
+        }
+
+        /* Reveal dropdown dynamically on element hover */
+        .has-dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
         }
 
         .header-actions {
@@ -257,7 +316,6 @@
             background-color: var(--bg-light);
             aspect-ratio: 1 / 1;
             display: flex;
-            flex-items: center;
             align-items: center;
             justify-content: center;
             border: 1px solid var(--border-color);
@@ -426,11 +484,16 @@
         <nav>
             <ul class="nav-links">
                 <li class="active"><a href="index.html">Home</a></li>
-                <li><a href="mugs.html">Mugs</a></li>
-                <li><a href="t-shirts.html">T-Shirts</a></li>
-                <li><a href="coasters.html">Coasters</a></li>
-                <li><a href="merchandise.html">Merchandise</a></li>
-                <li><a href="#">Contact</a></li>
+                <li class="has-dropdown">
+                    <a href="#">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="mugs.html">Custom Mugs</a></li>
+                        <li><a href="t-shirts.html">Custom T-Shirts</a></li>
+                        <li><a href="coasters.html">Custom Coasters</a></li>
+                        <li><a href="merchandise.html">Band & Show Merch</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
         <div class="header-actions">
