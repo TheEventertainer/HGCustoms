@@ -67,11 +67,14 @@
             padding: 20px 40px;
             border-bottom: 1px solid var(--border-color);
             background: #fff;
+            position: relative;
+            z-index: 100;
         }
 
         .logo img { height: 55px; display: block; }
 
-        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
+        .nav-links > li { position: relative; padding: 10px 0; }
 
         .nav-links a {
             text-decoration: none;
@@ -83,10 +86,27 @@
             padding-bottom: 4px;
         }
 
-        .nav-links a:hover { border-bottom: 2px solid #000; }
+        .nav-links > li.active > a, .nav-links a:hover { border-bottom: 2px solid #000; }
+        .nav-links i { font-size: 10px; margin-left: 5px; }
+
+        /* --- Dropdown Layout --- */
+        .dropdown-menu {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            background-color: #ffffff; border: 1px solid var(--border-color);
+            min-width: 180px; list-style: none; display: flex; flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); opacity: 0; visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease; margin-top: 5px;
+        }
+
+        .dropdown-menu a {
+            display: block; padding: 12px 20px; font-size: 11px; font-weight: 600;
+            letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-dark);
+        }
+
+        .dropdown-menu a:hover { background-color: var(--bg-light); }
+        .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; }
 
         .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
-
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
 
         .cart-icon .cart-count {
@@ -167,7 +187,7 @@
             font-weight: 700;
         }
 
-        /* --- Reusable Modal Pop-up Structure --- */
+        /* --- Reusable Modal Pop-up --- */
         .product-modal {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -219,7 +239,6 @@
             color: #aaa;
         }
 
-        /* Custom Personalization Form Fields inside popup */
         .modal-details { display: flex; flex-direction: column; }
         .modal-title { font-size: 24px; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
         .modal-price { font-size: 18px; font-weight: 700; margin-bottom: 15px; }
@@ -289,66 +308,71 @@
         <nav>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="mugs.html">Mugs</a></li>
-                <li><a href="t-shirts.html">T-Shirts</a></li>
-                <li><a href="coasters.html">Coasters</a></li>
-                <li><a href="merchandise.html">Merchandise</a></li>
+                <li class="has-dropdown active">
+                    <a href="#">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="mugs.html">Custom Mugs</a></li>
+                        <li><a href="t-shirts.html">Custom T-Shirts</a></li>
+                        <li><a href="coasters.html">Custom Coasters</a></li>
+                        <li><a href="merchandise.html">Band & Show Merch</a></li>
+                    </ul>
+                </li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
         <div class="header-actions">
             <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
             <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
-            <a href="#" class="cart-icon" aria-label="Cart">
+            <a href="cart.html" class="cart-icon" aria-label="Cart">
                 <i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span>
             </a>
         </div>
     </header>
 
-    <!-- Category Banner Placeholder -->
+    <!-- Category Banner -->
     <section class="category-hero">
         <h1>Custom T-Shirts</h1>
-        <p>Premium cotton tees customized with your logos, personal designs, and custom typography.</p>
+        <p>Premium ringspun cotton graphic t-shirts personalized with high-fidelity custom prints or embroidered details.</p>
     </section>
 
     <!-- Products Grid Catalog -->
     <main class="catalog-container">
         <div class="product-grid">
-            <!-- Product Item 1 -->
-            <div class="product-card" onclick="openProductModal('Classic Custom Tee', '£16.99', '100% ring-spun premium cotton crew neck t-shirt. Exceptional comfort and fit, featuring ultra-vibrant long-lasting graphic prints.')">
-                <div class="product-image-wrapper">T-Shirt Image Placement 1</div>
-                <div class="product-title">Classic Custom Tee</div>
-                <div class="product-price">£16.99</div>
+            <!-- Item 1 -->
+            <div class="product-card" onclick="openProductModal('Classic Crewneck T-Shirt', '£14.99', '100% combed ringspun soft cotton modern regular fit profile. Double-needle stitched sleeve and bottom hems for long-lasting structural durability.')">
+                <div class="product-image-wrapper">T-Shirt Image 1</div>
+                <div class="product-title">Classic Crewneck T-Shirt</div>
+                <div class="product-price">£14.99</div>
             </div>
-            <!-- Product Item 2 -->
-            <div class="product-card" onclick="openProductModal('Premium Oversized Tee', '£19.99', 'Heavyweight 240gsm streetwear-cut cotton tee. Built durable with dropped shoulder seams for a premium boxy fit look.')">
-                <div class="product-image-wrapper">T-Shirt Image Placement 2</div>
-                <div class="product-title">Premium Oversized Tee</div>
+            <!-- Item 2 -->
+            <div class="product-card" onclick="openProductModal('Premium Heavyweight Tee', '£19.99', 'Thick 240gsm rugged vintage luxury layout structure. Built boxy with relaxed dropped shoulder points, optimized for street wear styling graphics.')">
+                <div class="product-image-wrapper">T-Shirt Image 2</div>
+                <div class="product-title">Premium Heavyweight Tee</div>
                 <div class="product-price">£19.99</div>
             </div>
-            <!-- Product Item 3 -->
-            <div class="product-card" onclick="openProductModal('Custom Sports Performance Tee', '£18.49', 'Lightweight, moisture-wicking synthetic polyester blend fabric. Perfect for gym wear, active teams, and high-performance branding prints.')">
-                <div class="product-image-wrapper">T-Shirt Image Placement 3</div>
-                <div class="product-title">Sports Performance Tee</div>
-                <div class="product-price">£18.49</div>
+            <!-- Item 3 -->
+            <div class="product-card" onclick="openProductModal('V-Neck Softstyle Shirt', '£14.99', 'Lightweight breathable luxury layout composition. Taped neck and shoulders provide a very smooth, comfortable contoured casual everyday wear setup.')">
+                <div class="product-image-wrapper">T-Shirt Image 3</div>
+                <div class="product-title">V-Neck Softstyle Shirt</div>
+                <div class="product-price">£14.99</div>
             </div>
-            <!-- Product Item 4 -->
-            <div class="product-card" onclick="openProductModal('V-Neck Graphic Tee', '£16.99', 'Elegant and lightweight combed cotton construction with a tailored classic deep neck cut profile.')">
-                <div class="product-image-wrapper">T-Shirt Image Placement 4</div>
-                <div class="product-title">V-Neck Graphic Tee</div>
-                <div class="product-price">£16.99</div>
+            <!-- Item 4 -->
+            <div class="product-card" onclick="openProductModal('Athletic Fit Performance Top', '£17.99', 'Moisture-wicking active dynamic panel stretch textiles. Keeps you lightweight and dry during high-output workouts or demanding stage performances.')">
+                <div class="product-image-wrapper">T-Shirt Image 4</div>
+                <div class="product-title">Athletic Performance Top</div>
+                <div class="product-price">£17.99</div>
             </div>
-            <!-- Product Item 5 -->
-            <div class="product-card" onclick="openProductModal('Eco-Friendly Organic Tee', '£21.99', 'Responsibly sourced 100% certified organic cotton. Incredibly soft texture printed using premium eco-conscious safe ink blends.')">
-                <div class="product-image-wrapper">T-Shirt Image Placement 5</div>
-                <div class="product-title">Eco Organic Tee</div>
+            <!-- Item 5 -->
+            <div class="product-card" onclick="openProductModal('Organic Cotton Eco Tee', '£18.99', '100% certified organic chemical-free sustainable cotton fibers. Exceptionally smooth base surface mapping layer perfect for intricate ink prints.')">
+                <div class="product-image-wrapper">T-Shirt Image 5</div>
+                <div class="product-title">Organic Cotton Eco Tee</div>
+                <div class="product-price">£18.99</div>
+            </div>
+            <!-- Item 6 -->
+            <div class="product-card" onclick="openProductModal('Long Sleeve Raglan Base', '£21.99', 'Classic baseball styling featuring contrast-colored three-quarter or full long-sleeve stitchings. Soft blend knit structure properties.')">
+                <div class="product-image-wrapper">T-Shirt Image 6</div>
+                <div class="product-title">Long Sleeve Raglan Base</div>
                 <div class="product-price">£21.99</div>
-            </div>
-            <!-- Product Item 6 -->
-            <div class="product-card" onclick="openProductModal('Long Sleeve Custom Tee', '£22.49', 'Features comfortable ribbed wrist cuffs and complete full arm print capabilities. Ideal for seasonal or transition layers.')">
-                <div class="product-image-wrapper">T-Shirt Image Placement 6</div>
-                <div class="product-title">Long Sleeve Tee</div>
-                <div class="product-price">£22.49</div>
             </div>
         </div>
     </main>
@@ -363,7 +387,6 @@
                 <div class="modal-price" id="modalPrice">£0.00</div>
                 <p class="modal-desc" id="modalDesc">Detailed explanation text regarding design specifications.</p>
                 
-                <!-- User Upload Actions -->
                 <div class="custom-form-group">
                     <label for="userImage">1. Upload your graphic design / image:</label>
                     <input type="file" id="userImage" accept="image/*">
@@ -384,15 +407,15 @@
         <div class="footer-bottom">
             <div class="copyright-text">&copy; 2026 HG Customs. All rights reserved.</div>
             <ul class="footer-links">
-                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                <li><a href="terms-of-service.html">Terms of Service</a></li>
-                <li><a href="refund-policy.html">Refund Policy</a></li>
-                <li><a href="shipping-info.html">Shipping Info</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Refund Policy</a></li>
+                <li><a href="#">Shipping Info</a></li>
             </ul>
         </div>
     </footer>
 
-    <!-- Modal Handling Logic -->
+    <!-- Modal Handling & LocalStorage Engine Logic -->
     <script>
         const modal = document.getElementById('productModal');
         
@@ -418,12 +441,38 @@
 
         function addToBasketHandler() {
             const title = document.getElementById('modalTitle').innerText;
+            const priceText = document.getElementById('modalPrice').innerText;
+            const price = parseFloat(priceText.replace('£', ''));
             const textInput = document.getElementById('userText').value;
             const fileInput = document.getElementById('userImage').files[0];
 
-            alert(`Added to basket: ${title}\nPersonalization: ${textInput ? textInput : "None"}\nFile Attached: ${fileInput ? fileInput.name : "No file uploaded"}`);
+            const cartItem = {
+                id: Date.now(),
+                title: title,
+                price: price,
+                personalization: textInput ? textInput : "None",
+                fileName: fileInput ? fileInput.name : "No file uploaded"
+            };
+
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            cart.push(cartItem);
+            localStorage.setItem('hg_cart', JSON.stringify(cart));
+
+            updateCartBadge();
+
+            alert(`Added ${title} to your basket!`);
             closeProductModal(null, true);
         }
+
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            const badges = document.querySelectorAll('.cart-count');
+            badges.forEach(badge => {
+                badge.innerText = cart.length;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', updateCartBadge);
     </script>
 </body>
 </html>
