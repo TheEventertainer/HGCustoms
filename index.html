@@ -47,18 +47,12 @@
             border-bottom: 1px solid #333;
         }
 
-        /* Styled the announcement items as clickable links */
         .announcement-item {
             display: flex;
             align-items: center;
             gap: 10px;
             color: #ffffff;
             text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .announcement-item:hover {
-            opacity: 0.8;
         }
 
         .announcement-item i {
@@ -227,6 +221,60 @@
             background-color: #222222;
         }
 
+        /* --- Featured Categories Grid --- */
+        .featured-categories {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .category-card {
+            text-decoration: none;
+            color: var(--text-dark);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .category-image-placeholder {
+            background-color: var(--bg-light);
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-items: center;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #999;
+        }
+
+        .category-card h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         /* --- Value Props Bar --- */
         .value-props {
             display: flex;
@@ -234,6 +282,7 @@
             padding: 30px 60px;
             background-color: var(--bg-light);
             border-bottom: 1px solid var(--border-color);
+            border-top: 1px solid var(--border-color);
         }
 
         .prop-item {
@@ -306,10 +355,11 @@
 
         /* --- Tablet Responsive Styles --- */
         @media (max-width: 992px) {
-            .announcement-bar { flex-direction: column; gap: 15px; align-items: center; text-align: center;}
+            .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center;}
             .main-header { padding: 20px; flex-direction: column; gap: 15px; }
             .nav-links { gap: 15px; }
             .hero { padding: 0 40px; background-position: 75% center; }
+            .categories-grid { grid-template-columns: repeat(2, 1fr); }
             .value-props { flex-direction: column; gap: 20px; padding: 30px 20px; }
             .prop-item:not(:last-child) { border-right: none; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
             .footer-bottom { flex-direction: column; text-align: center; }
@@ -318,21 +368,11 @@
 
         /* --- Mobile Responsive Fixes --- */
         @media (max-width: 576px) {
-            .nav-links {
-                display: none;
-            }
-            .main-header {
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 15px 20px;
-            }
-            .logo img {
-                height: 40px;
-            }
-            .header-actions {
-                gap: 15px;
-                font-size: 16px;
-            }
+            .nav-links { display: none; }
+            .main-header { flex-direction: row; justify-content: space-between; padding: 15px 20px; }
+            .logo img { height: 40px; }
+            .header-actions { gap: 15px; font-size: 16px; }
+            .categories-grid { grid-template-columns: 1fr; }
             
             .hero {
                 height: auto;
@@ -342,63 +382,35 @@
                 display: flex;
                 justify-content: center;
             }
-            
             .hero::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(255, 255, 255, 0.75);
-                z-index: 1;
+                content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(255, 255, 255, 0.75); z-index: 1;
             }
-            
-            .hero-content {
-                max-width: 100%;
-            }
-            
-            .hero-title {
-                font-size: 34px;
-                line-height: 1.2;
-            }
-            
-            .hero-script {
-                font-size: 32px;
-                margin-bottom: 20px;
-            }
-            
-            .hero-description {
-                font-size: 14px;
-                margin-bottom: 25px;
-            }
-            
-            .hero-btn {
-                padding: 12px 24px;
-                font-size: 11px;
-                width: 100%;
-                justify-content: center;
-            }
+            .hero-content { max-width: 100%; }
+            .hero-title { font-size: 34px; line-height: 1.2; }
+            .hero-script { font-size: 32px; margin-bottom: 20px; }
+            .hero-description { font-size: 14px; margin-bottom: 25px; }
+            .hero-btn { padding: 12px 24px; font-size: 11px; width: 100%; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Announcement Bar (Now Active Links) -->
+    <!-- Top Announcement Bar -->
     <div class="announcement-bar">
-        <a href="shipping-info.html" class="announcement-item">
+        <a href="#" class="announcement-item">
             <i class="fa-solid fa-truck"></i>
             <div class="announcement-text">
                 FREE UK DELIVERY <span>On orders over £50</span>
             </div>
         </a>
-        <a href="about-us.html" class="announcement-item">
+        <a href="#" class="announcement-item">
             <i class="fa-regular fa-clock"></i>
             <div class="announcement-text">
                 FAST TURNAROUND <span>Quick & reliable</span>
             </div>
         </a>
-        <a href="custom-products.html" class="announcement-item">
+        <a href="#" class="announcement-item">
             <i class="fa-regular fa-circle-check"></i>
             <div class="announcement-text">
                 MADE JUST FOR YOU <span>Unique. Personal. Yours.</span>
@@ -414,15 +426,16 @@
         <nav>
             <ul class="nav-links">
                 <li class="active"><a href="index.html">Home</a></li>
-                <li><a href="shop.html">Shop <i class="fa-solid fa-chevron-down"></i></a></li>
-                <li><a href="custom-products.html">Custom Products <i class="fa-solid fa-chevron-down"></i></a></li>
-                <li><a href="about-us.html">About Us</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="mugs.html">Mugs</a></li>
+                <li><a href="t-shirts.html">T-Shirts</a></li>
+                <li><a href="coasters.html">Coasters</a></li>
+                <li><a href="merchandise.html">Merchandise</a></li>
+                <li><a href="#">Contact</a></li>
             </ul>
         </nav>
         <div class="header-actions">
-            <a href="search.html" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href="account.html" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+            <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
             <a href="cart.html" class="cart-icon" aria-label="Cart">
                 <i class="fa-solid fa-basket-shopping"></i>
                 <span class="cart-count">0</span>
@@ -440,9 +453,37 @@
                 Custom made mugs, t-shirts and more.<br>
                 Designed by you, made by us.
             </p>
-            <a href="custom-products.html" class="hero-btn">
+            <a href="t-shirts.html" class="hero-btn">
                 Shop Custom Products <i class="fa-solid fa-arrow-right"></i>
             </a>
+        </div>
+    </section>
+
+    <!-- Featured Categories Grid -->
+    <section class="featured-categories">
+        <h2 class="section-title">Explore Custom Products</h2>
+        <div class="categories-grid">
+            
+            <a href="mugs.html" class="category-card">
+                <div class="category-image-placeholder">Mugs Preview</div>
+                <h3>Custom Mugs</h3>
+            </a>
+
+            <a href="t-shirts.html" class="category-card">
+                <div class="category-image-placeholder">T-Shirts Preview</div>
+                <h3>Custom T-Shirts</h3>
+            </a>
+
+            <a href="coasters.html" class="category-card">
+                <div class="category-image-placeholder">Coasters Preview</div>
+                <h3>Custom Coasters</h3>
+            </a>
+
+            <a href="merchandise.html" class="category-card">
+                <div class="category-image-placeholder">Merchandise Preview</div>
+                <h3>Band & Show Merch</h3>
+            </a>
+
         </div>
     </section>
 
@@ -485,13 +526,25 @@
                 &copy; 2026 HG Customs. All rights reserved.
             </div>
             <ul class="footer-links">
-                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                <li><a href="terms-of-service.html">Terms of Service</a></li>
-                <li><a href="refund-policy.html">Refund Policy</a></li>
-                <li><a href="shipping-info.html">Shipping Info</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Refund Policy</a></li>
+                <li><a href="#">Shipping Info</a></li>
             </ul>
         </div>
     </footer>
+
+    <!-- Script to dynamically sync basket total badge count from localStorage -->
+    <script>
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            const badges = document.querySelectorAll('.cart-count');
+            badges.forEach(badge => {
+                badge.innerText = cart.length;
+            });
+        }
+        document.addEventListener('DOMContentLoaded', updateCartBadge);
+    </script>
 
 </body>
 </html>
