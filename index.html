@@ -47,10 +47,18 @@
             border-bottom: 1px solid #333;
         }
 
+        /* Styled the announcement items as clickable links */
         .announcement-item {
             display: flex;
             align-items: center;
             gap: 10px;
+            color: #ffffff;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .announcement-item:hover {
+            opacity: 0.8;
         }
 
         .announcement-item i {
@@ -298,7 +306,7 @@
 
         /* --- Tablet Responsive Styles --- */
         @media (max-width: 992px) {
-            .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center;}
+            .announcement-bar { flex-direction: column; gap: 15px; align-items: center; text-align: center;}
             .main-header { padding: 20px; flex-direction: column; gap: 15px; }
             .nav-links { gap: 15px; }
             .hero { padding: 0 40px; background-position: 75% center; }
@@ -311,7 +319,7 @@
         /* --- Mobile Responsive Fixes --- */
         @media (max-width: 576px) {
             .nav-links {
-                display: none; /* Temporarily hiding menu on mobile until we make a toggle button */
+                display: none;
             }
             .main-header {
                 flex-direction: row;
@@ -326,7 +334,6 @@
                 font-size: 16px;
             }
             
-            /* Fixing the overlay crash in the Hero area */
             .hero {
                 height: auto;
                 padding: 60px 20px;
@@ -336,7 +343,6 @@
                 justify-content: center;
             }
             
-            /* Semi-transparent protective layer so text remains sharp over the image */
             .hero::before {
                 content: '';
                 position: absolute;
@@ -378,46 +384,46 @@
 </head>
 <body>
 
-    <!-- Top Announcement Bar -->
+    <!-- Top Announcement Bar (Now Active Links) -->
     <div class="announcement-bar">
-        <div class="announcement-item">
+        <a href="shipping-info.html" class="announcement-item">
             <i class="fa-solid fa-truck"></i>
             <div class="announcement-text">
                 FREE UK DELIVERY <span>On orders over £50</span>
             </div>
-        </div>
-        <div class="announcement-item">
+        </a>
+        <a href="about-us.html" class="announcement-item">
             <i class="fa-regular fa-clock"></i>
             <div class="announcement-text">
                 FAST TURNAROUND <span>Quick & reliable</span>
             </div>
-        </div>
-        <div class="announcement-item">
+        </a>
+        <a href="custom-products.html" class="announcement-item">
             <i class="fa-regular fa-circle-check"></i>
             <div class="announcement-text">
                 MADE JUST FOR YOU <span>Unique. Personal. Yours.</span>
             </div>
-        </div>
+        </a>
     </div>
 
     <!-- Main Navigation Header -->
     <header class="main-header">
         <div class="logo">
-            <img src="logo.png" alt="HG Customs Logo">
+            <a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a>
         </div>
         <nav>
             <ul class="nav-links">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">Shop <i class="fa-solid fa-chevron-down"></i></a></li>
-                <li><a href="#">Custom Products <i class="fa-solid fa-chevron-down"></i></a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact</a></li>
+                <li class="active"><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop <i class="fa-solid fa-chevron-down"></i></a></li>
+                <li><a href="custom-products.html">Custom Products <i class="fa-solid fa-chevron-down"></i></a></li>
+                <li><a href="about-us.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
         <div class="header-actions">
-            <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
-            <a href="#" class="cart-icon" aria-label="Cart">
+            <a href="search.html" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href="account.html" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+            <a href="cart.html" class="cart-icon" aria-label="Cart">
                 <i class="fa-solid fa-basket-shopping"></i>
                 <span class="cart-count">0</span>
             </a>
@@ -434,7 +440,7 @@
                 Custom made mugs, t-shirts and more.<br>
                 Designed by you, made by us.
             </p>
-            <a href="#" class="hero-btn">
+            <a href="custom-products.html" class="hero-btn">
                 Shop Custom Products <i class="fa-solid fa-arrow-right"></i>
             </a>
         </div>
@@ -479,10 +485,10 @@
                 &copy; 2026 HG Customs. All rights reserved.
             </div>
             <ul class="footer-links">
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Refund Policy</a></li>
-                <li><a href="#">Shipping Info</a></li>
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="terms-of-service.html">Terms of Service</a></li>
+                <li><a href="refund-policy.html">Refund Policy</a></li>
+                <li><a href="shipping-info.html">Shipping Info</a></li>
             </ul>
         </div>
     </footer>
