@@ -9,6 +9,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- 1. PAYPAL SDK LINK (Using Sandbox Client ID for testing) -->
+    <!-- Replace 'test' with your actual live PayPal Client ID when ready to go live -->
+    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=GBP"></script>
+
     <style>
         :root {
             --text-dark: #000000;
@@ -30,110 +34,179 @@
             min-height: 100vh;
         }
 
-        /* --- Top Announcement Bar --- */
-        .announcement-bar {
-            background-color: #000000; color: #ffffff;
-            display: flex; justify-content: space-around;
-            padding: 12px 20px; font-size: 11px; letter-spacing: 1px;
-            text-transform: uppercase; border-bottom: 1px solid #333;
-        }
-        .announcement-item { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; }
-        .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
-
-        /* --- Main Header / Navigation --- */
+        /* --- Main Navigation Header --- */
         .main-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff;
-            position: relative; z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            background: #fff;
+            position: relative;
+            z-index: 100;
         }
+
         .logo img { height: 55px; display: block; }
         .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
-        .nav-links > li { position: relative; padding: 10px 0; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 4px; }
-        .nav-links i { font-size: 10px; margin-left: 5px; }
-        
-        .dropdown-menu {
-            position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-            background-color: #ffffff; border: 1px solid var(--border-color);
-            min-width: 180px; list-style: none; display: flex; flex-direction: column;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); opacity: 0; visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease; margin-top: 5px;
-        }
-        .dropdown-menu a { display: block; padding: 12px 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-dark); text-decoration: none; }
-        .dropdown-menu a:hover { background-color: var(--bg-light); }
-        .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; }
-
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
+        .dropdown-menu { position: absolute; display: none; background: #fff; border: 1px solid var(--border-color); list-style: none; min-width: 180px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .dropdown-menu a { display: block; padding: 12px 20px; font-size: 11px; }
+        .has-dropdown:hover .dropdown-menu { display: flex; flex-direction: column; }
         .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
-        .cart-icon .cart-count {
-            position: absolute; top: -8px; right: -10px; background: #000; color: #fff;
-            font-size: 10px; width: 16px; height: 16px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; font-weight: bold;
-        }
+        .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
         /* --- Cart Layout --- */
-        .cart-container { max-width: 1000px; width: 100%; margin: 40px auto; padding: 0 20px; flex-grow: 1; }
-        .cart-title { font-size: 28px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 30px; }
-        .cart-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
-        
-        .cart-items-list { display: flex; flex-direction: column; gap: 20px; }
-        .cart-item { display: grid; grid-template-columns: auto 1fr auto; gap: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); align-items: center; }
-        .cart-item-img { width: 80px; height: 80px; background-color: var(--bg-light); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 20px; color: #aaa; }
-        .cart-item-details h3 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-        .cart-item-meta { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-        .cart-item-meta strong { color: var(--text-dark); }
-        .cart-item-price-remove { text-align: right; display: flex; flex-direction: column; gap: 10px; }
-        .item-price { font-weight: 700; font-size: 15px; }
-        .remove-btn { background: none; border: none; color: #cc0000; font-size: 12px; cursor: pointer; text-decoration: underline; text-transform: uppercase; letter-spacing: 0.5px; }
+        .cart-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+            flex-grow: 1;
+            width: 100%;
+        }
 
-        .empty-cart-message { text-align: center; padding: 60px 0; display: none; }
-        .empty-cart-message p { margin-bottom: 20px; color: var(--text-muted); }
-        .continue-btn { display: inline-block; background-color: #000; color: #fff; text-decoration: none; padding: 12px 24px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .cart-title {
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--text-dark);
+            padding-bottom: 15px;
+        }
 
-        .cart-summary { background-color: var(--bg-light); padding: 30px; border: 1px solid var(--border-color); align-self: start; }
-        .summary-title { font-size: 16px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .summary-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 15px; }
-        .summary-row.total { font-size: 18px; font-weight: 700; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 15px; }
-        .checkout-btn { width: 100%; background-color: #000; color: #fff; border: none; padding: 15px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin-top: 15px; }
+        .cart-wrapper {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 50px;
+        }
 
-        /* --- Footer Section --- */
+        /* --- Left Side: Items List --- */
+        .cart-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .item-details {
+            flex-grow: 1;
+            max-width: 70%;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .item-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .item-meta span {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .item-price-remove {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .item-price {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #c0392b;
+            font-size: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        /* --- Right Side: Order Summary & PayPal --- */
+        .order-summary-box {
+            background-color: var(--bg-light);
+            padding: 30px;
+            border: 1px solid var(--border-color);
+            height: fit-content;
+        }
+
+        .summary-title {
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: var(--text-muted);
+        }
+
+        .summary-row.total-row {
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+        }
+
+        /* Container where PayPal injects its secure buttons */
+        #paypal-button-container {
+            margin-top: 15px;
+        }
+
+        .empty-cart-msg {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .continue-shopping {
+            display: inline-block;
+            margin-top: 15px;
+            color: #000;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 13px;
+        }
+
+        /* --- Footer --- */
         .site-footer { background-color: #ffffff; padding: 30px 40px; border-top: 1px solid var(--border-color); margin-top: auto; }
-        .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; }
         .copyright-text { font-size: 12px; color: var(--text-muted); }
-        .footer-links { display: flex; list-style: none; gap: 20px; }
-        .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; }
 
         @media (max-width: 992px) {
-            .announcement-bar { flex-direction: column; gap: 15px; align-items: center; }
-            .main-header { padding: 20px; flex-direction: column; gap: 15px; }
-            .cart-layout { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 576px) {
-            .nav-links { display: none; }
-            .main-header { flex-direction: row; justify-content: space-between; padding: 15px 20px; }
-            .logo img { height: 40px; }
-            .cart-item { grid-template-columns: 1fr; text-align: center; justify-items: center; }
-            .cart-item-price-remove { text-align: center; align-items: center; }
+            .cart-wrapper { grid-template-columns: 1fr; gap: 30px; }
         }
     </style>
 </head>
 <body>
-
-    <!-- Announcement Bar -->
-    <div class="announcement-bar">
-        <a href="#" class="announcement-item">
-            <i class="fa-solid fa-truck"></i>
-            <div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div>
-        </a>
-        <a href="#" class="announcement-item">
-            <i class="fa-regular fa-clock"></i>
-            <div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div>
-        </a>
-        <a href="#" class="announcement-item">
-            <i class="fa-regular fa-circle-check"></i>
-            <div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div>
-        </a>
-    </div>
 
     <!-- Header Navigation -->
     <header class="main-header">
@@ -162,115 +235,196 @@
         </div>
     </header>
 
-    <!-- Main Cart Content -->
+    <!-- Main Content Container -->
     <main class="cart-container">
         <h1 class="cart-title">Your Shopping Basket</h1>
         
-        <div class="empty-cart-message" id="emptyMessage">
-            <p>Your basket is currently empty.</p>
-            <a href="index.html" class="continue-btn">Continue Shopping</a>
-        </div>
+        <div id="cart-content-wrapper" class="cart-wrapper" style="display: none;">
+            <!-- Left: List of Chosen Items -->
+            <div class="cart-items-list" id="itemsContainer">
+                <!-- Items are dynamically rendered here by JavaScript -->
+            </div>
 
-        <div class="cart-layout" id="cartLayout">
-            <div class="cart-items-list" id="cartItemsContainer"></div>
-
-            <div class="cart-summary">
-                <h2 class="summary-title">Order Summary</h2>
+            <!-- Right: Live Totals and PayPal Processing Block -->
+            <div class="order-summary-box">
+                <div class="summary-title">Order Summary</div>
                 <div class="summary-row">
                     <span>Subtotal</span>
-                    <span id="cartSubtotal">£0.00</span>
+                    <span id="summarySubtotal">£0.00</span>
                 </div>
                 <div class="summary-row">
                     <span>Shipping</span>
-                    <span id="cartShipping">£3.99</span>
+                    <span id="summaryShipping">£0.00</span>
                 </div>
-                <div class="summary-row total">
+                <div class="summary-row total-row">
                     <span>Total</span>
-                    <span id="cartTotal">£0.00</span>
+                    <span id="summaryTotal">£0.00</span>
                 </div>
-                <button class="checkout-btn" onclick="checkoutHandler()">Proceed to Checkout</button>
+
+                <!-- PayPal Smart Button Render Target -->
+                <div id="paypal-button-container"></div>
             </div>
+        </div>
+
+        <!-- fallback message if cart contains nothing -->
+        <div id="empty-cart-message" class="empty-cart-msg" style="display: none;">
+            <p>Your basket is currently empty.</p>
+            <a href="index.html" class="continue-shopping"><i class="fa-solid fa-arrow-left"></i> Return to Shop</a>
         </div>
     </main>
 
+    <!-- Footer Area -->
     <footer class="site-footer">
         <div class="footer-bottom">
             <div class="copyright-text">&copy; 2026 HG Customs. All rights reserved.</div>
-            <ul class="footer-links">
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Refund Policy</a></li>
-                <li><a href="#">Shipping Info</a></li>
-            </ul>
         </div>
     </footer>
 
-    <!-- Cart Script Engine -->
+    <!-- Cart Rendering & PayPal Payment Engine -->
     <script>
-        function renderCart() {
-            const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            const container = document.getElementById('cartItemsContainer');
-            const layout = document.getElementById('cartLayout');
-            const emptyMessage = document.getElementById('emptyMessage');
-            
-            container.innerHTML = "";
+        let cart = [];
+        const shippingThreshold = 50.00;
+        const standardShippingCost = 3.99;
 
+        function loadCart() {
+            cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            renderCart();
+            updateCartBadge();
+        }
+
+        function updateCartBadge() {
             const badges = document.querySelectorAll('.cart-count');
             badges.forEach(badge => badge.innerText = cart.length);
+        }
+
+        function calculateTotals() {
+            let subtotal = 0;
+            cart.forEach(item => { subtotal += item.price; });
+            
+            // Free UK Delivery on orders over £50
+            let shipping = subtotal >= shippingThreshold || subtotal === 0 ? 0.00 : standardShippingCost;
+            let total = subtotal + shipping;
+
+            return {
+                subtotal: subtotal.toFixed(2),
+                shipping: shipping.toFixed(2),
+                total: total.toFixed(2)
+            };
+        }
+
+        function renderCart() {
+            const wrapper = document.getElementById('cart-content-wrapper');
+            const emptyMsg = document.getElementById('empty-cart-message');
+            const container = document.getElementById('itemsContainer');
 
             if (cart.length === 0) {
-                layout.style.display = 'none';
-                emptyMessage.style.display = 'block';
+                wrapper.style.display = 'none';
+                emptyMsg.style.display = 'block';
                 return;
             }
 
-            layout.style.display = 'grid';
-            emptyMessage.style.display = 'none';
-
-            let subtotal = 0;
+            wrapper.style.display = 'grid';
+            emptyMsg.style.display = 'none';
+            container.innerHTML = '';
 
             cart.forEach(item => {
-                subtotal += item.price;
-                
-                const itemHTML = `
-                    <div class="cart-item">
-                        <div class="cart-item-img"><i class="fa-solid fa-gift"></i></div>
-                        <div class="cart-item-details">
-                            <h3>${item.title}</h3>
-                            <div class="cart-item-meta">
-                                <div><strong>Personalization:</strong> ${item.personalization}</div>
-                                <div><strong>File:</strong> ${item.fileName}</div>
-                            </div>
-                        </div>
-                        <div class="cart-item-price-remove">
-                            <span class="item-price">£${item.price.toFixed(2)}</span>
-                            <button class="remove-btn" onclick="removeItemFromCart(${item.id})">Remove</button>
-                        </div>
+                const itemEl = document.createElement('div');
+                itemEl.className = 'cart-item';
+                itemEl.innerHTML = `
+                    <div class="item-details">
+                        <div class="item-title">${item.title}</div>
+                        <div class="item-meta">Personalization: <span>${item.personalization}</span></div>
+                        <div class="item-meta">File Uploaded: <span>${item.fileName}</span></div>
+                    </div>
+                    <div class="item-price-remove">
+                        <div class="item-price">£${item.price.toFixed(2)}</div>
+                        <button class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
                     </div>
                 `;
-                container.innerHTML += itemHTML;
+                container.appendChild(itemEl);
             });
 
-            let shippingCost = subtotal >= 50 ? 0 : 3.99;
-            let totalCost = subtotal + shippingCost;
-
-            document.getElementById('cartSubtotal').innerText = `£${subtotal.toFixed(2)}`;
-            document.getElementById('cartShipping').innerText = shippingCost === 0 ? "FREE" : `£${shippingCost.toFixed(2)}`;
-            document.getElementById('cartTotal').innerText = `£${totalCost.toFixed(2)}`;
+            // Update price readouts
+            const totals = calculateTotals();
+            document.getElementById('summarySubtotal').innerText = '£' + totals.subtotal;
+            document.getElementById('summaryShipping').innerText = totals.shipping == 0 ? 'FREE' : '£' + totals.shipping;
+            document.getElementById('summaryTotal').innerText = '£' + totals.total;
         }
 
-        function removeItemFromCart(itemId) {
-            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+        function removeItem(itemId) {
             cart = cart.filter(item => item.id !== itemId);
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             renderCart();
+            updateCartBadge();
+            
+            // Re-render PayPal buttons to prevent payment mismatches if cart changes
+            if(cart.length > 0) {
+                document.getElementById('paypal-button-container').innerHTML = '';
+                initPayPalButtons();
+            }
         }
 
-        function checkoutHandler() {
-            alert("Checkout integration placeholder! Your details have been stored safely.");
+        // 2. PAYPAL INTEGRATION ENGINE
+        function initPayPalButtons() {
+            paypal.Buttons({
+                // Triggers when user clicks the PayPal button
+                createOrder: function(data, actions) {
+                    const totals = calculateTotals();
+                    
+                    // Maps your custom basket array cleanly into standard PayPal line items
+                    const paypalItems = cart.map(item => {
+                        return {
+                            name: item.title,
+                            description: `Text: ${item.personalization} | File: ${item.fileName}`,
+                            unit_amount: {
+                                currency_code: "GBP",
+                                value: item.price.toFixed(2)
+                            },
+                            quantity: "1"
+                        };
+                    });
+
+                    return actions.order.create({
+                        purchase_units: [{
+                            amount: {
+                                currency_code: "GBP",
+                                value: totals.total,
+                                breakdown: {
+                                    item_total: { currency_code: "GBP", value: totals.subtotal },
+                                    shipping: { currency_code: "GBP", value: totals.shipping }
+                                }
+                            },
+                            items: paypalItems
+                        }]
+                    });
+                },
+
+                // Triggers immediately when customer completely approves transaction funds
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        alert('Thank you for your order, ' + details.payer.name.given_name + '!\nYour customized creation pipeline is now active.');
+                        
+                        // Clear the local basket storage now that transaction is authenticated
+                        localStorage.removeItem('hg_cart');
+                        window.location.href = "index.html"; // Route back to safety homepage
+                    });
+                },
+
+                // Handles graceful failures or connectivity drops
+                onError: function(err) {
+                    console.error('PayPal Core System Error:', err);
+                    alert('There was a problem processing your transaction details. Please try again.');
+                }
+            }).render('#paypal-button-container');
         }
 
-        document.addEventListener('DOMContentLoaded', renderCart);
+        // Initialize execution stack when browser completes markup analysis
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCart();
+            if (cart.length > 0) {
+                initPayPalButtons();
+            }
+        });
     </script>
 </body>
 </html>
