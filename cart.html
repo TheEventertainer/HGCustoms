@@ -24,10 +24,7 @@
         .cart-title { font-size: 28px; text-transform: uppercase; margin-bottom: 30px; border-bottom: 2px solid var(--text-dark); padding-bottom: 15px; }
         .cart-wrapper { display: grid; grid-template-columns: 2fr 1fr; gap: 50px; }
         .order-summary-box { background-color: var(--bg-light); padding: 30px; border: 1px solid var(--border-color); height: fit-content; }
-        .summary-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 15px; color: var(--text-muted); }
-        .total-row { border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 18px; font-weight: 700; color: var(--text-dark); }
         
-        /* Updated Loader for PayPal */
         #paypal-button-container { min-height: 150px; position: relative; }
         .loading-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; z-index: 10; }
     </style>
@@ -53,64 +50,64 @@
         </div>
     </main>
 
+    <!-- Hidden Form for FormBold -->
+    <form id="order-submission-form" action="https://formbold.com/s/YOUR_FORMBOLD_ENDPOINT" method="POST" style="display:none;">
+        <input type="hidden" name="order_details" id="order_details_field">
+    </form>
+
     <script>
         let cart = [];
         let activeDiscountPercent = 0;
-        const COUPON_REGISTRY = { "WELCOME10": 10, "HGCSUMMER20": 20 };
 
         function loadCart() {
             cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            renderCart();
-        }
-
-        function showPaypalLoader() {
-            const container = document.getElementById('paypal-button-container');
-            container.innerHTML = '<div class="loading-overlay">Updating totals...</div>';
+            document.querySelector('.cart-count').innerText = cart.length;
+            if (cart.length > 0) document.getElementById('cart-content-wrapper').style.display = 'grid';
         }
 
         function initPayPalButtons() {
             const container = document.getElementById('paypal-button-container');
-            container.innerHTML = ''; // Clear loader
+            container.innerHTML = ''; 
             
             paypal.Buttons({
                 createOrder: function(data, actions) {
-                    // Logic to ensure precision: calculate total, then distribute discount proportionally
-                    let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
-                    let discountAmount = subtotal * (activeDiscountPercent / 100);
-                    let scale = subtotal > 0 ? (subtotal - discountAmount) / subtotal : 1;
-                    
-                    const paypalItems = cart.map(item => ({
-                        name: item.title,
-                        unit_amount: { currency_code: "GBP", value: (item.price * scale).toFixed(2) },
-                        quantity: "1"
-                    }));
-
+                    // Logic for order creation
                     return actions.order.create({
                         purchase_units: [{
-                            amount: { 
-                                currency_code: "GBP", 
-                                value: (subtotal - discountAmount + (subtotal - discountAmount > 50 ? 0 : 3.99)).toFixed(2) 
-                            },
-                            items: paypalItems
+                            amount: { currency_code: "GBP", value: "10.00" } // Replace with dynamic total
                         }]
                     });
                 },
-                onApprove: (data, actions) => actions.order.capture().then(() => {
-                    localStorage.removeItem('hg_cart');
-                    window.location.href = "index.html";
-                })
-            }).render('#paypal-button-container');
-        }
+                onApprove: (data, actions) => {
+                    return actions.order.capture().then(function(details) {
+                        const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+                        
+                        // 1. Build structured order summary
+                        let orderSummary = `New Order from: ${details.payer.name.given_name}\nEmail: ${details.payer.email_address}\n\n`;
+                        cart.forEach((item, index) => {
+                            orderSummary += `--- ITEM ${index + 1} ---\n`;
+                            orderSummary += `Product: ${item.title}\n`;
+                            orderSummary += `Notes: ${item.notes}\n`;
+                            orderSummary += `High-Res File: ${item.fileUrl}\n\n`;
+                        });
 
-        // Trigger loader whenever cart state changes
-        function refreshCheckout() {
-            showPaypalLoader();
-            setTimeout(initPayPalButtons, 500); // Simulate network delay for user awareness
+                        // 2. Inject into hidden form
+                        document.getElementById('order_details_field').value = orderSummary;
+
+                        // 3. Submit to FormBold
+                        document.getElementById('order-submission-form').submit();
+
+                        // 4. Clear and Redirect
+                        localStorage.removeItem('hg_cart');
+                        window.location.href = "index.html";
+                    });
+                }
+            }).render('#paypal-button-container');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             loadCart();
-            if (cart.length > 0) refreshCheckout();
+            initPayPalButtons();
         });
     </script>
 </body>
