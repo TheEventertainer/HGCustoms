@@ -4,81 +4,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us | HG Customs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         
-        /* Header & Mobile Toggle */
-        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
-        .logo { font-weight: 700; letter-spacing: 1px; }
-        .nav-links { display: flex; list-style: none; gap: 30px; }
-        .mobile-toggle { display: none; font-size: 20px; cursor: pointer; }
-        
-        @media (max-width: 768px) {
-            .mobile-toggle { display: block; }
-            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px; }
-            .nav-links.is-open { display: flex; }
-        }
+        /* --- Announcement Bar --- */
+        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
+        .announcement-item { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; }
+        .announcement-item i { font-size: 16px; }
+        .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
 
-        /* Contact Section */
-        .contact-container { max-width: 1100px; margin: 60px auto; padding: 0 40px; flex-grow: 1; width: 100%; }
-        .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-size: 11px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
-        .form-group input, .form-group textarea { padding: 14px; border: 1px solid var(--border-color); width: 100%; }
-        .submit-btn { background: #000; color: #fff; border: none; padding: 16px; width: 100%; text-transform: uppercase; font-weight: 600; cursor: pointer; }
+        /* --- Main Header Navigation --- */
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 1000; }
+        .logo img { height: 55px; display: block; }
+        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
+        .nav-links > li { position: relative; padding: 10px 0; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 4px; transition: border-color 0.3s; }
+        .nav-links > li > a:hover { border-bottom: 2px solid #000; }
+        .nav-links i { font-size: 10px; margin-left: 5px; }
+
+        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background-color: #ffffff; border: 1px solid var(--border-color); min-width: 180px; list-style: none; display: flex; flex-direction: column; box-shadow: 0 4px 12px rgba(0,0,0,0.08); opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease; margin-top: 5px; z-index: 1100; }
+        .dropdown-menu li { border-bottom: 1px solid var(--bg-light); }
+        .dropdown-menu a { display: block; padding: 12px 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-dark); white-space: nowrap; }
+        .dropdown-menu a:hover { background-color: var(--bg-light); }
+        .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; }
         
-        @media (max-width: 992px) { .contact-grid { grid-template-columns: 1fr; } }
+        .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
+        .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
+        .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
+
+        /* --- Form Container --- */
+        .content-container { max-width: 650px; margin: 50px auto; padding: 0 20px; }
+        .content-container h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 15px; border-bottom: 2px solid #000; margin-bottom: 30px; }
+        
+        .contact-form { display: flex; flex-direction: column; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .form-control { width: 100%; padding: 14px; border: 1px solid var(--border-color); font-family: inherit; font-size: 14px; }
+        .form-control:focus { border-color: #000; outline: none; }
+        textarea.form-control { height: 140px; resize: none; }
+        
+        .btn-submit { background: #000; color: #fff; border: none; padding: 16px; cursor: pointer; text-transform: uppercase; font-size: 12px; font-weight: 600; letter-spacing: 1px; transition: background 0.2s; }
+        .btn-submit:hover { background: #222; }
+
+        @media (max-width: 992px) {
+            .main-header { padding: 20px; }
+            .mobile-toggle { display: block; order: 1; }
+            .logo { order: 2; }
+            .header-actions { order: 3; }
+            nav { width: 100%; order: 4; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
+            .nav-links.is-open { display: flex; }
+            .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
+            .dropdown-menu { position: relative; top: 0; left: 0; transform: none; box-shadow: none; border: none; opacity: 1; visibility: visible; display: none; margin-top: 10px; background: var(--bg-light); }
+            .has-dropdown.is-open .dropdown-menu { display: flex; }
+        }
     </style>
 </head>
 <body>
 
+    <div class="announcement-bar">
+        <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i><div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div></a>
+        <a href="#" class="announcement-item"><i class="fa-regular fa-clock"></i><div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div></a>
+        <a href="#" class="announcement-item"><i class="fa-regular fa-circle-check"></i><div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div></a>
+    </div>
+
     <header class="main-header">
-        <div class="logo">HG CUSTOMS</div>
-        <div class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('is-open')">
-            <i class="fa-solid fa-bars"></i>
-        </div>
+        <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a></div>
         <nav>
-            <ul class="nav-links">
+            <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Home</a></li>
+                <li class="has-dropdown" id="dropdown-li">
+                    <a href="#" id="dropdown-trigger">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="mugs.html">Custom Mugs</a></li>
+                        <li><a href="t-shirts.html">Custom T-Shirts</a></li>
+                        <li><a href="coasters.html">Custom Coasters</a></li>
+                        <li><a href="merchandise.html">Band & Show Merch</a></li>
+                    </ul>
+                </li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
+        <div class="header-actions">
+            <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+            <a href="cart.html" class="cart-icon" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
+        </div>
     </header>
 
-    <main class="contact-container">
-        <h1>Get in Touch</h1>
-        <div class="contact-grid">
-            <div class="contact-channels">
-                <a href="https://wa.me/447702498975" class="channel-card" style="display: flex; align-items: center; gap: 20px; padding: 25px; border: 1px solid var(--border-color); text-decoration: none; color: #000; margin-top: 20px;">
-                    <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 28px;"></i>
-                    <div><h3>WhatsApp Chat</h3><p>Message us for support</p></div>
-                </a>
+    <main class="content-container">
+        <h1>Contact Us</h1>
+        
+        <!-- Updated Formspree Action Target -->
+        <form action="https://formspree.io/f/xknpndbl" method="POST" class="contact-form">
+            <div class="form-group">
+                <label for="full-name">Your Name</label>
+                <input type="text" name="name" id="full-name" class="form-control" required placeholder="John Doe">
+            </div>
+            
+            <div class="form-group">
+                <label for="email-address">Email Address</label>
+                <input type="email" name="_replyto" id="email-address" class="form-control" required placeholder="name@example.com">
             </div>
 
-            <div class="contact-form-wrapper">
-                <h2>Send a Message</h2>
-                <form action="https://formspree.io/f/mwvglzgz" method="POST">
-                    <div class="form-group">
-                        <label>Your Name</label>
-                        <input type="text" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Message</label>
-                        <textarea name="message" rows="5" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Send Message</button>
-                </form>
+            <div class="form-group">
+                <label for="message-content">How can we help?</label>
+                <textarea name="message" id="message-content" class="form-control" required placeholder="Tell us about your custom order ideas..."></textarea>
             </div>
-        </div>
+            
+            <button type="submit" class="btn-submit">Send Message</button>
+        </form>
     </main>
+
+    <script>
+        function updateBadge() {
+            const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            const badges = document.querySelectorAll('.cart-count');
+            badges.forEach(badge => badge.innerText = cart.length);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateBadge();
+            const menuToggle = document.getElementById('menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const dropdownLi = document.getElementById('dropdown-li');
+            const dropdownTrigger = document.getElementById('dropdown-trigger');
+
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', (e) => { e.stopPropagation(); navMenu.classList.toggle('is-open'); });
+            }
+            if (dropdownTrigger && dropdownLi) {
+                dropdownTrigger.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 992) { e.preventDefault(); e.stopPropagation(); dropdownLi.classList.toggle('is-open'); }
+                });
+            }
+            document.addEventListener('click', () => {
+                if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
+                if (dropdownLi && dropdownLi.classList.contains('is-open')) dropdownLi.classList.remove('is-open');
+            });
+        });
+    </script>
 </body>
 </html>
