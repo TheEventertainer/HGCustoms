@@ -4,66 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us | HG Customs</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root {
-            --text-dark: #000000;
-            --text-muted: #555555;
-            --bg-light: #f9f9f9;
-            --border-color: #e5e5e5;
-            --font-sans: 'Inter', sans-serif;
+        :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* Header & Mobile Toggle */
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
+        .logo { font-weight: 700; letter-spacing: 1px; }
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .mobile-toggle { display: none; font-size: 20px; cursor: pointer; }
+        
+        @media (max-width: 768px) {
+            .mobile-toggle { display: block; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px; }
+            .nav-links.is-open { display: flex; }
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-sans); color: var(--text-dark); background-color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; }
-
-        /* --- Header/Nav styles (Truncated for brevity) --- */
-        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #333; }
-        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); }
-        .nav-links { display: flex; list-style: none; gap: 30px; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; text-transform: uppercase; }
-        .active a { border-bottom: 2px solid #000; }
-
-        /* --- Contact Page Styles --- */
+        /* Contact Section */
         .contact-container { max-width: 1100px; margin: 60px auto; padding: 0 40px; flex-grow: 1; width: 100%; }
         .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; }
-        .channel-card { display: flex; align-items: center; gap: 20px; padding: 25px; border: 1px solid var(--border-color); text-decoration: none; color: var(--text-dark); margin-bottom: 20px; transition: border-color 0.2s; }
-        .channel-card:hover { border-color: #000; }
-        .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
-        .form-group label { font-size: 11px; text-transform: uppercase; font-weight: 600; }
-        .form-group input, .form-group textarea { padding: 14px; border: 1px solid var(--border-color); width: 100%; font-family: inherit; }
-        .submit-btn { background-color: #000000; color: #ffffff; border: none; padding: 16px; font-weight: 600; text-transform: uppercase; cursor: pointer; width: 100%; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 11px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+        .form-group input, .form-group textarea { padding: 14px; border: 1px solid var(--border-color); width: 100%; }
+        .submit-btn { background: #000; color: #fff; border: none; padding: 16px; width: 100%; text-transform: uppercase; font-weight: 600; cursor: pointer; }
         
         @media (max-width: 992px) { .contact-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <div class="announcement-bar">
-        <span>Free UK Delivery on orders over £50</span>
-    </div>
-
     <header class="main-header">
-        <div class="logo"><strong>HG CUSTOMS</strong></div>
+        <div class="logo">HG CUSTOMS</div>
+        <div class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('is-open')">
+            <i class="fa-solid fa-bars"></i>
+        </div>
         <nav>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li class="active"><a href="contact.html">Contact</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
     </header>
 
     <main class="contact-container">
         <h1>Get in Touch</h1>
-        <p class="contact-subtitle">Have a question? Pick a channel below or use our form.</p>
-        
         <div class="contact-grid">
             <div class="contact-channels">
-                <a href="https://wa.me/447702498975" class="channel-card">
+                <a href="https://wa.me/447702498975" class="channel-card" style="display: flex; align-items: center; gap: 20px; padding: 25px; border: 1px solid var(--border-color); text-decoration: none; color: #000; margin-top: 20px;">
                     <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 28px;"></i>
                     <div><h3>WhatsApp Chat</h3><p>Message us for support</p></div>
                 </a>
@@ -71,37 +62,23 @@
 
             <div class="contact-form-wrapper">
                 <h2>Send a Message</h2>
-                <!-- Formspree Endpoint Integrated -->
-                <form action="https://formspree.io/f/mwvglzgz" method="POST" class="contact-form">
+                <form action="https://formspree.io/f/mwvglzgz" method="POST">
                     <div class="form-group">
-                        <label for="contact-name">Your Name</label>
-                        <input type="text" id="contact-name" name="name" required placeholder="John Doe">
+                        <label>Your Name</label>
+                        <input type="text" name="name" required>
                     </div>
                     <div class="form-group">
-                        <label for="contact-email">Email Address</label>
-                        <input type="email" id="contact-email" name="email" required placeholder="johndoe@example.com">
+                        <label>Email Address</label>
+                        <input type="email" name="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="contact-message">Message</label>
-                        <textarea id="contact-message" name="message" required placeholder="How can we help?"></textarea>
+                        <label>Message</label>
+                        <textarea name="message" rows="5" required></textarea>
                     </div>
-                    <!-- Spam Protection -->
-                    <input type="text" name="_gotcha" style="display:none" />
                     <button type="submit" class="submit-btn">Send Message</button>
                 </form>
             </div>
         </div>
     </main>
-
-    <!-- Floating Help Widget -->
-    <div id="helpChatWidget" style="position: fixed; bottom: 25px; right: 25px; z-index: 9999; font-family: 'Inter', sans-serif;">
-        <button onclick="document.getElementById('chatChannelsMenu').style.display = (document.getElementById('chatChannelsMenu').style.display === 'flex' ? 'none' : 'flex')" style="background: #000; color: #fff; border: none; padding: 15px 20px; border-radius: 30px; cursor: pointer;">
-            <i class="fa-regular fa-comments"></i> Need Help?
-        </button>
-        <div id="chatChannelsMenu" style="display: none; position: absolute; bottom: 65px; right: 0; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; width: 200px; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
-            <a href="https://wa.me/447702498975" style="padding: 15px; color: #000; text-decoration: none; border-bottom: 1px solid #eee;">WhatsApp</a>
-        </div>
-    </div>
-
 </body>
 </html>
