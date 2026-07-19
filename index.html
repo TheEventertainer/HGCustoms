@@ -4,130 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HG Customs | Made Your Way, Just For You</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        :root {
-            --text-dark: #000000;
-            --text-muted: #555555;
-            --bg-light: #f9f9f9;
-            --border-color: #e5e5e5;
-            --font-sans: 'Inter', sans-serif;
-            --font-script: 'Playfair Display', serif;
+        :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); }
+
+        /* Header & Mobile Toggle */
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
+        .logo img { height: 55px; }
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .mobile-toggle { display: none; font-size: 20px; cursor: pointer; }
+
+        @media (max-width: 768px) {
+            .mobile-toggle { display: block; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px; text-align: center; }
+            .nav-links.is-open { display: flex; }
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-sans); color: var(--text-dark); background-color: #ffffff; -webkit-font-smoothing: antialiased; }
-
-        /* --- Top Announcement Bar --- */
-        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
-        .announcement-item { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; }
-        .announcement-item i { font-size: 16px; }
-        .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
-
-        /* --- Header --- */
-        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 100; }
-        .logo img { height: 55px; display: block; }
-        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
-        .nav-links > li { position: relative; padding: 10px 0; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 4px; transition: border-color 0.3s; }
-        .nav-links > li > a:hover, .nav-links > li.active > a { border-bottom: 2px solid #000; }
-        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background-color: #ffffff; border: 1px solid var(--border-color); min-width: 180px; list-style: none; display: flex; flex-direction: column; box-shadow: 0 4px 12px rgba(0,0,0,0.08); opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease; margin-top: 5px; }
-        .dropdown-menu a { display: block; padding: 12px 20px; font-size: 11px; font-weight: 600; color: var(--text-dark); }
-        .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; }
-        .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
-        .cart-icon { position: relative; }
-        .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-
-        /* --- Hero --- */
-        .hero { position: relative; background-size: cover; background-position: center; height: 580px; display: flex; align-items: center; padding: 0 80px; }
-        .hero-content { max-width: 450px; z-index: 2; }
-        .hero-title { font-size: 52px; font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
-        .hero-script { font-family: var(--font-script); font-style: italic; font-size: 48px; margin-bottom: 25px; }
-        .hero-btn { display: inline-flex; align-items: center; gap: 15px; background-color: #0d0d0d; color: #ffffff; padding: 15px 30px; text-decoration: none; font-size: 12px; font-weight: 600; text-transform: uppercase; }
-
-        /* --- Footer & Misc --- */
-        .featured-categories { max-width: 1200px; margin: 60px auto; padding: 0 20px; }
-        .categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .value-props { display: flex; justify-content: space-between; padding: 30px 60px; background-color: var(--bg-light); border-top: 1px solid var(--border-color); }
-        .site-footer { background-color: #ffffff; padding: 30px 40px; border-top: 1px solid var(--border-color); text-align: center; }
-
+        /* Hero */
+        .hero { height: 500px; display: flex; align-items: center; padding: 0 80px; background: var(--bg-light); }
+        .hero-title { font-size: 52px; font-weight: 700; text-transform: uppercase; }
+        .hero-script { font-family: 'Playfair Display', serif; font-style: italic; font-size: 48px; margin-bottom: 25px; }
+        .hero-btn { background: #000; color: #fff; padding: 15px 30px; text-decoration: none; text-transform: uppercase; font-size: 12px; font-weight: 600; }
     </style>
 </head>
 <body>
 
-    <!-- Announcement Bar -->
-    <div class="announcement-bar">
-        <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i> FREE UK DELIVERY <span>On orders over £50</span></a>
-        <a href="#" class="announcement-item"><i class="fa-regular fa-clock"></i> FAST TURNAROUND <span>Quick & reliable</span></a>
-        <a href="#" class="announcement-item"><i class="fa-regular fa-circle-check"></i> MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></a>
-    </div>
-
-    <!-- Header -->
     <header class="main-header">
-        <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a></div>
+        <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs"></a></div>
+        
+        <!-- Mobile Toggle Button -->
+        <div class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('is-open')">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
         <nav>
             <ul class="nav-links">
-                <li class="active"><a href="index.html">Home</a></li>
-                <li class="has-dropdown">
-                    <a href="#">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="mugs.html">Custom Mugs</a></li>
-                        <li><a href="t-shirts.html">Custom T-Shirts</a></li>
-                        <li><a href="coasters.html">Custom Coasters</a></li>
-                        <li><a href="merchandise.html">Band & Show Merch</a></li>
-                    </ul>
-                </li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
+
         <div class="header-actions">
-            <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href="#"><i class="fa-regular fa-user"></i></a>
-            <a href="cart.html" class="cart-icon"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
+            <a href="cart.html"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
         </div>
     </header>
 
-    <!-- Content Sections (Truncated for brevity) -->
     <section class="hero">
         <div class="hero-content">
             <h1 class="hero-title">Made Your Way,</h1>
             <div class="hero-script">Just for you.</div>
-            <a href="t-shirts.html" class="hero-btn">Shop Custom Products <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="shop.html" class="hero-btn">Shop Custom Products</a>
         </div>
     </section>
 
-    <!-- Global Support Widget -->
-    <div id="helpChatWidget" style="position: fixed; bottom: 25px; right: 25px; z-index: 9999; font-family: 'Inter', sans-serif;">
-        <button onclick="toggleChatMenu()" style="background: #000; color: #fff; border: none; padding: 15px 20px; border-radius: 30px; font-weight: 600; font-size: 13px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px;">
-            <i class="fa-regular fa-comments" style="font-size: 16px;"></i> Need Help?
-        </button>
-        <div id="chatChannelsMenu" style="display: none; position: absolute; bottom: 65px; right: 0; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); width: 220px; overflow: hidden; flex-direction: column;">
-            <div style="background: #000; color: #fff; padding: 12px; font-size: 11px; text-transform: uppercase; font-weight: 700; text-align: center;">Chat With Us</div>
-            <a href="https://wa.me/447702498975" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 15px; color: #000; text-decoration: none; font-size: 13px; font-weight: 600; border-bottom: 1px solid #f0f0f0;">
-                <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 18px;"></i> WhatsApp
-            </a>
-            <a href="https://m.me/hgcustoms" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 15px; color: #000; text-decoration: none; font-size: 13px; font-weight: 600;">
-                <i class="fa-brands fa-facebook-messenger" style="color: #006AFF; font-size: 18px;"></i> Messenger
-            </a>
-        </div>
-    </div>
-
+    <!-- Scripts -->
     <script>
-        function toggleChatMenu() {
-            const menu = document.getElementById('chatChannelsMenu');
-            menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'flex' : 'none';
-        }
-        document.addEventListener('click', function(e) {
-            const w = document.getElementById('helpChatWidget');
-            if (w && !w.contains(e.target)) document.getElementById('chatChannelsMenu').style.display = 'none';
-        });
-
+        // Cart Logic
         function updateCartBadge() {
             const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             document.querySelectorAll('.cart-count').forEach(badge => badge.innerText = cart.length);
