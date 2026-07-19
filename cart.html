@@ -59,6 +59,8 @@
         .item-details { display: flex; flex-direction: column; gap: 6px; }
         .item-title { font-size: 16px; font-weight: 600; text-transform: uppercase; }
         .item-meta { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+        .item-meta a { color: #0066cc; text-decoration: none; }
+        .item-meta a:hover { text-decoration: underline; }
         .item-right { display: flex; align-items: center; gap: 30px; }
         .item-price { font-weight: 600; font-size: 15px; }
         .remove-btn { background: none; border: none; color: #999; cursor: pointer; font-size: 16px; transition: color 0.2s; }
@@ -158,7 +160,7 @@
                     <span class="total-price" id="basket-total-display">£0.00</span>
                 </div>
 
-                <!-- Promo Section Restored -->
+                <!-- Promo Section -->
                 <div class="promo-container">
                     <label style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Promo Code</label>
                     <div class="promo-flex">
@@ -195,7 +197,6 @@
         let appliedDiscountRate = 0;
         let appliedCodeName = "";
 
-        // Define valid shop discount coupon list
         const discountCoupons = {
             "WELCOME10": 0.10,
             "HGCUSTOMS": 0.15,
@@ -214,8 +215,11 @@
 
         function renderCartPage() {
             const cart = getCart();
+            
+            // Sum up total units across item line array configurations
+            const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
             const badges = document.querySelectorAll('.cart-count');
-            badges.forEach(badge => badge.innerText = cart.length);
+            badges.forEach(badge => badge.innerText = totalItems);
 
             const container = document.getElementById('cart-items-container');
             const subtotalDisplay = document.getElementById('basket-subtotal');
@@ -238,16 +242,29 @@
 
             cart.forEach((item, index) => {
                 const itemPrice = parseFloat(item.price) || 12.50; 
-                subtotal += itemPrice;
+                const qty = parseInt(item.quantity) || 1;
+                const rowTotal = itemPrice * qty;
+                subtotal += rowTotal;
 
-                // Dynamically fetch item names matching variation properties
-                let nameLabel = item.productType || item.name || item.id || 'Custom Product';
+                let nameLabel = item.name || item.productType || item.id || 'Custom Product';
                 
-                // Construct customization details list from configuration data
                 let metaOptions = [];
                 if (item.size) metaOptions.push(`Size: ${item.size}`);
                 if (item.color) metaOptions.push(`Color: ${item.color}`);
-                if (item.text || item.customText) metaOptions.push(`Text: "${item.text || item.customText}"`);
+                if (item.finish) metaOptions.push(`Finish: ${item.finish}`);
+                
+                // Handle text keys safely
+                let textContent = item.text || item.customText;
+                if (textContent && textContent.trim() !== "") {
+                    metaOptions.push(`Text: "${textContent}"`);
+                }
+                
+                // Handle image reference configurations
+                if (item.fileUrl && item.fileUrl !== "No file uploaded") {
+                    metaOptions.push(`<a href="${item.fileUrl}" target="_blank"><i class="fa-solid fa-image"></i> View Design File</a>`);
+                }
+
+                metaOptions.push(`Qty: ${qty}`);
                 let configurationDetails = metaOptions.length > 0 ? metaOptions.join(' | ') : "Customized Layout Specification";
 
                 htmlContent += `
@@ -257,7 +274,7 @@
                             <p class="item-meta">${configurationDetails}</p>
                         </div>
                         <div class="item-right">
-                            <span class="item-price">£${itemPrice.toFixed(2)}</span>
+                            <span class="item-price">£${rowTotal.toFixed(2)}</span>
                             <button class="remove-btn" onclick="removeBasketItem(${index})" aria-label="Remove item">
                                 <i class="fa-regular fa-trash-can"></i>
                             </button>
@@ -269,7 +286,6 @@
             container.innerHTML = htmlContent;
             subtotalDisplay.innerText = `£${subtotal.toFixed(2)}`;
 
-            // Discount calculations
             if (appliedDiscountRate > 0) {
                 let discountTotal = subtotal * appliedDiscountRate;
                 let calculatedFinalTotal = subtotal - discountTotal;
@@ -287,7 +303,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderCartPage();
 
-            // Promo Code Trigger Execution
             const promoBtn = document.getElementById('apply-promo-btn');
             const promoInput = document.getElementById('promo-code-input');
             const promoMsg = document.getElementById('promo-msg');
@@ -310,7 +325,6 @@
                 });
             }
 
-            // Mobile menu listeners
             const menuToggle = document.getElementById('menu-toggle');
             const navMenu = document.getElementById('nav-menu');
             const dropdownLi = document.getElementById('dropdown-li');
@@ -326,7 +340,7 @@
             }
             document.addEventListener('click', () => {
                 if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
-                if (dropdownLi && dropdownLi.classList.contains('is-open')) dropdownLi.remove('is-open');
+                if (dropdownLi && dropdownLi.classList.contains('is-open')) dropdownLi.classList.remove('is-open');
             });
         });
     </script>
