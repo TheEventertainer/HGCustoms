@@ -73,6 +73,33 @@
         .form-textarea { width: 100%; height: 80px; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; resize: none; }
         .upload-status-text { font-size: 12px; font-weight: 600; margin: -5px 0 15px 0; min-height: 16px; }
 
+        /* --- New Configurator Layout Elements --- */
+        .preview-container { text-align: center; margin-bottom: 15px; display: none; }
+        .preview-container img { max-width: 100%; max-height: 120px; object-fit: contain; border: 1px solid var(--border-color); padding: 4px; }
+        
+        /* Visual Color Circle Swatches Container */
+        .color-selection-wrapper { margin: 15px 0; }
+        .color-selection-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; display: block; }
+        .color-selection-label span { font-weight: 400; text-transform: none; color: var(--text-muted); margin-left: 5px; }
+        .color-swatch-grid { display: flex; gap: 12px; align-items: center; }
+        
+        .color-swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; position: relative; transition: transform 0.2s, border-color 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
+        .color-swatch:hover { transform: scale(1.1); }
+        .color-swatch.is-selected { border-color: #000000; transform: scale(1.1); }
+
+        /* Professional Dropdown Sizing Component Layout */
+        .size-selection-wrapper { margin: 15px 0 20px 0; }
+        .size-selection-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: block; }
+        .form-select { width: 100%; padding: 12px; border: 1px solid var(--border-color); background-color: #fff; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23000000' d='M0 0l5 5 5-5z'/></svg>"); background-repeat: no-repeat; background-position: right 15px center; }
+
+        .quantity-wrapper { display: flex; align-items: center; justify-content: space-between; margin: 15px 0; padding-top: 10px; border-top: 1px solid var(--border-color); }
+        .quantity-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .quantity-controls { display: flex; align-items: center; border: 1px solid var(--border-color); }
+        .qty-btn { background: none; border: none; width: 36px; height: 36px; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+        .qty-btn:hover { background: var(--bg-light); }
+        .qty-input { width: 45px; height: 36px; border: none; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); text-align: center; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; -moz-appearance: textfield; }
+        .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
         @media (max-width: 992px) {
             .main-header { padding: 20px; }
             .mobile-toggle { display: block; order: 1; }
@@ -170,11 +197,52 @@
             <button class="close-modal" onclick="document.getElementById('productModal').classList.remove('is-active')">&times;</button>
             <h2 id="modalTitle">Product</h2>
             
-            <textarea id="userText" class="form-textarea" placeholder="Specify size (S, M, L, XL), color preference, and custom script..."></textarea>
+            <!-- Dynamic Image Upload Preview -->
+            <div id="imagePreviewContainer" class="preview-container">
+                <img id="imagePreview" src="" alt="Design Preview">
+            </div>
+
+            <!-- Color Options Selection Interface Component -->
+            <div class="color-selection-wrapper">
+                <label class="color-selection-label">Select Color: <span id="currentColorLabel">White</span></label>
+                <div class="color-swatch-grid">
+                    <div class="color-swatch is-selected" style="background-color: #ffffff; border: 1px solid #dcdcdc;" onclick="selectColor(this, 'White')"></div>
+                    <div class="color-swatch" style="background-color: #000000;" onclick="selectColor(this, 'Black')"></div>
+                    <div class="color-swatch" style="background-color: #1a5be5;" onclick="selectColor(this, 'Blue')"></div>
+                    <div class="color-swatch" style="background-color: #e51a1a;" onclick="selectColor(this, 'Red')"></div>
+                    <div class="color-swatch" style="background-color: #279e27;" onclick="selectColor(this, 'Green')"></div>
+                </div>
+            </div>
+
+            <!-- Size Options Dropdown Select Component -->
+            <div class="size-selection-wrapper">
+                <label for="productSize" class="size-selection-label">Select Size</label>
+                <select id="productSize" class="form-select">
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M" selected>M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                    <option value="XXXL">XXXL</option>
+                </select>
+            </div>
+            
+            <textarea id="userText" class="form-textarea" placeholder="Inscription notes, alignment preferences, or placement instructions..."></textarea>
             
             <button id="upload_widget" class="btn-customize" style="background: #444; margin-bottom: 10px;">Upload Design File</button>
             <div id="upload-status-message" class="upload-status-text"></div>
             <input type="hidden" id="uploaded_file_url">
+
+            <!-- Item Count Adjuster Component Layout -->
+            <div class="quantity-wrapper">
+                <span class="quantity-label">Quantity</span>
+                <div class="quantity-controls">
+                    <button type="button" class="qty-btn" onclick="adjustModalQty(-1)">-</button>
+                    <input type="number" id="modalQuantity" class="qty-input" value="1" min="1">
+                    <button type="button" class="qty-btn" onclick="adjustModalQty(1)">+</button>
+                </div>
+            </div>
             
             <button id="add-to-basket-btn" class="btn-customize" onclick="addToBasket()">Add To Basket</button>
         </div>
@@ -182,6 +250,7 @@
 
     <script>
         let currentActivePrice = 0;
+        let selectedShirtColor = "White";
 
         // Initialize Cloudinary Widget Configuration
         var myWidget = cloudinary.createUploadWidget({
@@ -189,8 +258,17 @@
             uploadPreset: 'hg_customs_preset'
         }, (error, result) => {
             if (!error && result && result.event === "success") { 
-                document.getElementById('uploaded_file_url').value = result.info.secure_url;
+                const secureUrl = result.info.secure_url;
+                document.getElementById('uploaded_file_url').value = secureUrl;
                 
+                // Expose visual dynamic design thumbnail preview framework
+                const previewImg = document.getElementById('imagePreview');
+                const previewContainer = document.getElementById('imagePreviewContainer');
+                if (previewImg && previewContainer) {
+                    previewImg.src = secureUrl;
+                    previewContainer.style.display = 'block';
+                }
+
                 // Optimized Inline Success UI Feedback
                 const statusMsg = document.getElementById('upload-status-message');
                 statusMsg.innerText = "✓ Image uploaded successfully!";
@@ -210,23 +288,59 @@
             document.getElementById('uploaded_file_url').value = '';
             document.getElementById('userText').value = '';
             document.getElementById('upload-status-message').innerText = '';
+            document.getElementById('modalQuantity').value = 1;
+            document.getElementById('productSize').value = 'M';
+            
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            if (previewContainer) previewContainer.style.display = 'none';
+
+            // Reset color swatches back to baseline default variant
+            selectedShirtColor = "White";
+            document.getElementById('currentColorLabel').innerText = "White";
+            const swatches = document.querySelectorAll('.color-swatch');
+            swatches.forEach(sw => sw.classList.remove('is-selected'));
+            if (swatches[0]) swatches[0].classList.add('is-selected');
             
             document.getElementById('productModal').classList.add('is-active');
+        }
+
+        // Handle structural swatch switching selection action logic
+        function selectColor(element, colorName) {
+            document.querySelectorAll('.color-swatch').forEach(sw => sw.classList.remove('is-selected'));
+            element.classList.add('is-selected');
+            selectedShirtColor = colorName;
+            document.getElementById('currentColorLabel').innerText = colorName;
+        }
+
+        // Step modifiers parsing values targeting active numeric fields
+        function adjustModalQty(amount) {
+            const qtyInput = document.getElementById('modalQuantity');
+            if (qtyInput) {
+                let currentVal = parseInt(qtyInput.value) || 1;
+                let newVal = currentVal + amount;
+                if (newVal < 1) newVal = 1;
+                qtyInput.value = newVal;
+            }
         }
 
         function addToBasket() {
             const title = document.getElementById('modalTitle').innerText;
             const textValue = document.getElementById('userText').value;
             const fileUrl = document.getElementById('uploaded_file_url').value;
+            const selectedSize = document.getElementById('productSize').value;
+            const quantityVal = parseInt(document.getElementById('modalQuantity').value) || 1;
             
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             
-            // Save item configuration mapping object keys directly matching cart.html engine
+            // Push distinct variant metadata to store alongside general attributes
             cart.push({ 
                 name: title, 
                 price: currentActivePrice, 
                 text: textValue, 
-                fileUrl: fileUrl || "No file uploaded" 
+                fileUrl: fileUrl || "No file uploaded",
+                quantity: quantityVal,
+                color: selectedShirtColor,
+                size: selectedSize
             });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             
@@ -251,8 +365,9 @@
 
         function updateBadge() {
             const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
             const badges = document.querySelectorAll('.cart-count');
-            badges.forEach(badge => badge.innerText = cart.length);
+            badges.forEach(badge => badge.innerText = totalItems);
         }
 
         // Global viewport layout event registrations
@@ -276,6 +391,16 @@
                 if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
                 if (dropdownLi && dropdownLi.classList.contains('is-open')) dropdownLi.classList.remove('is-open');
             });
+
+            // Prevent empty or invalid out-of-bounds manual quantity value states
+            const qtyInput = document.getElementById('modalQuantity');
+            if (qtyInput) {
+                qtyInput.addEventListener('blur', () => {
+                    if (parseInt(qtyInput.value) < 1 || isNaN(parseInt(qtyInput.value))) {
+                        qtyInput.value = 1;
+                    }
+                });
+            }
         });
     </script>
 </body>
