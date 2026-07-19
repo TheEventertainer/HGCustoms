@@ -75,7 +75,16 @@
         .form-select { width: 100%; padding: 12px; margin: 5px 0 15px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; background-color: #fff; }
         .form-textarea { width: 100%; height: 80px; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; resize: none; }
         .upload-status-text { font-size: 12px; font-weight: 600; margin: -5px 0 15px 0; min-height: 16px; }
-        .option-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-top: 10px; }
+        .option-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-top: 10px; margin-bottom: 8px; }
+
+        /* --- Color Circle Swatches Layout --- */
+        .color-swatches-grid { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 18px 0; }
+        .color-circle { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease; position: relative; box-shadow: inset 0 0 2px rgba(0,0,0,0.2); }
+        .color-circle:hover { transform: scale(1.1); }
+        .color-circle.is-selected { border-color: #000000; transform: scale(1.15); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; }
+        /* Variant fix for pure white circles to retain outline integrity */
+        .color-circle[data-color-name="White"] { border: 1px solid #dcdcdc; }
+        .color-circle[data-color-name="White"].is-selected { border: 2px solid #000; }
 
         /* --- Preview Image & Quantity Selector --- */
         .preview-container { text-align: center; margin-bottom: 15px; background: var(--bg-light); border: 1px solid var(--border-color); padding: 10px; display: flex; align-items: center; justify-content: center; }
@@ -215,10 +224,10 @@
 
             <h2 id="modalTitle">Product</h2>
 
-            <!-- Dynamic Color Dropdown Selector Wrapper -->
+            <!-- Visual Color Swatches Selector Wrapper -->
             <div id="colorSelectionContainer">
-                <label class="option-label" for="productColor">Select Colour</label>
-                <select id="productColor" class="form-select"></select>
+                <label class="option-label">Select Colour</label>
+                <div id="colorSwatchesWrapper" class="color-swatches-grid"></div>
             </div>
 
             <!-- Dynamic Size Dropdown Selector Wrapper -->
@@ -258,13 +267,40 @@
     <script>
         let currentActivePrice = 0;
         let defaultProductImage = "";
+        let trackedSelectedColor = null;
 
-        // Predefined option definitions mapping explicitly to product specifications
+        // Structured layout color mapping config
         const colorOptionsMap = {
-            apparel_colors: ["Red", "Blue", "Green", "White", "Black"],
-            mug_colors: ["Standard White", "Black Inner", "Blue Inner", "Red Inner", "Pink Inner"],
-            bottle_colors: ["White", "Black", "Yellow", "Red", "Blue", "Green"],
-            tote_colors: ["White", "Black", "Blue", "Green", "Yellow", "Red"]
+            apparel_colors: [
+                { name: "Red", hex: "#e60000" },
+                { name: "Blue", hex: "#0055ff" },
+                { name: "Green", hex: "#009933" },
+                { name: "White", hex: "#ffffff" },
+                { name: "Black", hex: "#000000" }
+            ],
+            mug_colors: [
+                { name: "Standard White", hex: "#ffffff" },
+                { name: "Black Inner", hex: "#2b2b2b" },
+                { name: "Blue Inner", hex: "#1e3a8a" },
+                { name: "Red Inner", hex: "#b91c1c" },
+                { name: "Pink Inner", hex: "#ec4899" }
+            ],
+            bottle_colors: [
+                { name: "White", hex: "#ffffff" },
+                { name: "Black", hex: "#000000" },
+                { name: "Yellow", hex: "#ffcc00" },
+                { name: "Red", hex: "#e60000" },
+                { name: "Blue", hex: "#0055ff" },
+                { name: "Green", hex: "#009933" }
+            ],
+            tote_colors: [
+                { name: "White", hex: "#ffffff" },
+                { name: "Black", hex: "#000000" },
+                { name: "Blue", hex: "#0055ff" },
+                { name: "Green", hex: "#009933" },
+                { name: "Yellow", hex: "#ffcc00" },
+                { name: "Red", hex: "#e60000" }
+            ]
         };
 
         // Initialize Cloudinary Widget Configuration
@@ -295,6 +331,7 @@
             document.getElementById('modalTitle').innerText = title;
             currentActivePrice = price;
             defaultProductImage = imagePath;
+            trackedSelectedColor = null; 
             
             const previewImg = document.getElementById('imagePreview');
             if (previewImg) {
@@ -307,18 +344,34 @@
             document.getElementById('upload-status-message').innerText = '';
             document.getElementById('modalQuantity').value = 1;
             
-            // Handle Color Dropdown generation logic
+            // Handle Circle Color Swatches render logic
             const colorContainer = document.getElementById('colorSelectionContainer');
-            const colorSelect = document.getElementById('productColor');
-            colorSelect.innerHTML = ""; 
+            const swatchesWrapper = document.getElementById('colorSwatchesWrapper');
+            swatchesWrapper.innerHTML = ""; 
             
             if (colorKey !== 'none' && colorOptionsMap[colorKey]) {
                 colorContainer.style.display = "block";
-                colorOptionsMap[colorKey].forEach(color => {
-                    let opt = document.createElement('option');
-                    opt.value = color;
-                    opt.innerText = color;
-                    colorSelect.appendChild(opt);
+                
+                colorOptionsMap[colorKey].forEach((colorObj, index) => {
+                    let swatch = document.createElement('div');
+                    swatch.className = "color-circle";
+                    swatch.style.backgroundColor = colorObj.hex;
+                    swatch.setAttribute('data-color-name', colorObj.name);
+                    swatch.title = colorObj.name;
+                    
+                    // Auto-select first color variant
+                    if(index === 0) {
+                        swatch.classList.add('is-selected');
+                        trackedSelectedColor = colorObj.name;
+                    }
+                    
+                    swatch.addEventListener('click', function() {
+                        document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('is-selected'));
+                        this.classList.add('is-selected');
+                        trackedSelectedColor = this.getAttribute('data-color-name');
+                    });
+                    
+                    swatchesWrapper.appendChild(swatch);
                 });
             } else {
                 colorContainer.style.display = "none";
@@ -352,7 +405,7 @@
             const quantityVal = parseInt(document.getElementById('modalQuantity').value) || 1;
             
             const colorContainer = document.getElementById('colorSelectionContainer');
-            const selectedColor = colorContainer.style.display !== 'none' ? document.getElementById('productColor').value : null;
+            const selectedColor = colorContainer.style.display !== 'none' ? trackedSelectedColor : null;
 
             const sizeContainer = document.getElementById('sizeSelectionContainer');
             const selectedSize = sizeContainer.style.display !== 'none' ? document.getElementById('productSize').value : null;
