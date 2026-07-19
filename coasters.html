@@ -55,6 +55,8 @@
         .catalog-container h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 15px; border-bottom: 2px solid #000; margin-bottom: 30px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
         .product-card { border: 1px solid var(--border-color); padding: 25px; display: flex; flex-direction: column; background: #fff; }
+        .product-image-wrapper { text-align: center; margin-bottom: 15px; border: 1px solid var(--border-color); padding: 10px; background: var(--bg-light); display: flex; align-items: center; justify-content: center; }
+        .product-image-wrapper img { max-width: 100%; height: 200px; object-fit: contain; }
         .prod-title { font-size: 16px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
         .prod-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
         
@@ -73,9 +75,9 @@
         .form-textarea { width: 100%; height: 80px; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; resize: none; }
         .upload-status-text { font-size: 12px; font-weight: 600; margin: -5px 0 15px 0; min-height: 16px; }
 
-        /* --- New Custom Elements: Preview Image & Quantity Selector --- */
-        .preview-container { text-align: center; margin-bottom: 15px; display: none; }
-        .preview-container img { max-width: 100%; max-height: 120px; object-fit: contain; border: 1px solid var(--border-color); padding: 4px; }
+        /* --- Preview Image & Quantity Selector --- */
+        .preview-container { text-align: center; margin-bottom: 15px; background: var(--bg-light); border: 1px solid var(--border-color); padding: 10px; display: flex; align-items: center; justify-content: center; }
+        .preview-container img { max-width: 100%; height: 140px; object-fit: contain; }
         
         .quantity-wrapper { display: flex; align-items: center; justify-content: space-between; margin: 15px 0; padding-top: 10px; border-top: 1px solid var(--border-color); }
         .quantity-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -139,39 +141,57 @@
         <div class="product-grid">
             <!-- Product 1 -->
             <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="coaster-1.jpg" alt="MDF High-Gloss Coaster">
+                </div>
                 <div class="prod-title">MDF High-Gloss Coaster</div>
                 <div class="prod-price">£3.50</div>
-                <button class="btn-customize" onclick="openProductModal('MDF High-Gloss Coaster', 3.50)">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('MDF High-Gloss Coaster', 3.50, 'coaster-1.jpg')">Design & Buy</button>
             </div>
             <!-- Product 2 -->
             <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="coaster-2.jpg" alt="Premium Slate Coaster">
+                </div>
                 <div class="prod-title">Premium Slate Coaster</div>
                 <div class="prod-price">£4.99</div>
-                <button class="btn-customize" onclick="openProductModal('Premium Slate Coaster', 4.99)">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Premium Slate Coaster', 4.99, 'coaster-2.jpg')">Design & Buy</button>
             </div>
             <!-- Product 3 -->
             <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="coaster-3.jpg" alt="Frosted Glass Coaster">
+                </div>
                 <div class="prod-title">Frosted Glass Coaster</div>
                 <div class="prod-price">£4.25</div>
-                <button class="btn-customize" onclick="openProductModal('Frosted Glass Coaster', 4.25)">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Frosted Glass Coaster', 4.25, 'coaster-3.jpg')">Design & Buy</button>
             </div>
             <!-- Product 4 -->
             <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="coaster-4.jpg" alt="Natural Cork Coaster">
+                </div>
                 <div class="prod-title">Natural Cork Coaster</div>
                 <div class="prod-price">£2.50</div>
-                <button class="btn-customize" onclick="openProductModal('Natural Cork Coaster', 2.50)">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Natural Cork Coaster', 2.50, 'coaster-4.jpg')">Design & Buy</button>
             </div>
             <!-- Product 5 -->
             <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="coaster-5.jpg" alt="Polished Marble Coaster">
+                </div>
                 <div class="prod-title">Polished Marble Coaster</div>
                 <div class="prod-price">£5.99</div>
-                <button class="btn-customize" onclick="openProductModal('Polished Marble Coaster', 5.99)">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Polished Marble Coaster', 5.99, 'coaster-5.jpg')">Design & Buy</button>
             </div>
             <!-- Product 6 -->
             <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="coaster-6.jpg" alt="Vintage Wooden Coaster">
+                </div>
                 <div class="prod-title">Vintage Wooden Coaster</div>
                 <div class="prod-price">£3.99</div>
-                <button class="btn-customize" onclick="openProductModal('Vintage Wooden Coaster', 3.99)">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Vintage Wooden Coaster', 3.99, 'coaster-6.jpg')">Design & Buy</button>
             </div>
         </div>
     </main>
@@ -180,12 +200,13 @@
     <div class="modal" id="productModal">
         <div class="modal-content">
             <button class="close-modal" onclick="document.getElementById('productModal').classList.remove('is-active')">&times;</button>
-            <h2 id="modalTitle">Product</h2>
             
             <!-- Target Image Preview Box Container -->
             <div id="imagePreviewContainer" class="preview-container">
                 <img id="imagePreview" src="" alt="Design Preview">
             </div>
+
+            <h2 id="modalTitle">Product</h2>
 
             <textarea id="userText" class="form-textarea" placeholder="Inscription notes, text choices or formatting requirements..."></textarea>
             
@@ -209,6 +230,7 @@
 
     <script>
         let currentActivePrice = 0;
+        let defaultProductImage = "";
 
         // Initialize Cloudinary Widget Configuration
         var myWidget = cloudinary.createUploadWidget({
@@ -219,12 +241,10 @@
                 const secureUrl = result.info.secure_url;
                 document.getElementById('uploaded_file_url').value = secureUrl;
                 
-                // Show design image dynamic preview thumbnail
+                // Show design image dynamic preview thumbnail using uploaded file
                 const previewImg = document.getElementById('imagePreview');
-                const previewContainer = document.getElementById('imagePreviewContainer');
-                if (previewImg && previewContainer) {
+                if (previewImg) {
                     previewImg.src = secureUrl;
-                    previewContainer.style.display = 'block';
                 }
 
                 // Optimized Inline Success UI Feedback
@@ -238,18 +258,22 @@
             myWidget.open();
         }, false);
 
-        function openProductModal(title, price) {
+        function openProductModal(title, price, imagePath) {
             document.getElementById('modalTitle').innerText = title;
             currentActivePrice = price;
+            defaultProductImage = imagePath;
+            
+            // Render the baseline product placeholder inside the modal above the title layout
+            const previewImg = document.getElementById('imagePreview');
+            if (previewImg) {
+                previewImg.src = imagePath;
+            }
             
             // Clean dynamic interface elements upon modal entry
             document.getElementById('uploaded_file_url').value = '';
             document.getElementById('userText').value = '';
             document.getElementById('upload-status-message').innerText = '';
             document.getElementById('modalQuantity').value = 1;
-            
-            const previewContainer = document.getElementById('imagePreviewContainer');
-            if (previewContainer) previewContainer.style.display = 'none';
             
             document.getElementById('productModal').classList.add('is-active');
         }
@@ -278,7 +302,8 @@
                 name: title, 
                 price: currentActivePrice, 
                 text: textValue, 
-                fileUrl: fileUrl || "No file uploaded",
+                // Fallback to the catalog thumbnail placeholder image path if no custom file upload exists
+                fileUrl: fileUrl || defaultProductImage,
                 quantity: quantityVal
             });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
