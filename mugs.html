@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Mugs | HG Customs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -11,81 +13,188 @@
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
 
     <style>
-        :root { --text-dark: #000000; --bg-light: #f9f9f9; --border-color: #e5e5e5; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; }
-        
-        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
-        .logo img { height: 40px; }
-        .nav-links { display: flex; list-style: none; gap: 20px; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 12px; text-transform: uppercase; }
-        
-        @media (max-width: 768px) {
-            .main-header { padding: 15px; justify-content: space-between; }
-            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px; }
-            .nav-links.is-open { display: flex; }
-            .mobile-toggle { display: block; font-size: 20px; cursor: pointer; }
+        :root { 
+            --text-dark: #000000; 
+            --text-muted: #555555;
+            --bg-light: #f9f9f9; 
+            --border-color: #e5e5e5; 
         }
-        @media (min-width: 769px) { .mobile-toggle { display: none; } }
-
-        .catalog-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-        .product-card { border: 1px solid var(--border-color); padding: 15px; }
-        .btn-customize { background: #000; color: #fff; border: none; padding: 12px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; margin-top: 10px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         
-        .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        /* --- Announcement Bar --- */
+        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
+        .announcement-item { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; }
+        .announcement-item i { font-size: 16px; }
+        .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
+
+        /* --- Main Header Navigation --- */
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 1000; }
+        .logo img { height: 55px; display: block; }
+        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
+        .nav-links > li { position: relative; padding: 10px 0; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 4px; transition: border-color 0.3s; }
+        .nav-links > li > a:hover { border-bottom: 2px solid #000; }
+        .nav-links i { font-size: 10px; margin-left: 5px; }
+
+        /* --- Dropdown Menu Styling --- */
+        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background-color: #ffffff; border: 1px solid var(--border-color); min-width: 180px; list-style: none; display: flex; flex-direction: column; box-shadow: 0 4px 12px rgba(0,0,0,0.08); opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease; margin-top: 5px; z-index: 1100; }
+        .dropdown-menu li { border-bottom: 1px solid var(--bg-light); }
+        .dropdown-menu li:last-child { border-bottom: none; }
+        .dropdown-menu a { display: block; padding: 12px 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-dark); white-space: nowrap; border-bottom: none !important; }
+        .dropdown-menu a:hover { background-color: var(--bg-light); color: #000000; }
+        .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; }
+        
+        .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
+        .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
+        .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
+
+        /* --- Catalog Area --- */
+        .catalog-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .catalog-container h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 15px; border-bottom: 2px solid #000; margin-bottom: 30px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { border: 1px solid var(--border-color); padding: 25px; display: flex; flex-direction: column; background: #fff; }
+        .prod-title { font-size: 16px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
+        .prod-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
+        
+        .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; letter-spacing: 1px; margin-top: auto; transition: background 0.2s; }
+        .btn-customize:hover { background: #222; }
+        
+        /* --- Modal Area --- */
+        .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal.is-active { display: flex; }
-        .modal-content { background: #fff; max-width: 400px; width: 90%; padding: 30px; border-radius: 8px; }
-        textarea { width: 100%; height: 80px; margin: 10px 0; padding: 10px; }
+        .modal-content { background: #fff; max-width: 440px; width: 90%; padding: 35px; position: relative; border: 1px solid var(--border-color); }
+        .modal-content h2 { font-size: 18px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px; }
+        
+        .close-modal { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 20px; cursor: pointer; color: #999; }
+        .close-modal:hover { color: #000; }
+
+        .form-textarea { width: 100%; height: 80px; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; resize: none; }
+        .upload-status-text { font-size: 12px; font-weight: 600; margin: -5px 0 15px 0; min-height: 16px; }
+
+        @media (max-width: 992px) {
+            .main-header { padding: 20px; }
+            .mobile-toggle { display: block; order: 1; }
+            .logo { order: 2; }
+            .header-actions { order: 3; }
+            nav { width: 100%; order: 4; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
+            .nav-links.is-open { display: flex; }
+            .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
+            .dropdown-menu { position: relative; top: 0; left: 0; transform: none; box-shadow: none; border: none; opacity: 1; visibility: visible; display: none; margin-top: 10px; background: var(--bg-light); }
+            .has-dropdown.is-open .dropdown-menu { display: flex; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- Top Announcement Bar -->
+    <div class="announcement-bar">
+        <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i><div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div></a>
+        <a href="#" class="announcement-item"><i class="fa-regular fa-clock"></i><div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div></a>
+        <a href="#" class="announcement-item"><i class="fa-regular fa-circle-check"></i><div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div></a>
+    </div>
+
+    <!-- Main Navigation Header -->
     <header class="main-header">
-        <div class="logo"><a href="index.html"><img src="logo.png" alt="Logo"></a></div>
-        <div class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('is-open')"><i class="fa-solid fa-bars"></i></div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="mugs.html">Mugs</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
+        <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a></div>
+        <nav>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li class="has-dropdown" id="dropdown-li">
+                    <a href="#" id="dropdown-trigger">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="mugs.html">Custom Mugs</a></li>
+                        <li><a href="t-shirts.html">Custom T-Shirts</a></li>
+                        <li><a href="coasters.html">Custom Coasters</a></li>
+                        <li><a href="merchandise.html">Band & Show Merch</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
         <div class="header-actions">
-            <a href="cart.html"><i class="fa-solid fa-basket-shopping"></i> <span class="cart-count">0</span></a>
+            <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+            <a href="cart.html" class="cart-icon" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
         </div>
     </header>
 
     <main class="catalog-container">
         <h1>Custom Ceramic Mugs</h1>
         <div class="product-grid">
+            <!-- Product 1 -->
             <div class="product-card">
-                <h3>Standard Mug</h3>
-                <p>£8.99</p>
-                <button class="btn-customize" onclick="openProductModal('Standard Mug', '8.99')">Design & Buy</button>
+                <div class="prod-title">Standard 11oz Ceramic Mug</div>
+                <div class="prod-price">£8.99</div>
+                <button class="btn-customize" onclick="openProductModal('Standard 11oz Ceramic Mug', 8.99)">Design & Buy</button>
+            </div>
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="prod-title">Large 15oz Ceramic Mug</div>
+                <div class="prod-price">£10.99</div>
+                <button class="btn-customize" onclick="openProductModal('Large 15oz Ceramic Mug', 10.99)">Design & Buy</button>
+            </div>
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="prod-title">Two-Tone Accent Mug</div>
+                <div class="prod-price">£9.50</div>
+                <button class="btn-customize" onclick="openProductModal('Two-Tone Accent Mug', 9.50)">Design & Buy</button>
+            </div>
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div class="prod-title">Enamel Campfire Mug</div>
+                <div class="prod-price">£11.99</div>
+                <button class="btn-customize" onclick="openProductModal('Enamel Campfire Mug', 11.99)">Design & Buy</button>
+            </div>
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div class="prod-title">Heat Change Magic Mug</div>
+                <div class="prod-price">£12.99</div>
+                <button class="btn-customize" onclick="openProductModal('Heat Change Magic Mug', 12.99)">Design & Buy</button>
+            </div>
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div class="prod-title">Matte Black Ceramic Mug</div>
+                <div class="prod-price">£9.99</div>
+                <button class="btn-customize" onclick="openProductModal('Matte Black Ceramic Mug', 9.99)">Design & Buy</button>
             </div>
         </div>
     </main>
 
+    <!-- Unified Configurator Modal Window -->
     <div class="modal" id="productModal">
         <div class="modal-content">
+            <button class="close-modal" onclick="document.getElementById('productModal').classList.remove('is-active')">&times;</button>
             <h2 id="modalTitle">Product</h2>
-            <textarea id="userText" placeholder="Inscription notes..."></textarea>
             
-            <button id="upload_widget" class="btn-customize" style="background:#444;">Upload Design File</button>
+            <textarea id="userText" class="form-textarea" placeholder="Inscription notes, text choices or formatting requirements..."></textarea>
+            
+            <button id="upload_widget" class="btn-customize" style="background: #444; margin-bottom: 10px;">Upload Design File</button>
+            <div id="upload-status-message" class="upload-status-text"></div>
             <input type="hidden" id="uploaded_file_url">
             
-            <button class="btn-customize" onclick="addToBasket()">Add To Basket</button>
+            <button id="add-to-basket-btn" class="btn-customize" onclick="addToBasket()">Add To Basket</button>
         </div>
     </div>
 
     <script>
-        // Cloudinary Widget Initialization
+        let currentActivePrice = 0;
+
+        // Initialize Cloudinary Widget Configuration
         var myWidget = cloudinary.createUploadWidget({
             cloudName: 'opdnamfa', 
             uploadPreset: 'hg_customs_preset'
-        }, (error, result) => { 
+        }, (error, result) => {
             if (!error && result && result.event === "success") { 
                 document.getElementById('uploaded_file_url').value = result.info.secure_url;
-                alert('File uploaded successfully!');
+                
+                // Optimized Inline Success UI Feedback
+                const statusMsg = document.getElementById('upload-status-message');
+                statusMsg.innerText = "✓ Image uploaded successfully!";
+                statusMsg.style.color = "#28a745";
             }
         });
 
@@ -93,33 +202,81 @@
             myWidget.open();
         }, false);
 
-        function openProductModal(t, p) {
-            document.getElementById('modalTitle').innerText = t;
-            // Clear inputs for fresh entry
+        function openProductModal(title, price) {
+            document.getElementById('modalTitle').innerText = title;
+            currentActivePrice = price;
+            
+            // Clean dynamic interface elements upon modal entry
             document.getElementById('uploaded_file_url').value = '';
             document.getElementById('userText').value = '';
+            document.getElementById('upload-status-message').innerText = '';
+            
             document.getElementById('productModal').classList.add('is-active');
         }
 
         function addToBasket() {
             const title = document.getElementById('modalTitle').innerText;
-            const notes = document.getElementById('userText').value;
+            const textValue = document.getElementById('userText').value;
             const fileUrl = document.getElementById('uploaded_file_url').value;
             
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            cart.push({ title, notes, fileUrl: fileUrl || "No file uploaded" });
+            
+            // Save item configuration mapping object keys directly matching cart.html engine
+            cart.push({ 
+                name: title, 
+                price: currentActivePrice, 
+                text: textValue, 
+                fileUrl: fileUrl || "No file uploaded" 
+            });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             
-            document.getElementById('productModal').classList.remove('is-active');
             updateBadge();
-            alert('Added to basket!');
+
+            // Optimized Basket Addition Feedback Loop Animation
+            const basketBtn = document.getElementById('add-to-basket-btn');
+            if (basketBtn) {
+                const originalText = basketBtn.innerHTML;
+                basketBtn.innerHTML = "✓ Added to Basket";
+                basketBtn.style.backgroundColor = "#28a745";
+                basketBtn.disabled = true;
+
+                setTimeout(() => {
+                    basketBtn.innerHTML = originalText;
+                    basketBtn.style.backgroundColor = "#000000";
+                    basketBtn.disabled = false;
+                    document.getElementById('productModal').classList.remove('is-active');
+                }, 1500);
+            }
         }
 
         function updateBadge() {
             const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            document.querySelector('.cart-count').innerText = cart.length;
+            const badges = document.querySelectorAll('.cart-count');
+            badges.forEach(badge => badge.innerText = cart.length);
         }
-        updateBadge();
+
+        // Global viewport layout event registrations
+        document.addEventListener('DOMContentLoaded', () => {
+            updateBadge();
+
+            const menuToggle = document.getElementById('menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const dropdownLi = document.getElementById('dropdown-li');
+            const dropdownTrigger = document.getElementById('dropdown-trigger');
+
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', (e) => { e.stopPropagation(); navMenu.classList.toggle('is-open'); });
+            }
+            if (dropdownTrigger && dropdownLi) {
+                dropdownTrigger.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 992) { e.preventDefault(); e.stopPropagation(); dropdownLi.classList.toggle('is-open'); }
+                });
+            }
+            document.addEventListener('click', () => {
+                if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
+                if (dropdownLi && dropdownLi.classList.contains('is-open')) dropdownLi.classList.remove('is-open');
+            });
+        });
     </script>
 </body>
 </html>
