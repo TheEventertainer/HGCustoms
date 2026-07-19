@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | HG Customs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #f9f9f9; text-align: center; }
+        .container { background: #fff; padding: 40px; border: 1px solid #e5e5e5; border-radius: 8px; max-width: 500px; }
+        h1 { font-size: 24px; margin-bottom: 20px; }
+        p { color: #555; line-height: 1.6; margin-bottom: 30px; }
+        .btn-home { background: #000; color: #fff; text-decoration: none; padding: 12px 24px; text-transform: uppercase; font-size: 12px; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Confirmed!</h1>
+        <p>Thank you for your order with HG Customs. We have received your design files and instructions. Our team will review your order and get started on your custom items shortly. You will receive an email update soon.</p>
+        <a href="index.html" class="btn-home">Return to Home</a>
+    </div>
+</body>
+</html>
