@@ -150,6 +150,7 @@
                 <div class="prod-price">£34.99</div>
                 <button class="btn-customize" onclick="openProductModal('Logo Hoodie', 34.99, 'hoodie.jpg', 'apparel_colors', 'sizes')">Design & Buy</button>
             </div>
+            
             <!-- Product 2: T-Shirt -->
             <div class="product-card">
                 <div class="product-image-wrapper">
@@ -159,6 +160,7 @@
                 <div class="prod-price">£19.99</div>
                 <button class="btn-customize" onclick="openProductModal('Custom T-Shirt', 19.99, 'tshirt.jpg', 'apparel_colors', 'sizes')">Design & Buy</button>
             </div>
+            
             <!-- Product 3: Mug -->
             <div class="product-card">
                 <div class="product-image-wrapper">
@@ -168,6 +170,7 @@
                 <div class="prod-price">£8.50</div>
                 <button class="btn-customize" onclick="openProductModal('Custom Mug', 8.50, 'mug.jpg', 'mug_colors', 'none')">Design & Buy</button>
             </div>
+            
             <!-- Product 4: Water Bottle -->
             <div class="product-card">
                 <div class="product-image-wrapper">
@@ -177,6 +180,7 @@
                 <div class="prod-price">£14.99</div>
                 <button class="btn-customize" onclick="openProductModal('Custom Water Bottle', 14.99, 'water-bottle.jpg', 'bottle_colors', 'none')">Design & Buy</button>
             </div>
+            
             <!-- Product 5: Tote Bag -->
             <div class="product-card">
                 <div class="product-image-wrapper">
@@ -186,6 +190,7 @@
                 <div class="prod-price">£5.99</div>
                 <button class="btn-customize" onclick="openProductModal('Custom Tote Bag', 5.99, 'tote-bag.jpg', 'tote_colors', 'none')">Design & Buy</button>
             </div>
+            
             <!-- Product 6: Keyring -->
             <div class="product-card">
                 <div class="product-image-wrapper">
@@ -254,7 +259,7 @@
         let currentActivePrice = 0;
         let defaultProductImage = "";
 
-        // Predefined selection lists mapping directly to configuration arrays
+        // Predefined option definitions mapping explicitly to product specifications
         const colorOptionsMap = {
             apparel_colors: ["Red", "Blue", "Green", "White", "Black"],
             mug_colors: ["Standard White", "Black Inner", "Blue Inner", "Red Inner", "Pink Inner"],
