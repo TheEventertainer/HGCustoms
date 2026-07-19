@@ -11,7 +11,7 @@
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
 
     <style>
-        :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; }
+        :root { --text-dark: #000000; --bg-light: #f9f9f9; --border-color: #e5e5e5; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; }
         
@@ -25,16 +25,18 @@
         .product-card { border: 1px solid var(--border-color); padding: 25px; text-align: center; }
         .product-image { width: 100%; height: 250px; object-fit: cover; background-color: var(--bg-light); margin-bottom: 20px; }
         
-        .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; margin-top: 15px; }
+        .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; margin-top: 10px; }
         
         /* Modal */
         .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal.is-active { display: flex; }
         .modal-content { background: #fff; max-width: 440px; width: 90%; padding: 35px; position: relative; }
+        .close-modal { float:right; border:none; background:none; cursor:pointer; font-size: 20px; }
         
         .color-swatch-grid { display: flex; gap: 12px; margin: 15px 0; }
         .color-swatch { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
         .color-swatch.is-selected { border-color: #000; transform: scale(1.1); }
+        #upload-status { font-size: 12px; margin: 10px 0; color: #28a745; font-weight: bold; min-height: 15px; }
 
         @media (max-width: 768px) { .main-header { padding: 20px; } }
     </style>
@@ -83,25 +85,44 @@
         </div>
     </main>
 
+    <!-- Modal -->
     <div class="modal" id="productModal">
         <div class="modal-content">
-            <h2 id="modalTitle">Customize</h2>
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <h2 id="modalTitle" style="margin-bottom: 15px;">Customize</h2>
+            
             <div class="color-swatch-grid">
                 <div class="color-swatch is-selected" style="background: #fff; border: 1px solid #ccc;" onclick="selectColor(this, 'White')"></div>
                 <div class="color-swatch" style="background: #000;" onclick="selectColor(this, 'Black')"></div>
                 <div class="color-swatch" style="background: #1a5be5;" onclick="selectColor(this, 'Blue')"></div>
             </div>
-            <button id="upload_widget" class="btn-customize">Upload Design</button>
-            <button class="btn-customize" style="background:#555;" onclick="document.getElementById('productModal').classList.remove('is-active')">Close</button>
+
+            <button id="upload_widget" class="btn-customize" style="background: #444;">Upload Design File</button>
+            <div id="upload-status"></div>
+            
+            <input type="hidden" id="uploaded_file_url">
+
+            <button id="add-to-basket-btn" class="btn-customize" onclick="addToBasket()">Add To Basket</button>
+            <button class="btn-customize" style="background:#555;" onclick="closeModal()">Cancel</button>
         </div>
     </div>
 
     <script>
         let selectedColor = "White";
-        
+        let currentPrice = 0;
+        let currentTitle = "";
+
         function openModal(title, price) {
+            currentTitle = title;
+            currentPrice = price;
             document.getElementById('modalTitle').innerText = title;
+            document.getElementById('upload-status').innerText = ""; 
+            document.getElementById('uploaded_file_url').value = ""; 
             document.getElementById('productModal').classList.add('is-active');
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.remove('is-active');
         }
 
         function selectColor(el, color) {
@@ -113,9 +134,34 @@
         var myWidget = cloudinary.createUploadWidget({
             cloudName: 'opdnamfa', 
             uploadPreset: 'hg_customs_preset'
-        }, (error, result) => { if (!error && result.event === "success") alert("Uploaded!"); });
+        }, (error, result) => { 
+            if (!error && result && result.event === "success") { 
+                document.getElementById('uploaded_file_url').value = result.info.secure_url;
+                document.getElementById('upload-status').innerText = "✓ File uploaded successfully!";
+            } 
+        });
 
         document.getElementById("upload_widget").addEventListener("click", () => myWidget.open());
+
+        function addToBasket() {
+            const fileUrl = document.getElementById('uploaded_file_url').value;
+            
+            if (!fileUrl) {
+                alert("Please upload a design file before adding to the basket.");
+                return;
+            }
+
+            const cartItem = {
+                title: currentTitle,
+                price: currentPrice,
+                color: selectedColor,
+                file: fileUrl
+            };
+
+            console.log("Adding to cart:", cartItem);
+            alert("Added " + currentTitle + " to your basket!");
+            closeModal();
+        }
     </script>
 </body>
 </html>
