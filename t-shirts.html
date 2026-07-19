@@ -4,88 +4,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom T-Shirts | HG Customs</title>
-    <!-- Dependencies -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
     <style>
         :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; }
+        body { font-family: 'Inter', sans-serif; }
 
-        /* Navigation and Layout styles match your provided requirements */
-        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #333; }
-        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); }
+        /* Navigation */
+        .announcement-bar { background: #000; color: #fff; text-align: center; padding: 10px; font-size: 11px; text-transform: uppercase; }
+        .main-header { display: flex; justify-content: space-between; padding: 20px 40px; border-bottom: 1px solid var(--border-color); align-items: center; }
+        .nav-links { display: flex; list-style: none; gap: 20px; }
+        .nav-links a { text-decoration: none; color: #000; font-weight: 600; font-size: 13px; text-transform: uppercase; }
+
+        /* Catalog */
         .catalog-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .product-card { border: 1px solid var(--border-color); padding: 25px; display: flex; flex-direction: column; }
-        .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; margin-top: auto; }
-        
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { border: 1px solid var(--border-color); padding: 20px; display: flex; flex-direction: column; text-align: center; }
+        .product-card img { width: 100%; height: 250px; object-fit: cover; margin-bottom: 15px; }
+        .btn-customize { background: #000; color: #fff; border: none; padding: 12px; cursor: pointer; text-transform: uppercase; font-size: 11px; margin-top: 15px; }
+
         /* Modal */
         .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal.is-active { display: flex; }
-        .modal-content { background: #fff; max-width: 440px; width: 90%; padding: 35px; position: relative; border: 1px solid var(--border-color); }
-        
-        /* Swatches and Inputs */
-        .color-swatch-grid { display: flex; gap: 12px; margin: 10px 0; }
-        .color-swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
-        .color-swatch.is-selected { border-color: #000; transform: scale(1.1); }
-        .preview-container { text-align: center; margin-bottom: 15px; display: none; }
-        .preview-container img { max-width: 100%; max-height: 120px; object-fit: contain; border: 1px solid var(--border-color); }
-        .form-select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); }
+        .modal-content { background: #fff; width: 400px; padding: 30px; position: relative; }
+        .color-swatch-grid { display: flex; gap: 10px; margin: 10px 0; }
+        .color-swatch { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+        .color-swatch.is-selected { border-color: #000; }
+        .preview-container { margin: 15px 0; display: none; }
+        .preview-container img { max-width: 100px; }
+        .form-select { width: 100%; padding: 10px; margin: 10px 0; }
     </style>
 </head>
 <body>
-    <!-- (Header and Announcement Bar code inserted here as per your provided structure) -->
+
+    <div class="announcement-bar">Free UK Delivery on orders over £50</div>
+    <header class="main-header">
+        <div class="logo"><strong>HG CUSTOMS</strong></div>
+        <nav><ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="t-shirts.html">T-Shirts</a></li><li><a href="mugs.html">Mugs</a></li></ul></nav>
+        <div class="cart-icon"><i class="fa-solid fa-basket-shopping"></i> <span id="cartCount">0</span></div>
+    </header>
 
     <main class="catalog-container">
-        <h1>Custom Graphic Apparel</h1>
+        <h1>Custom Graphic T-Shirts</h1>
         <div class="product-grid">
             <div class="product-card">
-                <div class="prod-title">Essential Cotton T-Shirt</div>
-                <div class="prod-price">£17.99</div>
-                <button class="btn-customize" onclick="openProductModal('Essential Cotton T-Shirt', 17.99)">Design & Buy</button>
+                <img src="https://placehold.co/300x300?text=Essential+Tee" alt="T-Shirt">
+                <h3>Essential Cotton Tee</h3>
+                <p>£17.99</p>
+                <button class="btn-customize" onclick="openProductModal('Essential Cotton Tee', 17.99)">Design & Buy</button>
             </div>
-            <!-- Additional product cards -->
+            <div class="product-card">
+                <img src="https://placehold.co/300x300?text=Heavyweight+Tee" alt="T-Shirt">
+                <h3>Heavyweight Street Tee</h3>
+                <p>£22.00</p>
+                <button class="btn-customize" onclick="openProductModal('Heavyweight Street Tee', 22.00)">Design & Buy</button>
+            </div>
         </div>
     </main>
 
-    <!-- Modal implementation remains fully aligned with your logic -->
     <div class="modal" id="productModal">
         <div class="modal-content">
-            <button class="close-modal" onclick="document.getElementById('productModal').classList.remove('is-active')">&times;</button>
+            <button onclick="document.getElementById('productModal').classList.remove('is-active')">×</button>
             <h2 id="modalTitle">Product</h2>
-            <div id="imagePreviewContainer" class="preview-container"><img id="imagePreview" src="" alt="Preview"></div>
+            <div id="imagePreviewContainer" class="preview-container"><img id="imagePreview" src=""></div>
             
-            <div class="color-selection-wrapper">
-                <label>Select Color: <span id="currentColorLabel">White</span></label>
-                <div class="color-swatch-grid">
-                    <div class="color-swatch is-selected" style="background-color: #ffffff; border: 1px solid #ccc;" onclick="selectColor(this, 'White')"></div>
-                    <div class="color-swatch" style="background-color: #000000;" onclick="selectColor(this, 'Black')"></div>
-                    <div class="color-swatch" style="background-color: #1a5be5;" onclick="selectColor(this, 'Blue')"></div>
-                </div>
+            <div class="color-swatch-grid" id="colorGrid">
+                <div class="color-swatch is-selected" style="background:#fff; border: 1px solid #ccc;" onclick="selectColor(this, 'White')"></div>
+                <div class="color-swatch" style="background:#000;" onclick="selectColor(this, 'Black')"></div>
             </div>
 
             <select id="productSize" class="form-select">
-                <option value="S">Small</option>
-                <option value="M" selected>Medium</option>
-                <option value="L">Large</option>
+                <option value="S">Small</option><option value="M">Medium</option><option value="L">Large</option>
             </select>
 
-            <button id="upload_widget" class="btn-customize" style="background: #444;">Upload Design File</button>
+            <button id="upload_widget" class="btn-customize" style="background:#444;">Upload Design</button>
             <input type="hidden" id="uploaded_file_url">
-
-            <div class="quantity-wrapper">
-                <input type="number" id="modalQuantity" value="1" min="1">
-                <button id="add-to-basket-btn" class="btn-customize" onclick="addToBasket()">Add To Basket</button>
-            </div>
+            <input type="number" id="modalQuantity" value="1" min="1" class="form-select">
+            <button class="btn-customize" onclick="addToBasket()">Add To Basket</button>
         </div>
     </div>
 
-    <!-- Script remains consistent with your provided logic -->
     <script>
-        // All functions (openProductModal, selectColor, addToBasket, updateBadge) 
-        // are fully functional as provided in your template above.
+        let selectedColor = "White";
+        var myWidget = cloudinary.createUploadWidget({cloudName: 'opdnamfa', uploadPreset: 'hg_customs_preset'}, (e, res) => {
+            if (!e && res.event === "success") {
+                document.getElementById('uploaded_file_url').value = res.info.secure_url;
+                document.getElementById('imagePreview').src = res.info.secure_url;
+                document.getElementById('imagePreviewContainer').style.display = 'block';
+            }
+        });
+
+        document.getElementById("upload_widget").addEventListener("click", () => myWidget.open());
+
+        function openProductModal(title, price) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('productModal').classList.add('is-active');
+        }
+
+        function selectColor(el, color) {
+            document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('is-selected'));
+            el.classList.add('is-selected');
+            selectedColor = color;
+        }
+
+        function addToBasket() {
+            let cart = JSON.parse(localStorage.getItem('hg_cart') || '[]');
+            cart.push({
+                name: document.getElementById('modalTitle').innerText,
+                color: selectedColor,
+                size: document.getElementById('productSize').value,
+                quantity: document.getElementById('modalQuantity').value,
+                file: document.getElementById('uploaded_file_url').value
+            });
+            localStorage.setItem('hg_cart', JSON.stringify(cart));
+            alert("Added to basket!");
+            document.getElementById('productModal').classList.remove('is-active');
+            document.getElementById('cartCount').innerText = cart.length;
+        }
     </script>
 </body>
 </html>
