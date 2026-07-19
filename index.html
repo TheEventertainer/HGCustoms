@@ -4,31 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HG Customs | Made Your Way, Just For You</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; color: var(--text-dark); }
 
-        /* Header & Mobile Toggle */
-        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
+    <style>
+        :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; --font-sans: 'Inter', sans-serif; --font-script: 'Playfair Display', serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-sans); color: var(--text-dark); background-color: #ffffff; }
+
+        /* Header */
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; }
         .logo img { height: 55px; }
-        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; text-transform: uppercase; }
+        .header-actions { display: flex; align-items: center; gap: 20px; font-size: 18px; }
+        .cart-icon { position: relative; }
+        .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         .mobile-toggle { display: none; font-size: 20px; cursor: pointer; }
+
+        /* Hero */
+        .hero { height: 500px; display: flex; align-items: center; padding: 0 80px; background: var(--bg-light); }
+        .hero-title { font-size: 52px; font-weight: 700; text-transform: uppercase; }
+        .hero-script { font-family: var(--font-script); font-style: italic; font-size: 48px; margin-bottom: 25px; }
+        .hero-btn { background: #000; color: #fff; padding: 15px 30px; text-decoration: none; text-transform: uppercase; font-size: 12px; font-weight: 600; display: inline-block; }
 
         @media (max-width: 768px) {
             .mobile-toggle { display: block; }
             .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px; text-align: center; }
             .nav-links.is-open { display: flex; }
         }
-
-        /* Hero */
-        .hero { height: 500px; display: flex; align-items: center; padding: 0 80px; background: var(--bg-light); }
-        .hero-title { font-size: 52px; font-weight: 700; text-transform: uppercase; }
-        .hero-script { font-family: 'Playfair Display', serif; font-style: italic; font-size: 48px; margin-bottom: 25px; }
-        .hero-btn { background: #000; color: #fff; padding: 15px 30px; text-decoration: none; text-transform: uppercase; font-size: 12px; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -36,7 +42,6 @@
     <header class="main-header">
         <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs"></a></div>
         
-        <!-- Mobile Toggle Button -->
         <div class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('is-open')">
             <i class="fa-solid fa-bars"></i>
         </div>
@@ -50,7 +55,7 @@
         </nav>
 
         <div class="header-actions">
-            <a href="cart.html"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
+            <a href="cart.html" class="cart-icon"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
         </div>
     </header>
 
@@ -62,9 +67,7 @@
         </div>
     </section>
 
-    <!-- Scripts -->
     <script>
-        // Cart Logic
         function updateCartBadge() {
             const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             document.querySelectorAll('.cart-count').forEach(badge => badge.innerText = cart.length);
