@@ -19,7 +19,6 @@
         .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); }
         .logo { font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
         .logo a { text-decoration: none; color: #000; }
-        
         .nav-links { display: flex; list-style: none; gap: 30px; }
         .nav-links a { text-decoration: none; color: #000; font-size: 12px; font-weight: 600; text-transform: uppercase; }
         .header-actions { display: flex; align-items: center; gap: 20px; font-size: 18px; position: relative; }
@@ -84,32 +83,26 @@
         <h1>Custom Ceramic Mugs</h1>
         <div class="product-grid">
             <div class="product-card">
-                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
                 <h3>11oz Classic White</h3>
                 <button class="btn-customize" onclick="openModal('11oz Classic White', 8.99)">Design & Buy</button>
             </div>
             <div class="product-card">
-                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
                 <h3>11oz Color Inner</h3>
                 <button class="btn-customize" onclick="openModal('11oz Color Inner', 9.99)">Design & Buy</button>
             </div>
             <div class="product-card">
-                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
                 <h3>Magic Changing Mug</h3>
                 <button class="btn-customize" onclick="openModal('Magic Changing Mug', 12.50)">Design & Buy</button>
             </div>
             <div class="product-card">
-                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
                 <h3>15oz Large Ceramic</h3>
                 <button class="btn-customize" onclick="openModal('15oz Large Ceramic', 11.99)">Design & Buy</button>
             </div>
             <div class="product-card">
-                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
                 <h3>12oz Enamel Camp</h3>
                 <button class="btn-customize" onclick="openModal('12oz Enamel Camp', 10.50)">Design & Buy</button>
             </div>
             <div class="product-card">
-                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
                 <h3>12oz Tall Latte</h3>
                 <button class="btn-customize" onclick="openModal('12oz Tall Latte', 11.00)">Design & Buy</button>
             </div>
@@ -171,15 +164,21 @@
         document.getElementById("upload_widget").addEventListener("click", () => myWidget.open());
 
         function addToBasket() {
-            if (!document.getElementById('uploaded_file_url').value) {
+            let fileUrl = document.getElementById('uploaded_file_url').value;
+            if (!fileUrl) {
                 alert("Please upload a design first!");
                 return;
             }
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            cart.push({ title: currentTitle, color: selectedColor, price: currentPrice, img: document.getElementById('uploaded_file_url').value });
+            cart.push({ 
+                title: currentTitle, 
+                color: selectedColor, 
+                price: currentPrice, 
+                img: fileUrl 
+            });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             updateCartCount();
-            alert("Added to basket!");
+            alert(currentTitle + " (" + selectedColor + ") added to basket!");
             closeModal();
         }
         updateCartCount();
