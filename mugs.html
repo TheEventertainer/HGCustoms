@@ -73,6 +73,31 @@
         .form-textarea { width: 100%; height: 80px; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; resize: none; }
         .upload-status-text { font-size: 12px; font-weight: 600; margin: -5px 0 15px 0; min-height: 16px; }
 
+        /* --- Dynamic Custom Options Elements --- */
+        .preview-container { text-align: center; margin-bottom: 15px; display: none; }
+        .preview-container img { max-width: 100%; max-height: 120px; object-fit: contain; border: 1px solid var(--border-color); padding: 4px; }
+        
+        /* Visual Color Choice Option Container */
+        .color-selection-wrapper { margin: 15px 0; }
+        .color-selection-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; display: block; }
+        .color-selection-label span { font-weight: 400; text-transform: none; color: var(--text-muted); margin-left: 5px; }
+        .color-swatch-grid { display: flex; gap: 12px; align-items: center; }
+        
+        .color-swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; position: relative; transition: transform 0.2s, border-color 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
+        .color-swatch:hover { transform: scale(1.1); }
+        .color-swatch.is-selected { border-color: #000000; transform: scale(1.1); }
+        
+        /* Unique styling for magic dynamic option indicator overlay */
+        .swatch-magic { background: linear-gradient(135deg, #000 0%, #3a3a3a 50%, #ff0055 100%); }
+
+        .quantity-wrapper { display: flex; align-items: center; justify-content: space-between; margin: 15px 0; padding-top: 10px; border-top: 1px solid var(--border-color); }
+        .quantity-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .quantity-controls { display: flex; align-items: center; border: 1px solid var(--border-color); }
+        .qty-btn { background: none; border: none; width: 36px; height: 36px; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+        .qty-btn:hover { background: var(--bg-light); }
+        .qty-input { width: 45px; height: 36px; border: none; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); text-align: center; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; -moz-appearance: textfield; }
+        .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
         @media (max-width: 992px) {
             .main-header { padding: 20px; }
             .mobile-toggle { display: block; order: 1; }
@@ -123,43 +148,43 @@
     </header>
 
     <main class="catalog-container">
-        <h1>Custom Ceramic Mugs</h1>
+        <h1>Custom 11oz Ceramic Design Mugs</h1>
         <div class="product-grid">
             <!-- Product 1 -->
             <div class="product-card">
-                <div class="prod-title">Standard 11oz Ceramic Mug</div>
+                <div class="prod-title">Classic Accent Mug (11oz)</div>
                 <div class="prod-price">£8.99</div>
-                <button class="btn-customize" onclick="openProductModal('Standard 11oz Ceramic Mug', 8.99)">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Classic Accent Mug (11oz)', 8.99)">Design & Buy</button>
             </div>
             <!-- Product 2 -->
             <div class="product-card">
-                <div class="prod-title">Large 15oz Ceramic Mug</div>
-                <div class="prod-price">£10.99</div>
-                <button class="btn-customize" onclick="openProductModal('Large 15oz Ceramic Mug', 10.99)">Design & Buy</button>
+                <div class="prod-title">Modern Minimalist Mug (11oz)</div>
+                <div class="prod-price">£9.50</div>
+                <button class="btn-customize" onclick="openProductModal('Modern Minimalist Mug (11oz)', 9.50)">Design & Buy</button>
             </div>
             <!-- Product 3 -->
             <div class="product-card">
-                <div class="prod-title">Two-Tone Accent Mug</div>
+                <div class="prod-title">Bold Monogram Mug (11oz)</div>
                 <div class="prod-price">£9.50</div>
-                <button class="btn-customize" onclick="openProductModal('Two-Tone Accent Mug', 9.50)">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Bold Monogram Mug (11oz)', 9.50)">Design & Buy</button>
             </div>
             <!-- Product 4 -->
             <div class="product-card">
-                <div class="prod-title">Enamel Campfire Mug</div>
-                <div class="prod-price">£11.99</div>
-                <button class="btn-customize" onclick="openProductModal('Enamel Campfire Mug', 11.99)">Design & Buy</button>
+                <div class="prod-title">Vintage Collage Mug (11oz)</div>
+                <div class="prod-price">£9.99</div>
+                <button class="btn-customize" onclick="openProductModal('Vintage Collage Mug (11oz)', 9.99)">Design & Buy</button>
             </div>
             <!-- Product 5 -->
             <div class="product-card">
-                <div class="prod-title">Heat Change Magic Mug</div>
-                <div class="prod-price">£12.99</div>
-                <button class="btn-customize" onclick="openProductModal('Heat Change Magic Mug', 12.99)">Design & Buy</button>
+                <div class="prod-title">Panoramic Photo Mug (11oz)</div>
+                <div class="prod-price">£10.50</div>
+                <button class="btn-customize" onclick="openProductModal('Panoramic Photo Mug (11oz)', 10.50)">Design & Buy</button>
             </div>
             <!-- Product 6 -->
             <div class="product-card">
-                <div class="prod-title">Matte Black Ceramic Mug</div>
-                <div class="prod-price">£9.99</div>
-                <button class="btn-customize" onclick="openProductModal('Matte Black Ceramic Mug', 9.99)">Design & Buy</button>
+                <div class="prod-title">Signature Artist Framed Mug (11oz)</div>
+                <div class="prod-price">£10.99</div>
+                <button class="btn-customize" onclick="openProductModal('Signature Artist Framed Mug (11oz)', 10.99)">Design & Buy</button>
             </div>
         </div>
     </main>
@@ -170,18 +195,46 @@
             <button class="close-modal" onclick="document.getElementById('productModal').classList.remove('is-active')">&times;</button>
             <h2 id="modalTitle">Product</h2>
             
-            <textarea id="userText" class="form-textarea" placeholder="Inscription notes, text choices or formatting requirements..."></textarea>
+            <!-- Target Image Preview Box Container -->
+            <div id="imagePreviewContainer" class="preview-container">
+                <img id="imagePreview" src="" alt="Design Preview">
+            </div>
+
+            <!-- Visual Color Option Component Setup -->
+            <div class="color-selection-wrapper">
+                <label class="color-selection-label">Select Base Color: <span id="currentColorLabel">White</span></label>
+                <div class="color-swatch-grid">
+                    <div class="color-swatch is-selected" style="background-color: #ffffff; border: 1px solid #dcdcdc;" onclick="selectColor(this, 'White')"></div>
+                    <div class="color-swatch" style="background-color: #e51a1a;" onclick="selectColor(this, 'Red')"></div>
+                    <div class="color-swatch" style="background-color: #1a5be5;" onclick="selectColor(this, 'Blue')"></div>
+                    <div class="color-swatch" style="background-color: #279e27;" onclick="selectColor(this, 'Green')"></div>
+                    <div class="color-swatch swatch-magic" onclick="selectColor(this, 'Black (Magic Heat Change)')" title="Magic Color Change Heat Mug"></div>
+                </div>
+            </div>
+
+            <textarea id="userText" class="form-textarea" placeholder="Inscription notes, name variables, or design instructions..."></textarea>
             
             <button id="upload_widget" class="btn-customize" style="background: #444; margin-bottom: 10px;">Upload Design File</button>
             <div id="upload-status-message" class="upload-status-text"></div>
             <input type="hidden" id="uploaded_file_url">
             
+            <!-- Standard Quantity Selection Control Wrapper -->
+            <div class="quantity-wrapper">
+                <span class="quantity-label">Quantity</span>
+                <div class="quantity-controls">
+                    <button type="button" class="qty-btn" onclick="adjustModalQty(-1)">-</button>
+                    <input type="number" id="modalQuantity" class="qty-input" value="1" min="1">
+                    <button type="button" class="qty-btn" onclick="adjustModalQty(1)">+</button>
+                </div>
+            </div>
+
             <button id="add-to-basket-btn" class="btn-customize" onclick="addToBasket()">Add To Basket</button>
         </div>
     </div>
 
     <script>
         let currentActivePrice = 0;
+        let selectedMugColor = "White";
 
         // Initialize Cloudinary Widget Configuration
         var myWidget = cloudinary.createUploadWidget({
@@ -189,8 +242,17 @@
             uploadPreset: 'hg_customs_preset'
         }, (error, result) => {
             if (!error && result && result.event === "success") { 
-                document.getElementById('uploaded_file_url').value = result.info.secure_url;
+                const secureUrl = result.info.secure_url;
+                document.getElementById('uploaded_file_url').value = secureUrl;
                 
+                // Show design image dynamic preview thumbnail
+                const previewImg = document.getElementById('imagePreview');
+                const previewContainer = document.getElementById('imagePreviewContainer');
+                if (previewImg && previewContainer) {
+                    previewImg.src = secureUrl;
+                    previewContainer.style.display = 'block';
+                }
+
                 // Optimized Inline Success UI Feedback
                 const statusMsg = document.getElementById('upload-status-message');
                 statusMsg.innerText = "✓ Image uploaded successfully!";
@@ -210,23 +272,56 @@
             document.getElementById('uploaded_file_url').value = '';
             document.getElementById('userText').value = '';
             document.getElementById('upload-status-message').innerText = '';
+            document.getElementById('modalQuantity').value = 1;
+            
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            if (previewContainer) previewContainer.style.display = 'none';
+
+            // Reset dynamic swatches back to standard default variant
+            selectedMugColor = "White";
+            document.getElementById('currentColorLabel').innerText = "White";
+            const swatches = document.querySelectorAll('.color-swatch');
+            swatches.forEach(sw => sw.classList.remove('is-selected'));
+            if (swatches[0]) swatches[0].classList.add('is-selected');
             
             document.getElementById('productModal').classList.add('is-active');
+        }
+
+        // Swatch handling switching selector mechanics
+        function selectColor(element, colorName) {
+            document.querySelectorAll('.color-swatch').forEach(sw => sw.classList.remove('is-selected'));
+            element.classList.add('is-selected');
+            selectedMugColor = colorName;
+            document.getElementById('currentColorLabel').innerText = colorName;
+        }
+
+        // Inline manual adjustments helper logic targeting input values
+        function adjustModalQty(amount) {
+            const qtyInput = document.getElementById('modalQuantity');
+            if (qtyInput) {
+                let currentVal = parseInt(qtyInput.value) || 1;
+                let newVal = currentVal + amount;
+                if (newVal < 1) newVal = 1;
+                qtyInput.value = newVal;
+            }
         }
 
         function addToBasket() {
             const title = document.getElementById('modalTitle').innerText;
             const textValue = document.getElementById('userText').value;
             const fileUrl = document.getElementById('uploaded_file_url').value;
+            const quantityVal = parseInt(document.getElementById('modalQuantity').value) || 1;
             
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             
-            // Save item configuration mapping object keys directly matching cart.html engine
+            // Append explicit configurations directly supporting programmatic extraction steps
             cart.push({ 
                 name: title, 
                 price: currentActivePrice, 
                 text: textValue, 
-                fileUrl: fileUrl || "No file uploaded" 
+                fileUrl: fileUrl || "No file uploaded",
+                quantity: quantityVal,
+                color: selectedMugColor // Pulls through directly into your cart & order records
             });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             
@@ -251,8 +346,9 @@
 
         function updateBadge() {
             const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
             const badges = document.querySelectorAll('.cart-count');
-            badges.forEach(badge => badge.innerText = cart.length);
+            badges.forEach(badge => badge.innerText = totalItems);
         }
 
         // Global viewport layout event registrations
@@ -276,6 +372,16 @@
                 if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
                 if (dropdownLi && dropdownLi.classList.contains('is-open')) dropdownLi.classList.remove('is-open');
             });
+
+            // Enforce minimum bounds validation on blur rules directly
+            const qtyInput = document.getElementById('modalQuantity');
+            if (qtyInput) {
+                qtyInput.addEventListener('blur', () => {
+                    if (parseInt(qtyInput.value) < 1 || isNaN(parseInt(qtyInput.value))) {
+                        qtyInput.value = 1;
+                    }
+                });
+            }
         });
     </script>
 </body>
