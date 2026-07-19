@@ -13,45 +13,30 @@
     <style>
         :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; }
         
         /* Layout */
         .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #333; }
-        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); position: relative; z-index: 1000; }
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); }
         .logo { font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
-        .logo a { text-decoration: none; color: var(--text-dark); }
         
-        /* Desktop Nav */
-        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; text-transform: uppercase; }
-        .header-actions { display: flex; align-items: center; gap: 20px; }
-        .mobile-toggle { display: none; font-size: 22px; cursor: pointer; }
-
-        /* Mobile Nav Overrides */
-        .mobile-nav { display: none; background: #fff; border-bottom: 1px solid var(--border-color); padding: 20px; text-align: center; }
-        .mobile-nav ul { list-style: none; }
-        .mobile-nav li { margin: 15px 0; }
-        .mobile-nav a { text-decoration: none; color: #000; font-weight: 600; text-transform: uppercase; }
-
-        /* Product Grid */
         .catalog-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .product-card { border: 1px solid var(--border-color); padding: 20px; text-align: center; }
-        .product-image { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: var(--bg-light); margin-bottom: 15px; display: block; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { border: 1px solid var(--border-color); padding: 25px; text-align: center; }
+        .product-image { width: 100%; height: 250px; object-fit: cover; background-color: var(--bg-light); margin-bottom: 20px; }
         
-        .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; }
-
-        /* Modal & Footer Styles kept as before */
+        .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; margin-top: 15px; }
+        
+        /* Modal */
         .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal.is-active { display: flex; }
-        .modal-content { background: #fff; max-width: 400px; width: 90%; padding: 30px; }
+        .modal-content { background: #fff; max-width: 440px; width: 90%; padding: 35px; position: relative; }
+        
+        .color-swatch-grid { display: flex; gap: 12px; margin: 15px 0; }
+        .color-swatch { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+        .color-swatch.is-selected { border-color: #000; transform: scale(1.1); }
 
-        /* Media Queries for Mobile */
-        @media (max-width: 768px) {
-            .product-grid { grid-template-columns: 1fr; }
-            .nav-links, .header-actions { display: none; }
-            .mobile-toggle { display: block; }
-        }
+        @media (max-width: 768px) { .main-header { padding: 20px; } }
     </style>
 </head>
 <body>
@@ -59,76 +44,78 @@
     <div class="announcement-bar">Free UK Delivery on orders over £50</div>
     
     <header class="main-header">
-        <div class="mobile-toggle" onclick="toggleMobileMenu()">☰</div>
-        <div class="logo"><a href="index.html">HG Customs</a></div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="mugs.html">Mugs</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-        <div class="header-actions"><a href="cart.html"><i class="fa-solid fa-basket-shopping"></i></a></div>
+        <div class="logo">HG Customs</div>
     </header>
-
-    <!-- Mobile Menu -->
-    <div id="mobile-nav" class="mobile-nav">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="mugs.html">Custom Mugs</a></li>
-            <li><a href="t-shirts.html">Custom T-Shirts</a></li>
-            <li><a href="coasters.html">Custom Coasters</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </div>
 
     <main class="catalog-container">
         <h1>Custom Ceramic Mugs</h1>
         <div class="product-grid">
             <div class="product-card">
                 <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
-                <h3>11oz White Mug</h3>
-                <button class="btn-customize" onclick="openModal('11oz White Mug')">Design & Buy</button>
+                <h3>11oz Classic White</h3>
+                <button class="btn-customize" onclick="openModal('11oz Classic White', 8.99)">Design & Buy</button>
             </div>
-            <!-- Repeat for other products -->
+            <div class="product-card">
+                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
+                <h3>11oz Color Inner</h3>
+                <button class="btn-customize" onclick="openModal('11oz Color Inner', 9.99)">Design & Buy</button>
+            </div>
+            <div class="product-card">
+                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
+                <h3>Magic Changing Mug</h3>
+                <button class="btn-customize" onclick="openModal('Magic Changing Mug', 12.50)">Design & Buy</button>
+            </div>
+            <div class="product-card">
+                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
+                <h3>15oz Large Ceramic</h3>
+                <button class="btn-customize" onclick="openModal('15oz Large Ceramic', 11.99)">Design & Buy</button>
+            </div>
+            <div class="product-card">
+                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
+                <h3>12oz Enamel Camp</h3>
+                <button class="btn-customize" onclick="openModal('12oz Enamel Camp', 10.50)">Design & Buy</button>
+            </div>
+            <div class="product-card">
+                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
+                <h3>12oz Tall Latte</h3>
+                <button class="btn-customize" onclick="openModal('12oz Tall Latte', 11.00)">Design & Buy</button>
+            </div>
         </div>
     </main>
 
-    <!-- Modal -->
     <div class="modal" id="productModal">
         <div class="modal-content">
             <h2 id="modalTitle">Customize</h2>
-            <button id="upload_widget" class="btn-customize" style="margin: 15px 0;">Upload Your Design</button>
-            <button class="btn-customize" onclick="closeModal()">Close</button>
+            <div class="color-swatch-grid">
+                <div class="color-swatch is-selected" style="background: #fff; border: 1px solid #ccc;" onclick="selectColor(this, 'White')"></div>
+                <div class="color-swatch" style="background: #000;" onclick="selectColor(this, 'Black')"></div>
+                <div class="color-swatch" style="background: #1a5be5;" onclick="selectColor(this, 'Blue')"></div>
+            </div>
+            <button id="upload_widget" class="btn-customize">Upload Design</button>
+            <button class="btn-customize" style="background:#555;" onclick="document.getElementById('productModal').classList.remove('is-active')">Close</button>
         </div>
     </div>
 
     <script>
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-nav');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function openModal(title) {
+        let selectedColor = "White";
+        
+        function openModal(title, price) {
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('productModal').classList.add('is-active');
         }
 
-        function closeModal() {
-            document.getElementById('productModal').classList.remove('is-active');
+        function selectColor(el, color) {
+            document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('is-selected'));
+            el.classList.add('is-selected');
+            selectedColor = color;
         }
 
-        // Cloudinary
         var myWidget = cloudinary.createUploadWidget({
             cloudName: 'opdnamfa', 
             uploadPreset: 'hg_customs_preset'
-        }, (error, result) => {
-            if (!error && result && result.event === "success") {
-                alert("Design uploaded successfully!");
-            }
-        });
+        }, (error, result) => { if (!error && result.event === "success") alert("Uploaded!"); });
 
-        document.getElementById("upload_widget").addEventListener("click", () => {
-            myWidget.open();
-        });
+        document.getElementById("upload_widget").addEventListener("click", () => myWidget.open());
     </script>
 </body>
 </html>
