@@ -9,345 +9,108 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- PAYPAL SDK CLIENT PIPELINE (Using default Sandbox keys for validation testing) -->
     <script src="https://www.paypal.com/sdk/js?client-id=test&currency=GBP"></script>
 
     <style>
-        :root {
-            --text-dark: #000000;
-            --text-muted: #555555;
-            --bg-light: #f9f9f9;
-            --border-color: #e5e5e5;
-            --font-sans: 'Inter', sans-serif;
-        }
-
+        :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; --font-sans: 'Inter', sans-serif; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: var(--font-sans);
-            color: var(--text-dark);
-            background-color: #ffffff;
-            -webkit-font-smoothing: antialiased;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* --- Header / Navigation --- */
-        .main-header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff;
-            position: relative; z-index: 100;
-        }
-        .logo img { height: 55px; display: block; }
-        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
-        .nav-links > li { position: relative; padding: 10px 0; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
-        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid var(--border-color); list-style: none; min-width: 180px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: none; margin-top: 5px; }
-        .dropdown-menu a { display: block; padding: 12px 20px; font-size: 11px; text-decoration: none; color: var(--text-dark); }
-        .dropdown-menu a:hover { background-color: var(--bg-light); }
-        .has-dropdown:hover .dropdown-menu { display: flex; flex-direction: column; }
-        .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
-        .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
-        .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-
-        /* --- Cart Layout Structure --- */
-        .cart-container { max-width: 1200px; margin: 50px auto; padding: 0 20px; flex-grow: 1; width: 100%; }
-        .cart-title { font-size: 28px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 30px; border-bottom: 2px solid var(--text-dark); padding-bottom: 15px; }
-        .cart-wrapper { display: grid; grid-template-columns: 2fr 1fr; gap: 50px; }
+        body { font-family: var(--font-sans); color: var(--text-dark); background-color: #ffffff; display: flex; flex-direction: column; min-height: 100vh; }
         
-        .cart-items-list { display: flex; flex-direction: column; gap: 20px; }
-        .cart-item { display: flex; align-items: center; justify-content: space-between; padding: 20px 0; border-bottom: 1px solid var(--border-color); }
-        .item-details { flex-grow: 1; max-width: 70%; }
-        .item-title { font-size: 16px; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; }
-        .item-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; line-height: 1.4; }
-        .item-meta span { font-weight: 600; color: var(--text-dark); }
-        .item-price-remove { text-align: right; display: flex; flex-direction: column; gap: 10px; }
-        .item-price { font-size: 16px; font-weight: 700; }
-        .remove-btn { background: none; border: none; color: #c0392b; font-size: 12px; cursor: pointer; text-transform: uppercase; font-weight: 600; text-decoration: underline; }
-
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 100; }
+        .logo img { height: 55px; }
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; text-transform: uppercase; }
+        .cart-container { max-width: 1200px; margin: 50px auto; padding: 0 20px; flex-grow: 1; width: 100%; }
+        .cart-title { font-size: 28px; text-transform: uppercase; margin-bottom: 30px; border-bottom: 2px solid var(--text-dark); padding-bottom: 15px; }
+        .cart-wrapper { display: grid; grid-template-columns: 2fr 1fr; gap: 50px; }
         .order-summary-box { background-color: var(--bg-light); padding: 30px; border: 1px solid var(--border-color); height: fit-content; }
-        .summary-title { font-size: 18px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; font-weight: 700; }
         .summary-row { display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 15px; color: var(--text-muted); }
-        .summary-row.total-row { border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 25px; }
-
-        /* --- Coupon/Discount Fields --- */
-        .coupon-container { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
-        .coupon-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: block; }
-        .coupon-input-group { display: flex; gap: 10px; }
-        .coupon-input { flex-grow: 1; padding: 10px; border: 1px solid var(--border-color); font-family: var(--font-sans); font-size: 13px; text-transform: uppercase; }
-        .coupon-btn { background: #000; color: #fff; border: none; padding: 0 20px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
-        .coupon-message { font-size: 12px; margin-top: 6px; font-weight: 600; }
-
-        .empty-cart-msg { text-align: center; padding: 40px 0; font-size: 16px; color: var(--text-muted); }
-        .continue-shopping { display: inline-block; margin-top: 15px; color: #000; font-weight: 600; text-transform: uppercase; font-size: 13px; text-decoration: none; }
+        .total-row { border-top: 1px solid var(--border-color); padding-top: 15px; font-size: 18px; font-weight: 700; color: var(--text-dark); }
+        
+        /* Updated Loader for PayPal */
+        #paypal-button-container { min-height: 150px; position: relative; }
+        .loading-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; z-index: 10; }
     </style>
 </head>
 <body>
 
     <header class="main-header">
-        <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a></div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li class="has-dropdown">
-                    <a href="#">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="mugs.html">Custom Mugs</a></li>
-                        <li><a href="t-shirts.html">Custom T-Shirts</a></li>
-                        <li><a href="coasters.html">Custom Coasters</a></li>
-                        <li><a href="merchandise.html">Band & Show Merch</a></li>
-                    </ul>
-                </li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-        <div class="header-actions">
-            <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
-            <a href="cart.html" class="cart-icon" aria-label="Cart">
-                <i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span>
-            </a>
-        </div>
+        <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs"></a></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="t-shirts.html">T-Shirts</a></li>
+            <li><a href="cart.html">Basket <span class="cart-count">0</span></a></li>
+        </ul>
     </header>
 
     <main class="cart-container">
         <h1 class="cart-title">Your Shopping Basket</h1>
-        
         <div id="cart-content-wrapper" class="cart-wrapper" style="display: none;">
             <div class="cart-items-list" id="itemsContainer"></div>
-
             <div class="order-summary-box">
-                <div class="summary-title">Order Summary</div>
-                
-                <!-- Coupon Integration Interface Element -->
-                <div class="coupon-container">
-                    <label class="coupon-label" for="couponInput">Have a discount code?</label>
-                    <div class="coupon-input-group">
-                        <input type="text" id="couponInput" class="coupon-input" placeholder="e.g. WELCOME10">
-                        <button onclick="applyCouponHandler()" class="coupon-btn">Apply</button>
-                    </div>
-                    <div id="couponMessage" class="coupon-message"></div>
-                </div>
-
-                <div class="summary-row">
-                    <span>Subtotal</span>
-                    <span id="summarySubtotal">£0.00</span>
-                </div>
-                <div class="summary-row" id="discountRow" style="display: none; color: #27ae60;">
-                    <span>Discount Applied</span>
-                    <span id="summaryDiscount">-£0.00</span>
-                </div>
-                <div class="summary-row">
-                    <span>Shipping</span>
-                    <span id="summaryShipping">£0.00</span>
-                </div>
-                <div class="summary-row total-row">
-                    <span>Total</span>
-                    <span id="summaryTotal">£0.00</span>
-                </div>
-
                 <div id="paypal-button-container"></div>
             </div>
         </div>
-
-        <div id="empty-cart-message" class="empty-cart-msg" style="display: none;">
-            <p>Your basket is currently empty.</p>
-            <a href="index.html" class="continue-shopping"><i class="fa-solid fa-arrow-left"></i> Return to Shop</a>
-        </div>
     </main>
-
-    <!-- Floating Global Support Widget Component -->
-    <div id="helpChatWidget" style="position: fixed; bottom: 25px; right: 25px; z-index: 9999; font-family: 'Inter', sans-serif;">
-        <button onclick="toggleChatMenu()" style="background: #000; color: #fff; border: none; padding: 15px 20px; border-radius: 30px; font-weight: 600; font-size: 13px; letter-spacing: 1px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px;">
-            <i class="fa-regular fa-comments" style="font-size: 16px;"></i> Need Help?
-        </button>
-        <div id="chatChannelsMenu" style="display: none; position: absolute; bottom: 65px; right: 0; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); width: 220px; overflow: hidden; flex-direction: column;">
-            <div style="background: #000; color: #fff; padding: 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; text-align: center;">Chat With Us</div>
-            <a href="https://wa.me/447000000000" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 15px; color: #000; text-decoration: none; font-size: 13px; font-weight: 600; border-bottom: 1px solid #f0f0f0;">
-                <i class="fa-brands fa-whatsapp" style="color: #25D366; font-size: 18px;"></i> WhatsApp
-            </a>
-            <a href="https://m.me/yourpageusername" target="_blank" style="display: flex; align-items: center; gap: 12px; padding: 15px; color: #000; text-decoration: none; font-size: 13px; font-weight: 600;">
-                <i class="fa-brands fa-facebook-messenger" style="color: #006AFF; font-size: 18px;"></i> Messenger
-            </a>
-        </div>
-    </div>
 
     <script>
         let cart = [];
-        const shippingThreshold = 50.00;
-        const standardShippingCost = 3.99;
-
-        // Code Rules Mapping: Percentage reduction matches
-        const COUPON_REGISTRY = {
-            "WELCOME10": 10,
-            "HGCSUMMER20": 20
-        };
         let activeDiscountPercent = 0;
+        const COUPON_REGISTRY = { "WELCOME10": 10, "HGCSUMMER20": 20 };
 
         function loadCart() {
             cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             renderCart();
-            updateCartBadge();
         }
 
-        function updateCartBadge() {
-            const badges = document.querySelectorAll('.cart-count');
-            badges.forEach(badge => badge.innerText = cart.length);
-        }
-
-        function calculateTotals() {
-            let subtotal = 0;
-            cart.forEach(item => subtotal += item.price);
-            
-            let discountAmount = subtotal * (activeDiscountPercent / 100);
-            let discountedSubtotal = subtotal - discountAmount;
-            
-            let shipping = (discountedSubtotal >= shippingThreshold || subtotal === 0) ? 0.00 : standardShippingCost;
-            let total = discountedSubtotal + shipping;
-
-            return {
-                subtotal: subtotal.toFixed(2),
-                discount: discountAmount.toFixed(2),
-                shipping: shipping.toFixed(2),
-                total: total.toFixed(2)
-            };
-        }
-
-        function applyCouponHandler() {
-            const codeInput = document.getElementById('couponInput').value.trim().toUpperCase();
-            const msg = document.getElementById('couponMessage');
-
-            if (COUPON_REGISTRY[codeInput] !== undefined) {
-                activeDiscountPercent = COUPON_REGISTRY[codeInput];
-                msg.style.color = "#27ae60";
-                msg.innerText = `Success! ${activeDiscountPercent}% discount applied.`;
-                
-                renderCart();
-                document.getElementById('paypal-button-container').innerHTML = '';
-                initPayPalButtons();
-            } else {
-                msg.style.color = "#c0392b";
-                msg.innerText = "Invalid coupon code.";
-            }
-        }
-
-        function renderCart() {
-            const wrapper = document.getElementById('cart-content-wrapper');
-            const emptyMsg = document.getElementById('empty-cart-message');
-            const container = document.getElementById('itemsContainer');
-
-            if (cart.length === 0) {
-                wrapper.style.display = 'none';
-                emptyMsg.style.display = 'block';
-                return;
-            }
-
-            wrapper.style.display = 'grid';
-            emptyMsg.style.display = 'none';
-            container.innerHTML = '';
-
-            cart.forEach(item => {
-                const itemEl = document.createElement('div');
-                itemEl.className = 'cart-item';
-                itemEl.innerHTML = `
-                    <div class="item-details">
-                        <div class="item-title">${item.title}</div>
-                        <div class="item-meta">Personalization: <span>${item.personalization}</span></div>
-                        <div class="item-meta">File: <span>${item.fileName}</span></div>
-                    </div>
-                    <div class="item-price-remove">
-                        <div class="item-price">£${item.price.toFixed(2)}</div>
-                        <button class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
-                    </div>
-                `;
-                container.appendChild(itemEl);
-            });
-
-            const t = calculateTotals();
-            document.getElementById('summarySubtotal').innerText = '£' + t.subtotal;
-            
-            if (activeDiscountPercent > 0) {
-                document.getElementById('discountRow').style.display = 'flex';
-                document.getElementById('summaryDiscount').innerText = '-£' + t.discount;
-            } else {
-                document.getElementById('discountRow').style.display = 'none';
-            }
-
-            document.getElementById('summaryShipping').innerText = t.shipping == 0 ? 'FREE' : '£' + t.shipping;
-            document.getElementById('summaryTotal').innerText = '£' + t.total;
-        }
-
-        function removeItem(itemId) {
-            cart = cart.filter(item => item.id !== itemId);
-            localStorage.setItem('hg_cart', JSON.stringify(cart));
-            renderCart();
-            updateCartBadge();
-            if (cart.length > 0) {
-                document.getElementById('paypal-button-container').innerHTML = '';
-                initPayPalButtons();
-            }
+        function showPaypalLoader() {
+            const container = document.getElementById('paypal-button-container');
+            container.innerHTML = '<div class="loading-overlay">Updating totals...</div>';
         }
 
         function initPayPalButtons() {
+            const container = document.getElementById('paypal-button-container');
+            container.innerHTML = ''; // Clear loader
+            
             paypal.Buttons({
                 createOrder: function(data, actions) {
-                    const t = calculateTotals();
+                    // Logic to ensure precision: calculate total, then distribute discount proportionally
+                    let subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+                    let discountAmount = subtotal * (activeDiscountPercent / 100);
+                    let scale = subtotal > 0 ? (subtotal - discountAmount) / subtotal : 1;
                     
-                    // Subtract discount cleanly proportionally from custom array items to match total calculations
-                    const itemsScaleFactor = parseFloat(t.subtotal) > 0 ? (parseFloat(t.subtotal) - parseFloat(t.discount)) / parseFloat(t.subtotal) : 1;
+                    const paypalItems = cart.map(item => ({
+                        name: item.title,
+                        unit_amount: { currency_code: "GBP", value: (item.price * scale).toFixed(2) },
+                        quantity: "1"
+                    }));
 
-                    const paypalItems = cart.map(item => {
-                        let dynamicPrice = (item.price * itemsScaleFactor).toFixed(2);
-                        return {
-                            name: item.title,
-                            description: `Text: ${item.personalization} | File: ${item.fileName}`,
-                            unit_amount: { currency_code: "GBP", value: dynamicPrice },
-                            quantity: "1"
-                        };
-                    });
-
-                    // Recalculate precision sum to fix rounding mismatches
-                    let checkedItemSum = 0;
-                    paypalItems.forEach(i => checkedItemSum += parseFloat(i.unit_amount.value));
-                    
                     return actions.order.create({
                         purchase_units: [{
-                            amount: {
-                                currency_code: "GBP",
-                                value: (checkedItemSum + parseFloat(t.shipping)).toFixed(2),
-                                breakdown: {
-                                    item_total: { currency_code: "GBP", value: checkedItemSum.toFixed(2) },
-                                    shipping: { currency_code: "GBP", value: t.shipping }
-                                }
+                            amount: { 
+                                currency_code: "GBP", 
+                                value: (subtotal - discountAmount + (subtotal - discountAmount > 50 ? 0 : 3.99)).toFixed(2) 
                             },
                             items: paypalItems
                         }]
                     });
                 },
-                onApprove: function(data, actions) {
-                    return actions.order.capture().then(function(details) {
-                        alert('Order processed! Thank you, ' + details.payer.name.given_name);
-                        localStorage.removeItem('hg_cart');
-                        window.location.href = "index.html";
-                    });
-                }
+                onApprove: (data, actions) => actions.order.capture().then(() => {
+                    localStorage.removeItem('hg_cart');
+                    window.location.href = "index.html";
+                })
             }).render('#paypal-button-container');
         }
 
-        function toggleChatMenu() {
-            const menu = document.getElementById('chatChannelsMenu');
-            menu.style.display = (menu.style.display === 'none' || menu.style.display === '') ? 'flex' : 'none';
+        // Trigger loader whenever cart state changes
+        function refreshCheckout() {
+            showPaypalLoader();
+            setTimeout(initPayPalButtons, 500); // Simulate network delay for user awareness
         }
-
-        document.addEventListener('click', function(e) {
-            const w = document.getElementById('helpChatWidget');
-            if (!w.contains(e.target)) document.getElementById('chatChannelsMenu').style.display = 'none';
-        });
 
         document.addEventListener('DOMContentLoaded', () => {
             loadCart();
-            if (cart.length > 0) initPayPalButtons();
+            if (cart.length > 0) refreshCheckout();
         });
     </script>
 </body>
