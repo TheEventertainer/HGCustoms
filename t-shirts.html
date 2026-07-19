@@ -6,18 +6,20 @@
     <title>Custom T-Shirts | HG Customs</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 1. Cloudinary Widget Script -->
+    <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
+
     <style>
         :root { --text-dark: #000000; --bg-light: #f9f9f9; --border-color: #e5e5e5; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; overflow-x: hidden; }
         
-        /* Fixed Header & Mobile Responsive Fixes */
         .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; }
         .logo img { height: 40px; }
         .nav-links { display: flex; list-style: none; gap: 20px; }
         .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 12px; text-transform: uppercase; }
         
-        /* Mobile Hamburger Menu Logic */
         @media (max-width: 768px) {
             .main-header { padding: 15px; }
             .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px; }
@@ -31,7 +33,6 @@
         .product-card { border: 1px solid var(--border-color); padding: 15px; display: flex; flex-direction: column; }
         .btn-customize { background: #000; color: #fff; border: none; padding: 12px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; margin-top: auto; }
         
-        /* Modal */
         .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
         .modal.is-active { display: flex; }
         .modal-content { background: #fff; max-width: 400px; width: 90%; padding: 30px; border-radius: 8px; position: relative; }
@@ -65,7 +66,6 @@
                 <div class="prod-price">£22.00</div>
                 <button class="btn-customize" onclick="openProductModal('Streetwear Heavyweight Tee', '22.00')">Design & Buy</button>
             </div>
-            <!-- Add other items as needed -->
         </div>
     </main>
 
@@ -74,26 +74,50 @@
         <div class="modal-content">
             <h2 id="modalTitle">Product</h2>
             <textarea id="userText" placeholder="Specify size (S, M, L, XL), color preference, and custom script..." style="width: 100%; margin: 10px 0;"></textarea>
-            <input type="file" id="userImage">
+            
+            <!-- 2. Cloudinary Upload Widget Button -->
+            <button id="upload_widget" class="btn-customize" style="background: #444; margin-bottom: 10px;">Upload Design File</button>
+            <input type="hidden" id="uploaded_file_url">
+            
             <button class="btn-customize" onclick="addToBasket()">Add To Basket</button>
         </div>
     </div>
 
     <script>
+        // Initialize Cloudinary Widget
+        var myWidget = cloudinary.createUploadWidget({
+            cloudName: 'opdnamfa', 
+            uploadPreset: 'YOUR_UPLOAD_PRESET' // Replace with your actual Unsigned Preset name
+        }, (error, result) => { 
+            if (!error && result && result.event === "success") { 
+                document.getElementById('uploaded_file_url').value = result.info.secure_url;
+                alert('File uploaded successfully!');
+            }
+        });
+
+        document.getElementById("upload_widget").addEventListener("click", function(){
+            myWidget.open();
+        }, false);
+
         function openProductModal(t, p) {
             document.getElementById('modalTitle').innerText = t;
             document.getElementById('productModal').classList.add('is-active');
         }
+
         function addToBasket() {
             const title = document.getElementById('modalTitle').innerText;
             const notes = document.getElementById('userText').value;
+            const fileUrl = document.getElementById('uploaded_file_url').value;
+            
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            cart.push({ title, notes });
+            cart.push({ title, notes, fileUrl: fileUrl || "No file uploaded" });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
+            
             document.getElementById('productModal').classList.remove('is-active');
             updateBadge();
             alert("Added to basket!");
         }
+
         function updateBadge() {
             const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             document.querySelector('.cart-count').innerText = cart.length;
