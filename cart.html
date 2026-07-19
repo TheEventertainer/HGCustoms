@@ -6,106 +6,483 @@
     <title>Your Basket | HG Customs</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=GBP"></script>
-
     <style>
-        :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; --font-sans: 'Inter', sans-serif; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-sans); color: var(--text-dark); background-color: #ffffff; display: flex; flex-direction: column; min-height: 100vh; }
+        :root {
+            --text-dark: #000000;
+            --text-muted: #555555;
+            --bg-light: #f9f9f9;
+            --border-color: #e5e5e5;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-dark);
+            background-color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Top Announcement Bar --- */
+        .announcement-bar {
+            background-color: #000000;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 20px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #333;
+        }
+
+        .announcement-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .announcement-item i { font-size: 16px; }
+        .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
+
+        /* --- Main Header Navigation --- */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            background: #fff;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .logo img { height: 55px; display: block; }
+        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
+        .nav-links > li { position: relative; padding: 10px 0; }
         
-        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 100; }
-        .logo img { height: 55px; }
-        .nav-links { display: flex; list-style: none; gap: 30px; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; text-transform: uppercase; }
-        .cart-container { max-width: 1200px; margin: 50px auto; padding: 0 20px; flex-grow: 1; width: 100%; }
-        .cart-title { font-size: 28px; text-transform: uppercase; margin-bottom: 30px; border-bottom: 2px solid var(--text-dark); padding-bottom: 15px; }
-        .cart-wrapper { display: grid; grid-template-columns: 2fr 1fr; gap: 50px; }
-        .order-summary-box { background-color: var(--bg-light); padding: 30px; border: 1px solid var(--border-color); height: fit-content; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding-bottom: 4px;
+            transition: border-color 0.3s;
+        }
+
+        .nav-links > li > a:hover { border-bottom: 2px solid #000; }
+        .nav-links i { font-size: 10px; margin-left: 5px; }
+
+        /* --- Dropdown Menu Styling --- */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            min-width: 180px;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            margin-top: 5px;
+            z-index: 1100;
+        }
+
+        .dropdown-menu li { border-bottom: 1px solid var(--bg-light); }
+        .dropdown-menu li:last-child { border-bottom: none; }
         
-        #paypal-button-container { min-height: 150px; position: relative; }
-        .loading-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; z-index: 10; }
+        .dropdown-menu a {
+            display: block;
+            padding: 12px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            white-space: nowrap;
+            border-bottom: none !important;
+        }
+
+        .dropdown-menu a:hover { background-color: var(--bg-light); color: #000000; }
+        .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; }
+        
+        .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
+        .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
+        
+        .cart-icon .cart-count {
+            position: absolute;
+            top: -8px; right: -10px;
+            background: #000; color: #fff;
+            font-size: 10px; width: 16px; height: 16px;
+            border-radius: 50%; display: flex;
+            align-items: center; justify-content: center;
+            font-weight: bold;
+        }
+
+        .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
+
+        /* --- Shopping Basket Layout Content --- */
+        .basket-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .basket-title {
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #000;
+            margin-bottom: 30px;
+        }
+
+        .basket-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* Product List Styles */
+        .cart-items-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            background: #fff;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .item-meta {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .item-right {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .item-price {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+
+        .remove-btn:hover {
+            color: #ff3b30;
+        }
+
+        .empty-message {
+            font-size: 15px;
+            color: var(--text-muted);
+            padding: 40px 0;
+        }
+
+        /* Checkout Box Layout styling */
+        .checkout-sidebar {
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .total-label { font-weight: 700; text-transform: uppercase; }
+        .total-price { font-weight: 700; font-size: 18px; }
+
+        .paypal-placeholder {
+            margin-top: 15px;
+            background: #fff;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* --- Footer Section --- */
+        .site-footer {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+        }
+
+        .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .copyright-text { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; }
+        .footer-links { display: flex; list-style: none; gap: 20px; }
+        .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--text-dark); }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .main-header { padding: 20px; }
+            .mobile-toggle { display: block; order: 1; }
+            .logo { order: 2; }
+            .header-actions { order: 3; }
+            nav { width: 100%; order: 4; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
+            .nav-links.is-open { display: flex; }
+            .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
+            .dropdown-menu { position: relative; top: 0; left: 0; transform: none; box-shadow: none; border: none; opacity: 1; visibility: visible; display: none; margin-top: 10px; background: var(--bg-light); }
+            .has-dropdown.is-open .dropdown-menu { display: flex; }
+            .basket-layout { grid-template-columns: 1fr; gap: 30px; }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .footer-links { justify-content: center; flex-wrap: wrap; gap: 15px; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- Top Announcement Bar -->
+    <div class="announcement-bar">
+        <a href="#" class="announcement-item">
+            <i class="fa-solid fa-truck"></i>
+            <div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div>
+        </a>
+        <a href="#" class="announcement-item">
+            <i class="fa-regular fa-clock"></i>
+            <div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div>
+        </a>
+        <a href="#" class="announcement-item">
+            <i class="fa-regular fa-circle-check"></i>
+            <div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div>
+        </a>
+    </div>
+
+    <!-- Main Navigation Header -->
     <header class="main-header">
-        <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs"></a></div>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="t-shirts.html">T-Shirts</a></li>
-            <li><a href="cart.html">Basket <span class="cart-count">0</span></a></li>
-        </ul>
+        <div class="mobile-toggle" id="menu-toggle">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+
+        <div class="logo">
+            <a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a>
+        </div>
+
+        <nav>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li class="has-dropdown" id="dropdown-li">
+                    <a href="#" id="dropdown-trigger">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="mugs.html">Custom Mugs</a></li>
+                        <li><a href="t-shirts.html">Custom T-Shirts</a></li>
+                        <li><a href="coasters.html">Custom Coasters</a></li>
+                        <li><a href="merchandise.html">Band & Show Merch</a></li>
+                    </ul>
+                </li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+            <a href="cart.html" class="cart-icon" aria-label="Cart">
+                <i class="fa-solid fa-basket-shopping"></i>
+                <span class="cart-count">0</span>
+            </a>
+        </div>
     </header>
 
-    <main class="cart-container">
-        <h1 class="cart-title">Your Shopping Basket</h1>
-        <div id="cart-content-wrapper" class="cart-wrapper" style="display: none;">
-            <div class="cart-items-list" id="itemsContainer"></div>
-            <div class="order-summary-box">
-                <div id="paypal-button-container"></div>
+    <!-- Shopping Basket Content Layout -->
+    <main class="basket-container">
+        <h1 class="basket-title">Your Shopping Basket</h1>
+        
+        <div class="basket-layout">
+            <!-- Left Side Area: Renders the active items from LocalStorage -->
+            <div class="cart-items-wrapper" id="cart-items-container">
+                <!-- Javascript fills this dynamically -->
+            </div>
+
+            <!-- Right Side Area: Pricing summary and checkout targets -->
+            <div class="checkout-sidebar">
+                <div class="summary-row">
+                    <span class="total-label">Estimated Total</span>
+                    <span class="total-price" id="basket-total-display">£0.00</span>
+                </div>
+                
+                <!-- PayPal Checkout Buttons Container -->
+                <div class="paypal-placeholder">
+                    <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" alt="PayPal Checkout" style="max-width:100%; margin-bottom:10px; cursor:pointer;">
+                    <div style="background:#2c2e2f; color:#fff; padding:10px; font-weight:600; font-size:13px; border-radius:4px; cursor:pointer;">
+                        <i class="fa-regular fa-credit-card"></i> Debit or Credit Card
+                    </div>
+                    <p style="font-size:10px; margin-top:8px; color:var(--text-muted);">Powered by PayPal</p>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- Hidden Form for FormBold -->
-    <form id="order-submission-form" action="https://formbold.com/s/oYA8D" method="POST" style="display:none;">
-        <input type="hidden" name="order_details" id="order_details_field">
-    </form>
+    <!-- Footer Section -->
+    <footer class="site-footer">
+        <div class="footer-bottom">
+            <div class="copyright-text">&copy; 2026 HG Customs. All rights reserved.</div>
+            <ul class="footer-links">
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Refund Policy</a></li>
+                <li><a href="#">Shipping Info</a></li>
+            </ul>
+        </div>
+    </footer>
 
+    <!-- Logic Engine to Synchronize Data and Handle Dynamic Rendering -->
     <script>
-        let cart = [];
-
-        function loadCart() {
-            cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            document.querySelector('.cart-count').innerText = cart.length;
-            if (cart.length > 0) document.getElementById('cart-content-wrapper').style.display = 'grid';
+        function getCart() {
+            return JSON.parse(localStorage.getItem('hg_cart')) || [];
         }
 
-        function initPayPalButtons() {
-            const container = document.getElementById('paypal-button-container');
-            container.innerHTML = ''; 
+        function saveCart(cart) {
+            localStorage.setItem('hg_cart', JSON.stringify(cart));
+        }
+
+        // Remove item logic matching product array index
+        function removeBasketItem(index) {
+            let cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            renderCartPage();
+        }
+
+        function renderCartPage() {
+            const cart = getCart();
             
-            paypal.Buttons({
-                createOrder: function(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: { currency_code: "GBP", value: "10.00" } // Replace with your dynamic total logic
-                        }]
-                    });
-                },
-                onApprove: (data, actions) => {
-                    return actions.order.capture().then(function(details) {
-                        const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-                        
-                        // 1. Build structured order summary
-                        let orderSummary = `New Order from: ${details.payer.name.given_name}\nEmail: ${details.payer.email_address}\n\n`;
-                        cart.forEach((item, index) => {
-                            orderSummary += `--- ITEM ${index + 1} ---\n`;
-                            orderSummary += `Product: ${item.title}\n`;
-                            orderSummary += `Notes: ${item.notes}\n`;
-                            orderSummary += `High-Res File: ${item.fileUrl}\n\n`;
-                        });
+            // Sync top header badge number
+            const badges = document.querySelectorAll('.cart-count');
+            badges.forEach(badge => badge.innerText = cart.length);
 
-                        // 2. Inject into hidden form
-                        document.getElementById('order_details_field').value = orderSummary;
+            const container = document.getElementById('cart-items-container');
+            const totalDisplay = document.getElementById('basket-total-display');
+            
+            if (!container) return;
 
-                        // 3. Submit to FormBold
-                        document.getElementById('order-submission-form').submit();
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="empty-message">Your basket is currently empty. <a href="index.html" style="color:#000; font-weight:600;">Go browse custom products</a>.</p>`;
+                totalDisplay.innerText = "£0.00";
+                return;
+            }
 
-                        // 4. Clear and Redirect to Thank You page
-                        localStorage.removeItem('hg_cart');
-                        window.location.href = "thank-you.html";
-                    });
-                }
-            }).render('#paypal-button-container');
+            let htmlContent = '';
+            let combinedTotal = 0;
+
+            cart.forEach((item, index) => {
+                // Ensure a base fall-back price exists if not stored down with item
+                const itemPrice = parseFloat(item.price) || 12.50; 
+                combinedTotal += itemPrice;
+
+                // Build customization properties safely if they exist
+                let configurationDetails = '';
+                if(item.size) configurationDetails += `Size: ${item.size} | `;
+                if(item.color) configurationDetails += `Color: ${item.color} | `;
+                if(item.text) configurationDetails += `Text: "${item.text}"`;
+                
+                // Fallback default meta if object structure lacks variables
+                if(!configurationDetails) configurationDetails = "Standard Custom Product Layout";
+
+                htmlContent += `
+                    <div class="cart-item">
+                        <div class="item-details">
+                            <h2 class="item-title">${item.productType || 'Custom Item'}</h2>
+                            <p class="item-meta">${configurationDetails}</p>
+                        </div>
+                        <div class="item-right">
+                            <span class="item-price">£${itemPrice.toFixed(2)}</span>
+                            <button class="remove-btn" onclick="removeBasketItem(${index})" aria-label="Remove item">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = htmlContent;
+            totalDisplay.innerText = `£${combinedTotal.toFixed(2)}`;
         }
 
+        // Setup Responsiveness Listeners 
         document.addEventListener('DOMContentLoaded', () => {
-            loadCart();
-            initPayPalButtons();
+            renderCartPage();
+
+            const menuToggle = document.getElementById('menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const dropdownLi = document.getElementById('dropdown-li');
+            const dropdownTrigger = document.getElementById('dropdown-trigger');
+
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    navMenu.classList.toggle('is-open');
+                });
+            }
+
+            if (dropdownTrigger && dropdownLi) {
+                dropdownTrigger.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 992) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        dropdownLi.classList.toggle('is-open');
+                    }
+                });
+            }
+
+            document.addEventListener('click', () => {
+                if (navMenu && navMenu.classList.contains('is-open')) navMenu.remove('is-open');
+                if (dropdownLi && dropdownLi.classList.contains('is-open')) dropdownLi.remove('is-open');
+            });
         });
     </script>
 </body>
