@@ -95,9 +95,9 @@
                         // 3. Submit to FormBold
                         document.getElementById('order-submission-form').submit();
 
-                        // 4. Clear and Redirect
+                        // 4. Clear and Redirect to Thank You page
                         localStorage.removeItem('hg_cart');
-                        window.location.href = "index.html";
+                        window.location.href = "thank-you.html";
                     });
                 }
             }).render('#paypal-button-container');
