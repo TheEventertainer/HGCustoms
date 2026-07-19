@@ -55,6 +55,8 @@
         .catalog-container h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 15px; border-bottom: 2px solid #000; margin-bottom: 30px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
         .product-card { border: 1px solid var(--border-color); padding: 25px; display: flex; flex-direction: column; background: #fff; }
+        .product-image-wrapper { text-align: center; margin-bottom: 15px; border: 1px solid var(--border-color); padding: 10px; background: var(--bg-light); display: flex; align-items: center; justify-content: center; }
+        .product-image-wrapper img { max-width: 100%; height: 200px; object-fit: contain; }
         .prod-title { font-size: 16px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
         .prod-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
         
@@ -64,7 +66,7 @@
         /* --- Modal Area --- */
         .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal.is-active { display: flex; }
-        .modal-content { background: #fff; max-width: 440px; width: 90%; padding: 35px; position: relative; border: 1px solid var(--border-color); border-radius: 0px; }
+        .modal-content { background: #fff; max-width: 440px; width: 90%; padding: 35px; position: relative; border: 1px solid var(--border-color); }
         .modal-content h2 { font-size: 18px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px; }
         
         .close-modal { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 20px; cursor: pointer; color: #999; }
@@ -73,20 +75,10 @@
         .form-textarea { width: 100%; height: 80px; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; resize: none; }
         .upload-status-text { font-size: 12px; font-weight: 600; margin: -5px 0 15px 0; min-height: 16px; }
 
-        /* Dynamic Variant Swatch & Configurator Component Form Styles */
-        .color-selection-wrapper { margin: 15px 0; }
-        .color-selection-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; display: block; }
-        .color-selection-label span { font-weight: 400; text-transform: none; color: var(--text-muted); margin-left: 5px; }
-        .color-swatch-grid { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        /* --- Preview Image & Quantity Selector --- */
+        .preview-container { text-align: center; margin-bottom: 15px; background: var(--bg-light); border: 1px solid var(--border-color); padding: 10px; display: flex; align-items: center; justify-content: center; }
+        .preview-container img { max-width: 100%; height: 140px; object-fit: contain; }
         
-        .color-swatch { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; cursor: pointer; position: relative; transition: transform 0.2s, border-color 0.2s; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
-        .color-swatch:hover { transform: scale(1.1); }
-        .color-swatch.is-selected { border-color: #000000; transform: scale(1.1); }
-
-        .size-selection-wrapper { margin: 15px 0; }
-        .size-selection-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; display: block; }
-        .form-select { width: 100%; padding: 12px; border: 1px solid var(--border-color); background-color: #fff; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%23000000' d='M0 0l5 5 5-5z'/></svg>"); background-repeat: no-repeat; background-position: right 15px center; }
-
         .quantity-wrapper { display: flex; align-items: center; justify-content: space-between; margin: 15px 0; padding-top: 10px; border-top: 1px solid var(--border-color); }
         .quantity-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .quantity-controls { display: flex; align-items: center; border: 1px solid var(--border-color); }
@@ -111,14 +103,14 @@
 </head>
 <body>
 
-    <!-- Announcement Bar -->
+    <!-- Top Announcement Bar -->
     <div class="announcement-bar">
         <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i><div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div></a>
         <a href="#" class="announcement-item"><i class="fa-regular fa-clock"></i><div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div></a>
         <a href="#" class="announcement-item"><i class="fa-regular fa-circle-check"></i><div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div></a>
     </div>
 
-    <!-- Main Header Navigation -->
+    <!-- Main Navigation Header -->
     <header class="main-header">
         <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
         <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a></div>
@@ -149,39 +141,57 @@
         <div class="product-grid">
             <!-- Product 1 -->
             <div class="product-card">
-                <div class="prod-title">Logo Hoodie</div>
-                <div class="prod-price">£34.99</div>
-                <button class="btn-customize" onclick="openMerchModal('Logo Hoodie', 34.99, 'apparel')">Design & Buy</button>
+                <div class="product-image-wrapper">
+                    <img src="merch-1.jpg" alt="Custom Enamel Pin Badges">
+                </div>
+                <div class="prod-title">Custom Enamel Pin Badges</div>
+                <div class="prod-price">£2.20</div>
+                <button class="btn-customize" onclick="openProductModal('Custom Enamel Pin Badges', 2.20, 'merch-1.jpg')">Design & Buy</button>
             </div>
             <!-- Product 2 -->
             <div class="product-card">
-                <div class="prod-title">Merch T-Shirt</div>
-                <div class="prod-price">£19.99</div>
-                <button class="btn-customize" onclick="openMerchModal('Merch T-Shirt', 19.99, 'apparel')">Design & Buy</button>
+                <div class="product-image-wrapper">
+                    <img src="merch-2.jpg" alt="Embroidered Dad Caps">
+                </div>
+                <div class="prod-title">Embroidered Dad Caps</div>
+                <div class="prod-price">£12.50</div>
+                <button class="btn-customize" onclick="openProductModal('Embroidered Dad Caps', 12.50, 'merch-2.jpg')">Design & Buy</button>
             </div>
             <!-- Product 3 -->
             <div class="product-card">
-                <div class="prod-title">Classic Merch Mug</div>
-                <div class="prod-price">£9.50</div>
-                <button class="btn-customize" onclick="openMerchModal('Classic Merch Mug', 9.50, 'mug')">Design & Buy</button>
+                <div class="product-image-wrapper">
+                    <img src="merch-3.jpg" alt="Screenprinted Tote Bags">
+                </div>
+                <div class="prod-title">Screenprinted Tote Bags</div>
+                <div class="prod-price">£4.50</div>
+                <button class="btn-customize" onclick="openProductModal('Screenprinted Tote Bags', 4.50, 'merch-3.jpg')">Design & Buy</button>
             </div>
             <!-- Product 4 -->
             <div class="product-card">
-                <div class="prod-title">Aluminum Water Bottle</div>
-                <div class="prod-price">£14.99</div>
-                <button class="btn-customize" onclick="openMerchModal('Aluminum Water Bottle', 14.99, 'bottle')">Design & Buy</button>
+                <div class="product-image-wrapper">
+                    <img src="merch-4.jpg" alt="Woven Tour Wristbands">
+                </div>
+                <div class="prod-title">Woven Tour Wristbands</div>
+                <div class="prod-price">£1.10</div>
+                <button class="btn-customize" onclick="openProductModal('Woven Tour Wristbands', 1.10, 'merch-4.jpg')">Design & Buy</button>
             </div>
             <!-- Product 5 -->
             <div class="product-card">
-                <div class="prod-title">Canvas Tote Bag</div>
-                <div class="prod-price">£7.99</div>
-                <button class="btn-customize" onclick="openMerchModal('Canvas Tote Bag', 7.99, 'tote')">Design & Buy</button>
+                <div class="product-image-wrapper">
+                    <img src="merch-5.jpg" alt="Premium Tour Lanyards">
+                </div>
+                <div class="prod-title">Premium Tour Lanyards</div>
+                <div class="prod-price">£1.95</div>
+                <button class="btn-customize" onclick="openProductModal('Premium Tour Lanyards', 1.95, 'merch-5.jpg')">Design & Buy</button>
             </div>
             <!-- Product 6 -->
             <div class="product-card">
-                <div class="prod-title">Custom Logo Keyring</div>
-                <div class="prod-price">£3.50</div>
-                <button class="btn-customize" onclick="openMerchModal('Custom Logo Keyring', 3.50, 'keyring')">Design & Buy</button>
+                <div class="product-image-wrapper">
+                    <img src="merch-6.jpg" alt="Vinyl Sticker Packs">
+                </div>
+                <div class="prod-title">Vinyl Sticker Packs</div>
+                <div class="prod-price">£3.25</div>
+                <button class="btn-customize" onclick="openProductModal('Vinyl Sticker Packs', 3.25, 'merch-6.jpg')">Design & Buy</button>
             </div>
         </div>
     </main>
@@ -190,47 +200,21 @@
     <div class="modal" id="productModal">
         <div class="modal-content">
             <button class="close-modal" onclick="document.getElementById('productModal').classList.remove('is-active')">&times;</button>
+            
+            <!-- Target Image Preview Box Container -->
+            <div id="imagePreviewContainer" class="preview-container">
+                <img id="imagePreview" src="" alt="Design Preview">
+            </div>
+
             <h2 id="modalTitle">Product</h2>
-            
-            <!-- Dynamic Color Swatches Interface Frame Wrapper -->
-            <div id="modalColorWrapper" class="color-selection-wrapper" style="display: none;">
-                <label class="color-selection-label">Select Color: <span id="currentColorLabel">White</span></label>
-                <div id="colorSwatchGrid" class="color-swatch-grid"></div>
-            </div>
 
-            <!-- Dynamic Size Dropdown Selection Block -->
-            <div id="modalSizeWrapper" class="size-selection-wrapper" style="display: none;">
-                <label for="productSize" class="size-selection-label">Select Size</label>
-                <select id="productSize" class="form-select">
-                    <option value="XS">XS</option>
-                    <option value="S">S</option>
-                    <option value="M" selected>M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                    <option value="XXL">XXL</option>
-                    <option value="XXXL">XXXL</option>
-                </select>
-            </div>
-
-            <!-- Dynamic Mug Finish Dropdown Block -->
-            <div id="modalMugWrapper" class="size-selection-wrapper" style="display: none;">
-                <label for="mugFinish" class="size-selection-label">Select Finish</label>
-                <select id="mugFinish" class="form-select">
-                    <option value="Standard White">Standard White</option>
-                    <option value="Black Inner/Handle">Black Inner/Handle</option>
-                    <option value="Blue Inner/Handle">Blue Inner/Handle</option>
-                    <option value="Red Inner/Handle">Red Inner/Handle</option>
-                    <option value="Green Inner/Handle">Green Inner/Handle</option>
-                </select>
-            </div>
-            
-            <textarea id="userText" class="form-textarea" placeholder="Inscription details or specific instructions..."></textarea>
+            <textarea id="userText" class="form-textarea" placeholder="Tour dates, sizing distributions, design specs or text options..."></textarea>
             
             <button id="upload_widget" class="btn-customize" style="background: #444; margin-bottom: 10px;">Upload Design File</button>
             <div id="upload-status-message" class="upload-status-text"></div>
             <input type="hidden" id="uploaded_file_url">
-
-            <!-- Quantity Modifier Control Field Layout -->
+            
+            <!-- Standard Quantity Selection Control Wrapper -->
             <div class="quantity-wrapper">
                 <span class="quantity-label">Quantity</span>
                 <div class="quantity-controls">
@@ -239,42 +223,14 @@
                     <button type="button" class="qty-btn" onclick="adjustModalQty(1)">+</button>
                 </div>
             </div>
-            
+
             <button id="add-to-basket-btn" class="btn-customize" onclick="addToBasket()">Add To Basket</button>
         </div>
     </div>
 
     <script>
         let currentActivePrice = 0;
-        let selectedProductColor = "";
-        let currentProductType = "";
-
-        // Swatch Data Models
-        const apparelColors = [
-            { name: "Red", hex: "#e51a1a" },
-            { name: "Blue", hex: "#1a5be5" },
-            { name: "Green", hex: "#279e27" },
-            { name: "White", hex: "#ffffff", stroke: true },
-            { name: "Black", hex: "#000000" }
-        ];
-
-        const bottleColors = [
-            { name: "White", hex: "#ffffff", stroke: true },
-            { name: "Black", hex: "#000000" },
-            { name: "Yellow", hex: "#ffcc00" },
-            { name: "Red", hex: "#e51a1a" },
-            { name: "Blue", hex: "#1a5be5" },
-            { name: "Green", hex: "#279e27" }
-        ];
-
-        const toteColors = [
-            { name: "White", hex: "#ffffff", stroke: true },
-            { name: "Black", hex: "#000000" },
-            { name: "Blue", hex: "#1a5be5" },
-            { name: "Green", hex: "#279e27" },
-            { name: "Yellow", hex: "#ffcc00" },
-            { name: "Red", hex: "#e51a1a" }
-        ];
+        let defaultProductImage = "";
 
         // Initialize Cloudinary Widget Configuration
         var myWidget = cloudinary.createUploadWidget({
@@ -282,7 +238,16 @@
             uploadPreset: 'hg_customs_preset'
         }, (error, result) => {
             if (!error && result && result.event === "success") { 
-                document.getElementById('uploaded_file_url').value = result.info.secure_url;
+                const secureUrl = result.info.secure_url;
+                document.getElementById('uploaded_file_url').value = secureUrl;
+                
+                // Show design image dynamic preview thumbnail using uploaded file
+                const previewImg = document.getElementById('imagePreview');
+                if (previewImg) {
+                    previewImg.src = secureUrl;
+                }
+
+                // Optimized Inline Success UI Feedback
                 const statusMsg = document.getElementById('upload-status-message');
                 statusMsg.innerText = "✓ Image uploaded successfully!";
                 statusMsg.style.color = "#28a745";
@@ -293,69 +258,27 @@
             myWidget.open();
         }, false);
 
-        // Advanced Modal UI Controller Engine
-        function openMerchModal(title, price, type) {
+        function openProductModal(title, price, imagePath) {
             document.getElementById('modalTitle').innerText = title;
             currentActivePrice = price;
-            currentProductType = type;
+            defaultProductImage = imagePath;
             
-            // Baseline input resetting loops
+            // Render the baseline product placeholder inside the modal above the title layout
+            const previewImg = document.getElementById('imagePreview');
+            if (previewImg) {
+                previewImg.src = imagePath;
+            }
+            
+            // Clean dynamic interface elements upon modal entry
             document.getElementById('uploaded_file_url').value = '';
             document.getElementById('userText').value = '';
             document.getElementById('upload-status-message').innerText = '';
             document.getElementById('modalQuantity').value = 1;
-            document.getElementById('productSize').value = 'M';
-            document.getElementById('mugFinish').value = 'Standard White';
-            selectedProductColor = "";
-
-            // Structural display clean routines
-            document.getElementById('modalColorWrapper').style.display = 'none';
-            document.getElementById('modalSizeWrapper').style.display = 'none';
-            document.getElementById('modalMugWrapper').style.display = 'none';
-
-            const swatchGrid = document.getElementById('colorSwatchGrid');
-            swatchGrid.innerHTML = "";
-
-            // Evaluation configuration branch map logic
-            if (type === 'apparel') {
-                document.getElementById('modalColorWrapper').style.display = 'block';
-                document.getElementById('modalSizeWrapper').style.display = 'block';
-                renderSwatches(apparelColors);
-            } else if (type === 'mug') {
-                document.getElementById('modalMugWrapper').style.display = 'block';
-            } else if (type === 'bottle') {
-                document.getElementById('modalColorWrapper').style.display = 'block';
-                renderSwatches(bottleColors);
-            } else if (type === 'tote') {
-                document.getElementById('modalColorWrapper').style.display = 'block';
-                renderSwatches(toteColors);
-            }
-
+            
             document.getElementById('productModal').classList.add('is-active');
         }
 
-        function renderSwatches(colorList) {
-            const swatchGrid = document.getElementById('colorSwatchGrid');
-            selectedProductColor = colorList[0].name;
-            document.getElementById('currentColorLabel').innerText = selectedProductColor;
-
-            colorList.forEach((color, idx) => {
-                const swatch = document.createElement('div');
-                swatch.className = `color-swatch ${idx === 0 ? 'is-selected' : ''}`;
-                swatch.style.backgroundColor = color.hex;
-                if (color.stroke) {
-                    swatch.style.border = '1px solid #dcdcdc';
-                }
-                swatch.onclick = function() {
-                    document.querySelectorAll('.color-swatch').forEach(sw => sw.classList.remove('is-selected'));
-                    swatch.classList.add('is-selected');
-                    selectedProductColor = color.name;
-                    document.getElementById('currentColorLabel').innerText = color.name;
-                };
-                swatchGrid.appendChild(swatch);
-            });
-        }
-
+        // Inline manual adjustments helper logic targeting input values
         function adjustModalQty(amount) {
             const qtyInput = document.getElementById('modalQuantity');
             if (qtyInput) {
@@ -373,29 +296,21 @@
             const quantityVal = parseInt(document.getElementById('modalQuantity').value) || 1;
             
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            let itemPayload = {
-                name: title,
-                price: currentActivePrice,
-                text: textValue,
-                fileUrl: fileUrl || "No file uploaded",
+            
+            // Appends structured fields supporting item count consolidation tracking algorithms
+            cart.push({ 
+                name: title, 
+                price: currentActivePrice, 
+                text: textValue, 
+                // Fallback to the catalog thumbnail placeholder image path if no custom file upload exists
+                fileUrl: fileUrl || defaultProductImage,
                 quantity: quantityVal
-            };
-
-            // Dynamic payload structural generation based on type definitions
-            if (currentProductType === 'apparel') {
-                itemPayload.color = selectedProductColor;
-                itemPayload.size = document.getElementById('productSize').value;
-            } else if (currentProductType === 'mug') {
-                itemPayload.finish = document.getElementById('mugFinish').value;
-            } else if (currentProductType === 'bottle' || currentProductType === 'tote') {
-                itemPayload.color = selectedProductColor;
-            }
-
-            cart.push(itemPayload);
+            });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             
             updateBadge();
 
+            // Optimized Basket Addition Feedback Loop Animation
             const basketBtn = document.getElementById('add-to-basket-btn');
             if (basketBtn) {
                 const originalText = basketBtn.innerHTML;
@@ -414,11 +329,13 @@
 
         function updateBadge() {
             const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            // Calculate actual total volume sum based on line item quantity values
             const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
             const badges = document.querySelectorAll('.cart-count');
             badges.forEach(badge => badge.innerText = totalItems);
         }
 
+        // Global viewport layout event registrations
         document.addEventListener('DOMContentLoaded', () => {
             updateBadge();
 
@@ -440,6 +357,7 @@
                 if (dropdownLi && dropdownLi.classList.contains('is-open')) dropdownLi.classList.remove('is-open');
             });
 
+            // Enforce minimum bounds validation on blur rules directly
             const qtyInput = document.getElementById('modalQuantity');
             if (qtyInput) {
                 qtyInput.addEventListener('blur', () => {
