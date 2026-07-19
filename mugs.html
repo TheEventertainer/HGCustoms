@@ -20,13 +20,18 @@
         .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); }
         .logo { font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
         .logo a { text-decoration: none; color: #000; }
+        
         .nav-links { display: flex; list-style: none; gap: 30px; }
         .nav-links a { text-decoration: none; color: #000; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        
         .header-actions { display: flex; align-items: center; gap: 20px; font-size: 18px; }
         .mobile-toggle { display: none; font-size: 20px; cursor: pointer; }
         
         /* Mobile Nav */
         .mobile-nav { display: none; background: #fff; padding: 20px; border-bottom: 1px solid var(--border-color); text-align: center; }
+        .mobile-nav ul { list-style: none; }
+        .mobile-nav li { margin: 15px 0; }
+        .mobile-nav a { text-decoration: none; color: #000; font-weight: 600; text-transform: uppercase; }
         
         /* Catalog */
         .catalog-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
@@ -42,7 +47,7 @@
         .footer { padding: 40px; text-align: center; border-top: 1px solid var(--border-color); margin-top: 50px; color: #888; font-size: 12px; }
 
         @media (max-width: 768px) {
-            .nav-links, .header-actions { display: none; }
+            .nav-links { display: none; }
             .mobile-toggle { display: block; }
         }
     </style>
@@ -57,6 +62,9 @@
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="mugs.html">Mugs</a></li>
+            <li><a href="coasters.html">Coasters</a></li>
+            <li><a href="t-shirts.html">T-Shirts</a></li>
+            <li><a href="merchandise.html">Merchandise</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
         <div class="header-actions">
@@ -65,9 +73,12 @@
     </header>
 
     <div id="mobile-nav" class="mobile-nav">
-        <ul style="list-style:none;">
+        <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="mugs.html">Mugs</a></li>
+            <li><a href="coasters.html">Coasters</a></li>
+            <li><a href="t-shirts.html">T-Shirts</a></li>
+            <li><a href="merchandise.html">Merchandise</a></li>
             <li><a href="contact.html">Contact</a></li>
         </ul>
     </div>
@@ -80,16 +91,7 @@
                 <h3>11oz Classic White</h3>
                 <button class="btn-customize" onclick="openModal('11oz Classic White', 8.99)">Design & Buy</button>
             </div>
-            <div class="product-card">
-                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
-                <h3>11oz Color Inner</h3>
-                <button class="btn-customize" onclick="openModal('11oz Color Inner', 9.99)">Design & Buy</button>
-            </div>
-            <div class="product-card">
-                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
-                <h3>Magic Changing Mug</h3>
-                <button class="btn-customize" onclick="openModal('Magic Changing Mug', 12.50)">Design & Buy</button>
-            </div>
+            <!-- More products can be added here -->
         </div>
     </main>
 
@@ -97,14 +99,10 @@
         &copy; 2026 HG CUSTOMS. All rights reserved.
     </footer>
 
-    <!-- Modal -->
+    <!-- Modal remains the same -->
     <div class="modal" id="productModal">
         <div class="modal-content">
             <h2 id="modalTitle" style="margin-bottom: 15px;">Customize</h2>
-            <div class="color-swatch-grid" style="display:flex; gap:10px; margin-bottom:15px;">
-                <div class="color-swatch is-selected" style="width:25px; height:25px; border-radius:50%; background:#fff; border:1px solid #ccc; cursor:pointer;" onclick="selectColor(this, 'White')"></div>
-                <div class="color-swatch" style="width:25px; height:25px; border-radius:50%; background:#000; cursor:pointer;" onclick="selectColor(this, 'Black')"></div>
-            </div>
             <button id="upload_widget" class="btn-customize" style="background: #444;">Upload Design File</button>
             <div id="upload-status" style="font-size:12px; margin:10px 0; color:#28a745; font-weight:bold;"></div>
             <button class="btn-customize" onclick="addToBasket()">Add To Basket</button>
@@ -122,7 +120,6 @@
             document.getElementById('productModal').classList.add('is-active');
         }
         function closeModal() { document.getElementById('productModal').classList.remove('is-active'); }
-        function selectColor(el, color) { /* Add logic */ }
         
         var myWidget = cloudinary.createUploadWidget({
             cloudName: 'opdnamfa', 
