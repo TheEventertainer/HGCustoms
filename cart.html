@@ -5,84 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Basket | HG Customs</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- PayPal SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=GBP"></script>
+    
     <style>
-        body { font-family: 'Inter', sans-serif; padding: 40px 20px; max-width: 800px; margin: auto; }
-        h1 { margin-bottom: 30px; }
+        body { font-family: 'Inter', sans-serif; padding: 40px 20px; max-width: 600px; margin: auto; }
         .cart-item { border-bottom: 1px solid #eee; padding: 20px 0; }
-        .total-section { font-weight: bold; margin: 20px 0; font-size: 1.2em; }
-        .btn-checkout { background: #000; color: #fff; border: none; padding: 15px 30px; cursor: pointer; text-transform: uppercase; font-weight: 600; width: 100%; max-width: 300px; }
-        .btn-shopping { background: #eee; color: #333; border: none; padding: 15px 30px; cursor: pointer; text-decoration: none; display: inline-block; }
-        .clear-btn { border:none; background:none; color:red; cursor:pointer; margin-left:20px; }
+        .total-section { font-weight: bold; margin: 20px 0; font-size: 1.4em; }
+        .btn-shopping { background: #eee; color: #333; border: none; padding: 15px 30px; cursor: pointer; text-decoration: none; display: inline-block; font-weight: 600; }
+        #paypal-button-container { margin-top: 30px; }
+        .clear-btn { border:none; background:none; color:red; cursor:pointer; margin-top: 20px; }
     </style>
 </head>
 <body>
 
     <h1>Your Shopping Basket</h1>
-    
-    <div id="cart-items">
-        <!-- Cart items will be injected here -->
-    </div>
-
+    <div id="cart-items"></div>
     <div id="total-price" class="total-section"></div>
 
-    <!-- Hidden form to pass data to FormBold -->
-    <form id="checkout-form" action="https://formbold.com/s/oYA8D" method="POST">
-        <input type="hidden" name="Order_Summary" id="order_details_input">
-        <input type="hidden" name="_subject" value="New Custom Order Received!">
-        <button type="submit" class="btn-checkout">Checkout (Pay via PayPal)</button>
-    </form>
+    <!-- PayPal Button Placeholder -->
+    <div id="paypal-button-container"></div>
 
     <div style="margin-top: 30px;">
         <a href="mugs.html" class="btn-shopping">← Continue Shopping</a>
+        <br>
         <button onclick="clearCart()" class="clear-btn">Clear Basket</button>
     </div>
 
     <script>
-        function loadCart() {
-            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            const container = document.getElementById('cart-items');
-            const totalDiv = document.getElementById('total-price');
-            const orderInput = document.getElementById('order_details_input');
-            
-            if (cart.length === 0) {
-                container.innerHTML = "<p>Your basket is currently empty.</p>";
-                document.getElementById('checkout-form').style.display = 'none';
-                return;
-            }
+        // 1. Initialize Cart Data
+        let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+        const container = document.getElementById('cart-items');
+        const totalDiv = document.getElementById('total-price');
+        
+        let total = 0;
+        let summary = "--- NEW CUSTOM ORDER ---\n";
 
-            let total = 0;
-            let summary = "--- NEW ORDER DETAILS ---\n";
-            container.innerHTML = ""; 
-
+        if (cart.length === 0) {
+            container.innerHTML = "<p>Your basket is empty.</p>";
+        } else {
             cart.forEach((item, index) => {
                 total += item.price;
-                summary += `
-Item ${index + 1}: ${item.title}
-Color: ${item.color}
-Price: £${item.price.toFixed(2)}
-Design Link: ${item.img}
---------------------------
-`;
+                summary += `Item ${index + 1}: ${item.title} | Color: ${item.color} | Design: ${item.img}\n`;
                 container.innerHTML += `
                     <div class="cart-item">
-                        <p><strong>${item.title}</strong><br>
-                        Color: ${item.color}<br>
-                        Price: £${item.price.toFixed(2)}<br>
-                        Design: <a href="${item.img}" target="_blank">View Uploaded Image</a></p>
+                        <strong>${item.title}</strong><br>
+                        Color: ${item.color} | Price: £${item.price.toFixed(2)}
                     </div>
                 `;
             });
-
             totalDiv.innerText = "Total: £" + total.toFixed(2);
-            orderInput.value = summary; 
+        }
+
+        // 2. PayPal Integration Logic
+        if (cart.length > 0) {
+            paypal.Buttons({
+                createOrder: function(data, actions) {
+                    return actions.order.create({
+                        purchase_units: [{ amount: { value: total.toFixed(2) } }]
+                    });
+                },
+                onApprove: function(data, actions) {
+                    return actions.order.capture().then(function(details) {
+                        // PAYMENT SUCCESSFUL: Now trigger FormBold
+                        triggerFormBold(summary);
+                    });
+                }
+            }).render('#paypal-button-container');
+        }
+
+        // 3. Trigger FormBold Submission
+        function triggerFormBold(orderData) {
+            fetch("https://formbold.com/s/oYA8D", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Order_Summary: orderData,
+                    _subject: "New Paid Order Received",
+                    Customer_Email: "Customer"
+                })
+            }).then(() => {
+                // Clear cart and redirect to your success page
+                localStorage.removeItem('hg_cart');
+                window.location.href = "thank-you.html"; 
+            });
         }
 
         function clearCart() {
             localStorage.removeItem('hg_cart');
             location.reload();
         }
-
-        window.onload = loadCart;
     </script>
 </body>
 </html>
