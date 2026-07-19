@@ -73,6 +73,18 @@
         .form-textarea { width: 100%; height: 80px; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; resize: none; }
         .upload-status-text { font-size: 12px; font-weight: 600; margin: -5px 0 15px 0; min-height: 16px; }
 
+        /* --- New Custom Elements: Preview Image & Quantity Selector --- */
+        .preview-container { text-align: center; margin-bottom: 15px; display: none; }
+        .preview-container img { max-width: 100%; max-height: 120px; object-fit: contain; border: 1px solid var(--border-color); padding: 4px; }
+        
+        .quantity-wrapper { display: flex; align-items: center; justify-content: space-between; margin: 15px 0; padding-top: 10px; border-top: 1px solid var(--border-color); }
+        .quantity-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .quantity-controls { display: flex; align-items: center; border: 1px solid var(--border-color); }
+        .qty-btn { background: none; border: none; width: 36px; height: 36px; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+        .qty-btn:hover { background: var(--bg-light); }
+        .qty-input { width: 45px; height: 36px; border: none; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); text-align: center; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; -moz-appearance: textfield; }
+        .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
         @media (max-width: 992px) {
             .main-header { padding: 20px; }
             .mobile-toggle { display: block; order: 1; }
@@ -170,12 +182,27 @@
             <button class="close-modal" onclick="document.getElementById('productModal').classList.remove('is-active')">&times;</button>
             <h2 id="modalTitle">Product</h2>
             
+            <!-- Target Image Preview Box Container -->
+            <div id="imagePreviewContainer" class="preview-container">
+                <img id="imagePreview" src="" alt="Design Preview">
+            </div>
+
             <textarea id="userText" class="form-textarea" placeholder="Inscription notes, text choices or formatting requirements..."></textarea>
             
             <button id="upload_widget" class="btn-customize" style="background: #444; margin-bottom: 10px;">Upload Design File</button>
             <div id="upload-status-message" class="upload-status-text"></div>
             <input type="hidden" id="uploaded_file_url">
             
+            <!-- Standard Quantity Selection Control Wrapper -->
+            <div class="quantity-wrapper">
+                <span class="quantity-label">Quantity</span>
+                <div class="quantity-controls">
+                    <button type="button" class="qty-btn" onclick="adjustModalQty(-1)">-</button>
+                    <input type="number" id="modalQuantity" class="qty-input" value="1" min="1">
+                    <button type="button" class="qty-btn" onclick="adjustModalQty(1)">+</button>
+                </div>
+            </div>
+
             <button id="add-to-basket-btn" class="btn-customize" onclick="addToBasket()">Add To Basket</button>
         </div>
     </div>
@@ -189,8 +216,17 @@
             uploadPreset: 'hg_customs_preset'
         }, (error, result) => {
             if (!error && result && result.event === "success") { 
-                document.getElementById('uploaded_file_url').value = result.info.secure_url;
+                const secureUrl = result.info.secure_url;
+                document.getElementById('uploaded_file_url').value = secureUrl;
                 
+                // Show design image dynamic preview thumbnail
+                const previewImg = document.getElementById('imagePreview');
+                const previewContainer = document.getElementById('imagePreviewContainer');
+                if (previewImg && previewContainer) {
+                    previewImg.src = secureUrl;
+                    previewContainer.style.display = 'block';
+                }
+
                 // Optimized Inline Success UI Feedback
                 const statusMsg = document.getElementById('upload-status-message');
                 statusMsg.innerText = "✓ Image uploaded successfully!";
@@ -210,23 +246,40 @@
             document.getElementById('uploaded_file_url').value = '';
             document.getElementById('userText').value = '';
             document.getElementById('upload-status-message').innerText = '';
+            document.getElementById('modalQuantity').value = 1;
+            
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            if (previewContainer) previewContainer.style.display = 'none';
             
             document.getElementById('productModal').classList.add('is-active');
+        }
+
+        // Inline manual adjustments helper logic targeting input values
+        function adjustModalQty(amount) {
+            const qtyInput = document.getElementById('modalQuantity');
+            if (qtyInput) {
+                let currentVal = parseInt(qtyInput.value) || 1;
+                let newVal = currentVal + amount;
+                if (newVal < 1) newVal = 1;
+                qtyInput.value = newVal;
+            }
         }
 
         function addToBasket() {
             const title = document.getElementById('modalTitle').innerText;
             const textValue = document.getElementById('userText').value;
             const fileUrl = document.getElementById('uploaded_file_url').value;
+            const quantityVal = parseInt(document.getElementById('modalQuantity').value) || 1;
             
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             
-            // Save item configuration mapping object keys directly matching cart.html engine
+            // Appends structured fields supporting item count consolidation tracking algorithms
             cart.push({ 
                 name: title, 
                 price: currentActivePrice, 
                 text: textValue, 
-                fileUrl: fileUrl || "No file uploaded" 
+                fileUrl: fileUrl || "No file uploaded",
+                quantity: quantityVal
             });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             
@@ -251,8 +304,10 @@
 
         function updateBadge() {
             const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            // Calculate actual total volume sum based on line item quantity values
+            const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
             const badges = document.querySelectorAll('.cart-count');
-            badges.forEach(badge => badge.innerText = cart.length);
+            badges.forEach(badge => badge.innerText = totalItems);
         }
 
         // Global viewport layout event registrations
@@ -276,6 +331,16 @@
                 if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
                 if (dropdownLi && dropdownLi.classList.contains('is-open')) dropdownLi.classList.remove('is-open');
             });
+
+            // Enforce minimum bounds validation on blur rules directly
+            const qtyInput = document.getElementById('modalQuantity');
+            if (qtyInput) {
+                qtyInput.addEventListener('blur', () => {
+                    if (parseInt(qtyInput.value) < 1 || isNaN(parseInt(qtyInput.value))) {
+                        qtyInput.value = 1;
+                    }
+                });
+            }
         });
     </script>
 </body>
