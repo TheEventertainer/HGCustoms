@@ -51,13 +51,12 @@
     </main>
 
     <!-- Hidden Form for FormBold -->
-    <form id="order-submission-form" action="https://formbold.com/s/YOUR_FORMBOLD_ENDPOINT" method="POST" style="display:none;">
+    <form id="order-submission-form" action="https://formbold.com/s/oYA8D" method="POST" style="display:none;">
         <input type="hidden" name="order_details" id="order_details_field">
     </form>
 
     <script>
         let cart = [];
-        let activeDiscountPercent = 0;
 
         function loadCart() {
             cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
@@ -71,10 +70,9 @@
             
             paypal.Buttons({
                 createOrder: function(data, actions) {
-                    // Logic for order creation
                     return actions.order.create({
                         purchase_units: [{
-                            amount: { currency_code: "GBP", value: "10.00" } // Replace with dynamic total
+                            amount: { currency_code: "GBP", value: "10.00" } // Replace with your dynamic total logic
                         }]
                     });
                 },
