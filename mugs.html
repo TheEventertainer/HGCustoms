@@ -16,29 +16,35 @@
         body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; }
         
         /* Layout */
-        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #333; }
+        .announcement-bar { background-color: #000000; color: #ffffff; text-align: center; padding: 10px; font-size: 11px; text-transform: uppercase; }
         .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); }
         .logo { font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
+        .logo a { text-decoration: none; color: #000; }
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links a { text-decoration: none; color: #000; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .header-actions { display: flex; align-items: center; gap: 20px; font-size: 18px; }
+        .mobile-toggle { display: none; font-size: 20px; cursor: pointer; }
         
+        /* Mobile Nav */
+        .mobile-nav { display: none; background: #fff; padding: 20px; border-bottom: 1px solid var(--border-color); text-align: center; }
+        
+        /* Catalog */
         .catalog-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
         .product-card { border: 1px solid var(--border-color); padding: 25px; text-align: center; }
         .product-image { width: 100%; height: 250px; object-fit: cover; background-color: var(--bg-light); margin-bottom: 20px; }
-        
         .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; margin-top: 10px; }
         
-        /* Modal */
+        /* Modal & Footer */
         .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal.is-active { display: flex; }
-        .modal-content { background: #fff; max-width: 440px; width: 90%; padding: 35px; position: relative; }
-        .close-modal { float:right; border:none; background:none; cursor:pointer; font-size: 20px; }
-        
-        .color-swatch-grid { display: flex; gap: 12px; margin: 15px 0; }
-        .color-swatch { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
-        .color-swatch.is-selected { border-color: #000; transform: scale(1.1); }
-        #upload-status { font-size: 12px; margin: 10px 0; color: #28a745; font-weight: bold; min-height: 15px; }
+        .modal-content { background: #fff; max-width: 440px; width: 90%; padding: 35px; }
+        .footer { padding: 40px; text-align: center; border-top: 1px solid var(--border-color); margin-top: 50px; color: #888; font-size: 12px; }
 
-        @media (max-width: 768px) { .main-header { padding: 20px; } }
+        @media (max-width: 768px) {
+            .nav-links, .header-actions { display: none; }
+            .mobile-toggle { display: block; }
+        }
     </style>
 </head>
 <body>
@@ -46,8 +52,25 @@
     <div class="announcement-bar">Free UK Delivery on orders over £50</div>
     
     <header class="main-header">
-        <div class="logo">HG Customs</div>
+        <div class="mobile-toggle" onclick="toggleMobileMenu()">☰</div>
+        <div class="logo"><a href="index.html">HG CUSTOMS</a></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="mugs.html">Mugs</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="header-actions">
+            <a href="cart.html"><i class="fa-solid fa-basket-shopping"></i></a>
+        </div>
     </header>
+
+    <div id="mobile-nav" class="mobile-nav">
+        <ul style="list-style:none;">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="mugs.html">Mugs</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </div>
 
     <main class="catalog-container">
         <h1>Custom Ceramic Mugs</h1>
@@ -67,101 +90,50 @@
                 <h3>Magic Changing Mug</h3>
                 <button class="btn-customize" onclick="openModal('Magic Changing Mug', 12.50)">Design & Buy</button>
             </div>
-            <div class="product-card">
-                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
-                <h3>15oz Large Ceramic</h3>
-                <button class="btn-customize" onclick="openModal('15oz Large Ceramic', 11.99)">Design & Buy</button>
-            </div>
-            <div class="product-card">
-                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
-                <h3>12oz Enamel Camp</h3>
-                <button class="btn-customize" onclick="openModal('12oz Enamel Camp', 10.50)">Design & Buy</button>
-            </div>
-            <div class="product-card">
-                <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
-                <h3>12oz Tall Latte</h3>
-                <button class="btn-customize" onclick="openModal('12oz Tall Latte', 11.00)">Design & Buy</button>
-            </div>
         </div>
     </main>
+
+    <footer class="footer">
+        &copy; 2026 HG CUSTOMS. All rights reserved.
+    </footer>
 
     <!-- Modal -->
     <div class="modal" id="productModal">
         <div class="modal-content">
-            <button class="close-modal" onclick="closeModal()">&times;</button>
             <h2 id="modalTitle" style="margin-bottom: 15px;">Customize</h2>
-            
-            <div class="color-swatch-grid">
-                <div class="color-swatch is-selected" style="background: #fff; border: 1px solid #ccc;" onclick="selectColor(this, 'White')"></div>
-                <div class="color-swatch" style="background: #000;" onclick="selectColor(this, 'Black')"></div>
-                <div class="color-swatch" style="background: #1a5be5;" onclick="selectColor(this, 'Blue')"></div>
+            <div class="color-swatch-grid" style="display:flex; gap:10px; margin-bottom:15px;">
+                <div class="color-swatch is-selected" style="width:25px; height:25px; border-radius:50%; background:#fff; border:1px solid #ccc; cursor:pointer;" onclick="selectColor(this, 'White')"></div>
+                <div class="color-swatch" style="width:25px; height:25px; border-radius:50%; background:#000; cursor:pointer;" onclick="selectColor(this, 'Black')"></div>
             </div>
-
             <button id="upload_widget" class="btn-customize" style="background: #444;">Upload Design File</button>
-            <div id="upload-status"></div>
-            
-            <input type="hidden" id="uploaded_file_url">
-
-            <button id="add-to-basket-btn" class="btn-customize" onclick="addToBasket()">Add To Basket</button>
+            <div id="upload-status" style="font-size:12px; margin:10px 0; color:#28a745; font-weight:bold;"></div>
+            <button class="btn-customize" onclick="addToBasket()">Add To Basket</button>
             <button class="btn-customize" style="background:#555;" onclick="closeModal()">Cancel</button>
         </div>
     </div>
 
     <script>
-        let selectedColor = "White";
-        let currentPrice = 0;
-        let currentTitle = "";
-
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-nav');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
         function openModal(title, price) {
-            currentTitle = title;
-            currentPrice = price;
             document.getElementById('modalTitle').innerText = title;
-            document.getElementById('upload-status').innerText = ""; 
-            document.getElementById('uploaded_file_url').value = ""; 
             document.getElementById('productModal').classList.add('is-active');
         }
-
-        function closeModal() {
-            document.getElementById('productModal').classList.remove('is-active');
-        }
-
-        function selectColor(el, color) {
-            document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('is-selected'));
-            el.classList.add('is-selected');
-            selectedColor = color;
-        }
-
+        function closeModal() { document.getElementById('productModal').classList.remove('is-active'); }
+        function selectColor(el, color) { /* Add logic */ }
+        
         var myWidget = cloudinary.createUploadWidget({
             cloudName: 'opdnamfa', 
             uploadPreset: 'hg_customs_preset'
         }, (error, result) => { 
             if (!error && result && result.event === "success") { 
-                document.getElementById('uploaded_file_url').value = result.info.secure_url;
-                document.getElementById('upload-status').innerText = "✓ File uploaded successfully!";
+                document.getElementById('upload-status').innerText = "✓ Uploaded!";
             } 
         });
-
         document.getElementById("upload_widget").addEventListener("click", () => myWidget.open());
-
-        function addToBasket() {
-            const fileUrl = document.getElementById('uploaded_file_url').value;
-            
-            if (!fileUrl) {
-                alert("Please upload a design file before adding to the basket.");
-                return;
-            }
-
-            const cartItem = {
-                title: currentTitle,
-                price: currentPrice,
-                color: selectedColor,
-                file: fileUrl
-            };
-
-            console.log("Adding to cart:", cartItem);
-            alert("Added " + currentTitle + " to your basket!");
-            closeModal();
-        }
+        function addToBasket() { alert("Added to basket!"); closeModal(); }
     </script>
 </body>
 </html>
