@@ -15,30 +15,28 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; }
         
-        /* Layout */
         .announcement-bar { background-color: #000000; color: #ffffff; text-align: center; padding: 10px; font-size: 11px; text-transform: uppercase; }
         .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); }
         .logo { font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
         .logo a { text-decoration: none; color: #000; }
+        
         .nav-links { display: flex; list-style: none; gap: 30px; }
         .nav-links a { text-decoration: none; color: #000; font-size: 12px; font-weight: 600; text-transform: uppercase; }
-        .header-actions { display: flex; align-items: center; gap: 20px; font-size: 18px; }
-        .mobile-toggle { display: none; font-size: 20px; cursor: pointer; }
+        .header-actions { display: flex; align-items: center; gap: 20px; font-size: 18px; position: relative; }
+        #cart-count { background: red; color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; position: absolute; top: -10px; right: -10px; }
         
-        /* Mobile Nav */
+        .mobile-toggle { display: none; font-size: 20px; cursor: pointer; }
         .mobile-nav { display: none; background: #fff; padding: 20px; border-bottom: 1px solid var(--border-color); text-align: center; }
         .mobile-nav ul { list-style: none; }
         .mobile-nav li { margin: 15px 0; }
         .mobile-nav a { text-decoration: none; color: #000; font-weight: 600; text-transform: uppercase; }
         
-        /* Catalog */
         .catalog-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
         .product-card { border: 1px solid var(--border-color); padding: 25px; text-align: center; }
         .product-image { width: 100%; height: 250px; object-fit: cover; background-color: var(--bg-light); margin-bottom: 20px; }
         .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; margin-top: 10px; }
         
-        /* Modal */
         .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal.is-active { display: flex; }
         .modal-content { background: #fff; max-width: 440px; width: 90%; padding: 35px; }
@@ -47,10 +45,7 @@
         .color-swatch.is-selected { border-color: #000; transform: scale(1.1); }
         .footer { padding: 40px; text-align: center; border-top: 1px solid var(--border-color); margin-top: 50px; color: #888; font-size: 12px; }
 
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .mobile-toggle { display: block; }
-        }
+        @media (max-width: 768px) { .nav-links { display: none; } .mobile-toggle { display: block; } }
     </style>
 </head>
 <body>
@@ -70,6 +65,7 @@
         </ul>
         <div class="header-actions">
             <a href="cart.html"><i class="fa-solid fa-basket-shopping"></i></a>
+            <span id="cart-count">0</span>
         </div>
     </header>
 
@@ -87,37 +83,31 @@
     <main class="catalog-container">
         <h1>Custom Ceramic Mugs</h1>
         <div class="product-grid">
-            <!-- Product 1 -->
             <div class="product-card">
                 <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
                 <h3>11oz Classic White</h3>
                 <button class="btn-customize" onclick="openModal('11oz Classic White', 8.99)">Design & Buy</button>
             </div>
-            <!-- Product 2 -->
             <div class="product-card">
                 <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
                 <h3>11oz Color Inner</h3>
                 <button class="btn-customize" onclick="openModal('11oz Color Inner', 9.99)">Design & Buy</button>
             </div>
-            <!-- Product 3 -->
             <div class="product-card">
                 <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
                 <h3>Magic Changing Mug</h3>
                 <button class="btn-customize" onclick="openModal('Magic Changing Mug', 12.50)">Design & Buy</button>
             </div>
-            <!-- Product 4 -->
             <div class="product-card">
                 <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
                 <h3>15oz Large Ceramic</h3>
                 <button class="btn-customize" onclick="openModal('15oz Large Ceramic', 11.99)">Design & Buy</button>
             </div>
-            <!-- Product 5 -->
             <div class="product-card">
                 <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
                 <h3>12oz Enamel Camp</h3>
                 <button class="btn-customize" onclick="openModal('12oz Enamel Camp', 10.50)">Design & Buy</button>
             </div>
-            <!-- Product 6 -->
             <div class="product-card">
                 <img src="https://placehold.co/300x300" alt="Mug" class="product-image">
                 <h3>12oz Tall Latte</h3>
@@ -138,17 +128,24 @@
             </div>
             <button id="upload_widget" class="btn-customize" style="background: #444;">Upload Design</button>
             <div id="upload-status" style="font-size:12px; margin:10px 0; color:#28a745; font-weight:bold;"></div>
+            <input type="hidden" id="uploaded_file_url">
             <button class="btn-customize" onclick="addToBasket()">Add To Basket</button>
             <button class="btn-customize" style="background:#555;" onclick="closeModal()">Cancel</button>
         </div>
     </div>
 
     <script>
+        let selectedColor = "White";
+        let currentPrice = 0;
+        let currentTitle = "";
+
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-nav');
             menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         }
-        function openModal(title) {
+        function openModal(title, price) {
+            currentTitle = title;
+            currentPrice = price;
             document.getElementById('modalTitle').innerText = title;
             document.getElementById('productModal').classList.add('is-active');
         }
@@ -156,14 +153,36 @@
         function selectColor(el, color) {
             document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('is-selected'));
             el.classList.add('is-selected');
+            selectedColor = color;
         }
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            document.getElementById('cart-count').innerText = cart.length;
+        }
+
         var myWidget = cloudinary.createUploadWidget({
             cloudName: 'opdnamfa', uploadPreset: 'hg_customs_preset'
         }, (error, result) => { 
-            if (!error && result.event === "success") document.getElementById('upload-status').innerText = "✓ Uploaded!";
+            if (!error && result && result.event === "success") {
+                document.getElementById('uploaded_file_url').value = result.info.secure_url;
+                document.getElementById('upload-status').innerText = "✓ Uploaded!";
+            }
         });
         document.getElementById("upload_widget").addEventListener("click", () => myWidget.open());
-        function addToBasket() { alert("Added to basket!"); closeModal(); }
+
+        function addToBasket() {
+            if (!document.getElementById('uploaded_file_url').value) {
+                alert("Please upload a design first!");
+                return;
+            }
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            cart.push({ title: currentTitle, color: selectedColor, price: currentPrice, img: document.getElementById('uploaded_file_url').value });
+            localStorage.setItem('hg_cart', JSON.stringify(cart));
+            updateCartCount();
+            alert("Added to basket!");
+            closeModal();
+        }
+        updateCartCount();
     </script>
 </body>
 </html>
