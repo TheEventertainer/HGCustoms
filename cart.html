@@ -18,255 +18,76 @@
             --font-sans: 'Inter', sans-serif;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-sans); color: var(--text-dark); background-color: #ffffff; -webkit-font-smoothing: antialiased; }
 
-        body {
-            font-family: var(--font-sans);
-            color: var(--text-dark);
-            background-color: #ffffff;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* --- Top Announcement Bar --- */
-        .announcement-bar {
-            background-color: #000000;
-            color: #ffffff;
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 20px;
-            font-size: 11px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-bottom: 1px solid #333;
-        }
-
-        .announcement-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #ffffff;
-            text-decoration: none;
-        }
-
+        /* --- Announcement Bar --- */
+        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
+        .announcement-item { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; }
         .announcement-item i { font-size: 16px; }
         .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
 
         /* --- Main Header Navigation --- */
-        .main-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            border-bottom: 1px solid var(--border-color);
-            background: #fff;
-            position: relative;
-            z-index: 1000;
-        }
-
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 1000; }
         .logo img { height: 55px; display: block; }
         .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
         .nav-links > li { position: relative; padding: 10px 0; }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 600;
-            font-size: 13px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding-bottom: 4px;
-            transition: border-color 0.3s;
-        }
-
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 4px; transition: border-color 0.3s; }
         .nav-links > li > a:hover { border-bottom: 2px solid #000; }
         .nav-links i { font-size: 10px; margin-left: 5px; }
 
         /* --- Dropdown Menu Styling --- */
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #ffffff;
-            border: 1px solid var(--border-color);
-            min-width: 180px;
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-            margin-top: 5px;
-            z-index: 1100;
-        }
-
+        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background-color: #ffffff; border: 1px solid var(--border-color); min-width: 180px; list-style: none; display: flex; flex-direction: column; box-shadow: 0 4px 12px rgba(0,0,0,0.08); opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease; margin-top: 5px; z-index: 1100; }
         .dropdown-menu li { border-bottom: 1px solid var(--bg-light); }
         .dropdown-menu li:last-child { border-bottom: none; }
-        
-        .dropdown-menu a {
-            display: block;
-            padding: 12px 20px;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            color: var(--text-dark);
-            white-space: nowrap;
-            border-bottom: none !important;
-        }
-
+        .dropdown-menu a { display: block; padding: 12px 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-dark); white-space: nowrap; border-bottom: none !important; }
         .dropdown-menu a:hover { background-color: var(--bg-light); color: #000000; }
         .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; }
         
         .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
-        
-        .cart-icon .cart-count {
-            position: absolute;
-            top: -8px; right: -10px;
-            background: #000; color: #fff;
-            font-size: 10px; width: 16px; height: 16px;
-            border-radius: 50%; display: flex;
-            align-items: center; justify-content: center;
-            font-weight: bold;
-        }
-
+        .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
 
-        /* --- Shopping Basket Layout Content --- */
-        .basket-container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
+        /* --- Basket Layout --- */
+        .basket-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .basket-title { font-size: 24px; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 15px; border-bottom: 2px solid #000; margin-bottom: 30px; }
+        .basket-layout { display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start; }
+        
+        .cart-items-wrapper { display: flex; flex-direction: column; gap: 20px; }
+        .cart-item { display: flex; align-items: center; justify-content: space-between; padding: 20px; border: 1px solid var(--border-color); background: #fff; }
+        .item-details { display: flex; flex-direction: column; gap: 6px; }
+        .item-title { font-size: 16px; font-weight: 600; text-transform: uppercase; }
+        .item-meta { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+        .item-right { display: flex; align-items: center; gap: 30px; }
+        .item-price { font-weight: 600; font-size: 15px; }
+        .remove-btn { background: none; border: none; color: #999; cursor: pointer; font-size: 16px; transition: color 0.2s; }
+        .remove-btn:hover { color: #ff3b30; }
+        .empty-message { font-size: 15px; color: var(--text-muted); padding: 40px 0; }
 
-        .basket-title {
-            font-size: 24px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #000;
-            margin-bottom: 30px;
-        }
-
-        .basket-layout {
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 40px;
-            align-items: start;
-        }
-
-        /* Product List Styles */
-        .cart-items-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .cart-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            background: #fff;
-        }
-
-        .item-details {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .item-title {
-            font-size: 16px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .item-meta {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        .item-right {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .item-price {
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .remove-btn {
-            background: none;
-            border: none;
-            color: #999;
-            cursor: pointer;
-            font-size: 16px;
-            transition: color 0.2s;
-        }
-
-        .remove-btn:hover {
-            color: #ff3b30;
-        }
-
-        .empty-message {
-            font-size: 15px;
-            color: var(--text-muted);
-            padding: 40px 0;
-        }
-
-        /* Checkout Box Layout styling */
-        .checkout-sidebar {
-            background-color: var(--bg-light);
-            border: 1px solid var(--border-color);
-            padding: 30px;
-            text-align: center;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 15px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
+        /* Checkout Sidebar & Promo Box */
+        .checkout-sidebar { background-color: var(--bg-light); border: 1px solid var(--border-color); padding: 30px; }
+        .summary-row { display: flex; justify-content: space-between; font-size: 15px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+        .summary-row.discount-row { color: #28a745; border-bottom: none; margin-bottom: 5px; display: none; }
         .total-label { font-weight: 700; text-transform: uppercase; }
         .total-price { font-weight: 700; font-size: 18px; }
 
-        .paypal-placeholder {
-            margin-top: 15px;
-            background: #fff;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-        }
+        .promo-container { margin: 20px 0; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+        .promo-flex { display: flex; gap: 10px; margin-top: 8px; }
+        .promo-input { flex: 1; padding: 10px; border: 1px solid var(--border-color); font-family: var(--font-sans); font-size: 13px; text-transform: uppercase; }
+        .promo-btn { background: #000; color: #fff; border: none; padding: 0 15px; font-size: 11px; font-weight: 600; text-transform: uppercase; cursor: pointer; }
+        .promo-message { font-size: 12px; margin-top: 6px; display: none; }
+
+        .paypal-placeholder { margin-top: 15px; background: #fff; padding: 20px; border: 1px solid var(--border-color); text-align: center; }
 
         /* --- Footer Section --- */
-        .site-footer {
-            background-color: #ffffff;
-            padding: 30px 40px;
-            border-top: 1px solid var(--border-color);
-            margin-top: 60px;
-        }
-
+        .site-footer { background-color: #ffffff; padding: 30px 40px; border-top: 1px solid var(--border-color); margin-top: 60px; }
         .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .copyright-text { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; }
         .footer-links { display: flex; list-style: none; gap: 20px; }
         .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; transition: color 0.2s; }
         .footer-links a:hover { color: var(--text-dark); }
 
-        /* Responsive Breakpoints */
         @media (max-width: 992px) {
             .main-header { padding: 20px; }
             .mobile-toggle { display: block; order: 1; }
@@ -286,32 +107,15 @@
 </head>
 <body>
 
-    <!-- Top Announcement Bar -->
     <div class="announcement-bar">
-        <a href="#" class="announcement-item">
-            <i class="fa-solid fa-truck"></i>
-            <div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div>
-        </a>
-        <a href="#" class="announcement-item">
-            <i class="fa-regular fa-clock"></i>
-            <div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div>
-        </a>
-        <a href="#" class="announcement-item">
-            <i class="fa-regular fa-circle-check"></i>
-            <div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div>
-        </a>
+        <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i><div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div></a>
+        <a href="#" class="announcement-item"><i class="fa-regular fa-clock"></i><div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div></a>
+        <a href="#" class="announcement-item"><i class="fa-regular fa-circle-check"></i><div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div></a>
     </div>
 
-    <!-- Main Navigation Header -->
     <header class="main-header">
-        <div class="mobile-toggle" id="menu-toggle">
-            <i class="fa-solid fa-bars"></i>
-        </div>
-
-        <div class="logo">
-            <a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a>
-        </div>
-
+        <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a></div>
         <nav>
             <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Home</a></li>
@@ -327,35 +131,43 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
-
         <div class="header-actions">
             <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
             <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
-            <a href="cart.html" class="cart-icon" aria-label="Cart">
-                <i class="fa-solid fa-basket-shopping"></i>
-                <span class="cart-count">0</span>
-            </a>
+            <a href="cart.html" class="cart-icon" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
         </div>
     </header>
 
-    <!-- Shopping Basket Content Layout -->
     <main class="basket-container">
         <h1 class="basket-title">Your Shopping Basket</h1>
         
         <div class="basket-layout">
-            <!-- Left Side Area: Renders the active items from LocalStorage -->
-            <div class="cart-items-wrapper" id="cart-items-container">
-                <!-- Javascript fills this dynamically -->
-            </div>
+            <div class="cart-items-wrapper" id="cart-items-container"></div>
 
-            <!-- Right Side Area: Pricing summary and checkout targets -->
             <div class="checkout-sidebar">
+                <div class="summary-row">
+                    <span style="color:var(--text-muted)">Subtotal</span>
+                    <span id="basket-subtotal">£0.00</span>
+                </div>
+                <div class="summary-row discount-row" id="discount-wrapper">
+                    <span>Discount (<span id="applied-code-label"></span>)</span>
+                    <span id="discount-amount">-£0.00</span>
+                </div>
                 <div class="summary-row">
                     <span class="total-label">Estimated Total</span>
                     <span class="total-price" id="basket-total-display">£0.00</span>
                 </div>
+
+                <!-- Promo Section Restored -->
+                <div class="promo-container">
+                    <label style="font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Promo Code</label>
+                    <div class="promo-flex">
+                        <input type="text" id="promo-code-input" class="promo-input" placeholder="Enter code">
+                        <button id="apply-promo-btn" class="promo-btn">Apply</button>
+                    </div>
+                    <div id="promo-msg" class="promo-message"></div>
+                </div>
                 
-                <!-- PayPal Checkout Buttons Container -->
                 <div class="paypal-placeholder">
                     <img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" alt="PayPal Checkout" style="max-width:100%; margin-bottom:10px; cursor:pointer;">
                     <div style="background:#2c2e2f; color:#fff; padding:10px; font-weight:600; font-size:13px; border-radius:4px; cursor:pointer;">
@@ -367,7 +179,6 @@
         </div>
     </main>
 
-    <!-- Footer Section -->
     <footer class="site-footer">
         <div class="footer-bottom">
             <div class="copyright-text">&copy; 2026 HG Customs. All rights reserved.</div>
@@ -380,17 +191,20 @@
         </div>
     </footer>
 
-    <!-- Logic Engine to Synchronize Data and Handle Dynamic Rendering -->
     <script>
-        function getCart() {
-            return JSON.parse(localStorage.getItem('hg_cart')) || [];
-        }
+        let appliedDiscountRate = 0;
+        let appliedCodeName = "";
 
-        function saveCart(cart) {
-            localStorage.setItem('hg_cart', JSON.stringify(cart));
-        }
+        // Define valid shop discount coupon list
+        const discountCoupons = {
+            "WELCOME10": 0.10,
+            "HGCUSTOMS": 0.15,
+            "SAVE20": 0.20
+        };
 
-        // Remove item logic matching product array index
+        function getCart() { return JSON.parse(localStorage.getItem('hg_cart')) || []; }
+        function saveCart(cart) { localStorage.setItem('hg_cart', JSON.stringify(cart)); }
+
         function removeBasketItem(index) {
             let cart = getCart();
             cart.splice(index, 1);
@@ -400,43 +214,46 @@
 
         function renderCartPage() {
             const cart = getCart();
-            
-            // Sync top header badge number
             const badges = document.querySelectorAll('.cart-count');
             badges.forEach(badge => badge.innerText = cart.length);
 
             const container = document.getElementById('cart-items-container');
+            const subtotalDisplay = document.getElementById('basket-subtotal');
+            const discountWrapper = document.getElementById('discount-wrapper');
+            const discountDisplay = document.getElementById('discount-amount');
             const totalDisplay = document.getElementById('basket-total-display');
             
             if (!container) return;
 
             if (cart.length === 0) {
                 container.innerHTML = `<p class="empty-message">Your basket is currently empty. <a href="index.html" style="color:#000; font-weight:600;">Go browse custom products</a>.</p>`;
+                subtotalDisplay.innerText = "£0.00";
+                discountWrapper.style.display = "none";
                 totalDisplay.innerText = "£0.00";
                 return;
             }
 
             let htmlContent = '';
-            let combinedTotal = 0;
+            let subtotal = 0;
 
             cart.forEach((item, index) => {
-                // Ensure a base fall-back price exists if not stored down with item
                 const itemPrice = parseFloat(item.price) || 12.50; 
-                combinedTotal += itemPrice;
+                subtotal += itemPrice;
 
-                // Build customization properties safely if they exist
-                let configurationDetails = '';
-                if(item.size) configurationDetails += `Size: ${item.size} | `;
-                if(item.color) configurationDetails += `Color: ${item.color} | `;
-                if(item.text) configurationDetails += `Text: "${item.text}"`;
+                // Dynamically fetch item names matching variation properties
+                let nameLabel = item.productType || item.name || item.id || 'Custom Product';
                 
-                // Fallback default meta if object structure lacks variables
-                if(!configurationDetails) configurationDetails = "Standard Custom Product Layout";
+                // Construct customization details list from configuration data
+                let metaOptions = [];
+                if (item.size) metaOptions.push(`Size: ${item.size}`);
+                if (item.color) metaOptions.push(`Color: ${item.color}`);
+                if (item.text || item.customText) metaOptions.push(`Text: "${item.text || item.customText}"`);
+                let configurationDetails = metaOptions.length > 0 ? metaOptions.join(' | ') : "Customized Layout Specification";
 
                 htmlContent += `
                     <div class="cart-item">
                         <div class="item-details">
-                            <h2 class="item-title">${item.productType || 'Custom Item'}</h2>
+                            <h2 class="item-title">${nameLabel}</h2>
                             <p class="item-meta">${configurationDetails}</p>
                         </div>
                         <div class="item-right">
@@ -450,37 +267,65 @@
             });
 
             container.innerHTML = htmlContent;
-            totalDisplay.innerText = `£${combinedTotal.toFixed(2)}`;
+            subtotalDisplay.innerText = `£${subtotal.toFixed(2)}`;
+
+            // Discount calculations
+            if (appliedDiscountRate > 0) {
+                let discountTotal = subtotal * appliedDiscountRate;
+                let calculatedFinalTotal = subtotal - discountTotal;
+
+                document.getElementById('applied-code-label').innerText = appliedCodeName;
+                discountDisplay.innerText = `-£${discountTotal.toFixed(2)}`;
+                discountWrapper.style.display = 'flex';
+                totalDisplay.innerText = `£${calculatedFinalTotal.toFixed(2)}`;
+            } else {
+                discountWrapper.style.display = 'none';
+                totalDisplay.innerText = `£${subtotal.toFixed(2)}`;
+            }
         }
 
-        // Setup Responsiveness Listeners 
         document.addEventListener('DOMContentLoaded', () => {
             renderCartPage();
 
+            // Promo Code Trigger Execution
+            const promoBtn = document.getElementById('apply-promo-btn');
+            const promoInput = document.getElementById('promo-code-input');
+            const promoMsg = document.getElementById('promo-msg');
+
+            if (promoBtn && promoInput && promoMsg) {
+                promoBtn.addEventListener('click', () => {
+                    const enteredCode = promoInput.value.trim().toUpperCase();
+                    if (discountCoupons.hasOwnProperty(enteredCode)) {
+                        appliedDiscountRate = discountCoupons[enteredCode];
+                        appliedCodeName = enteredCode;
+                        promoMsg.style.color = "#28a745";
+                        promoMsg.innerText = `Code "${enteredCode}" applied successfully!`;
+                        promoMsg.style.display = "block";
+                        renderCartPage();
+                    } else {
+                        promoMsg.style.color = "#ff3b30";
+                        promoMsg.innerText = "Invalid code. Please try again.";
+                        promoMsg.style.display = "block";
+                    }
+                });
+            }
+
+            // Mobile menu listeners
             const menuToggle = document.getElementById('menu-toggle');
             const navMenu = document.getElementById('nav-menu');
             const dropdownLi = document.getElementById('dropdown-li');
             const dropdownTrigger = document.getElementById('dropdown-trigger');
 
             if (menuToggle && navMenu) {
-                menuToggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    navMenu.classList.toggle('is-open');
-                });
+                menuToggle.addEventListener('click', (e) => { e.stopPropagation(); navMenu.classList.toggle('is-open'); });
             }
-
             if (dropdownTrigger && dropdownLi) {
                 dropdownTrigger.addEventListener('click', (e) => {
-                    if (window.innerWidth <= 992) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        dropdownLi.classList.toggle('is-open');
-                    }
+                    if (window.innerWidth <= 992) { e.preventDefault(); e.stopPropagation(); dropdownLi.classList.toggle('is-open'); }
                 });
             }
-
             document.addEventListener('click', () => {
-                if (navMenu && navMenu.classList.contains('is-open')) navMenu.remove('is-open');
+                if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
                 if (dropdownLi && dropdownLi.classList.contains('is-open')) dropdownLi.remove('is-open');
             });
         });
