@@ -125,10 +125,41 @@
     <main class="catalog-container">
         <h1>Band & Show Merchandise</h1>
         <div class="product-grid">
+            <!-- Product 1 -->
             <div class="product-card">
                 <div class="prod-title">Custom Enamel Pin Badges</div>
                 <div class="prod-price">£4.50</div>
                 <button class="btn-customize" onclick="openProductModal('Custom Enamel Pin Badges', 4.50)">Design & Buy</button>
+            </div>
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="prod-title">Woven Merch Patches</div>
+                <div class="prod-price">£3.99</div>
+                <button class="btn-customize" onclick="openProductModal('Woven Merch Patches', 3.99)">Design & Buy</button>
+            </div>
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="prod-title">Satin Tour Lanyards</div>
+                <div class="prod-price">£2.50</div>
+                <button class="btn-customize" onclick="openProductModal('Satin Tour Lanyards', 2.50)">Design & Buy</button>
+            </div>
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div class="prod-title">Laminate Event Passes</div>
+                <div class="prod-price">£1.99</div>
+                <button class="btn-customize" onclick="openProductModal('Laminate Event Passes', 1.99)">Design & Buy</button>
+            </div>
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div class="prod-title">Silicone Wristbands</div>
+                <div class="prod-price">£1.20</div>
+                <button class="btn-customize" onclick="openProductModal('Silicone Wristbands', 1.20)">Design & Buy</button>
+            </div>
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div class="prod-title">Custom Tote Bags</div>
+                <div class="prod-price">£6.50</div>
+                <button class="btn-customize" onclick="openProductModal('Custom Tote Bags', 6.50)">Design & Buy</button>
             </div>
         </div>
     </main>
@@ -139,7 +170,7 @@
             <button class="close-modal" onclick="document.getElementById('productModal').classList.remove('is-active')">&times;</button>
             <h2 id="modalTitle">Product</h2>
             
-            <textarea id="userText" class="form-textarea" placeholder="Inscription notes, layout layout requirements or color choices..."></textarea>
+            <textarea id="userText" class="form-textarea" placeholder="Inscription notes, layout requirements or color choices..."></textarea>
             
             <button id="upload_widget" class="btn-customize" style="background: #444; margin-bottom: 10px;">Upload Design File</button>
             <div id="upload-status-message" class="upload-status-text"></div>
@@ -160,7 +191,7 @@
             if (!error && result && result.event === "success") { 
                 document.getElementById('uploaded_file_url').value = result.info.secure_url;
                 
-                // Optimized Inline Success UI Feedback replacing alert pop-ups
+                // Optimized Inline Success UI Feedback
                 const statusMsg = document.getElementById('upload-status-message');
                 statusMsg.innerText = "✓ Image uploaded successfully!";
                 statusMsg.style.color = "#28a745";
@@ -201,7 +232,7 @@
             
             updateBadge();
 
-            // Inline Add to Basket UI Animation Feedback Loop replacing default pop-up alerts
+            // Inline Add to Basket UI Animation Feedback Loop
             const basketBtn = document.getElementById('add-to-basket-btn');
             if (basketBtn) {
                 const originalText = basketBtn.innerHTML;
