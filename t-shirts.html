@@ -4,66 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom T-Shirts | HG Customs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
+
     <style>
-        :root { --text-dark: #000000; --border-color: #e5e5e5; }
+        :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; }
-
-        /* Navigation with Dropdown */
-        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; }
+        
+        /* Navigation (Copied from Mugs page) */
+        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #333; }
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); position: relative; z-index: 1000; }
+        .logo { font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
         .nav-links { display: flex; list-style: none; gap: 30px; }
-        .nav-item { position: relative; cursor: pointer; font-weight: 600; font-size: 13px; text-transform: uppercase; }
-        .dropdown { position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid var(--border-color); display: none; min-width: 150px; z-index: 1000; }
-        .nav-item:hover .dropdown { display: block; }
-        .dropdown a { display: block; padding: 10px; text-decoration: none; color: #000; }
+        .nav-links > li { position: relative; padding: 10px 0; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; text-transform: uppercase; }
+        
+        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid var(--border-color); min-width: 180px; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); z-index: 1100; }
+        .has-dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu a { display: block; padding: 12px 20px; font-size: 11px; }
 
-        /* 3x2 Product Grid */
-        .catalog-container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        /* Catalog & Grid (3x2 Layout) */
+        .catalog-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
         .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .product-card { border: 1px solid var(--border-color); padding: 20px; text-align: center; }
-        .btn-customize { background: #000; color: #fff; border: none; padding: 12px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; margin-top: 15px; }
+        .product-card { border: 1px solid var(--border-color); padding: 25px; text-align: center; }
+        .product-image { width: 100%; height: 250px; background: var(--bg-light); margin-bottom: 20px; display: block; }
+        .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; }
 
-        /* Modal Styles */
+        /* Modal */
         .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal.is-active { display: flex; }
-        .modal-content { background: #fff; width: 400px; padding: 30px; }
+        .modal-content { background: #fff; width: 400px; padding: 35px; position: relative; }
         .color-swatch-grid { display: flex; gap: 10px; margin: 15px 0; }
-        .color-swatch { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid #ccc; }
-        .form-select { width: 100%; padding: 10px; margin: 10px 0; }
+        .color-swatch { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+        .color-swatch.is-selected { border-color: #000; }
+        .form-select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid var(--border-color); }
     </style>
 </head>
 <body>
 
+    <div class="announcement-bar">FREE UK DELIVERY ON ORDERS OVER £50</div>
     <header class="main-header">
-        <div class="logo"><strong>HG CUSTOMS</strong></div>
+        <div class="logo"><a href="index.html" style="text-decoration:none; color:#000;">HG Customs</a></div>
         <nav>
             <ul class="nav-links">
-                <li class="nav-item">
-                    Shop
-                    <div class="dropdown">
-                        <a href="t-shirts.html">T-Shirts</a>
-                        <a href="hoodies.html">Hoodies</a>
-                        <a href="mugs.html">Mugs</a>
-                    </div>
+                <li><a href="index.html">Home</a></li>
+                <li class="has-dropdown">
+                    <a href="#">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="mugs.html">Custom Mugs</a></li>
+                        <li><a href="t-shirts.html">Custom T-Shirts</a></li>
+                        <li><a href="coasters.html">Custom Coasters</a></li>
+                    </ul>
                 </li>
-                <li><a href="about.html" style="text-decoration:none; color:#000;">About</a></li>
             </ul>
         </nav>
+        <div class="cart-icon"><i class="fa-solid fa-basket-shopping"></i></div>
     </header>
 
     <main class="catalog-container">
         <h1>Custom Graphic T-Shirts</h1>
-        <div class="product-grid" id="productGrid">
-            <!-- 6 Items via Script for consistency -->
+        <div class="product-grid">
+            <!-- 6 Product Placeholders -->
             <script>
-                const items = ["Essential Tee", "Heavy Tee", "V-Neck", "Long Sleeve", "Organic Tee", "Performance"];
-                items.forEach(name => {
+                const tees = ["Essential Tee", "Heavyweight", "V-Neck", "Long Sleeve", "Organic Cotton", "Premium Fit"];
+                tees.forEach(name => {
                     document.write(`
                         <div class="product-card">
-                            <div style="height:200px; background:#f4f4f4; margin-bottom:10px;"></div>
+                            <div class="product-image"></div>
                             <h3>${name}</h3>
-                            <button class="btn-customize" onclick="openModal('${name}')">Design & Buy</button>
+                            <button class="btn-customize" style="margin-top:15px;" onclick="openModal('${name}')">Design & Buy</button>
                         </div>
                     `);
                 });
@@ -73,13 +86,13 @@
 
     <div class="modal" id="productModal">
         <div class="modal-content">
-            <h2 id="modalTitle">Product</h2>
+            <h2 id="modalTitle">Select Options</h2>
             <div class="color-swatch-grid">
-                <div class="color-swatch" style="background:#fff"></div>
-                <div class="color-swatch" style="background:#000"></div>
-                <div class="color-swatch" style="background:red"></div>
-                <div class="color-swatch" style="background:blue"></div>
-                <div class="color-swatch" style="background:green"></div>
+                <div class="color-swatch" style="background:#fff; border:1px solid #ccc" onclick="selectColor(this)"></div>
+                <div class="color-swatch" style="background:#000" onclick="selectColor(this)"></div>
+                <div class="color-swatch" style="background:#ff0000" onclick="selectColor(this)"></div>
+                <div class="color-swatch" style="background:#0000ff" onclick="selectColor(this)"></div>
+                <div class="color-swatch" style="background:#008000" onclick="selectColor(this)"></div>
             </div>
             <select class="form-select">
                 <option>XS</option><option>S</option><option>M</option><option>L</option>
@@ -90,8 +103,15 @@
     </div>
 
     <script>
-        function openModal(name) { document.getElementById('modalTitle').innerText = name; document.getElementById('productModal').classList.add('is-active'); }
+        function openModal(name) {
+            document.getElementById('modalTitle').innerText = name;
+            document.getElementById('productModal').classList.add('is-active');
+        }
         function closeModal() { document.getElementById('productModal').classList.remove('is-active'); }
+        function selectColor(el) {
+            document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('is-selected'));
+            el.classList.add('is-selected');
+        }
     </script>
 </body>
 </html>
