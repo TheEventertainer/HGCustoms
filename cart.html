@@ -53,9 +53,60 @@
         h1 { margin-bottom: 24px; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
         /* --- Cart Content Styles --- */
-        .cart-item { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); padding: 20px; background: #fff; margin-bottom: 10px; border-radius: 4px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); padding: 20px; background: #fff; margin-bottom: 10px; border-radius: 4px; gap: 20px; }
+        .item-details { flex-grow: 1; }
         .item-details strong { font-size: 1.05rem; }
         .item-details p { font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; }
+        
+        /* Quantity Selector & Actions Group */
+        .cart-item-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            background: #fff;
+            border-radius: 4px;
+        }
+        .qty-btn {
+            background: none;
+            border: none;
+            width: 30px;
+            height: 30px;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text-dark);
+            transition: background 0.2s;
+        }
+        .qty-btn:hover { background: var(--bg-light); }
+        .qty-input {
+            width: 35px;
+            text-align: center;
+            border: none;
+            font-family: var(--font-sans);
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+            background: transparent;
+        }
+        .qty-input::-webkit-outer-spin-button,
+        .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        .btn-remove-item {
+            background: none;
+            border: none;
+            color: #e53935;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .btn-remove-item:hover { color: #b71c1c; }
         
         /* --- Discount Section Styles --- */
         .discount-container { background: #fff; padding: 20px; border-radius: 4px; margin: 20px 0; border: 1px solid var(--border-color); display: flex; gap: 10px; }
@@ -219,6 +270,7 @@
         function renderCart() {
             container.innerHTML = "";
             let subtotal = 0;
+            summary = "--- NEW CUSTOM ORDER ---\n";
 
             if (cart.length === 0) {
                 container.innerHTML = "<p style='color:#666; padding: 20px 0;'>Your basket is currently empty.</p>";
@@ -226,18 +278,33 @@
                 document.querySelector('.totals-box').style.display = 'none';
                 updateCartBadge();
                 return;
+            } else {
+                document.getElementById('discount-wrapper').style.display = 'flex';
+                document.querySelector('.totals-box').style.display = 'block';
             }
 
             cart.forEach((item, index) => {
-                subtotal += item.price;
-                summary += `Item ${index + 1}: ${item.title} | Color: ${item.color} | Design: ${item.img}\n`;
+                let qty = parseInt(item.quantity) || 1;
+                let itemTotal = item.price * qty;
+                subtotal += itemTotal;
+                
+                summary += `Item ${index + 1}: ${item.title} | Color: ${item.color} | Qty: ${qty} | Design: ${item.img}\n`;
+                
                 container.innerHTML += `
                     <div class="cart-item">
                         <div class="item-details">
                             <strong>${item.title}</strong>
                             <p>Color: ${item.color}</p>
                         </div>
-                        <div style="font-weight: 600;">£${item.price.toFixed(2)}</div>
+                        <div class="cart-item-actions">
+                            <div style="font-weight: 600; margin-bottom: 5px;">£${itemTotal.toFixed(2)}</div>
+                            <div class="quantity-selector">
+                                <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                                <input type="number" class="qty-input" value="${qty}" min="1" onchange="setQuantity(${index}, this.value)">
+                                <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                            </div>
+                            <button class="btn-remove-item" onclick="removeItem(${index})">Remove</button>
+                        </div>
                     </div>
                 `;
             });
@@ -257,6 +324,34 @@
             }
 
             updateCartBadge();
+            renderPayPalButtons();
+        }
+
+        function updateQuantity(index, change) {
+            if (cart[index]) {
+                let currentQty = parseInt(cart[index].quantity) || 1;
+                let newQty = currentQty + change;
+                if (newQty < 1) newQty = 1;
+                cart[index].quantity = newQty;
+                localStorage.setItem('hg_cart', JSON.stringify(cart));
+                renderCart();
+            }
+        }
+
+        function setQuantity(index, value) {
+            if (cart[index]) {
+                let newQty = parseInt(value);
+                if (isNaN(newQty) || newQty < 1) newQty = 1;
+                cart[index].quantity = newQty;
+                localStorage.setItem('hg_cart', JSON.stringify(cart));
+                renderCart();
+            }
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('hg_cart', JSON.stringify(cart));
+            renderCart();
         }
 
         // Sample Discount Handler function
@@ -303,22 +398,27 @@
         });
 
         // PayPal Integration Logic (Sandbox Demo Mode Ready)
-        if (cart.length > 0) {
-            paypal.Buttons({
-                createOrder: function(data, actions) {
-                    let currentSubtotal = cart.reduce((sum, item) => sum + item.price, 0);
-                    let finalCalculatedTotal = (currentSubtotal * discountMultiplier).toFixed(2);
-                    
-                    return actions.order.create({
-                        purchase_units: [{ amount: { value: finalCalculatedTotal } }]
-                    });
-                },
-                onApprove: function(data, actions) {
-                    return actions.order.capture().then(function(details) {
-                        triggerFormBold(summary);
-                    });
-                }
-            }).render('#paypal-button-container');
+        function renderPayPalButtons() {
+            const paypalContainer = document.getElementById('paypal-button-container');
+            paypalContainer.innerHTML = ""; // Clear existing buttons to prevent duplication on re-render
+
+            if (cart.length > 0 && window.paypal) {
+                paypal.Buttons({
+                    createOrder: function(data, actions) {
+                        let currentSubtotal = cart.reduce((sum, item) => sum + (item.price * (parseInt(item.quantity) || 1)), 0);
+                        let finalCalculatedTotal = (currentSubtotal * discountMultiplier).toFixed(2);
+                        
+                        return actions.order.create({
+                            purchase_units: [{ amount: { value: finalCalculatedTotal } }]
+                        });
+                    },
+                    onApprove: function(data, actions) {
+                        return actions.order.capture().then(function(details) {
+                            triggerFormBold(summary);
+                        });
+                    }
+                }).render('#paypal-button-container');
+            }
         }
 
         // Trigger FormBold Submission Post-Payment
