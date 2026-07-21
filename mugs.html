@@ -8,15 +8,19 @@
     
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; display: flex; flex-direction: column; min-height: 100vh; color: #111; background-color: #fafafa; }
+        body { font-family: 'Inter', sans-serif; display: flex; flex-direction: column; min-height: 100vh; color: #111; background-color: #fafafa; position: relative; }
 
         /* Header Styles */
         header { background: #fff; border-bottom: 1px solid #eaeaea; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo-img { height: 40px; width: auto; display: block; text-decoration: none; }
+        .logo-img { height: 55px; width: auto; display: block; text-decoration: none; }
         nav { display: flex; gap: 20px; align-items: center; }
         nav a { text-decoration: none; color: #555; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; white-space: nowrap; }
         nav a:hover, nav a.active { color: #000; }
         
+        /* Basket Icon Link with Badge */
+        .basket-link { display: flex; align-items: center; gap: 6px; font-weight: 600; position: relative; }
+        .basket-count { background: #111; color: #fff; font-size: 0.75rem; padding: 2px 6px; border-radius: 10px; }
+
         /* Mobile Menu Toggle */
         .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
 
@@ -24,6 +28,41 @@
         main { flex: 1; max-width: 1100px; width: 100%; margin: 40px auto; padding: 0 20px; }
         h1 { margin-bottom: 10px; font-size: 2rem; font-weight: 700; text-align: center; }
         .subtitle { text-align: center; color: #666; margin-bottom: 40px; font-size: 1rem; }
+
+        /* Toast Notification Banner */
+        #toast-banner {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #111;
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.95rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        #toast-banner.show { transform: translateY(0); opacity: 1; }
+        #toast-banner a { color: #fff; font-weight: 600; text-decoration: underline; }
+
+        /* Flying Animation Element */
+        .flyer {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: #111;
+            border-radius: 50%;
+            z-index: 3000;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
 
         /* Products Grid (3 x 2 on Desktop) */
         .products-grid {
@@ -171,7 +210,9 @@
             <a href="t-shirts.html">T-shirts</a>
             <a href="coasters.html">Coasters</a>
             <a href="merchandise.html">Merchandise</a>
-            <a href="cart.html">Basket</a>
+            <a href="cart.html" class="basket-link" id="basket-nav-link">
+                Basket <span class="basket-count" id="basket-badge">0</span>
+            </a>
         </nav>
     </header>
 
@@ -182,7 +223,7 @@
         
         <div class="products-grid">
             <!-- Product 1 -->
-            <div class="product-card" onclick="openModal('Classic Ceramic Mug', 12.99, 'Mug Image Placeholder 1')">
+            <div class="product-card" onclick="openModal('Classic Ceramic Mug', 12.99, event)">
                 <div class="product-image-placeholder">Mug Image Placeholder 1</div>
                 <div class="product-info">
                     <div class="product-title">Classic Ceramic Mug</div>
@@ -192,7 +233,7 @@
             </div>
 
             <!-- Product 2 -->
-            <div class="product-card" onclick="openModal('Color Changing Magic Mug', 15.99, 'Mug Image Placeholder 2')">
+            <div class="product-card" onclick="openModal('Color Changing Magic Mug', 15.99, event)">
                 <div class="product-image-placeholder">Mug Image Placeholder 2</div>
                 <div class="product-info">
                     <div class="product-title">Color Changing Magic Mug</div>
@@ -202,7 +243,7 @@
             </div>
 
             <!-- Product 3 -->
-            <div class="product-card" onclick="openModal('Enamel Camping Mug', 14.99, 'Mug Image Placeholder 3')">
+            <div class="product-card" onclick="openModal('Enamel Camping Mug', 14.99, event)">
                 <div class="product-image-placeholder">Mug Image Placeholder 3</div>
                 <div class="product-info">
                     <div class="product-title">Enamel Camping Mug</div>
@@ -212,7 +253,7 @@
             </div>
 
             <!-- Product 4 -->
-            <div class="product-card" onclick="openModal('Two-Tone Accent Mug', 13.50, 'Mug Image Placeholder 4')">
+            <div class="product-card" onclick="openModal('Two-Tone Accent Mug', 13.50, event)">
                 <div class="product-image-placeholder">Mug Image Placeholder 4</div>
                 <div class="product-info">
                     <div class="product-title">Two-Tone Accent Mug</div>
@@ -222,7 +263,7 @@
             </div>
 
             <!-- Product 5 -->
-            <div class="product-card" onclick="openModal('Large Mega Mug (15oz)', 16.99, 'Mug Image Placeholder 5')">
+            <div class="product-card" onclick="openModal('Large Mega Mug (15oz)', 16.99, event)">
                 <div class="product-image-placeholder">Mug Image Placeholder 5</div>
                 <div class="product-info">
                     <div class="product-title">Large Mega Mug (15oz)</div>
@@ -232,7 +273,7 @@
             </div>
 
             <!-- Product 6 -->
-            <div class="product-card" onclick="openModal('Heart Handle Love Mug', 14.50, 'Mug Image Placeholder 6')">
+            <div class="product-card" onclick="openModal('Heart Handle Love Mug', 14.50, event)">
                 <div class="product-image-placeholder">Mug Image Placeholder 6</div>
                 <div class="product-info">
                     <div class="product-title">Heart Handle Love Mug</div>
@@ -245,7 +286,7 @@
 
     <!-- Customization Pop-Up Modal -->
     <div id="customizer-modal" class="modal-overlay" onclick="handleModalClick(event)">
-        <div class="modal-content">
+        <div class="modal-content" id="modal-box-element">
             <button class="modal-close" onclick="closeModal()">×</button>
             <div id="modal-product-title" class="modal-title"></div>
             <div id="modal-product-price" class="modal-price"></div>
@@ -265,8 +306,14 @@
                 <input type="file" id="custom-image-upload" class="file-input" accept="image/*">
             </div>
 
-            <button class="btn-add-cart" onclick="addToCartFromModal()">Add to Basket</button>
+            <button class="btn-add-cart" id="modal-submit-btn" onclick="addToCartFromModal(event)">Add to Basket</button>
         </div>
+    </div>
+
+    <!-- Toast Notification Banner -->
+    <div id="toast-banner">
+        <span>This item has been added to your basket.</span>
+        <a href="cart.html">View Basket</a>
     </div>
 
     <!-- Footer -->
@@ -283,6 +330,14 @@
     </footer>
 
     <script>
+        // Update header badge on page load
+        updateBasketCount();
+
+        function updateBasketCount() {
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            document.getElementById('basket-badge').innerText = cart.length;
+        }
+
         // Mobile Menu Toggle Handler
         function toggleMenu() {
             const nav = document.getElementById('main-nav');
@@ -292,23 +347,18 @@
         // Modal Customizer States
         let activeProductTitle = "";
         let activeProductPrice = 0;
-        let activeProductImg = "";
         let selectedColorName = "White";
 
-        function openModal(title, price, imgPlaceholder) {
+        function openModal(title, price, event) {
             activeProductTitle = title;
             activeProductPrice = price;
-            activeProductImg = imgPlaceholder;
             selectedColorName = "White";
 
-            // Reset visual color selector to default white
             const circles = document.querySelectorAll('.color-circle');
             circles.forEach(c => c.classList.remove('selected'));
             circles[0].classList.add('selected');
 
-            // Clear file upload input
             document.getElementById('custom-image-upload').value = "";
-
             document.getElementById('modal-product-title').innerText = title;
             document.getElementById('modal-product-price').innerText = "£" + price.toFixed(2);
             document.getElementById('customizer-modal').style.display = 'flex';
@@ -330,14 +380,15 @@
             selectedColorName = colorName;
         }
 
-        function addToCartFromModal() {
+        function addToCartFromModal(event) {
             const fileInput = document.getElementById('custom-image-upload');
             let imageValue = "No image uploaded";
             
             if (fileInput.files && fileInput.files[0]) {
-                imageValue = fileInput.files[0].name; // Captures filename if uploaded optionally
+                imageValue = fileInput.files[0].name;
             }
 
+            // Save to local storage
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             cart.push({
                 title: activeProductTitle,
@@ -345,10 +396,54 @@
                 color: selectedColorName,
                 img: imageValue
             });
-
             localStorage.setItem('hg_cart', JSON.stringify(cart));
+            updateBasketCount();
+
+            // Close modal immediately
             closeModal();
-            window.location.href = "cart.html";
+
+            // Trigger Professional Flying Animation towards top right basket icon
+            playFlyerAnimation(event);
+
+            // Show Toast Notification Message (staying on page)
+            showToastBanner();
+        }
+
+        function playFlyerAnimation(event) {
+            const buttonElement = document.getElementById('modal-submit-btn');
+            const targetBadge = document.getElementById('basket-nav-link');
+
+            const startRect = buttonElement.getBoundingClientRect();
+            const targetRect = targetBadge.getBoundingClientRect();
+
+            const flyer = document.createElement('div');
+            flyer.classList.add('flyer');
+            flyer.style.left = startRect.left + (startRect.width / 2) - 20 + 'px';
+            flyer.style.top = startRect.top + (startRect.height / 2) - 20 + 'px';
+            document.body.appendChild(flyer);
+
+            // Trigger animation frame layout flush
+            setTimeout(() => {
+                flyer.style.left = targetRect.left + (targetRect.width / 2) - 20 + 'px';
+                flyer.style.top = targetRect.top + (targetRect.height / 2) - 20 + 'px';
+                flyer.style.transform = 'scale(0.2)';
+                flyer.style.opacity = '0.5';
+            }, 30);
+
+            // Clean up flyer element after animation completes
+            setTimeout(() => {
+                flyer.remove();
+            }, 850);
+        }
+
+        function showToastBanner() {
+            const toast = document.getElementById('toast-banner');
+            toast.classList.add('show');
+
+            // Automatically hide after 4 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
         }
     </script>
 </body>
