@@ -431,7 +431,7 @@
 
         <div class="products-grid">
             <!-- Product 1 -->
-            <div class="product-card" onclick="openModal('Background', 12.99, 'MUG1a.PNG', 'MUG1b.PNG', event, 'Background', 'Upload your best pet photo and we will add it to our classic design, with customized background colour and choice of mug handle and inner colour. ', false)">
+            <div class="product-card" onclick="openModal('Classic Background Mug', 12.99, 'MUG1a.PNG', 'MUG1b.PNG', event, 'Background', 'Upload your best pet photo and we will add it to our classic design, with customized background colour and choice of mug handle and inner colour. ', false)">
                 <img src="MUG1a.PNG" alt="Classic Background Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Classic Background Mug</div>
@@ -441,7 +441,7 @@
             </div>
 
             <!-- Product 2 -->
-            <div class="product-card" onclick="openModal('troublemaker', 15.99, 'MUG2a.PNG', 'MUG2b.PNG', event, 'troublemaker', 'Turn your beloved pet into a customised Established Troublemaker, uploading your own image to add to our design.', false)">
+            <div class="product-card" onclick="openModal('Troublemaker Mug', 15.99, 'MUG2a.PNG', 'MUG2b.PNG', event, 'Background', 'Turn your beloved pet into a customised Established Troublemaker, uploading your own image to add to our design.', false)">
                 <img src="MUG2a.PNG" alt="Established Troublemaker mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Troublemaker Mug</div>
@@ -451,7 +451,7 @@
             </div>
 
             <!-- Product 3 -->
-            <div class="product-card" onclick="openModal('lifebetter', 14.99, 'MUG3a.PNG', 'MUG3b.PNG', event, 'lifebetter', 'Upload your own pet image to add to our design, choosing your own floor colour beneath your pet.', false)">
+            <div class="product-card" onclick="openModal('Life Is Better Mug', 14.99, 'MUG3a.PNG', 'MUG3b.PNG', event, 'Background', 'Upload your own pet image to add to our design, choosing your own floor colour beneath your pet.', false)">
                 <img src="MUG3a.PNG" alt="Life Is Better Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Life Is Better Mug</div>
@@ -461,7 +461,7 @@
             </div>
 
             <!-- Product 4 -->
-            <div class="product-card" onclick="openModal('Back', 13.50, 'MUG4a.PNG', 'MUG4b.PNG', event, 'back', 'We know you love the back of your pets head, so we can now immortalise it on your very own custom mug.', false)">
+            <div class="product-card" onclick="openModal('Back of head Mug', 13.50, 'MUG4a.PNG', 'MUG4b.PNG', event, 'Background', 'We know you love the back of your pets head, so we can now immortalise it on your very own custom mug.', false)">
                 <img src="MUG4a.PNG" alt="Back of head Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Back of head Mug</div>
@@ -471,7 +471,7 @@
             </div>
 
             <!-- Product 5 -->
-            <div class="product-card" onclick="openModal('shadow', 16.99, 'MUG5a.PNG', 'MUG5b.PNG', event, 'shadow', 'Upload your own image to add to our design, this will be pluralised for images with multiple pets.', false)">
+            <div class="product-card" onclick="openModal('My Shadow My Heart Mug', 16.99, 'MUG5a.PNG', 'MUG5b.PNG', event, 'Background', 'Upload your own image to add to our design, this will be pluralised for images with multiple pets.', false)">
                 <img src="MUG5a.PNG" alt="My Shadow My Heart Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">My SHadow My Heart Mug</div>
@@ -481,7 +481,7 @@
             </div>
 
             <!-- Product 6 (With Multiple File Upload Option enabled) -->
-            <div class="product-card" onclick="openModal('Custom', 14.50, 'MUG6a.png', 'MUG6b.png', event, 'custom', 'Your chance to create or prompt any design you can think of. Upload an image or multiple images of your pet, and then in the prompt, let us know what you have in mind. We will email your design to you before printing.', true)">
+            <div class="product-card" onclick="openModal('Fully customised mug', 14.50, 'MUG6a.png', 'MUG6b.png', event, 'Background', 'Your chance to create or prompt any design you can think of. Upload an image or multiple images of your pet, and then in the prompt, let us know what you have in mind. We will email your design to you before printing.', true)">
                 <img src="MUG6a.png" alt="Custom" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Fully customised mug</div>
@@ -687,7 +687,7 @@
             }
 
             // 1. Primary Colors setup
-            const colors = productColorLists[productKey] || [{ name: "White", hex: "#ffffff" }];
+            const colors = productColorLists[productKey] || productColorLists['Background'];
             selectedColorName = colors[0].name;
 
             const container = document.getElementById('modal-color-options');
