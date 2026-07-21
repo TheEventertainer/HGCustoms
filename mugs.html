@@ -416,17 +416,15 @@
         <div class="page-title-section">
             <h1 class="page-title">Custom Pet Mug Collection</h1>
         </div>
-        
-</div>
 
-<!-- Category Banner Image -->
-<div class="category-banner-container" style="height: auto !important; max-height: 100% !important; width: 100%;">
-    <picture style="width: 100%; height: auto;">
+<!-- Category Banner Image stretched full-width -->
+<div class="category-banner-container" style="width: 100vw !important; position: relative; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; height: auto !important; max-height: none !important;">
+    <picture style="width: 100%; display: block;">
         <!-- Mobile Alternate Image (< 992px) -->
         <source media="(max-width: 992px)" srcset="mobile-banner.png">
         <!-- Desktop Landscape Image (>= 993px) -->
         <source media="(min-width: 993px)" srcset="desktop-banner.png">
-        <!-- Fallback Image scaled to full width with automatic height -->
+        <!-- Fallback Image scaled to full viewport width -->
         <img src="desktop-banner.jpg" alt="Custom Pet Mugs Banner" class="category-banner-img" style="display: block; width: 100%; height: auto; object-fit: contain;">
     </picture>
 </div>
