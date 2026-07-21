@@ -294,9 +294,13 @@
                 let title = item.name || item.title || "Custom Item";
                 let displayColor = "";
                 
-                // Directly extract color properties, falling back to checking raw fields or object keys if named differently
-                let bgCol = item.backgroundColour || item.backgroundcolor || item.colour || item.color;
-                let inCol = item.innerColour || item.innercolour;
+                // Debugging helper: log the raw item object to your browser console to check keys
+                console.log("Cart Item Object:", item);
+
+                // Comprehensive extraction checking all common variants (including camelCase, lowercase, variations)
+                let bgCol = item.backgroundColour || item.backgroundcolor || item.bgColor || item.background_color;
+                let inCol = item.innerColour || item.innercolour || item.innerColor || item.inner_color;
+                let genericCol = item.color || item.colour;
 
                 if (bgCol && inCol) {
                     displayColor = `Background: ${bgCol} | Inner: ${inCol}`;
@@ -304,20 +308,23 @@
                     displayColor = `Background: ${bgCol}`;
                 } else if (inCol) {
                     displayColor = `Inner: ${inCol}`;
-                } else if (item.color) {
-                    displayColor = `Color: ${item.color}`;
+                } else if (genericCol) {
+                    displayColor = `Color: ${genericCol}`;
                 } else {
-                    // Fallback: if properties are nested or stored under custom labels, search object values manually
-                    let foundColorVal = "";
+                    // Deep fallback: loop through every property key in the object to catch custom names
+                    let discoveredParts = [];
                     for (let key in item) {
-                        if (key.toLowerCase().includes('color') || key.toLowerCase().includes('colour')) {
-                            if (item[key] && typeof item[key] === 'string' && item[key] !== "None") {
-                                foundColorVal = item[key];
-                                break;
-                            }
+                        let lowerKey = key.toLowerCase();
+                        if ((lowerKey.includes('color') || lowerKey.includes('colour') || lowerKey.includes('bg') || lowerKey.includes('inner')) && 
+                            typeof item[key] === 'string' && item[key].trim() !== "" && item[key] !== "None") {
+                            discoveredParts.push(`${key}: ${item[key]}`);
                         }
                     }
-                    displayColor = foundColorVal ? `Color: ${foundColorVal}` : "Color: Standard";
+                    if (discoveredParts.length > 0) {
+                        displayColor = discoveredParts.join(" | ");
+                    } else {
+                        displayColor = "Color: Standard";
+                    }
                 }
 
                 let notesInfo = (item.customizationNote && item.customizationNote !== "None") ? ` | Notes: ${item.customizationNote}` : "";
