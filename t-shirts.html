@@ -20,7 +20,7 @@
             --border-color: #e5e5e5; 
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; display: flex; flex-direction: column; min-height: 100vh; position: relative; -webkit-font-smoothing: antialiased; }
         
         /* --- Announcement Bar --- */
         .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
@@ -43,7 +43,7 @@
         .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
 
         /* --- Catalog Area --- */
-        .catalog-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .catalog-container { max-width: 1200px; width: 100%; margin: 40px auto; padding: 0 20px; flex: 1; }
         .catalog-container h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 15px; border-bottom: 2px solid #000; margin-bottom: 30px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
         .product-card { border: 1px solid var(--border-color); padding: 25px; display: flex; flex-direction: column; background: #fff; }
@@ -127,7 +127,37 @@
             font-size: 16px;
         }
 
+        /* Mobile Scroll to Top Button Style */
+        #scroll-to-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1500;
+            background: #111;
+            color: #fff;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: background 0.2s, opacity 0.2s;
+        }
+        #scroll-to-top:hover { background: #333; }
+
+        /* --- Footer Styles --- */
+        .site-footer { background-color: #ffffff; border-top: 1px solid var(--border-color); margin-top: auto; }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; }
+        .footer-copyright { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; }
+        .footer-links { display: flex; list-style: none; gap: 30px; margin: 0; }
+        .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--text-dark); }
+
         @media (max-width: 992px) {
+            .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
             .main-header { padding: 20px; }
             .mobile-toggle { display: block; order: 1; }
             .logo-link { order: 2; }
@@ -139,6 +169,10 @@
             
             /* Match mobile logo scaling from Mugs */
             .logo-img { height: 60px; }
+            
+            .footer-content { flex-direction: column; gap: 15px; text-align: center; padding: 20px 0; }
+            .footer-links { justify-content: center; flex-wrap: wrap; gap: 15px; }
+            #scroll-to-top { display: flex; }
         }
     </style>
 </head>
@@ -295,6 +329,11 @@
         <i class="fa-solid fa-circle-check"></i>
         <span id="toast-message">Item added to basket!</span>
     </div>
+
+    <!-- Mobile Scroll to Top Button -->
+    <button id="scroll-to-top" onclick="scrollToTop()" aria-label="Scroll to top">
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
 
     <script>
         let currentActivePrice = 0;
@@ -488,6 +527,13 @@
             badges.forEach(badge => badge.innerText = totalItems);
         }
 
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             updateBadge();
 
@@ -513,11 +559,11 @@
     </script>
 
     <footer class="site-footer">
-        <div class="footer-content" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-top: 1px solid var(--border-color);">
-            <div class="footer-copyright" style="font-size: 12px; color: var(--text-muted);">
+        <div class="footer-content">
+            <div class="footer-copyright">
                 &copy; HG CUSTOMS 2026
             </div>
-            <ul class="footer-links" style="list-style: none; display: flex; gap: 30px; margin: 0;">
+            <ul class="footer-links">
                 <li><a href="shipping-info.html">Delivery Information</a></li>
                 <li><a href="privacy-policy.html">Privacy Policy</a></li>
                 <li><a href="terms-of-service.html">Terms & Conditions</a></li>
