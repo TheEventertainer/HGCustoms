@@ -6,11 +6,11 @@
     <title>Custom T-Shirts | HG Customs</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Cloudinary Widget Script -->
-    <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
+    <!-- Cloudinary Upload Widget Script -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
 
     <style>
         :root { 
@@ -18,9 +18,10 @@
             --text-muted: #555555;
             --bg-light: #f9f9f9; 
             --border-color: #e5e5e5; 
+            --font-sans: 'Inter', sans-serif;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; display: flex; flex-direction: column; min-height: 100vh; position: relative; -webkit-font-smoothing: antialiased; }
+        body { font-family: var(--font-sans); display: flex; flex-direction: column; min-height: 100vh; color: var(--text-dark); background-color: #ffffff; -webkit-font-smoothing: antialiased; position: relative; }
         
         /* --- Announcement Bar --- */
         .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
@@ -31,6 +32,7 @@
         /* --- Main Header Navigation --- */
         .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 1000; }
         .logo-img { height: 75px; width: auto; display: block; text-decoration: none; }
+        
         .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
         .nav-links > li { position: relative; padding: 10px 0; }
         .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 500; font-size: 14px; letter-spacing: 0.5px; transition: border-color 0.2s, font-weight 0.2s; padding-bottom: 4px; }
@@ -40,63 +42,69 @@
         .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
         .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
+        .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); background: none; border: none; }
 
-        /* --- Catalog Area --- */
-        .catalog-container { max-width: 1200px; width: 100%; margin: 40px auto; padding: 0 20px; flex: 1; }
-        .catalog-container h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 15px; border-bottom: 2px solid #000; margin-bottom: 30px; }
+        /* --- Main Container & Category Header --- */
+        main { flex: 1; max-width: 1200px; width: 100%; margin: 40px auto; padding: 0 20px; }
+        
+        .page-title-section { width: 100%; margin-bottom: 30px; }
+        .page-title { font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #000000; text-align: left; padding-bottom: 15px; border-bottom: 2px solid #000000; }
+
+        /* Products Grid */
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .product-card { border: 1px solid var(--border-color); padding: 25px; display: flex; flex-direction: column; background: #fff; }
-        .product-image-wrapper { text-align: center; margin-bottom: 15px; border: 1px solid var(--border-color); padding: 10px; background: var(--bg-light); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .product-image-wrapper img { max-width: 100%; height: 200px; object-fit: contain; }
+        
+        .product-card { 
+            border: 1px solid var(--border-color); 
+            padding: 25px; 
+            display: flex; 
+            flex-direction: column; 
+            background: #fff; 
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        }
+        .product-image-wrapper { text-align: center; margin-bottom: 15px; border: 1px solid var(--border-color); padding: 10px; background: var(--bg-light); display: flex; align-items: center; justify-content: center; overflow: hidden; height: 200px; }
+        .product-image-wrapper img { max-width: 100%; height: 100%; object-fit: contain; }
         .prod-title { font-size: 16px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
         .prod-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
         
-        .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; letter-spacing: 1px; margin-top: auto; transition: background 0.2s; }
-        .btn-customize:hover { background: #222; }
+        .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; letter-spacing: 1px; margin-top: auto; transition: background 0.2s; text-align: center; }
+        .product-card:hover .btn-customize { background: #222; }
         
         /* --- Modal Area --- */
-        .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
         .modal.is-active { display: flex; }
         .modal-content { background: #fff; max-width: 440px; width: 90%; padding: 35px; position: relative; border: 1px solid var(--border-color); max-height: 90vh; overflow-y: auto; }
-        .modal-content h2 { font-size: 18px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px; }
+        .modal-content h2 { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px; }
         
         .close-modal { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 20px; cursor: pointer; color: #999; }
         .close-modal:hover { color: #000; }
 
-        .form-select { width: 100%; padding: 12px; margin: 5px 0 15px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; background-color: #fff; }
-        .form-textarea { width: 100%; height: 80px; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; resize: none; }
-        .upload-status-text { font-size: 12px; font-weight: 600; margin: -5px 0 15px 0; min-height: 16px; }
-        .option-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-top: 10px; margin-bottom: 8px; }
+        .form-textarea { width: 100%; height: 80px; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); font-family: var(--font-sans); font-size: 13px; resize: none; }
+        .upload-status-text { font-size: 12px; font-weight: 600; margin: 8px 0 15px 0; min-height: 16px; color: #28a745; display: none; word-break: break-all; }
 
-        /* --- Color Circle Swatches Layout --- */
-        .color-swatches-grid { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 18px 0; }
-        .color-circle { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease; position: relative; box-shadow: inset 0 0 2px rgba(0,0,0,0.2); }
-        .color-circle:hover { transform: scale(1.1); }
-        .color-circle.is-selected { border-color: #000000; transform: scale(1.15); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; }
-        .color-circle[data-color-name="White"] { border: 1px solid #dcdcdc; }
-        .color-circle[data-color-name="White"].is-selected { border: 2px solid #000; }
-
-        /* --- Preview Image & Quantity Selector --- */
-        .preview-container { text-align: center; margin-bottom: 15px; background: var(--bg-light); border: 1px solid var(--border-color); padding: 10px; display: flex; align-items: center; justify-content: center; }
-        .preview-container img { max-width: 100%; height: 140px; object-fit: contain; }
+        .preview-container { text-align: center; margin-bottom: 15px; background: var(--bg-light); border: 1px solid var(--border-color); padding: 10px; display: flex; align-items: center; justify-content: center; height: 160px; }
+        .preview-container img { max-width: 100%; height: 100%; object-fit: contain; }
         
         .quantity-wrapper { display: flex; align-items: center; justify-content: space-between; margin: 15px 0; padding-top: 10px; border-top: 1px solid var(--border-color); }
         .quantity-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .quantity-controls { display: flex; align-items: center; border: 1px solid var(--border-color); }
         .qty-btn { background: none; border: none; width: 36px; height: 36px; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
         .qty-btn:hover { background: var(--bg-light); }
-        .qty-input { width: 45px; height: 36px; border: none; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); text-align: center; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; -moz-appearance: textfield; }
+        .qty-input { width: 45px; height: 36px; border: none; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); text-align: center; font-family: var(--font-sans); font-size: 13px; font-weight: 600; -moz-appearance: textfield; }
         .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
         /* Flying Animation Style */
         .flying-img {
             position: fixed;
-            z-index: 9999;
+            z-index: 3000;
             pointer-events: none;
-            transition: all 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
             border-radius: 50%;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             object-fit: cover;
         }
 
@@ -119,15 +127,11 @@
             align-items: center;
             gap: 10px;
         }
-        .toast-notification.show {
-            bottom: 20px;
-        }
-        .toast-notification i {
-            color: #28a745;
-            font-size: 16px;
-        }
+        .toast-notification.show { bottom: 20px; }
+        .toast-notification i { color: #28a745; font-size: 16px; }
+        .toast-notification a { color: #fff; font-weight: 600; text-decoration: underline; margin-left: 5px; }
 
-        /* Mobile Scroll to Top Button Style */
+        /* Mobile Scroll to Top Button */
         #scroll-to-top {
             display: none;
             position: fixed;
@@ -156,20 +160,25 @@
         .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; transition: color 0.2s; }
         .footer-links a:hover { color: var(--text-dark); }
 
+        /* Responsive Breakpoints & Mobile Header Layout Fix */
         @media (max-width: 992px) {
             .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
-            .main-header { padding: 20px; }
-            .mobile-toggle { display: block; order: 1; }
-            .logo-link { order: 2; }
-            .header-actions { order: 3; }
+            
+            /* Re-ordered Flex items for clean mobile navigation header layout */
+            .main-header { padding: 15px 20px; flex-wrap: wrap; }
+            .mobile-toggle { display: block; order: 1; flex: 0 0 auto; }
+            .logo-link { order: 2; flex: 1; text-align: center; }
+            .logo-img { height: 50px; margin: 0 auto; }
+            .header-actions { order: 3; flex: 0 0 auto; }
+            
             nav { width: 100%; order: 4; }
-            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 15px; }
             .nav-links.is-open { display: flex; }
             .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
             
-            /* Match mobile logo scaling from Mugs */
-            .logo-img { height: 60px; }
-            
+            main { margin: 20px auto; padding: 0 15px; }
+            .page-title { font-size: 22px; }
+            .product-grid { grid-template-columns: 1fr; gap: 20px; }
             .footer-content { flex-direction: column; gap: 15px; text-align: center; padding: 20px 0; }
             .footer-links { justify-content: center; flex-wrap: wrap; gap: 15px; }
             #scroll-to-top { display: flex; }
@@ -187,11 +196,15 @@
 
     <!-- Main Navigation Header -->
     <header class="main-header">
-        <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        <button class="mobile-toggle" id="menu-toggle" aria-label="Toggle Menu"><i class="fa-solid fa-bars"></i></button>
         
         <a href="index.html" class="logo-link">
             <img src="logo.png" alt="HG Customs Logo" class="logo-img">
         </a>
+
+        <div class="header-actions">
+            <a href="cart.html" class="cart-icon" id="cart-icon-target" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
+        </div>
 
         <nav>
             <ul class="nav-links" id="nav-menu">
@@ -203,115 +216,69 @@
                 <li><a href="about-us.html">About Us</a></li>
             </ul>
         </nav>
-        <div class="header-actions">
-            <a href="cart.html" class="cart-icon" id="cart-icon-target" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
-        </div>
     </header>
 
-    <main class="catalog-container">
-        <h1>Custom Graphic T-Shirts</h1>
+    <main>
+        <div class="page-title-section">
+            <h1 class="page-title">Custom T-Shirts</h1>
+        </div>
         <div class="product-grid">
             <!-- Product 1 -->
-            <div class="product-card">
+            <div class="product-card" onclick="openProductModal('Classic Unisex T-Shirt', 16.99, 'tshirt-unisex.jpg', 'img-tshirt-1')">
                 <div class="product-image-wrapper">
-                    <img src="tshirt.jpg" alt="Essential Tee" id="img-tshirt-1">
+                    <img src="tshirt-unisex.jpg" alt="Classic Unisex T-Shirt" id="img-tshirt-1">
                 </div>
-                <div class="prod-title">Essential Tee</div>
-                <div class="prod-price">£18.99</div>
-                <button class="btn-customize" onclick="openProductModal('Essential Tee', 18.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-tshirt-1')">Design & Buy</button>
+                <div class="prod-title">Classic Unisex T-Shirt</div>
+                <div class="prod-price">£16.99</div>
+                <button class="btn-customize">Design & Buy</button>
             </div>
             
             <!-- Product 2 -->
-            <div class="product-card">
+            <div class="product-card" onclick="openProductModal('Premium Fitted T-Shirt', 18.99, 'tshirt-fitted.jpg', 'img-tshirt-2')">
                 <div class="product-image-wrapper">
-                    <img src="tshirt.jpg" alt="Heavyweight Tee" id="img-tshirt-2">
+                    <img src="tshirt-fitted.jpg" alt="Premium Fitted T-Shirt" id="img-tshirt-2">
                 </div>
-                <div class="prod-title">Heavyweight Tee</div>
-                <div class="prod-price">£22.99</div>
-                <button class="btn-customize" onclick="openProductModal('Heavyweight Tee', 22.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-tshirt-2')">Design & Buy</button>
+                <div class="prod-title">Premium Fitted T-Shirt</div>
+                <div class="prod-price">£18.99</div>
+                <button class="btn-customize">Design & Buy</button>
             </div>
             
             <!-- Product 3 -->
-            <div class="product-card">
+            <div class="product-card" onclick="openProductModal('Heavyweight Cotton Tee', 19.99, 'tshirt-heavy.jpg', 'img-tshirt-3')">
                 <div class="product-image-wrapper">
-                    <img src="tshirt.jpg" alt="V-Neck Tee" id="img-tshirt-3">
+                    <img src="tshirt-heavy.jpg" alt="Heavyweight Cotton Tee" id="img-tshirt-3">
                 </div>
-                <div class="prod-title">V-Neck Tee</div>
+                <div class="prod-title">Heavyweight Cotton Tee</div>
                 <div class="prod-price">£19.99</div>
-                <button class="btn-customize" onclick="openProductModal('V-Neck Tee', 19.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-tshirt-3')">Design & Buy</button>
+                <button class="btn-customize">Design & Buy</button>
             </div>
             
             <!-- Product 4 -->
-            <div class="product-card">
+            <div class="product-card" onclick="openProductModal('Custom Kids T-Shirt', 13.99, 'tshirt-kids.jpg', 'img-tshirt-4')">
                 <div class="product-image-wrapper">
-                    <img src="tshirt.jpg" alt="Long Sleeve Tee" id="img-tshirt-4">
+                    <img src="tshirt-kids.jpg" alt="Custom Kids T-Shirt" id="img-tshirt-4">
                 </div>
-                <div class="prod-title">Long Sleeve Tee</div>
-                <div class="prod-price">£24.99</div>
-                <button class="btn-customize" onclick="openProductModal('Long Sleeve Tee', 24.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-tshirt-4')">Design & Buy</button>
-            </div>
-            
-            <!-- Product 5 -->
-            <div class="product-card">
-                <div class="product-image-wrapper">
-                    <img src="tshirt.jpg" alt="Organic Cotton Tee" id="img-tshirt-5">
-                </div>
-                <div class="prod-title">Organic Cotton Tee</div>
-                <div class="prod-price">£21.99</div>
-                <button class="btn-customize" onclick="openProductModal('Organic Cotton Tee', 21.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-tshirt-5')">Design & Buy</button>
-            </div>
-            
-            <!-- Product 6 -->
-            <div class="product-card">
-                <div class="product-image-wrapper">
-                    <img src="tshirt.jpg" alt="Premium Fit Tee" id="img-tshirt-6">
-                </div>
-                <div class="prod-title">Premium Fit Tee</div>
-                <div class="prod-price">£25.99</div>
-                <button class="btn-customize" onclick="openProductModal('Premium Fit Tee', 25.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-tshirt-6')">Design & Buy</button>
+                <div class="prod-title">Custom Kids T-Shirt</div>
+                <div class="prod-price">£13.99</div>
+                <button class="btn-customize">Design & Buy</button>
             </div>
         </div>
     </main>
 
-    <!-- Unified Configurator Modal Window -->
-    <div class="modal" id="productModal">
-        <div class="modal-content">
+    <!-- Modal Area -->
+    <div class="modal" id="productModal" onclick="handleModalClick(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
             <button class="close-modal" onclick="document.getElementById('productModal').classList.remove('is-active')">&times;</button>
-            
-            <!-- Target Image Preview Box Container -->
             <div id="imagePreviewContainer" class="preview-container">
                 <img id="imagePreview" src="" alt="Design Preview">
             </div>
-
             <h2 id="modalTitle">Product</h2>
 
-            <!-- Visual Color Swatches Selector Wrapper -->
-            <div id="colorSelectionContainer">
-                <label class="option-label">Select Colour</label>
-                <div id="colorSwatchesWrapper" class="color-swatches-grid"></div>
-            </div>
-
-            <!-- Dynamic Size Dropdown Selector Wrapper -->
-            <div id="sizeSelectionContainer">
-                <label class="option-label" for="productSize">Select Size</label>
-                <select id="productSize" class="form-select">
-                    <option value="XS">XS</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                    <option value="XXL">XXL</option>
-                    <option value="XXXL">XXXL</option>
-                </select>
-            </div>
-
             <textarea id="userText" class="form-textarea" placeholder="Inscription notes, text choices or formatting requirements..."></textarea>
-            
-            <button id="upload_widget" class="btn-customize" style="background: #444; margin-bottom: 10px;">Upload Design File</button>
-            <div id="upload-status-message" class="upload-status-text"></div>
+            <button id="upload_widget" class="btn-customize" style="background: #444; margin-bottom: 5px;">Upload Design File</button>
+            <div id="upload-status-message" class="upload-status-text">✓ Image attached successfully!</div>
             <input type="hidden" id="uploaded_file_url">
             
-            <!-- Standard Quantity Selection Control Wrapper -->
             <div class="quantity-wrapper">
                 <span class="quantity-label">Quantity</span>
                 <div class="quantity-controls">
@@ -325,10 +292,11 @@
         </div>
     </div>
 
-    <!-- Toast Notification Popup Container -->
+    <!-- Toast Notification -->
     <div id="toast" class="toast-notification">
         <i class="fa-solid fa-circle-check"></i>
         <span id="toast-message">Item added to basket!</span>
+        <a href="cart.html">View Basket</a>
     </div>
 
     <!-- Mobile Scroll to Top Button -->
@@ -339,129 +307,63 @@
     <script>
         let currentActivePrice = 0;
         let defaultProductImage = "";
-        let trackedSelectedColor = null;
         let currentSourceImgId = "";
 
-        // Apparel color options
-        const colorOptionsMap = {
-            apparel_colors: [
-                { name: "White", hex: "#ffffff" },
-                { name: "Black", hex: "#000000" },
-                { name: "Red", hex: "#e60000" },
-                { name: "Blue", hex: "#0055ff" },
-                { name: "Green", hex: "#009933" }
-            ]
-        };
-
-        // Initialize Cloudinary Widget Configuration
         var myWidget = cloudinary.createUploadWidget({
             cloudName: 'opdnamfa', 
-            uploadPreset: 'hg_customs_preset'
+            uploadPreset: 'hg_customs_preset',
+            sources: ['local', 'camera', 'url'],
+            multiple: false,
+            cropping: false
         }, (error, result) => {
             if (!error && result && result.event === "success") { 
                 const secureUrl = result.info.secure_url;
                 document.getElementById('uploaded_file_url').value = secureUrl;
-                
-                const previewImg = document.getElementById('imagePreview');
-                if (previewImg) {
-                    previewImg.src = secureUrl;
-                }
-
+                document.getElementById('imagePreview').src = secureUrl;
                 const statusMsg = document.getElementById('upload-status-message');
-                statusMsg.innerText = "✓ Image uploaded successfully!";
-                statusMsg.style.color = "#28a745";
+                statusMsg.style.display = 'block';
             }
         });
 
-        document.getElementById("upload_widget").addEventListener("click", function(){
-            myWidget.open();
-        }, false);
+        document.getElementById("upload_widget").addEventListener("click", function(){ myWidget.open(); }, false);
 
-        function openProductModal(title, price, imagePath, colorKey, sizeKey, sourceImgId) {
+        function openProductModal(title, price, imagePath, sourceImgId) {
             document.getElementById('modalTitle').innerText = title;
             currentActivePrice = price;
             defaultProductImage = imagePath;
-            trackedSelectedColor = null; 
             currentSourceImgId = sourceImgId;
-            
-            const previewImg = document.getElementById('imagePreview');
-            if (previewImg) {
-                previewImg.src = imagePath;
-            }
-            
-            // Clean interface parameters
+            document.getElementById('imagePreview').src = imagePath;
             document.getElementById('uploaded_file_url').value = '';
             document.getElementById('userText').value = '';
-            document.getElementById('upload-status-message').innerText = '';
+            document.getElementById('upload-status-message').style.display = 'none';
             document.getElementById('modalQuantity').value = 1;
-            
-            // Handle Circle Color Swatches render logic
-            const colorContainer = document.getElementById('colorSelectionContainer');
-            const swatchesWrapper = document.getElementById('colorSwatchesWrapper');
-            swatchesWrapper.innerHTML = ""; 
-            
-            if (colorKey !== 'none' && colorOptionsMap[colorKey]) {
-                colorContainer.style.display = "block";
-                
-                colorOptionsMap[colorKey].forEach((colorObj, index) => {
-                    let swatch = document.createElement('div');
-                    swatch.className = "color-circle";
-                    swatch.style.backgroundColor = colorObj.hex;
-                    swatch.setAttribute('data-color-name', colorObj.name);
-                    swatch.title = colorObj.name;
-                    
-                    if(index === 0) {
-                        swatch.classList.add('is-selected');
-                        trackedSelectedColor = colorObj.name;
-                    }
-                    
-                    swatch.addEventListener('click', function() {
-                        document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('is-selected'));
-                        this.classList.add('is-selected');
-                        trackedSelectedColor = this.getAttribute('data-color-name');
-                    });
-                    
-                    swatchesWrapper.appendChild(swatch);
-                });
-            } else {
-                colorContainer.style.display = "none";
-            }
-
-            // Handle Size Dropdown visibility
-            const sizeContainer = document.getElementById('sizeSelectionContainer');
-            if (sizeKey !== 'none') {
-                sizeContainer.style.display = "block";
-            } else {
-                sizeContainer.style.display = "none";
-            }
-            
             document.getElementById('productModal').classList.add('is-active');
+        }
+
+        function handleModalClick(event) {
+            if (event.target.id === 'productModal') {
+                document.getElementById('productModal').classList.remove('is-active');
+            }
         }
 
         function adjustModalQty(amount) {
             const qtyInput = document.getElementById('modalQuantity');
-            if (qtyInput) {
-                let currentVal = parseInt(qtyInput.value) || 1;
-                let newVal = currentVal + amount;
-                if (newVal < 1) newVal = 1;
-                qtyInput.value = newVal;
-            }
+            let currentVal = parseInt(qtyInput.value) || 1;
+            let newVal = currentVal + amount;
+            if (newVal < 1) newVal = 1;
+            qtyInput.value = newVal;
         }
 
         function showToast(message) {
             const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toast-message');
-            toastMsg.innerText = message;
+            document.getElementById('toast-message').innerText = message;
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            setTimeout(() => { toast.classList.remove('show'); }, 4000);
         }
 
         function triggerFlyAnimation() {
             const sourceImg = document.getElementById(currentSourceImgId) || document.getElementById('imagePreview');
             const cartIcon = document.getElementById('cart-icon-target');
-
             if (!sourceImg || !cartIcon) return;
 
             const imgRect = sourceImg.getBoundingClientRect();
@@ -478,16 +380,15 @@
             document.body.appendChild(flyingImg);
 
             setTimeout(() => {
-                flyingImg.style.top = `${cartRect.top + 5}px`;
-                flyingImg.style.left = `${cartRect.left + 5}px`;
+                flyingImg.style.top = `${cartRect.top + (cartRect.height / 2) - 10}px`;
+                flyingImg.style.left = `${cartRect.left + (cartRect.width / 2) - 10}px`;
                 flyingImg.style.width = '20px';
                 flyingImg.style.height = '20px';
+                flyingImg.style.transform = 'scale(0.2)';
                 flyingImg.style.opacity = '0.4';
-            }, 10);
+            }, 30);
 
-            setTimeout(() => {
-                flyingImg.remove();
-            }, 800);
+            setTimeout(() => { flyingImg.remove(); }, 850);
         }
 
         function addToBasket() {
@@ -496,22 +397,13 @@
             const fileUrl = document.getElementById('uploaded_file_url').value;
             const quantityVal = parseInt(document.getElementById('modalQuantity').value) || 1;
             
-            const colorContainer = document.getElementById('colorSelectionContainer');
-            const selectedColor = colorContainer.style.display !== 'none' ? trackedSelectedColor : null;
-
-            const sizeContainer = document.getElementById('sizeSelectionContainer');
-            const selectedSize = sizeContainer.style.display !== 'none' ? document.getElementById('productSize').value : null;
-            
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            
             cart.push({ 
                 name: title, 
                 price: currentActivePrice, 
                 text: textValue, 
                 fileUrl: fileUrl || defaultProductImage,
-                quantity: quantityVal,
-                color: selectedColor,
-                size: selectedSize
+                quantity: quantityVal
             });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             
@@ -524,8 +416,7 @@
         function updateBadge() {
             const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
-            const badges = document.querySelectorAll('.cart-count');
-            badges.forEach(badge => badge.innerText = totalItems);
+            document.querySelectorAll('.cart-count').forEach(badge => badge.innerText = totalItems);
         }
 
         function scrollToTop() {
@@ -537,33 +428,27 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             updateBadge();
-
             const menuToggle = document.getElementById('menu-toggle');
             const navMenu = document.getElementById('nav-menu');
-
+            
             if (menuToggle && navMenu) {
-                menuToggle.addEventListener('click', (e) => { e.stopPropagation(); navMenu.classList.toggle('is-open'); });
-            }
-            document.addEventListener('click', () => {
-                if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
-            });
-
-            const qtyInput = document.getElementById('modalQuantity');
-            if (qtyInput) {
-                qtyInput.addEventListener('blur', () => {
-                    if (parseInt(qtyInput.value) < 1 || isNaN(parseInt(qtyInput.value))) {
-                        qtyInput.value = 1;
-                    }
+                menuToggle.addEventListener('click', (e) => { 
+                    e.stopPropagation(); 
+                    navMenu.classList.toggle('is-open'); 
                 });
             }
+            
+            document.addEventListener('click', (e) => {
+                if (navMenu && navMenu.classList.contains('is-open') && !navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                    navMenu.classList.remove('is-open');
+                }
+            });
         });
     </script>
 
     <footer class="site-footer">
         <div class="footer-content">
-            <div class="footer-copyright">
-                &copy; HG CUSTOMS 2026
-            </div>
+            <div class="footer-copyright">&copy; HG CUSTOMS 2026</div>
             <ul class="footer-links">
                 <li><a href="shipping-info.html">Delivery Information</a></li>
                 <li><a href="privacy-policy.html">Privacy Policy</a></li>
