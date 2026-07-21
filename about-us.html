@@ -58,16 +58,19 @@
 
         @media (max-width: 992px) {
             .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
-            .main-header { padding: 20px; }
-            .mobile-toggle { display: block; order: 1; }
-            .logo { order: 2; }
-            .logo img { height: 35px; }
-            .header-actions { order: 3; }
-            nav { width: 100%; order: 4; }
-            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
+            .main-header { padding: 15px 20px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; }
+            
+            .mobile-toggle { display: block; grid-column: 1; justify-self: start; order: 1; }
+            .logo { grid-column: 2; justify-self: center; order: 2; }
+            .logo img { height: 95px; }
+            .header-actions { grid-column: 3; justify-self: end; order: 3; }
+            
+            nav { grid-column: 1 / -1; width: 100%; order: 4; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 15px; text-align: center; }
             .nav-links.is-open { display: flex; }
             .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
-            .about-container { margin: 40px auto; padding: 0 20px; }
+
+            .about-container { margin: 20px auto; padding: 0 15px; }
             .about-container h1 { font-size: 28px; }
             .brand-accent-box { padding: 25px 20px; margin: 30px 0; }
             .footer-content { flex-direction: column; gap: 15px; text-align: center; padding: 20px 0; }
@@ -125,12 +128,10 @@
 
     <footer class="site-footer">
         <div class="footer-content">
-            <!-- Copyright Section (Left) -->
             <div class="footer-copyright">
                 &copy; HG CUSTOMS 2026
             </div>
 
-            <!-- Utility Links (Right) -->
             <ul class="footer-links">
                 <li><a href="shipping-info.html">Delivery Information</a></li>
                 <li><a href="privacy-policy.html">Privacy Policy</a></li>
@@ -142,14 +143,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Calculate total units across line items
             const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
 
             const badges = document.querySelectorAll('.cart-count');
             badges.forEach(badge => badge.innerText = totalItems);
 
-            // Responsive Navigation Handles
             const menuToggle = document.getElementById('menu-toggle');
             const navMenu = document.getElementById('nav-menu');
 
@@ -160,7 +159,6 @@
                 });
             }
 
-            // Close layout handles when clicking window backdrop
             document.addEventListener('click', () => {
                 if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
             });
