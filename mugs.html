@@ -13,22 +13,27 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; display: flex; flex-direction: column; min-height: 100vh; color: #111; background-color: #fafafa; position: relative; }
 
-        /* --- Announcement Bar --- */
-        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
-        .announcement-item { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; }
-        .announcement-item i { font-size: 16px; }
-        .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
+        /* Announcement Bar - Matched Exact Proportions */
+        .announcement-bar {
+            background-color: #000;
+            color: #fff;
+            padding: 8px 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 0.75rem;
+            letter-spacing: 0.3px;
         }
 
         .announcement-item {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
         }
 
         .announcement-icon {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             fill: none;
             stroke: #fff;
             stroke-width: 2;
@@ -41,18 +46,19 @@
             display: flex;
             flex-direction: column;
             text-transform: uppercase;
+            line-height: 1.1;
         }
 
         .announcement-text strong {
             font-weight: 600;
-            font-size: 0.8rem;
-            letter-spacing: 0.8px;
+            font-size: 0.72rem;
+            letter-spacing: 0.5px;
             color: #fff;
         }
 
         .announcement-text span {
             color: #ccc;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: none;
             margin-top: 1px;
         }
@@ -273,9 +279,9 @@
 
         /* Responsive Breakpoints */
         @media (max-width: 768px) {
-            .announcement-bar { padding: 10px 15px; gap: 10px; }
+            .announcement-bar { padding: 6px 15px; gap: 10px; }
             .announcement-item:nth-child(2),
-            .announcement-item:nth-child(3) { display: none; } /* Show only primary perk on mobile for clean fit */
+            .announcement-item:nth-child(3) { display: none; }
 
             header { padding: 15px 20px; }
             .logo-img { height: 60px; }
@@ -347,7 +353,7 @@
             <a href="merchandise.html">Merchandise</a>
         </nav>
 
-        <!-- Action Group (Burger Menu + Basket Icon on Mobile placed far right) -->
+        <!-- Action Group -->
         <div class="header-actions">
             <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation">☰</button>
 
@@ -477,13 +483,11 @@
     </footer>
 
     <script>
-        // Global variables for Modal state and Cloudinary Image URL
         let activeProductTitle = "";
         let activeProductPrice = 0;
         let selectedColorName = "White";
         let uploadedImageUrl = "No image uploaded";
 
-        // Update header badge on page load
         updateBasketCount();
 
         function updateBasketCount() {
@@ -491,7 +495,6 @@
             document.getElementById('basket-badge').innerText = cart.length;
         }
 
-        // Mobile Menu Toggle Handler
         function toggleMenu() {
             const nav = document.getElementById('main-nav');
             nav.classList.toggle('open');
@@ -529,7 +532,6 @@
             selectedColorName = colorName;
         }
 
-        // Cloudinary Integration Handler
         function openCloudinaryWidget() {
             cloudinary.openUploadWidget({
                 cloudName: 'opdnamfa',
