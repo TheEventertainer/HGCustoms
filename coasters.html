@@ -100,6 +100,7 @@
             pointer-events: none;
             transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            object-fit: cover;
         }
 
         /* Products Grid */
@@ -124,7 +125,7 @@
             transform: translateY(-4px);
             box-shadow: 0 6px 16px rgba(0,0,0,0.06);
         }
-        .product-image-placeholder {
+        .product-image-wrapper {
             width: 100%;
             height: 200px;
             background-color: var(--bg-light);
@@ -132,12 +133,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-muted);
-            font-weight: 500;
-            font-size: 13px;
             margin-bottom: 15px;
             padding: 10px;
-            text-align: center;
+            overflow: hidden;
+        }
+        .product-image-wrapper img {
+            max-width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
         .product-info {
             display: flex;
@@ -202,8 +205,26 @@
         }
         .modal-close:hover { color: #000; }
         .modal-title { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
-        .modal-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
+        .modal-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 15px; }
         
+        .modal-preview-container {
+            width: 100%;
+            height: 160px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            overflow: hidden;
+        }
+        .modal-preview-container img {
+            max-width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
         
@@ -227,6 +248,14 @@
         .btn-upload-cloudinary:hover { background: #222; }
         .upload-status { font-size: 12px; color: #28a745; margin-top: 8px; font-weight: 600; display: none; word-break: break-all; }
         
+        .quantity-wrapper { display: flex; align-items: center; justify-content: space-between; margin: 15px 0 20px 0; padding-top: 15px; border-top: 1px solid var(--border-color); }
+        .quantity-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .quantity-controls { display: flex; align-items: center; border: 1px solid var(--border-color); }
+        .qty-btn { background: none; border: none; width: 36px; height: 36px; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+        .qty-btn:hover { background: var(--bg-light); }
+        .qty-input { width: 45px; height: 36px; border: none; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); text-align: center; font-family: var(--font-sans); font-size: 13px; font-weight: 600; -moz-appearance: textfield; }
+        .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
         .btn-add-cart {
             width: 100%; background: #000; color: #fff; border: none;
             padding: 14px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: background 0.2s;
@@ -322,8 +351,10 @@
         
         <div class="products-grid">
             <!-- Product 1 -->
-            <div class="product-card" onclick="openModal('Glossy Square Coaster', 6.99, event)">
-                <div class="product-image-placeholder">Coaster Image Placeholder 1</div>
+            <div class="product-card" onclick="openModal('Glossy Square Coaster', 6.99, 'coaster-square.jpg', 'img-coaster-1', event)">
+                <div class="product-image-wrapper">
+                    <img src="coaster-square.jpg" alt="Glossy Square Coaster" id="img-coaster-1">
+                </div>
                 <div class="product-info">
                     <div class="product-title">Glossy Square Coaster</div>
                     <div class="product-price">£6.99</div>
@@ -332,8 +363,10 @@
             </div>
 
             <!-- Product 2 -->
-            <div class="product-card" onclick="openModal('Round Wooden Coaster', 7.50, event)">
-                <div class="product-image-placeholder">Coaster Image Placeholder 2</div>
+            <div class="product-card" onclick="openModal('Round Wooden Coaster', 7.50, 'coaster-round.jpg', 'img-coaster-2', event)">
+                <div class="product-image-wrapper">
+                    <img src="coaster-round.jpg" alt="Round Wooden Coaster" id="img-coaster-2">
+                </div>
                 <div class="product-info">
                     <div class="product-title">Round Wooden Coaster</div>
                     <div class="product-price">£7.50</div>
@@ -342,8 +375,10 @@
             </div>
 
             <!-- Product 3 -->
-            <div class="product-card" onclick="openModal('Cork Backed Slate Coaster', 8.99, event)">
-                <div class="product-image-placeholder">Coaster Image Placeholder 3</div>
+            <div class="product-card" onclick="openModal('Cork Backed Slate Coaster', 8.99, 'coaster-slate.jpg', 'img-coaster-3', event)">
+                <div class="product-image-wrapper">
+                    <img src="coaster-slate.jpg" alt="Cork Backed Slate Coaster" id="img-coaster-3">
+                </div>
                 <div class="product-info">
                     <div class="product-title">Cork Backed Slate Coaster</div>
                     <div class="product-price">£8.99</div>
@@ -352,8 +387,10 @@
             </div>
 
             <!-- Product 4 -->
-            <div class="product-card" onclick="openModal('Set of 4 Custom Coasters', 22.99, event)">
-                <div class="product-image-placeholder">Coaster Image Placeholder 4</div>
+            <div class="product-card" onclick="openModal('Set of 4 Custom Coasters', 22.99, 'coaster-set.jpg', 'img-coaster-4', event)">
+                <div class="product-image-wrapper">
+                    <img src="coaster-set.jpg" alt="Set of 4 Custom Coasters" id="img-coaster-4">
+                </div>
                 <div class="product-info">
                     <div class="product-title">Set of 4 Custom Coasters</div>
                     <div class="product-price">£22.99</div>
@@ -367,6 +404,9 @@
     <div id="customizer-modal" class="modal-overlay" onclick="handleModalClick(event)">
         <div class="modal-content" id="modal-box-element" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeModal()">×</button>
+            <div class="modal-preview-container">
+                <img id="modalPreviewImage" src="" alt="Coaster Preview">
+            </div>
             <div id="modal-product-title" class="modal-title"></div>
             <div id="modal-product-price" class="modal-price"></div>
 
@@ -385,6 +425,15 @@
                 <div id="upload-status" class="upload-status">✓ Image attached successfully!</div>
             </div>
 
+            <div class="quantity-wrapper">
+                <span class="quantity-label">Quantity</span>
+                <div class="quantity-controls">
+                    <button type="button" class="qty-btn" onclick="adjustModalQty(-1)">-</button>
+                    <input type="number" id="modalQuantity" class="qty-input" value="1" min="1">
+                    <button type="button" class="qty-btn" onclick="adjustModalQty(1)">+</button>
+                </div>
+            </div>
+
             <button class="btn-add-cart" id="modal-submit-btn" onclick="addToCartFromModal(event)">Add to Basket</button>
         </div>
     </div>
@@ -392,7 +441,7 @@
     <!-- Toast Notification Banner -->
     <div id="toast-banner">
         <i class="fa-solid fa-circle-check"></i>
-        <span>Item added to basket!</span>
+        <span id="toast-message">Item added to basket!</span>
         <a href="cart.html">View Basket</a>
     </div>
 
@@ -420,7 +469,24 @@
         let activeProductTitle = "";
         let activeProductPrice = 0;
         let selectedColorName = "White";
-        let uploadedImageUrl = "No image uploaded";
+        let defaultProductImage = "";
+        let uploadedImageUrl = "";
+        let activeSourceImgId = "";
+
+        var myWidget = cloudinary.createUploadWidget({
+            cloudName: 'opdnamfa',
+            uploadPreset: 'hg_customs_preset',
+            sources: ['local', 'camera', 'url'],
+            multiple: false,
+            cropping: false
+        }, (error, result) => {
+            if (!error && result && result.event === "success") {
+                uploadedImageUrl = result.info.secure_url;
+                document.getElementById('modalPreviewImage').src = uploadedImageUrl;
+                const statusDiv = document.getElementById('upload-status');
+                statusDiv.style.display = 'block';
+            }
+        });
 
         function updateCartBadge() {
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
@@ -450,17 +516,21 @@
             });
         });
 
-        function openModal(title, price, event) {
+        function openModal(title, price, imagePath, sourceImgId, event) {
             activeProductTitle = title;
             activeProductPrice = price;
+            defaultProductImage = imagePath;
+            activeSourceImgId = sourceImgId;
+            uploadedImageUrl = "";
             selectedColorName = "White";
-            uploadedImageUrl = "No image uploaded";
 
             const circles = document.querySelectorAll('.color-circle');
             circles.forEach(c => c.classList.remove('selected'));
             circles[0].classList.add('selected');
 
+            document.getElementById('modalPreviewImage').src = imagePath;
             document.getElementById('upload-status').style.display = 'none';
+            document.getElementById('modalQuantity').value = 1;
             document.getElementById('modal-product-title').innerText = title;
             document.getElementById('modal-product-price').innerText = "£" + price.toFixed(2);
             document.getElementById('customizer-modal').style.display = 'flex';
@@ -482,57 +552,61 @@
             selectedColorName = colorName;
         }
 
+        function adjustModalQty(amount) {
+            const qtyInput = document.getElementById('modalQuantity');
+            let currentVal = parseInt(qtyInput.value) || 1;
+            let newVal = currentVal + amount;
+            if (newVal < 1) newVal = 1;
+            qtyInput.value = newVal;
+        }
+
         function openCloudinaryWidget() {
-            cloudinary.openUploadWidget({
-                cloudName: 'opdnamfa',
-                uploadPreset: 'hg_customs_preset',
-                sources: ['local', 'camera', 'url'],
-                multiple: false,
-                cropping: false
-            }, (error, result) => {
-                if (!error && result && result.event === "success") {
-                    uploadedImageUrl = result.info.secure_url;
-                    const statusDiv = document.getElementById('upload-status');
-                    statusDiv.style.display = 'block';
-                }
-            });
+            myWidget.open();
         }
 
         function addToCartFromModal(event) {
+            const quantityVal = parseInt(document.getElementById('modalQuantity').value) || 1;
+            const finalImage = uploadedImageUrl || defaultProductImage;
+
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             cart.push({
                 title: activeProductTitle,
                 price: activeProductPrice,
                 color: selectedColorName,
-                img: uploadedImageUrl,
-                quantity: 1
+                img: finalImage,
+                quantity: quantityVal
             });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             updateCartBadge();
 
             playFlyerAnimation(event);
             closeModal();
-            showToastBanner();
+            showToastBanner(`${quantityVal}x ${activeProductTitle} added to basket!`);
         }
 
         function playFlyerAnimation(event) {
-            const buttonElement = document.getElementById('modal-submit-btn');
+            const sourceImg = document.getElementById(activeSourceImgId) || document.getElementById('modalPreviewImage');
             const targetBadge = document.getElementById('cart-nav-link');
 
-            if (!buttonElement || !targetBadge) return;
+            if (!sourceImg || !targetBadge) return;
 
-            const startRect = buttonElement.getBoundingClientRect();
+            const startRect = sourceImg.getBoundingClientRect();
             const targetRect = targetBadge.getBoundingClientRect();
 
-            const flyer = document.createElement('div');
+            const flyer = document.createElement('img');
+            flyer.src = sourceImg.src;
             flyer.classList.add('flyer');
-            flyer.style.left = startRect.left + (startRect.width / 2) - 20 + 'px';
-            flyer.style.top = startRect.top + (startRect.height / 2) - 20 + 'px';
+            flyer.style.left = startRect.left + 'px';
+            flyer.style.top = startRect.top + 'px';
+            flyer.style.width = startRect.width + 'px';
+            flyer.style.height = startRect.height + 'px';
             document.body.appendChild(flyer);
 
             setTimeout(() => {
-                flyer.style.left = targetRect.left + (targetRect.width / 2) - 20 + 'px';
-                flyer.style.top = targetRect.top + (targetRect.height / 2) - 20 + 'px';
+                flyer.style.left = targetRect.left + (targetRect.width / 2) - 10 + 'px';
+                flyer.style.top = targetRect.top + (targetRect.height / 2) - 10 + 'px';
+                flyer.style.width = '20px';
+                flyer.style.height = '20px';
                 flyer.style.transform = 'scale(0.2)';
                 flyer.style.opacity = '0.5';
             }, 30);
@@ -542,8 +616,9 @@
             }, 850);
         }
 
-        function showToastBanner() {
+        function showToastBanner(message) {
             const toast = document.getElementById('toast-banner');
+            document.getElementById('toast-message').innerText = message || "Item added to basket!";
             toast.classList.add('show');
 
             setTimeout(() => {
