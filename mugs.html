@@ -246,6 +246,23 @@
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
         
+        /* Customization Note Textarea */
+        .customization-note-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            font-family: var(--font-sans);
+            font-size: 13px;
+            resize: vertical;
+            min-height: 70px;
+            background: #fff;
+            color: var(--text-dark);
+        }
+        .customization-note-input:focus {
+            outline: none;
+            border-color: #000;
+        }
+
         /* Color Swatch Circles Grid */
         .color-options { 
             display: flex; 
@@ -312,14 +329,18 @@
         /* Responsive Breakpoints */
         @media (max-width: 992px) {
             .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
-            .main-header { padding: 20px; }
-            .mobile-toggle { display: block; order: 1; }
-            .logo-link { order: 2; }
-            .header-actions { order: 3; }
-            nav { width: 100%; order: 4; }
-            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
+            .main-header { padding: 15px 20px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; }
+            
+            /* Order alignment for mobile header: Burger on left, Logo centered, Cart on right */
+            .mobile-toggle { display: block; grid-column: 1; justify-self: start; order: 1; }
+            .logo-link { grid-column: 2; justify-self: center; order: 2; }
+            .header-actions { grid-column: 3; justify-self: end; order: 3; }
+            
+            nav { grid-column: 1 / -1; width: 100%; order: 4; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 15px; text-align: left; }
             .nav-links.is-open { display: flex; }
-            .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
+            .nav-links > li { padding: 5px 0; width: 100%; text-align: left; }
+            
             main { margin: 20px auto; padding: 0 15px; }
             .page-title { font-size: 22px; }
             .products-grid { grid-template-columns: 1fr; gap: 20px; }
@@ -350,7 +371,7 @@
         <nav>
             <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="mugs.html"class="active">Pet Mugs</a></li>
+                <li><a href="mugs.html" class="active">Pet Mugs</a></li>
                 <li><a href="t-shirts.html">T-shirts</a></li>
                 <li><a href="coasters.html">Coasters</a></li>
                 <li><a href="merchandise.html">Merchandise</a></li>
@@ -373,7 +394,7 @@
         
         <div class="products-grid">
             <!-- Product 1 -->
-            <div class="product-card" onclick="openModal('Background', 12.99, 'MUG1a.PNG', 'MUG1b.PNG', event, 'Background', 'Upload your best pet photo and we will add it to our classic design, with customized background colour and choice of mug handle and inner colour. ')">
+            <div class="product-card" onclick="openModal('Background', 12.99, 'MUG1a.PNG', 'MUG1b.PNG', event, 'Background', 'Upload your best pet photo and we will add it to our classic design, with customized background colour and choice of mug handle and inner colour. ', false)">
                 <img src="MUG1a.PNG" alt="Classic Background Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Classic Background Mug</div>
@@ -383,7 +404,7 @@
             </div>
 
             <!-- Product 2 -->
-            <div class="product-card" onclick="openModal('troublemaker', 15.99, 'MUG2a.PNG', 'MUG2b.PNG', event, 'troublemaker', 'Turn your beloved pet into a customised Established Troublemaker, uploading your own image to add to our design.')">
+            <div class="product-card" onclick="openModal('troublemaker', 15.99, 'MUG2a.PNG', 'MUG2b.PNG', event, 'troublemaker', 'Turn your beloved pet into a customised Established Troublemaker, uploading your own image to add to our design.', false)">
                 <img src="MUG2a.PNG" alt="Established Troublemaker mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Troublemaker Mug</div>
@@ -393,7 +414,7 @@
             </div>
 
             <!-- Product 3 -->
-            <div class="product-card" onclick="openModal('lifebetter', 14.99, 'MUG3a.PNG', 'MUG3b.PNG', event, 'lifebetter', 'Upload your own pet image to add to our design, choosing your own floor colour beneath your pet.')">
+            <div class="product-card" onclick="openModal('lifebetter', 14.99, 'MUG3a.PNG', 'MUG3b.PNG', event, 'lifebetter', 'Upload your own pet image to add to our design, choosing your own floor colour beneath your pet.', false)">
                 <img src="MUG3a.PNG" alt="Life Is Better Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Life Is Better Mug</div>
@@ -403,7 +424,7 @@
             </div>
 
             <!-- Product 4 -->
-            <div class="product-card" onclick="openModal('Back', 13.50, 'MUG4a.PNG', 'MUG4b.PNG', event, 'back', 'We know you love the back of your pets head, so we can now immortalise it on your very own custom mug.')">
+            <div class="product-card" onclick="openModal('Back', 13.50, 'MUG4a.PNG', 'MUG4b.PNG', event, 'back', 'We know you love the back of your pets head, so we can now immortalise it on your very own custom mug.', false)">
                 <img src="MUG4a.PNG" alt="Back of head Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Back of head Mug</div>
@@ -413,7 +434,7 @@
             </div>
 
             <!-- Product 5 -->
-            <div class="product-card" onclick="openModal('shadow', 16.99, 'MUG5a.PNG', 'MUG5b.PNG', event, 'shadow', 'Upload your own image to add to our design, this will be pluralised for images with multiple pets.')">
+            <div class="product-card" onclick="openModal('shadow', 16.99, 'MUG5a.PNG', 'MUG5b.PNG', event, 'shadow', 'Upload your own image to add to our design, this will be pluralised for images with multiple pets.', false)">
                 <img src="MUG5a.PNG" alt="My Shadow My Heart Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">My SHadow My Heart Mug</div>
@@ -422,8 +443,8 @@
                 </div>
             </div>
 
-            <!-- Product 6 -->
-            <div class="product-card" onclick="openModal('Custom', 14.50, 'MUG6a.png', 'MUG6b.png', event, 'custom', 'Your chance to create or prompt any design you can think of. Upload an image of your pet, and then in the prompt, let us know what you have in mind. We will email your design to you before printing. Multiple photos can be sent via email once your order is accepted.')">
+            <!-- Product 6 (With Multiple File Upload Option enabled) -->
+            <div class="product-card" onclick="openModal('Custom', 14.50, 'MUG6a.png', 'MUG6b.png', event, 'custom', 'Your chance to create or prompt any design you can think of. Upload an image of your pet, and then in the prompt, let us know what you have in mind. We will email your design to you before printing. Multiple photos can be sent via email once your order is accepted.', true)">
                 <img src="MUG6a.png" alt="Custom" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Fully customised mug</div>
@@ -450,7 +471,7 @@
             <div id="modal-product-title" class="modal-title"></div>
             <div id="modal-product-price" class="modal-price"></div>
 
-            <!-- Modal Product Image Preview (Added Above Description) -->
+            <!-- Modal Product Image Preview -->
             <div class="modal-img-container">
                 <img id="modal-product-image" src="" alt="Product Preview" class="modal-product-img">
             </div>
@@ -474,10 +495,17 @@
                 </div>
             </div>
 
+            <!-- Requirement 4: Customization Note Section placed between color selection and photo upload -->
             <div class="form-group">
-                <label>Upload Custom Artwork/Photo (Optional):</label>
-                <button type="button" class="btn-upload-cloudinary" onclick="openCloudinaryWidget()">Upload Image</button>
-                <div id="upload-status" class="upload-status">✓ Image attached successfully!</div>
+                <label for="customization-note-input">Customization Notes / Instructions:</label>
+                <textarea id="customization-note-input" class="customization-note-input" placeholder="Enter any specific requests or instructions for your design..."></textarea>
+            </div>
+
+            <!-- Requirement 5 & Upload Section -->
+            <div class="form-group">
+                <label id="upload-label-text">Upload Custom Artwork/Photo (Optional):</label>
+                <button type="button" class="btn-upload-cloudinary" id="upload-widget-btn" onclick="openCloudinaryWidget()">Upload Image</button>
+                <div id="upload-status" class="upload-status">✓ Image(s) attached successfully!</div>
             </div>
 
             <button class="btn-add-cart" id="modal-submit-btn" onclick="addToCartFromModal(event)">Add to Basket</button>
@@ -517,6 +545,7 @@
         let selectedColorName = "Beige";
         let selectedInnerColorName = "Plain White";
         let uploadedImageUrl = "No image uploaded";
+        let isMultipleFilesAllowed = false;
 
         // Universal inner color choices for all 6 mugs
         const universalInnerColors = [
@@ -602,16 +631,28 @@
             });
         });
 
-        function openModal(title, price, mainImgSrc, modalImgSrc, event, productKey, description) {
+        function openModal(title, price, mainImgSrc, modalImgSrc, event, productKey, description, allowMultiple) {
             activeProductTitle = title;
             activeProductPrice = price;
             uploadedImageUrl = "No image uploaded";
+            isMultipleFilesAllowed = !!allowMultiple;
 
-            // Set modal product separate preview image (e.g. MUG1b.PNG)
+            // Set modal product separate preview image
             document.getElementById('modal-product-image').src = modalImgSrc;
 
             // Set description text
             document.getElementById('modal-product-desc').innerText = description || "";
+
+            // Reset customization note field
+            document.getElementById('customization-note-input').value = "";
+
+            // Update upload label depending on whether multiple uploads are allowed (Product 6)
+            const uploadLabel = document.getElementById('upload-label-text');
+            if (isMultipleFilesAllowed) {
+                uploadLabel.innerText = "Upload Custom Artwork/Photos (Multiple files allowed):";
+            } else {
+                uploadLabel.innerText = "Upload Custom Artwork/Photo (Optional):";
+            }
 
             // 1. Primary Colors setup
             const colors = productColorLists[productKey] || [{ name: "White", hex: "#ffffff" }];
@@ -698,11 +739,19 @@
                 cloudName: 'opdnamfa',
                 uploadPreset: 'hg_customs_preset',
                 sources: ['local', 'camera', 'url'],
-                multiple: false,
+                multiple: isMultipleFilesAllowed,
                 cropping: false
             }, (error, result) => {
                 if (!error && result && result.event === "success") {
-                    uploadedImageUrl = result.info.secure_url;
+                    if (isMultipleFilesAllowed) {
+                        if (uploadedImageUrl === "No image uploaded") {
+                            uploadedImageUrl = result.info.secure_url;
+                        } else {
+                            uploadedImageUrl += ", " + result.info.secure_url;
+                        }
+                    } else {
+                        uploadedImageUrl = result.info.secure_url;
+                    }
                     const statusDiv = document.getElementById('upload-status');
                     statusDiv.style.display = 'block';
                 }
@@ -710,11 +759,14 @@
         }
 
         function addToCartFromModal(event) {
+            const customizationNote = document.getElementById('customization-note-input').value.trim();
+
             const cartItem = {
                 title: activeProductTitle,
                 price: activeProductPrice,
                 backgroundColour: selectedColorName,
                 innerColour: selectedInnerColorName,
+                customizationNote: customizationNote || "None",
                 image: uploadedImageUrl,
                 quantity: 1
             };
