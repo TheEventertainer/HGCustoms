@@ -33,7 +33,7 @@
 
         /* --- Header & Navigation Styles --- */
         .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 1000; }
-        .logo img { height: 45px; display: block; }
+        .logo img { height: 45px; width: auto; display: block; }
         
         .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
         .nav-links > li { position: relative; padding: 10px 0; }
@@ -257,7 +257,7 @@
             .main-header { padding: 20px; }
             .mobile-toggle { display: block; order: 1; }
             .logo { order: 2; }
-            .logo img { height: 35px; }
+            .logo img { height: 35px; width: auto; }
             .header-actions { order: 3; }
             nav { width: 100%; order: 4; }
             .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
@@ -285,7 +285,7 @@
     <header class="main-header">
         <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
         <div class="logo">
-            <a href="index.html"><img src="logo.png" alt="HG Customs Logo" style="height: 45px; width: auto;"></a>
+            <a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a>
         </div>
         <nav>
             <ul class="nav-links" id="nav-menu">
