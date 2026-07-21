@@ -342,7 +342,8 @@
 
     <!-- Customization Pop-Up Modal -->
     <div id="customizer-modal" class="modal-overlay" onclick="handleModalClick(event)">
-        <div class="modal-content" id="modal-box-element">
+        <!-- Stop Propagation added to inner container -->
+        <div class="modal-content" id="modal-box-element" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeModal()">×</button>
             <div id="modal-product-title" class="modal-title"></div>
             <div id="modal-product-price" class="modal-price"></div>
@@ -445,8 +446,8 @@
         // Cloudinary Integration Handler
         function openCloudinaryWidget() {
             cloudinary.openUploadWidget({
-                cloudName: 'opdnamfa', // REPLACE WITH YOUR CLOUD NAME
-                uploadPreset: 'hg_customs_preset', // REPLACE WITH YOUR UPLOAD PRESET
+                cloudName: 'opdnamfa',
+                uploadPreset: 'hg_customs_preset',
                 sources: ['local', 'camera', 'url'],
                 multiple: false,
                 cropping: false
@@ -471,13 +472,11 @@
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             updateBasketCount();
 
-            // Close modal immediately
-            closeModal();
-
-            // Trigger Professional Flying Animation towards top right basket icon
+            // 1. Trigger Animation FIRST (while button is still visible)
             playFlyerAnimation(event);
 
-            // Show Toast Notification Message
+            // 2. Close Modal and show toast
+            closeModal();
             showToastBanner();
         }
 
