@@ -710,51 +710,44 @@
         }
 
         function addToCartFromModal(event) {
-            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            cart.push({
+            const cartItem = {
                 title: activeProductTitle,
                 price: activeProductPrice,
-                color: selectedColorName,
-                innerColor: selectedInnerColorName,
-                img: uploadedImageUrl,
+                backgroundColour: selectedColorName,
+                innerColour: selectedInnerColorName,
+                image: uploadedImageUrl,
                 quantity: 1
-            });
+            };
+
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            cart.push(cartItem);
             localStorage.setItem('hg_cart', JSON.stringify(cart));
+
             updateCartBadge();
-
-            playFlyerAnimation(event);
             closeModal();
-            showToastBanner();
-        }
 
-        function playFlyerAnimation(event) {
-            const buttonElement = document.getElementById('modal-submit-btn');
-            const targetBadge = document.getElementById('cart-nav-link');
-
-            if (!buttonElement || !targetBadge) return;
-
-            const startRect = buttonElement.getBoundingClientRect();
-            const targetRect = targetBadge.getBoundingClientRect();
-
+            // Trigger flying animation element from click position to cart icon
+            const cartIcon = document.getElementById('cart-nav-link');
+            const cartRect = cartIcon.getBoundingClientRect();
+            
             const flyer = document.createElement('div');
-            flyer.classList.add('flyer');
-            flyer.style.left = startRect.left + (startRect.width / 2) - 20 + 'px';
-            flyer.style.top = startRect.top + (startRect.height / 2) - 20 + 'px';
+            flyer.className = 'flyer';
+            flyer.style.left = (event.clientX - 20) + 'px';
+            flyer.style.top = (event.clientY - 20) + 'px';
             document.body.appendChild(flyer);
 
             setTimeout(() => {
-                flyer.style.left = targetRect.left + (targetRect.width / 2) - 20 + 'px';
-                flyer.style.top = targetRect.top + (targetRect.height / 2) - 20 + 'px';
+                flyer.style.left = (cartRect.left + cartRect.width / 2 - 20) + 'px';
+                flyer.style.top = (cartRect.top + cartRect.height / 2 - 20) + 'px';
                 flyer.style.transform = 'scale(0.2)';
-                flyer.style.opacity = '0.5';
-            }, 30);
+                flyer.style.opacity = '0';
+            }, 50);
 
             setTimeout(() => {
                 flyer.remove();
             }, 850);
-        }
 
-        function showToastBanner() {
+            // Show Toast Notification Banner
             const toast = document.getElementById('toast-banner');
             toast.classList.add('show');
             setTimeout(() => {
@@ -765,17 +758,6 @@
         function scrollToTop() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
-        window.addEventListener('scroll', () => {
-            const scrollTopBtn = document.getElementById('scroll-to-top');
-            if (scrollTopBtn) {
-                if (window.scrollY > 300) {
-                    scrollTopBtn.style.display = 'flex';
-                } else {
-                    scrollTopBtn.style.display = 'none';
-                }
-            }
-        });
     </script>
 </body>
 </html>
