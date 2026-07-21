@@ -4,83 +4,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Basket | HG Customs</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- PayPal SDK using Sandbox demo mode 'sb' for instant visibility -->
     <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=GBP"></script>
     
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; display: flex; flex-direction: column; min-height: 100vh; color: #111; background-color: #fafafa; }
+        :root {
+            --text-dark: #000000;
+            --text-muted: #555555;
+            --bg-light: #f9f9f9;
+            --border-color: #e5e5e5;
+            --font-sans: 'Inter', sans-serif;
+        }
 
-        /* Header Styles */
-        header { background: #fff; border-bottom: 1px solid #eaeaea; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .logo { font-weight: 700; font-size: 1.2rem; text-decoration: none; color: #111; letter-spacing: 0.5px; }
-        nav { display: flex; gap: 24px; align-items: center; }
-        nav a { text-decoration: none; color: #555; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
-        nav a:hover, nav a.active { color: #000; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-sans); display: flex; flex-direction: column; min-height: 100vh; color: var(--text-dark); background-color: #ffffff; -webkit-font-smoothing: antialiased; }
+
+        /* --- Announcement Bar --- */
+        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
+        .announcement-item { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; }
+        .announcement-item i { font-size: 16px; }
+        .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
+
+        /* --- Header & Navigation Styles --- */
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 1000; }
+        .logo img { height: 45px; display: block; }
+        
+        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
+        .nav-links > li { position: relative; padding: 10px 0; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; padding-bottom: 4px; transition: border-color 0.3s; }
+        .nav-links > li > a:hover,
+        .nav-links > li.active > a { border-bottom: 2px solid #000; }
+        
+        .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
+        .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
+        .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         
         /* Mobile Menu Toggle */
-        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+        .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
 
-        /* Main Container */
+        /* --- Main Container --- */
         main { flex: 1; max-width: 800px; width: 100%; margin: 40px auto; padding: 0 20px; }
-        h1 { margin-bottom: 24px; font-size: 1.8rem; font-weight: 700; }
+        h1 { margin-bottom: 24px; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Cart Content Styles */
-        .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eaeaea; padding: 20px 0; background: #fff; padding-left: 15px; padding-right: 15px; margin-bottom: 10px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        /* --- Cart Content Styles --- */
+        .cart-item { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); padding: 20px; background: #fff; margin-bottom: 10px; border-radius: 4px; }
         .item-details strong { font-size: 1.05rem; }
-        .item-details p { font-size: 0.9rem; color: #666; margin-top: 4px; }
+        .item-details p { font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; }
         
-        /* Discount Section Styles */
-        .discount-container { background: #fff; padding: 20px; border-radius: 6px; margin: 20px 0; border: 1px solid #eaeaea; box-shadow: 0 1px 3px rgba(0,0,0,0.02); display: flex; gap: 10px; }
-        .discount-container input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; }
-        .discount-container button { background: #222; color: #fff; border: none; padding: 0 20px; border-radius: 4px; cursor: pointer; font-weight: 600; transition: background 0.2s; }
-        .discount-container button:hover { background: #000; }
+        /* --- Discount Section Styles --- */
+        .discount-container { background: #fff; padding: 20px; border-radius: 4px; margin: 20px 0; border: 1px solid var(--border-color); display: flex; gap: 10px; }
+        .discount-container input { flex: 1; padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.95rem; font-family: inherit; }
+        .discount-container button { background: #000; color: #fff; border: none; padding: 0 20px; border-radius: 4px; cursor: pointer; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 12px; transition: background 0.2s; }
+        .discount-container button:hover { background: #222; }
         .discount-msg { font-size: 0.85rem; margin-top: 6px; font-weight: 500; }
 
-        /* Pricing & Action Summary */
-        .totals-box { background: #fff; padding: 25px; border-radius: 6px; border: 1px solid #eaeaea; margin-top: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-        .price-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 1rem; color: #555; }
-        .price-row.total { font-weight: 700; font-size: 1.3rem; color: #111; border-top: 1px solid #eaeaea; padding-top: 15px; margin-top: 15px; }
+        /* --- Pricing & Action Summary --- */
+        .totals-box { background: #fff; padding: 25px; border-radius: 4px; border: 1px solid var(--border-color); margin-top: 20px; }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 1rem; color: var(--text-muted); }
+        .price-row.total { font-weight: 700; font-size: 1.3rem; color: var(--text-dark); border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 15px; }
         
         #paypal-button-container { margin-top: 25px; }
         
         .actions-row { display: flex; justify-content: space-between; align-items: center; margin-top: 25px; }
-        .btn-shopping { background: #f0f0f0; color: #333; border: none; padding: 12px 20px; cursor: pointer; text-decoration: none; border-radius: 4px; font-weight: 600; font-size: 0.9rem; transition: background 0.2s; }
+        .btn-shopping { background: #f0f0f0; color: var(--text-dark); border: none; padding: 12px 20px; cursor: pointer; text-decoration: none; border-radius: 4px; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; transition: background 0.2s; }
         .btn-shopping:hover { background: #e0e0e0; }
         .clear-btn { border: none; background: none; color: #e53935; cursor: pointer; font-weight: 500; font-size: 0.9rem; }
         .clear-btn:hover { text-decoration: underline; }
 
-        /* Footer Styles */
-        footer { background: #111; color: #aaa; text-align: center; padding: 30px 20px; font-size: 0.9rem; margin-top: auto; }
-        footer p { margin-bottom: 8px; }
-        .footer-links { display: flex; justify-content: center; gap: 20px; margin-top: 12px; }
-        .footer-links a { color: #888; text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
-        .footer-links a:hover { color: #fff; }
+        /* --- Footer Styles --- */
+        .site-footer { background-color: #ffffff; padding: 30px 40px; border-top: 1px solid var(--border-color); margin-top: auto; }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; }
+        .footer-copyright { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; }
+        .footer-links { display: flex; list-style: none; gap: 30px; margin: 0; }
+        .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--text-dark); }
 
-        /* Responsive Breakpoints */
-        @media (max-width: 768px) {
-            header { padding: 15px 20px; }
-            nav { display: none; flex-direction: column; width: 100%; background: #fff; position: absolute; top: 100%; left: 0; padding: 20px; border-bottom: 1px solid #eaeaea; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-            nav.open { display: flex; }
-            .menu-toggle { display: block; }
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
+            .main-header { padding: 20px; }
+            .mobile-toggle { display: block; order: 1; }
+            .logo { order: 2; }
+            .logo img { height: 35px; }
+            .header-actions { order: 3; }
+            nav { width: 100%; order: 4; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
+            .nav-links.is-open { display: flex; }
+            .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
             main { margin: 20px auto; padding: 0 15px; }
+            .footer-content { flex-direction: column; gap: 15px; text-align: center; padding: 20px 0; }
+            .footer-links { justify-content: center; flex-wrap: wrap; gap: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header & Navigation -->
-    <header>
-        <a href="index.html" class="logo">HG CUSTOMS</a>
-        <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation">☰</button>
-        <nav id="main-nav">
-            <a href="index.html">Home</a>
-            <a href="mugs.html">Custom Mugs</a>
-            <a href="cart.html" class="active">Basket</a>
-            <a href="contact.html">Contact</a>
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i><div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div></a>
+        <a href="#" class="announcement-item"><i class="fa-regular fa-clock"></i><div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div></a>
+        <a href="#" class="announcement-item"><i class="fa-regular fa-circle-check"></i><div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div></a>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="main-header">
+        <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="logo">
+            <a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a>
+        </div>
+        <nav>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="mugs.html">Mugs</a></li>
+                <li><a href="t-shirts.html">T-shirts</a></li>
+                <li><a href="coasters.html">Coasters</a></li>
+                <li><a href="merchandise.html">Merchandise</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
         </nav>
+        <div class="header-actions">
+            <a href="cart.html" class="cart-icon" aria-label="Cart">
+                <i class="fa-solid fa-basket-shopping"></i>
+                <span class="cart-count">0</span>
+            </a>
+        </div>
     </header>
 
     <!-- Main Content Area -->
@@ -125,22 +178,25 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 HG Customs. All rights reserved.</p>
-        <div class="footer-links">
-            <a href="index.html">Home</a>
-            <a href="contact.html">Contact Us</a>
+    <!-- Site Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <!-- Copyright Section (Left) -->
+            <div class="footer-copyright">
+                &copy; HG CUSTOMS 2026
+            </div>
+
+            <!-- Utility Links (Right) -->
+            <ul class="footer-links">
+                <li><a href="delivery-info.html">Delivery Information</a></li>
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms & Conditions</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
         </div>
     </footer>
 
     <script>
-        // Mobile Menu Toggle Handler
-        function toggleMenu() {
-            const nav = document.getElementById('main-nav');
-            nav.classList.toggle('open');
-        }
-
         // Cart State & Logic
         let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
         const container = document.getElementById('cart-items');
@@ -154,6 +210,12 @@
         let discountValue = 0;
         let summary = "--- NEW CUSTOM ORDER ---\n";
 
+        function updateCartBadge() {
+            const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
+            const badges = document.querySelectorAll('.cart-count');
+            badges.forEach(badge => badge.innerText = totalItems);
+        }
+
         function renderCart() {
             container.innerHTML = "";
             let subtotal = 0;
@@ -162,6 +224,7 @@
                 container.innerHTML = "<p style='color:#666; padding: 20px 0;'>Your basket is currently empty.</p>";
                 document.getElementById('discount-wrapper').style.display = 'none';
                 document.querySelector('.totals-box').style.display = 'none';
+                updateCartBadge();
                 return;
             }
 
@@ -192,6 +255,8 @@
             } else {
                 discountRow.style.display = "none";
             }
+
+            updateCartBadge();
         }
 
         // Sample Discount Handler function
@@ -215,8 +280,27 @@
             }
         }
 
-        // Initialize Cart Rendering on Load
-        renderCart();
+        // Initialize Cart Rendering and Responsive Navigation on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCart();
+
+            // Mobile Navigation Menu Toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    navMenu.classList.toggle('is-open');
+                });
+            }
+
+            document.addEventListener('click', () => {
+                if (navMenu && navMenu.classList.contains('is-open')) {
+                    navMenu.classList.remove('is-open');
+                }
+            });
+        });
 
         // PayPal Integration Logic (Sandbox Demo Mode Ready)
         if (cart.length > 0) {
