@@ -33,13 +33,13 @@
 
         /* --- Header & Navigation Styles --- */
         .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 1000; }
-        .logo img { height: 45px; width: auto; display: block; }
+        .logo-img { height: 45px; width: auto; display: block; text-decoration: none; }
         
         .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
         .nav-links > li { position: relative; padding: 10px 0; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; padding-bottom: 4px; transition: border-color 0.3s; }
-        .nav-links > li > a:hover,
-        .nav-links > li.active > a { border-bottom: 2px solid #000; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 500; font-size: 14px; letter-spacing: 0.5px; transition: border-color 0.2s, font-weight 0.2s; padding-bottom: 4px; }
+        .nav-links a:hover { color: #000; }
+        .nav-links a.active { font-weight: 700; border-bottom: 2px solid #000; }
         
         .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
@@ -49,15 +49,15 @@
         .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
 
         /* --- Main Container & Category Header --- */
-        main { flex: 1; max-width: 1100px; width: 100%; margin: 40px auto; padding: 0 20px; }
+        main { flex: 1; max-width: 1200px; width: 100%; margin: 40px auto; padding: 0 20px; }
         
         .page-title-section {
             width: 100%;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .page-title {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -70,24 +70,25 @@
         /* Toast Notification Banner */
         #toast-banner {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: #111;
+            bottom: -80px;
+            right: 20px;
+            background: #000;
             color: #fff;
             padding: 15px 25px;
-            border-radius: 6px;
+            border-radius: 4px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            z-index: 2000;
+            z-index: 3000;
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-size: 0.95rem;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: bottom 0.4s ease-in-out;
         }
-        #toast-banner.show { transform: translateY(0); opacity: 1; }
-        #toast-banner a { color: #fff; font-weight: 600; text-decoration: underline; }
+        #toast-banner.show { bottom: 20px; }
+        #toast-banner i { color: #28a745; font-size: 16px; }
+        #toast-banner a { color: #fff; font-weight: 600; text-decoration: underline; margin-left: 5px; }
 
         /* Flying Animation Element */
         .flyer {
@@ -105,7 +106,7 @@
         /* Products Grid */
         .products-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
 
@@ -113,7 +114,7 @@
         .product-card {
             background: #fff;
             border: 1px solid var(--border-color);
-            border-radius: 4px;
+            padding: 25px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -126,45 +127,51 @@
         }
         .product-image-placeholder {
             width: 100%;
-            height: 220px;
-            background-color: #f0f0f0;
+            height: 200px;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #888;
+            color: var(--text-muted);
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 13px;
+            margin-bottom: 15px;
+            padding: 10px;
+            text-align: center;
         }
         .product-info {
-            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
             flex-grow: 1;
         }
         .product-title {
-            font-size: 1.05rem;
+            font-size: 16px;
             font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
         .product-price {
-            font-weight: 700;
-            color: #111;
+            font-size: 15px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 20px;
         }
         .btn-view {
             margin-top: auto;
-            background: #111;
+            background: #000;
             color: #fff;
             text-align: center;
-            padding: 10px;
-            border-radius: 4px;
-            font-size: 0.85rem;
+            padding: 14px;
+            border: none;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             transition: background 0.2s;
         }
         .product-card:hover .btn-view {
-            background: #333;
+            background: #222;
         }
 
         /* Modal Overlay & Customizer Box */
@@ -173,56 +180,61 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 2000;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
         .modal-content {
             background: #fff;
-            padding: 30px;
-            border-radius: 6px;
-            max-width: 500px;
-            width: 100%;
+            padding: 35px;
+            border: 1px solid var(--border-color);
+            max-width: 440px;
+            width: 90%;
             position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-height: 90vh;
+            overflow-y: auto;
         }
         .modal-close {
             position: absolute;
             top: 15px; right: 20px;
             background: none; border: none;
-            font-size: 1.5rem; cursor: pointer; color: #555;
+            font-size: 20px; cursor: pointer; color: #999;
         }
-        .modal-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 5px; }
-        .modal-price { font-size: 1.1rem; font-weight: 600; color: #333; margin-bottom: 20px; }
+        .modal-close:hover { color: #000; }
+        .modal-title { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+        .modal-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
         
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
         
         /* Color Swatch Circles */
         .color-options { display: flex; gap: 12px; }
         .color-circle {
             width: 32px; height: 32px; border-radius: 50%;
-            border: 2px solid #ddd; cursor: pointer; transition: transform 0.1s, border-color 0.1s;
+            border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease; box-shadow: inset 0 0 2px rgba(0,0,0,0.2);
         }
-        .color-circle.selected { border-color: #000; transform: scale(1.1); }
+        .color-circle:hover { transform: scale(1.1); }
+        .color-circle.selected { border-color: #000000; transform: scale(1.15); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; }
+        .color-circle[title="White"] { border: 1px solid #dcdcdc; }
+        .color-circle[title="White"].selected { border: 2px solid #000; }
         
         /* Cloudinary Button and Image Preview */
         .btn-upload-cloudinary {
-            width: 100%; background: #eee; color: #333; border: 1px dashed #ccc;
-            padding: 12px; border-radius: 4px; font-weight: 600; font-size: 0.9rem; cursor: pointer;
-            transition: background 0.2s, border-color 0.2s; text-align: center;
+            width: 100%; background: #444; color: #fff; border: none;
+            padding: 14px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+            transition: background 0.2s; text-align: center;
         }
-        .btn-upload-cloudinary:hover { background: #e2e2e2; border-color: #999; }
-        .upload-status { font-size: 0.85rem; color: #2e7d32; margin-top: 8px; font-weight: 600; display: none; word-break: break-all; }
+        .btn-upload-cloudinary:hover { background: #222; }
+        .upload-status { font-size: 12px; color: #28a745; margin-top: 8px; font-weight: 600; display: none; word-break: break-all; }
         
         .btn-add-cart {
-            width: 100%; background: #111; color: #fff; border: none;
-            padding: 14px; border-radius: 4px; font-weight: 600; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: background 0.2s;
+            width: 100%; background: #000; color: #fff; border: none;
+            padding: 14px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: background 0.2s;
         }
-        .btn-add-cart:hover { background: #333; }
+        .btn-add-cart:hover { background: #222; }
 
-        /* Scroll to Top Button (Mobile) */
+        /* Mobile Scroll to Top Button */
         #scroll-to-top {
             display: none;
             position: fixed;
@@ -244,7 +256,7 @@
         #scroll-to-top:hover { background: #333; }
 
         /* --- Footer Styles --- */
-        .site-footer { background-color: #ffffff; padding: 30px 40px; border-top: 1px solid var(--border-color); margin-top: auto; }
+        .site-footer { background-color: #ffffff; border-top: 1px solid var(--border-color); margin-top: auto; }
         .footer-content { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; }
         .footer-copyright { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; }
         .footer-links { display: flex; list-style: none; gap: 30px; margin: 0; }
@@ -256,8 +268,7 @@
             .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
             .main-header { padding: 20px; }
             .mobile-toggle { display: block; order: 1; }
-            .logo { order: 2; }
-            .logo img { height: 35px; width: auto; }
+            .logo-link { order: 2; }
             .header-actions { order: 3; }
             nav { width: 100%; order: 4; }
             .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
@@ -284,13 +295,13 @@
     <!-- Main Navigation Header -->
     <header class="main-header">
         <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
-        <div class="logo">
-            <a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a>
-        </div>
+        <a href="index.html" class="logo-link">
+            <img src="logo.png" alt="HG Customs Logo" class="logo-img">
+        </a>
         <nav>
             <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Home</a></li>
-                <li class="active"><a href="mugs.html">Mugs</a></li>
+                <li><a href="mugs.html" class="active">Mugs</a></li>
                 <li><a href="t-shirts.html">T-shirts</a></li>
                 <li><a href="coasters.html">Coasters</a></li>
                 <li><a href="merchandise.html">Merchandise</a></li>
@@ -392,7 +403,7 @@
 
             <div class="form-group">
                 <label>Upload Custom Artwork/Photo (Optional):</label>
-                <button type="button" class="btn-upload-cloudinary" onclick="openCloudinaryWidget()">📷 Upload Image</button>
+                <button type="button" class="btn-upload-cloudinary" onclick="openCloudinaryWidget()">Upload Image</button>
                 <div id="upload-status" class="upload-status">✓ Image attached successfully!</div>
             </div>
 
@@ -402,7 +413,8 @@
 
     <!-- Toast Notification Banner -->
     <div id="toast-banner">
-        <span>This item has been added to your basket.</span>
+        <i class="fa-solid fa-circle-check"></i>
+        <span>Item added to basket!</span>
         <a href="cart.html">View Basket</a>
     </div>
 
@@ -418,10 +430,10 @@
                 &copy; HG CUSTOMS 2026
             </div>
             <ul class="footer-links">
-                <li><a href="delivery-info.html">Delivery Information</a></li>
+                <li><a href="shipping-info.html">Delivery Information</a></li>
                 <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                <li><a href="terms.html">Terms & Conditions</a></li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="terms-of-service.html">Terms & Conditions</a></li>
+                <li><a href="refund-policy.html">Refund Policy</a></li>
             </ul>
         </div>
     </footer>
