@@ -66,6 +66,36 @@
             border-bottom: 2px solid #000000;
         }
 
+        /* --- About Us Section Styles --- */
+        .about-section {
+            margin-top: 60px;
+            padding: 40px;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+        }
+
+        .about-title {
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            color: #000000;
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .about-content p {
+            margin: 0;
+        }
+
         /* Toast Notification Banner */
         #toast-banner {
             position: fixed;
@@ -293,6 +323,9 @@
             main { margin: 20px auto; padding: 0 15px; }
             .page-title { font-size: 22px; }
             .products-grid { grid-template-columns: 1fr; gap: 20px; }
+            .about-section { padding: 20px; margin-top: 40px; }
+            .about-title { font-size: 18px; margin-bottom: 15px; }
+            .about-content { font-size: 14px; gap: 15px; }
             .footer-content { flex-direction: column; gap: 15px; text-align: center; padding: 20px 0; }
             .footer-links { justify-content: center; flex-wrap: wrap; gap: 15px; }
             #scroll-to-top { display: flex; }
@@ -339,7 +372,7 @@
         
         <div class="products-grid">
             <!-- Product 1 -->
-            <div class="product-card" onclick="openModal('Background colour photo mug', 12.99, 'MUG1a.PNG', event, 'Backround', 'Our classic ceramic mug featuring a custom background color choice and your personalized photo.')">
+            <div class="product-card" onclick="openModal('Background colour photo mug', 12.99, 'MUG1a.PNG', 'MUG1b.PNG', event, 'Backround', 'Our classic ceramic mug featuring a custom background color choice and your personalized photo.')">
                 <img src="MUG1a.PNG" alt="Backround colour mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Background Colour Photo Mug</div>
@@ -349,7 +382,7 @@
             </div>
 
             <!-- Product 2 -->
-            <div class="product-card" onclick="openModal('Color Changing Magic Mug', 15.99, 'MUG2a.PNG', event, 'magic', 'Watch your hidden custom photo magically appear when you pour hot liquid into this heat-sensitive mug.')">
+            <div class="product-card" onclick="openModal('Color Changing Magic Mug', 15.99, 'MUG2a.PNG', 'MUG2b.PNG', event, 'magic', 'Watch your hidden custom photo magically appear when you pour hot liquid into this heat-sensitive mug.')">
                 <img src="MUG2a.PNG" alt="Color Changing Magic Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Color Changing Magic Mug</div>
@@ -359,7 +392,7 @@
             </div>
 
             <!-- Product 3 -->
-            <div class="product-card" onclick="openModal('Enamel Camping Mug', 14.99, 'MUG3a.PNG', event, 'enamel', 'A rugged, lightweight retro-style metal camping mug built for outdoor adventures and rugged use.')">
+            <div class="product-card" onclick="openModal('Enamel Camping Mug', 14.99, 'MUG3a.PNG', 'MUG3b.PNG', event, 'enamel', 'A rugged, lightweight retro-style metal camping mug built for outdoor adventures and rugged use.')">
                 <img src="MUG3a.PNG" alt="Enamel Camping Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Enamel Camping Mug</div>
@@ -369,7 +402,7 @@
             </div>
 
             <!-- Product 4 -->
-            <div class="product-card" onclick="openModal('Two-Tone Accent Mug', 13.50, 'MUG4a.PNG', event, 'twotone', 'A vibrant ceramic mug featuring a striking two-tone color contrast design with your custom photo.')">
+            <div class="product-card" onclick="openModal('Two-Tone Accent Mug', 13.50, 'MUG4a.PNG', 'MUG4b.PNG', event, 'twotone', 'A vibrant ceramic mug featuring a striking two-tone color contrast design with your custom photo.')">
                 <img src="MUG4a.PNG" alt="Two-Tone Accent Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Two-Tone Accent Mug</div>
@@ -379,7 +412,7 @@
             </div>
 
             <!-- Product 5 -->
-            <div class="product-card" onclick="openModal('Large Mega Mug (15oz)', 16.99, 'MUG5a.PNG', event, 'mega', 'An extra-large 15oz heavy-duty ceramic mega mug for those who need a bigger caffeine boost every morning.')">
+            <div class="product-card" onclick="openModal('Large Mega Mug (15oz)', 16.99, 'MUG5a.PNG', 'MUG5b.PNG', event, 'mega', 'An extra-large 15oz heavy-duty ceramic mega mug for those who need a bigger caffeine boost every morning.')">
                 <img src="MUG5a.PNG" alt="Large Mega Mug (15oz)" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Large Mega Mug (15oz)</div>
@@ -389,7 +422,7 @@
             </div>
 
             <!-- Product 6 -->
-            <div class="product-card" onclick="openModal('Heart Handle Love Mug', 14.50, 'MUG6a.PNG', event, 'heart', 'A lovely custom photo mug featuring a charming heart-shaped handle, perfect for loved ones and gifts.')">
+            <div class="product-card" onclick="openModal('Heart Handle Love Mug', 14.50, 'MUG6a.PNG', 'MUG6b.PNG', event, 'heart', 'A lovely custom photo mug featuring a charming heart-shaped handle, perfect for loved ones and gifts.')">
                 <img src="MUG6a.PNG" alt="Heart Handle Love Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Heart Handle Love Mug</div>
@@ -398,6 +431,20 @@
                 </div>
             </div>
         </div>
+
+        <!-- About Us Section -->
+        <section class="about-section">
+            <h2 class="about-title">Our Story</h2>
+            <div class="about-content">
+                <p>What started as a hobby quickly became something we fell in love with.</p>
+                <p>We first began creating personalised mugs for ourselves, using our mug press to bring our favourite ideas to life. From TV shows and films we loved to unique designs that reflected our personalities, we discovered just how special it felt to create something completely personal.</p>
+                <p>Before long, we were making gifts for family and friends too. Some of our most meaningful creations were dedicated to our pets. After losing a much-loved family pet, creating personalised mugs and coasters became a beautiful way to celebrate her memory and keep a little piece of her close to us every day. It reminded us that a simple personalised gift can hold so much love, comfort and meaning.</p>
+                <p>That experience inspired us to share what we love with others.</p>
+                <p>Today, we create a range of personalised products, including mugs, t-shirts, coasters and more. Whether you’re celebrating a birthday, marking a special occasion, remembering someone you love, or simply treating yourself, we believe every item should tell a story.</p>
+                <p>Every order is created with care, creativity and attention to detail because we know these aren’t just products—they’re keepsakes. Our goal is to help you create something truly unique that you’ll be proud to give and treasure for years to come.</p>
+                <p>Thank you for supporting our small business. We can’t wait to help bring your ideas to life.</p>
+            </div>
+        </section>
     </main>
 
     <!-- Customization Pop-Up Modal -->
@@ -563,13 +610,13 @@
             });
         });
 
-        function openModal(title, price, imgSrc, event, productKey, description) {
+        function openModal(title, price, mainImgSrc, modalImgSrc, event, productKey, description) {
             activeProductTitle = title;
             activeProductPrice = price;
             uploadedImageUrl = "No image uploaded";
 
-            // Set modal product image preview
-            document.getElementById('modal-product-image').src = imgSrc;
+            // Set modal product separate preview image (e.g. MUG1b.PNG)
+            document.getElementById('modal-product-image').src = modalImgSrc;
 
             // Set description text
             document.getElementById('modal-product-desc').innerText = description || "";
@@ -718,18 +765,25 @@
         function showToastBanner() {
             const toast = document.getElementById('toast-banner');
             toast.classList.add('show');
-
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 4000);
+            }, 3500);
         }
 
         function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        window.addEventListener('scroll', () => {
+            const scrollTopBtn = document.getElementById('scroll-to-top');
+            if (scrollTopBtn) {
+                if (window.scrollY > 300) {
+                    scrollTopBtn.style.display = 'flex';
+                } else {
+                    scrollTopBtn.style.display = 'none';
+                }
+            }
+        });
     </script>
 </body>
 </html>
