@@ -55,7 +55,7 @@
         .catalog-container h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 15px; border-bottom: 2px solid #000; margin-bottom: 30px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
         .product-card { border: 1px solid var(--border-color); padding: 25px; display: flex; flex-direction: column; background: #fff; }
-        .product-image-wrapper { text-align: center; margin-bottom: 15px; border: 1px solid var(--border-color); padding: 10px; background: var(--bg-light); display: flex; align-items: center; justify-content: center; }
+        .product-image-wrapper { text-align: center; margin-bottom: 15px; border: 1px solid var(--border-color); padding: 10px; background: var(--bg-light); display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .product-image-wrapper img { max-width: 100%; height: 200px; object-fit: contain; }
         .prod-title { font-size: 16px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
         .prod-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
@@ -97,6 +97,44 @@
         .qty-btn:hover { background: var(--bg-light); }
         .qty-input { width: 45px; height: 36px; border: none; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); text-align: center; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; -moz-appearance: textfield; }
         .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        /* Flying Animation Style */
+        .flying-img {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            object-fit: cover;
+        }
+
+        /* Toast Notification Styles */
+        .toast-notification {
+            position: fixed;
+            bottom: -80px;
+            right: 20px;
+            background: #000;
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            z-index: 3000;
+            transition: bottom 0.4s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast-notification.show {
+            bottom: 20px;
+        }
+        .toast-notification i {
+            color: #28a745;
+            font-size: 16px;
+        }
 
         @media (max-width: 992px) {
             .main-header { padding: 20px; }
@@ -143,7 +181,7 @@
         <div class="header-actions">
             <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
             <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
-            <a href="cart.html" class="cart-icon" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
+            <a href="cart.html" class="cart-icon" id="cart-icon-target" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
         </div>
     </header>
 
@@ -153,61 +191,61 @@
             <!-- Product 1: Logo Hoodie -->
             <div class="product-card">
                 <div class="product-image-wrapper">
-                    <img src="hoodie.jpg" alt="Logo Hoodie">
+                    <img src="hoodie.jpg" alt="Logo Hoodie" id="img-merch-1">
                 </div>
                 <div class="prod-title">Logo Hoodie</div>
                 <div class="prod-price">£34.99</div>
-                <button class="btn-customize" onclick="openProductModal('Logo Hoodie', 34.99, 'hoodie.jpg', 'apparel_colors', 'sizes')">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Logo Hoodie', 34.99, 'hoodie.jpg', 'apparel_colors', 'sizes', 'img-merch-1')">Design & Buy</button>
             </div>
             
             <!-- Product 2: T-Shirt -->
             <div class="product-card">
                 <div class="product-image-wrapper">
-                    <img src="tshirt.jpg" alt="Custom T-Shirt">
+                    <img src="tshirt.jpg" alt="Custom T-Shirt" id="img-merch-2">
                 </div>
                 <div class="prod-title">Custom T-Shirt</div>
                 <div class="prod-price">£19.99</div>
-                <button class="btn-customize" onclick="openProductModal('Custom T-Shirt', 19.99, 'tshirt.jpg', 'apparel_colors', 'sizes')">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Custom T-Shirt', 19.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-merch-2')">Design & Buy</button>
             </div>
             
             <!-- Product 3: Mug -->
             <div class="product-card">
                 <div class="product-image-wrapper">
-                    <img src="mug.jpg" alt="Custom Mug">
+                    <img src="mug.jpg" alt="Custom Mug" id="img-merch-3">
                 </div>
                 <div class="prod-title">Custom Mug</div>
                 <div class="prod-price">£8.50</div>
-                <button class="btn-customize" onclick="openProductModal('Custom Mug', 8.50, 'mug.jpg', 'mug_colors', 'none')">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Custom Mug', 8.50, 'mug.jpg', 'mug_colors', 'none', 'img-merch-3')">Design & Buy</button>
             </div>
             
             <!-- Product 4: Water Bottle -->
             <div class="product-card">
                 <div class="product-image-wrapper">
-                    <img src="water-bottle.jpg" alt="Custom Water Bottle">
+                    <img src="water-bottle.jpg" alt="Custom Water Bottle" id="img-merch-4">
                 </div>
                 <div class="prod-title">Custom Water Bottle</div>
                 <div class="prod-price">£14.99</div>
-                <button class="btn-customize" onclick="openProductModal('Custom Water Bottle', 14.99, 'water-bottle.jpg', 'bottle_colors', 'none')">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Custom Water Bottle', 14.99, 'water-bottle.jpg', 'bottle_colors', 'none', 'img-merch-4')">Design & Buy</button>
             </div>
             
             <!-- Product 5: Tote Bag -->
             <div class="product-card">
                 <div class="product-image-wrapper">
-                    <img src="tote-bag.jpg" alt="Custom Tote Bag">
+                    <img src="tote-bag.jpg" alt="Custom Tote Bag" id="img-merch-5">
                 </div>
                 <div class="prod-title">Custom Tote Bag</div>
                 <div class="prod-price">£5.99</div>
-                <button class="btn-customize" onclick="openProductModal('Custom Tote Bag', 5.99, 'tote-bag.jpg', 'tote_colors', 'none')">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Custom Tote Bag', 5.99, 'tote-bag.jpg', 'tote_colors', 'none', 'img-merch-5')">Design & Buy</button>
             </div>
             
             <!-- Product 6: Keyring -->
             <div class="product-card">
                 <div class="product-image-wrapper">
-                    <img src="keyring.jpg" alt="Custom Keyring">
+                    <img src="keyring.jpg" alt="Custom Keyring" id="img-merch-6">
                 </div>
                 <div class="prod-title">Custom Keyring</div>
                 <div class="prod-price">£2.99</div>
-                <button class="btn-customize" onclick="openProductModal('Custom Keyring', 2.99, 'keyring.jpg', 'none', 'none')">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Custom Keyring', 2.99, 'keyring.jpg', 'none', 'none', 'img-merch-6')">Design & Buy</button>
             </div>
         </div>
     </main>
@@ -264,10 +302,17 @@
         </div>
     </div>
 
+    <!-- Toast Notification Popup Container -->
+    <div id="toast" class="toast-notification">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-message">Item added to basket!</span>
+    </div>
+
     <script>
         let currentActivePrice = 0;
         let defaultProductImage = "";
         let trackedSelectedColor = null;
+        let currentSourceImgId = "";
 
         // Structured layout color mapping config
         const colorOptionsMap = {
@@ -327,11 +372,12 @@
             myWidget.open();
         }, false);
 
-        function openProductModal(title, price, imagePath, colorKey, sizeKey) {
+        function openProductModal(title, price, imagePath, colorKey, sizeKey, sourceImgId) {
             document.getElementById('modalTitle').innerText = title;
             currentActivePrice = price;
             defaultProductImage = imagePath;
             trackedSelectedColor = null; 
+            currentSourceImgId = sourceImgId;
             
             const previewImg = document.getElementById('imagePreview');
             if (previewImg) {
@@ -398,6 +444,48 @@
             }
         }
 
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function triggerFlyAnimation() {
+            const sourceImg = document.getElementById(currentSourceImgId) || document.getElementById('imagePreview');
+            const cartIcon = document.getElementById('cart-icon-target');
+
+            if (!sourceImg || !cartIcon) return;
+
+            const imgRect = sourceImg.getBoundingClientRect();
+            const cartRect = cartIcon.getBoundingClientRect();
+
+            const flyingImg = document.createElement('img');
+            flyingImg.src = sourceImg.src;
+            flyingImg.classList.add('flying-img');
+            flyingImg.style.top = `${imgRect.top}px`;
+            flyingImg.style.left = `${imgRect.left}px`;
+            flyingImg.style.width = `${imgRect.width}px`;
+            flyingImg.style.height = `${imgRect.height}px`;
+
+            document.body.appendChild(flyingImg);
+
+            setTimeout(() => {
+                flyingImg.style.top = `${cartRect.top + 5}px`;
+                flyingImg.style.left = `${cartRect.left + 5}px`;
+                flyingImg.style.width = '20px';
+                flyingImg.style.height = '20px';
+                flyingImg.style.opacity = '0.4';
+            }, 10);
+
+            setTimeout(() => {
+                flyingImg.remove();
+            }, 800);
+        }
+
         function addToBasket() {
             const title = document.getElementById('modalTitle').innerText;
             const textValue = document.getElementById('userText').value;
@@ -423,22 +511,11 @@
             });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             
+            // Trigger Basket UI updates & animations
+            triggerFlyAnimation();
             updateBadge();
-
-            const basketBtn = document.getElementById('add-to-basket-btn');
-            if (basketBtn) {
-                const originalText = basketBtn.innerHTML;
-                basketBtn.innerHTML = "✓ Added to Basket";
-                basketBtn.style.backgroundColor = "#28a745";
-                basketBtn.disabled = true;
-
-                setTimeout(() => {
-                    basketBtn.innerHTML = originalText;
-                    basketBtn.style.backgroundColor = "#000000";
-                    basketBtn.disabled = false;
-                    document.getElementById('productModal').classList.remove('is-active');
-                }, 1500);
-            }
+            document.getElementById('productModal').classList.remove('is-active');
+            showToast(`${quantityVal}x ${title} added to basket!`);
         }
 
         function updateBadge() {
@@ -480,21 +557,17 @@
         });
     </script>
     <footer class="site-footer">
-    <div class="footer-content" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-top: 1px solid var(--border-color);">
-        
-        <!-- Copyright Section (Left) -->
-        <div class="footer-copyright" style="font-size: 12px; color: var(--text-muted);">
-            &copy; HG CUSTOMS 2026
+        <div class="footer-content" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-top: 1px solid var(--border-color);">
+            <div class="footer-copyright" style="font-size: 12px; color: var(--text-muted);">
+                &copy; HG CUSTOMS 2026
+            </div>
+            <ul class="footer-links" style="list-style: none; display: flex; gap: 30px; margin: 0;">
+                <li><a href="delivery-info.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Delivery Information</a></li>
+                <li><a href="privacy-policy.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Privacy Policy</a></li>
+                <li><a href="terms.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Terms & Conditions</a></li>
+                <li><a href="contact.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Contact</a></li>
+            </ul>
         </div>
-
-        <!-- Utility Links (Right) -->
-        <ul class="footer-links" style="list-style: none; display: flex; gap: 30px; margin: 0;">
-            <li><a href="delivery-info.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Delivery Information</a></li>
-            <li><a href="privacy-policy.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Privacy Policy</a></li>
-            <li><a href="terms.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Terms & Conditions</a></li>
-            <li><a href="contact.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Contact</a></li>
-        </ul>
-    </div>
-</footer>
+    </footer>
 </body>
 </html>
