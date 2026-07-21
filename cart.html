@@ -288,16 +288,29 @@
 
             cart.forEach((item, index) => {
                 let qty = parseInt(item.quantity) || 1;
-                let itemTotal = item.price * qty;
+                let itemTotal = (parseFloat(item.price) || 0) * qty;
                 subtotal += itemTotal;
                 
-                summary += `Item ${index + 1}: ${item.title} | Color: ${item.color} | Qty: ${qty} | Design: ${item.img}\n`;
+                // Flexible properties reading to handle multi-color selections (e.g. inner/outer color or standard color)
+                let title = item.name || item.title || "Custom Item";
+                let displayColor = "";
+                if (item.innerColor && item.outerColor) {
+                    displayColor = `Inner Color: ${item.innerColor} | Outer Color: ${item.outerColor}`;
+                } else if (item.color) {
+                    displayColor = `Color: ${item.color}`;
+                } else {
+                    displayColor = "Color: Standard";
+                }
+
+                let notesInfo = item.text ? ` | Notes: ${item.text}` : "";
+                summary += `Item ${index + 1}: ${title} | ${displayColor} | Qty: ${qty}${notesInfo}\n`;
                 
                 container.innerHTML += `
                     <div class="cart-item">
                         <div class="item-details">
-                            <strong>${item.title}</strong>
-                            <p>Color: ${item.color}</p>
+                            <strong>${title}</strong>
+                            <p>${displayColor}</p>
+                            ${item.text ? `<p>Notes: ${item.text}</p>` : ""}
                         </div>
                         <div class="cart-item-actions">
                             <div style="font-weight: 600; margin-bottom: 5px;">£${itemTotal.toFixed(2)}</div>
@@ -361,7 +374,6 @@
         function applyDiscount() {
             const codeInput = document.getElementById('discount-code').value.trim().toUpperCase();
             
-            // Example promo code definition: SAVE10 for 10% off
             if (codeInput === "SAVE10") {
                 discountMultiplier = 0.9;
                 discountMsg.style.color = "#2e7d32";
@@ -408,7 +420,7 @@
             if (cart.length > 0 && window.paypal) {
                 paypal.Buttons({
                     createOrder: function(data, actions) {
-                        let currentSubtotal = cart.reduce((sum, item) => sum + (item.price * (parseInt(item.quantity) || 1)), 0);
+                        let currentSubtotal = cart.reduce((sum, item) => sum + ((parseFloat(item.price) || 0) * (parseInt(item.quantity) || 1)), 0);
                         let finalCalculatedTotal = (currentSubtotal * discountMultiplier).toFixed(2);
                         
                         return actions.order.create({
