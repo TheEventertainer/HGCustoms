@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Mugs | HG Customs</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Cloudinary Upload Widget Script -->
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
@@ -13,15 +13,53 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; display: flex; flex-direction: column; min-height: 100vh; color: #111; background-color: #fafafa; position: relative; }
 
-        /* Announcement Bar */
+        /* Announcement Bar Matching Reference Screenshot */
         .announcement-bar {
-            background-color: #111;
+            background-color: #000;
             color: #fff;
-            text-align: center;
-            padding: 8px 15px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 0.3px;
+            padding: 12px 40px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .announcement-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .announcement-icon {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: #fff;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            flex-shrink: 0;
+        }
+
+        .announcement-text {
+            display: flex;
+            flex-direction: column;
+            text-transform: uppercase;
+        }
+
+        .announcement-text strong {
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 0.8px;
+            color: #fff;
+        }
+
+        .announcement-text span {
+            color: #ccc;
+            font-size: 0.7rem;
+            text-transform: none;
+            margin-top: 1px;
         }
 
         /* Header Styles */
@@ -240,6 +278,10 @@
 
         /* Responsive Breakpoints */
         @media (max-width: 768px) {
+            .announcement-bar { padding: 10px 15px; gap: 10px; }
+            .announcement-item:nth-child(2),
+            .announcement-item:nth-child(3) { display: none; } /* Show only primary perk on mobile for clean fit */
+
             header { padding: 15px 20px; }
             .logo-img { height: 60px; }
             
@@ -260,7 +302,40 @@
 
     <!-- Top Announcement Bar -->
     <div class="announcement-bar">
-        Free delivery on all orders over £50
+        <div class="announcement-item">
+            <svg class="announcement-icon" viewBox="0 0 24 24">
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+            <div class="announcement-text">
+                <strong>Free UK Delivery</strong>
+                <span>On orders over £50</span>
+            </div>
+        </div>
+
+        <div class="announcement-item">
+            <svg class="announcement-icon" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <div class="announcement-text">
+                <strong>Fast Turnaround</strong>
+                <span>Quick & reliable</span>
+            </div>
+        </div>
+
+        <div class="announcement-item">
+            <svg class="announcement-icon" viewBox="0 0 24 24">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <div class="announcement-text">
+                <strong>Made Just For You</strong>
+                <span>Unique. Personal. Yours.</span>
+            </div>
+        </div>
     </div>
 
     <!-- Header & Navigation -->
@@ -431,7 +506,7 @@
             activeProductTitle = title;
             activeProductPrice = price;
             selectedColorName = "White";
-            uploadedImageUrl = "No image uploaded"; // Reset uploaded image status
+            uploadedImageUrl = "No image uploaded";
 
             const circles = document.querySelectorAll('.color-circle');
             circles.forEach(c => c.classList.remove('selected'));
@@ -477,21 +552,17 @@
         }
 
         function addToCartFromModal(event) {
-            // Save to local storage
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             cart.push({
                 title: activeProductTitle,
                 price: activeProductPrice,
                 color: selectedColorName,
-                img: uploadedImageUrl // Secure Cloudinary URL saved here
+                img: uploadedImageUrl
             });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             updateBasketCount();
 
-            // 1. Trigger Animation FIRST (while button is still visible)
             playFlyerAnimation(event);
-
-            // 2. Close Modal and show toast
             closeModal();
             showToastBanner();
         }
