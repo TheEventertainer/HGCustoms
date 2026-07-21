@@ -14,13 +14,21 @@
         header { background: #fff; border-bottom: 1px solid #eaeaea; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
         .logo-img { height: 75px; width: auto; display: block; text-decoration: none; }
         nav { display: flex; gap: 20px; align-items: center; }
-        nav a { text-decoration: none; color: #555; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; white-space: nowrap; }
-        nav a:hover, nav a.active { color: #000; }
+        nav a { text-decoration: none; color: #666; font-size: 0.95rem; font-weight: 400; transition: color 0.2s, font-weight 0.2s; white-space: nowrap; }
+        nav a:hover { color: #000; }
+        
+        /* Active Page State Highlight (Bold & Accent Bar) */
+        nav a.active {
+            color: #000;
+            font-weight: 700;
+            border-bottom: 2px solid #111;
+            padding-bottom: 2px;
+        }
         
         /* Basket Icon Link with Badge */
-        .basket-link { display: flex; align-items: center; gap: 6px; font-weight: 600; position: relative; color: #111 !important; }
+        .basket-link { display: flex; align-items: center; gap: 6px; font-weight: 600; position: relative; color: #111 !important; border-bottom: none !important; }
         .basket-icon { width: 22px; height: 22px; fill: currentColor; }
-        .basket-count { background: #111; color: #fff; font-size: 0.75rem; padding: 2px 6px; border-radius: 10px; }
+        .basket-count { background: #111; color: #fff; font-size: 0.75rem; padding: 2px 6px; border-radius: 10px; font-weight: 600; }
 
         /* Mobile Menu Toggle */
         .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
@@ -201,10 +209,9 @@
         /* Footer Styles */
         footer { background: #111; color: #aaa; padding: 30px 40px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-top: auto; }
         footer p { margin: 0; }
-        .footer-nav { display: flex; gap: 20px; }
-        .footer-nav a, .footer-right a { color: #888; text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
-        .footer-nav a:hover, .footer-right a:hover { color: #fff; }
-        .footer-right { display: flex; gap: 20px; }
+        .footer-right { display: flex; gap: 20px; flex-wrap: wrap; }
+        .footer-right a { color: #888; text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+        .footer-right a:hover { color: #fff; }
 
         /* Responsive Breakpoints */
         @media (max-width: 768px) {
@@ -212,11 +219,12 @@
             .logo-img { height: 60px; }
             nav { display: none; flex-direction: column; width: 100%; background: #fff; position: absolute; top: 100%; left: 0; padding: 20px; border-bottom: 1px solid #eaeaea; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
             nav.open { display: flex; }
+            nav a.active { border-bottom: none; }
             .menu-toggle { display: block; }
             main { margin: 20px auto; padding: 0 15px; }
             .products-grid { grid-template-columns: 1fr; gap: 20px; }
             footer { flex-direction: column; gap: 15px; text-align: center; padding: 25px 20px; }
-            .footer-right { justify-content: center; }
+            .footer-right { justify-content: center; gap: 15px; }
             #scroll-to-top { display: flex; }
         }
     </style>
@@ -230,6 +238,7 @@
         </a>
         <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle navigation">☰</button>
         <nav id="main-nav">
+            <!-- Active page gets the class "active" (e.g. for T-shirts page move class="active" to t-shirts link) -->
             <a href="index.html">Home</a>
             <a href="mugs.html" class="active">Mugs</a>
             <a href="t-shirts.html">T-shirts</a>
@@ -350,13 +359,11 @@
     <!-- Footer -->
     <footer>
         <p>&copy; 2026 HG Customs. All rights reserved.</p>
-        <div class="footer-nav">
-            <a href="index.html">Home</a>
-            <a href="cart.html">Basket</a>
-        </div>
         <div class="footer-right">
+            <a href="shipping.html">Delivery Information</a>
             <a href="privacy.html">Privacy Policy</a>
-            <a href="shipping.html">Shipping Info</a>
+            <a href="terms.html">Terms & Conditions</a>
+            <a href="contact.html">Contact</a>
         </div>
     </footer>
 
