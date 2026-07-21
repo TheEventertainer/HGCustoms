@@ -368,12 +368,13 @@
         /* --- Tablet Responsive Styles --- */
         @media (max-width: 992px) {
             .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center;}
-            .main-header { padding: 20px; flex-direction: row; justify-content: space-between; gap: 15px; }
-            .mobile-toggle { display: block; order: 1; }
-            .logo { order: 2; }
-            .header-actions { order: 3; }
-            nav { width: 100%; order: 4; }
-            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
+            .main-header { padding: 15px 20px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; }
+            .mobile-toggle { display: block; grid-column: 1; justify-self: start; order: 1; }
+            .logo { grid-column: 2; justify-self: center; order: 2; }
+            .logo img { height: 95px; }
+            .header-actions { grid-column: 3; justify-self: end; order: 3; }
+            nav { grid-column: 1 / -1; width: 100%; order: 4; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 15px; text-align: center; }
             .nav-links.is-open { display: flex; }
             .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
             .hero { padding: 0 40px; background-position: 75% center; }
@@ -387,7 +388,7 @@
         /* --- Mobile Responsive Fixes --- */
         @media (max-width: 576px) {
             .main-header { padding: 15px 20px; }
-            .logo img { height: 35px; }
+            .logo img { height: 75px; }
             .header-actions { gap: 15px; font-size: 16px; }
             .categories-grid { grid-template-columns: 1fr; }
             
@@ -487,22 +488,22 @@
             
             <a href="mugs.html" class="category-card">
                 <div class="category-image-placeholder">Mugs Preview</div>
-                <h3>Custom Mugs</h3>
+                <h3>Pet Mugs</h3>
             </a>
 
             <a href="t-shirts.html" class="category-card">
                 <div class="category-image-placeholder">T-Shirts Preview</div>
-                <h3>Custom T-Shirts</h3>
+                <h3>T-shirts</h3>
             </a>
 
             <a href="coasters.html" class="category-card">
                 <div class="category-image-placeholder">Coasters Preview</div>
-                <h3>Custom Coasters</h3>
+                <h3>Coasters</h3>
             </a>
 
             <a href="merchandise.html" class="category-card">
                 <div class="category-image-placeholder">Merchandise Preview</div>
-                <h3>Band & Show Merch</h3>
+                <h3>Merchandise</h3>
             </a>
 
         </div>
@@ -550,14 +551,14 @@
         <div class="footer-content">
             <!-- Copyright Section (Left) -->
             <div class="footer-copyright">
-                &copy; HG CUSTOMS 2026
+                &copy; 2026 HG Customs. All rights reserved.
             </div>
 
             <!-- Utility Links (Right) -->
             <ul class="footer-links">
                 <li><a href="shipping-info.html">Delivery Information</a></li>
                 <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                <li><a href="terms-of-service.html">Terms & Conditions</a></li>
+                <li><a href="terms-of-service.html">Terms of Service</a></li>
                 <li><a href="refund-policy.html">Refund Policy</a></li>
             </ul>
         </div>
