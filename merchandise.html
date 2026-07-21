@@ -32,6 +32,7 @@
         /* --- Main Header Navigation --- */
         .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 1000; }
         .logo-img { height: 75px; width: auto; display: block; text-decoration: none; }
+        
         .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
         .nav-links > li { position: relative; padding: 10px 0; }
         .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 500; font-size: 14px; letter-spacing: 0.5px; transition: border-color 0.2s, font-weight 0.2s; padding-bottom: 4px; }
@@ -41,31 +42,17 @@
         .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
         .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
+        .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); background: none; border: none; }
 
         /* --- Main Container & Category Header --- */
         main { flex: 1; max-width: 1200px; width: 100%; margin: 40px auto; padding: 0 20px; }
         
-        .page-title-section {
-            width: 100%;
-            margin-bottom: 30px;
-        }
-
-        .page-title {
-            font-size: 24px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #000000;
-            text-align: left;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #000000;
-        }
+        .page-title-section { width: 100%; margin-bottom: 30px; }
+        .page-title { font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #000000; text-align: left; padding-bottom: 15px; border-bottom: 2px solid #000000; }
 
         /* Products Grid */
         .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
         
-        /* Product Card Design */
         .product-card { 
             border: 1px solid var(--border-color); 
             padding: 25px; 
@@ -173,16 +160,22 @@
         .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; transition: color 0.2s; }
         .footer-links a:hover { color: var(--text-dark); }
 
+        /* Responsive Breakpoints & Mobile Header Layout Fix */
         @media (max-width: 992px) {
             .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
-            .main-header { padding: 20px; }
-            .mobile-toggle { display: block; order: 1; }
-            .logo-link { order: 2; }
-            .header-actions { order: 3; }
+            
+            /* Re-ordered Flex items for clean mobile navigation header layout */
+            .main-header { padding: 15px 20px; flex-wrap: wrap; }
+            .mobile-toggle { display: block; order: 1; flex: 0 0 auto; }
+            .logo-link { order: 2; flex: 1; text-align: center; }
+            .logo-img { height: 50px; margin: 0 auto; }
+            .header-actions { order: 3; flex: 0 0 auto; }
+            
             nav { width: 100%; order: 4; }
-            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 15px; }
             .nav-links.is-open { display: flex; }
             .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
+            
             main { margin: 20px auto; padding: 0 15px; }
             .page-title { font-size: 22px; }
             .product-grid { grid-template-columns: 1fr; gap: 20px; }
@@ -203,11 +196,15 @@
 
     <!-- Main Navigation Header -->
     <header class="main-header">
-        <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        <button class="mobile-toggle" id="menu-toggle" aria-label="Toggle Menu"><i class="fa-solid fa-bars"></i></button>
         
         <a href="index.html" class="logo-link">
             <img src="logo.png" alt="HG Customs Logo" class="logo-img">
         </a>
+
+        <div class="header-actions">
+            <a href="cart.html" class="cart-icon" id="cart-icon-target" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
+        </div>
 
         <nav>
             <ul class="nav-links" id="nav-menu">
@@ -219,9 +216,6 @@
                 <li><a href="about-us.html">About Us</a></li>
             </ul>
         </nav>
-        <div class="header-actions">
-            <a href="cart.html" class="cart-icon" id="cart-icon-target" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
-        </div>
     </header>
 
     <main>
@@ -436,9 +430,14 @@
             updateBadge();
             const menuToggle = document.getElementById('menu-toggle');
             const navMenu = document.getElementById('nav-menu');
+            
             if (menuToggle && navMenu) {
-                menuToggle.addEventListener('click', (e) => { e.stopPropagation(); navMenu.classList.toggle('is-open'); });
+                menuToggle.addEventListener('click', (e) => { 
+                    e.stopPropagation(); 
+                    navMenu.classList.toggle('is-open'); 
+                });
             }
+            
             document.addEventListener('click', (e) => {
                 if (navMenu && navMenu.classList.contains('is-open') && !navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
                     navMenu.classList.remove('is-open');
