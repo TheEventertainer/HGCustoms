@@ -124,12 +124,14 @@
         @media (max-width: 992px) {
             .main-header { padding: 20px; }
             .mobile-toggle { display: block; order: 1; }
-            .logo { order: 2; }
+            .logo-link { order: 2; }
             .header-actions { order: 3; }
             nav { width: 100%; order: 4; }
             .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
             .nav-links.is-open { display: flex; }
             .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
+            
+            .logo-img { height: 60px; }
         }
     </style>
 </head>
@@ -145,7 +147,11 @@
     <!-- Main Navigation Header -->
     <header class="main-header">
         <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
-        <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a></div>
+        
+        <a href="index.html" class="logo-link">
+            <img src="logo.png" alt="HG Customs Logo" class="logo-img">
+        </a>
+
         <nav>
             <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Home</a></li>
