@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Band & Show Merch | HG Customs</title>
+    <title>Custom Merchandise | HG Customs</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -33,17 +33,9 @@
         .logo img { height: 55px; display: block; }
         .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
         .nav-links > li { position: relative; padding: 10px 0; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 4px; transition: border-color 0.3s; }
-        .nav-links > li > a:hover { border-bottom: 2px solid #000; }
-        .nav-links i { font-size: 10px; margin-left: 5px; }
-
-        /* --- Dropdown Menu Styling --- */
-        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background-color: #ffffff; border: 1px solid var(--border-color); min-width: 180px; list-style: none; display: flex; flex-direction: column; box-shadow: 0 4px 12px rgba(0,0,0,0.08); opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease; margin-top: 5px; z-index: 1100; }
-        .dropdown-menu li { border-bottom: 1px solid var(--bg-light); }
-        .dropdown-menu li:last-child { border-bottom: none; }
-        .dropdown-menu a { display: block; padding: 12px 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-dark); white-space: nowrap; border-bottom: none !important; }
-        .dropdown-menu a:hover { background-color: var(--bg-light); color: #000000; }
-        .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 500; font-size: 14px; letter-spacing: 0.5px; transition: border-color 0.2s, font-weight 0.2s; padding-bottom: 4px; }
+        .nav-links a:hover { color: #000; }
+        .nav-links a.active { font-weight: 700; border-bottom: 2px solid #000; }
         
         .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
@@ -75,18 +67,7 @@
         .form-select { width: 100%; padding: 12px; margin: 5px 0 15px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; background-color: #fff; }
         .form-textarea { width: 100%; height: 80px; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; resize: none; }
         .upload-status-text { font-size: 12px; font-weight: 600; margin: -5px 0 15px 0; min-height: 16px; }
-        .option-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-top: 10px; margin-bottom: 8px; }
 
-        /* --- Color Circle Swatches Layout --- */
-        .color-swatches-grid { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 18px 0; }
-        .color-circle { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease; position: relative; box-shadow: inset 0 0 2px rgba(0,0,0,0.2); }
-        .color-circle:hover { transform: scale(1.1); }
-        .color-circle.is-selected { border-color: #000000; transform: scale(1.15); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; }
-        /* Variant fix for pure white circles to retain outline integrity */
-        .color-circle[data-color-name="White"] { border: 1px solid #dcdcdc; }
-        .color-circle[data-color-name="White"].is-selected { border: 2px solid #000; }
-
-        /* --- Preview Image & Quantity Selector --- */
         .preview-container { text-align: center; margin-bottom: 15px; background: var(--bg-light); border: 1px solid var(--border-color); padding: 10px; display: flex; align-items: center; justify-content: center; }
         .preview-container img { max-width: 100%; height: 140px; object-fit: contain; }
         
@@ -98,7 +79,6 @@
         .qty-input { width: 45px; height: 36px; border: none; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); text-align: center; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; -moz-appearance: textfield; }
         .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
-        /* Flying Animation Style */
         .flying-img {
             position: fixed;
             z-index: 9999;
@@ -109,7 +89,6 @@
             object-fit: cover;
         }
 
-        /* Toast Notification Styles */
         .toast-notification {
             position: fixed;
             bottom: -80px;
@@ -128,13 +107,8 @@
             align-items: center;
             gap: 10px;
         }
-        .toast-notification.show {
-            bottom: 20px;
-        }
-        .toast-notification i {
-            color: #28a745;
-            font-size: 16px;
-        }
+        .toast-notification.show { bottom: 20px; }
+        .toast-notification i { color: #28a745; font-size: 16px; }
 
         @media (max-width: 992px) {
             .main-header { padding: 20px; }
@@ -145,8 +119,6 @@
             .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
             .nav-links.is-open { display: flex; }
             .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
-            .dropdown-menu { position: relative; top: 0; left: 0; transform: none; box-shadow: none; border: none; opacity: 1; visibility: visible; display: none; margin-top: 10px; background: var(--bg-light); }
-            .has-dropdown.is-open .dropdown-menu { display: flex; }
         }
     </style>
 </head>
@@ -166,129 +138,76 @@
         <nav>
             <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Home</a></li>
-                <li class="has-dropdown" id="dropdown-li">
-                    <a href="#" id="dropdown-trigger">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="mugs.html">Custom Mugs</a></li>
-                        <li><a href="t-shirts.html">Custom T-Shirts</a></li>
-                        <li><a href="coasters.html">Custom Coasters</a></li>
-                        <li><a href="merchandise.html">Band & Show Merch</a></li>
-                    </ul>
-                </li>
-                <li><a href="contact.html">Contact</a></li>
+                <li><a href="mugs.html">Mugs</a></li>
+                <li><a href="t-shirts.html">T-shirts</a></li>
+                <li><a href="coasters.html">Coasters</a></li>
+                <li><a href="merchandise.html" class="active">Merchandise</a></li>
             </ul>
         </nav>
         <div class="header-actions">
-            <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
             <a href="cart.html" class="cart-icon" id="cart-icon-target" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
         </div>
     </header>
 
     <main class="catalog-container">
-        <h1>Band & Show Merchandise</h1>
+        <h1>Custom Branded Merchandise</h1>
         <div class="product-grid">
-            <!-- Product 1: Logo Hoodie -->
+            <!-- Product 1 -->
             <div class="product-card">
                 <div class="product-image-wrapper">
-                    <img src="hoodie.jpg" alt="Logo Hoodie" id="img-merch-1">
+                    <img src="tote-bag.jpg" alt="Canvas Tote Bag" id="img-merch-1">
                 </div>
-                <div class="prod-title">Logo Hoodie</div>
-                <div class="prod-price">£34.99</div>
-                <button class="btn-customize" onclick="openProductModal('Logo Hoodie', 34.99, 'hoodie.jpg', 'apparel_colors', 'sizes', 'img-merch-1')">Design & Buy</button>
+                <div class="prod-title">Canvas Tote Bag</div>
+                <div class="prod-price">£9.99</div>
+                <button class="btn-customize" onclick="openProductModal('Canvas Tote Bag', 9.99, 'tote-bag.jpg', 'img-merch-1')">Design & Buy</button>
             </div>
             
-            <!-- Product 2: T-Shirt -->
+            <!-- Product 2 -->
             <div class="product-card">
                 <div class="product-image-wrapper">
-                    <img src="tshirt.jpg" alt="Custom T-Shirt" id="img-merch-2">
+                    <img src="keyring.jpg" alt="Acrylic Keychain" id="img-merch-2">
                 </div>
-                <div class="prod-title">Custom T-Shirt</div>
-                <div class="prod-price">£19.99</div>
-                <button class="btn-customize" onclick="openProductModal('Custom T-Shirt', 19.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-merch-2')">Design & Buy</button>
+                <div class="prod-title">Acrylic Keychain</div>
+                <div class="prod-price">£3.99</div>
+                <button class="btn-customize" onclick="openProductModal('Acrylic Keychain', 3.99, 'keyring.jpg', 'img-merch-2')">Design & Buy</button>
             </div>
             
-            <!-- Product 3: Mug -->
+            <!-- Product 3 -->
             <div class="product-card">
                 <div class="product-image-wrapper">
-                    <img src="mug.jpg" alt="Custom Mug" id="img-merch-3">
+                    <img src="mousemat.jpg" alt="Custom Mousemat" id="img-merch-3">
                 </div>
-                <div class="prod-title">Custom Mug</div>
-                <div class="prod-price">£8.50</div>
-                <button class="btn-customize" onclick="openProductModal('Custom Mug', 8.50, 'mug.jpg', 'mug_colors', 'none', 'img-merch-3')">Design & Buy</button>
+                <div class="prod-title">Custom Mousemat</div>
+                <div class="prod-price">£8.99</div>
+                <button class="btn-customize" onclick="openProductModal('Custom Mousemat', 8.99, 'mousemat.jpg', 'img-merch-3')">Design & Buy</button>
             </div>
             
-            <!-- Product 4: Water Bottle -->
+            <!-- Product 4 -->
             <div class="product-card">
                 <div class="product-image-wrapper">
-                    <img src="water-bottle.jpg" alt="Custom Water Bottle" id="img-merch-4">
+                    <img src="water-bottle.jpg" alt="Metal Water Bottle" id="img-merch-4">
                 </div>
-                <div class="prod-title">Custom Water Bottle</div>
+                <div class="prod-title">Metal Water Bottle</div>
                 <div class="prod-price">£14.99</div>
-                <button class="btn-customize" onclick="openProductModal('Custom Water Bottle', 14.99, 'water-bottle.jpg', 'bottle_colors', 'none', 'img-merch-4')">Design & Buy</button>
-            </div>
-            
-            <!-- Product 5: Tote Bag -->
-            <div class="product-card">
-                <div class="product-image-wrapper">
-                    <img src="tote-bag.jpg" alt="Custom Tote Bag" id="img-merch-5">
-                </div>
-                <div class="prod-title">Custom Tote Bag</div>
-                <div class="prod-price">£5.99</div>
-                <button class="btn-customize" onclick="openProductModal('Custom Tote Bag', 5.99, 'tote-bag.jpg', 'tote_colors', 'none', 'img-merch-5')">Design & Buy</button>
-            </div>
-            
-            <!-- Product 6: Keyring -->
-            <div class="product-card">
-                <div class="product-image-wrapper">
-                    <img src="keyring.jpg" alt="Custom Keyring" id="img-merch-6">
-                </div>
-                <div class="prod-title">Custom Keyring</div>
-                <div class="prod-price">£2.99</div>
-                <button class="btn-customize" onclick="openProductModal('Custom Keyring', 2.99, 'keyring.jpg', 'none', 'none', 'img-merch-6')">Design & Buy</button>
+                <button class="btn-customize" onclick="openProductModal('Metal Water Bottle', 14.99, 'water-bottle.jpg', 'img-merch-4')">Design & Buy</button>
             </div>
         </div>
     </main>
 
-    <!-- Unified Configurator Modal Window -->
+    <!-- Modal Area -->
     <div class="modal" id="productModal">
         <div class="modal-content">
             <button class="close-modal" onclick="document.getElementById('productModal').classList.remove('is-active')">&times;</button>
-            
-            <!-- Target Image Preview Box Container -->
             <div id="imagePreviewContainer" class="preview-container">
                 <img id="imagePreview" src="" alt="Design Preview">
             </div>
-
             <h2 id="modalTitle">Product</h2>
 
-            <!-- Visual Color Swatches Selector Wrapper -->
-            <div id="colorSelectionContainer">
-                <label class="option-label">Select Colour</label>
-                <div id="colorSwatchesWrapper" class="color-swatches-grid"></div>
-            </div>
-
-            <!-- Dynamic Size Dropdown Selector Wrapper -->
-            <div id="sizeSelectionContainer">
-                <label class="option-label" for="productSize">Select Size</label>
-                <select id="productSize" class="form-select">
-                    <option value="XS">XS</option>
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                    <option value="XXL">XXL</option>
-                    <option value="XXXL">XXXL</option>
-                </select>
-            </div>
-
             <textarea id="userText" class="form-textarea" placeholder="Inscription notes, text choices or formatting requirements..."></textarea>
-            
             <button id="upload_widget" class="btn-customize" style="background: #444; margin-bottom: 10px;">Upload Design File</button>
             <div id="upload-status-message" class="upload-status-text"></div>
             <input type="hidden" id="uploaded_file_url">
             
-            <!-- Standard Quantity Selection Control Wrapper -->
             <div class="quantity-wrapper">
                 <span class="quantity-label">Quantity</span>
                 <div class="quantity-controls">
@@ -302,7 +221,6 @@
         </div>
     </div>
 
-    <!-- Toast Notification Popup Container -->
     <div id="toast" class="toast-notification">
         <i class="fa-solid fa-circle-check"></i>
         <span id="toast-message">Item added to basket!</span>
@@ -311,44 +229,8 @@
     <script>
         let currentActivePrice = 0;
         let defaultProductImage = "";
-        let trackedSelectedColor = null;
         let currentSourceImgId = "";
 
-        // Structured layout color mapping config
-        const colorOptionsMap = {
-            apparel_colors: [
-                { name: "Red", hex: "#e60000" },
-                { name: "Blue", hex: "#0055ff" },
-                { name: "Green", hex: "#009933" },
-                { name: "White", hex: "#ffffff" },
-                { name: "Black", hex: "#000000" }
-            ],
-            mug_colors: [
-                { name: "Standard White", hex: "#ffffff" },
-                { name: "Black Inner", hex: "#2b2b2b" },
-                { name: "Blue Inner", hex: "#1e3a8a" },
-                { name: "Red Inner", hex: "#b91c1c" },
-                { name: "Pink Inner", hex: "#ec4899" }
-            ],
-            bottle_colors: [
-                { name: "White", hex: "#ffffff" },
-                { name: "Black", hex: "#000000" },
-                { name: "Yellow", hex: "#ffcc00" },
-                { name: "Red", hex: "#e60000" },
-                { name: "Blue", hex: "#0055ff" },
-                { name: "Green", hex: "#009933" }
-            ],
-            tote_colors: [
-                { name: "White", hex: "#ffffff" },
-                { name: "Black", hex: "#000000" },
-                { name: "Blue", hex: "#0055ff" },
-                { name: "Green", hex: "#009933" },
-                { name: "Yellow", hex: "#ffcc00" },
-                { name: "Red", hex: "#e60000" }
-            ]
-        };
-
-        // Initialize Cloudinary Widget Configuration
         var myWidget = cloudinary.createUploadWidget({
             cloudName: 'opdnamfa', 
             uploadPreset: 'hg_customs_preset'
@@ -356,108 +238,46 @@
             if (!error && result && result.event === "success") { 
                 const secureUrl = result.info.secure_url;
                 document.getElementById('uploaded_file_url').value = secureUrl;
-                
-                const previewImg = document.getElementById('imagePreview');
-                if (previewImg) {
-                    previewImg.src = secureUrl;
-                }
-
+                document.getElementById('imagePreview').src = secureUrl;
                 const statusMsg = document.getElementById('upload-status-message');
                 statusMsg.innerText = "✓ Image uploaded successfully!";
                 statusMsg.style.color = "#28a745";
             }
         });
 
-        document.getElementById("upload_widget").addEventListener("click", function(){
-            myWidget.open();
-        }, false);
+        document.getElementById("upload_widget").addEventListener("click", function(){ myWidget.open(); }, false);
 
-        function openProductModal(title, price, imagePath, colorKey, sizeKey, sourceImgId) {
+        function openProductModal(title, price, imagePath, sourceImgId) {
             document.getElementById('modalTitle').innerText = title;
             currentActivePrice = price;
             defaultProductImage = imagePath;
-            trackedSelectedColor = null; 
             currentSourceImgId = sourceImgId;
-            
-            const previewImg = document.getElementById('imagePreview');
-            if (previewImg) {
-                previewImg.src = imagePath;
-            }
-            
-            // Clean interface parameters
+            document.getElementById('imagePreview').src = imagePath;
             document.getElementById('uploaded_file_url').value = '';
             document.getElementById('userText').value = '';
             document.getElementById('upload-status-message').innerText = '';
             document.getElementById('modalQuantity').value = 1;
-            
-            // Handle Circle Color Swatches render logic
-            const colorContainer = document.getElementById('colorSelectionContainer');
-            const swatchesWrapper = document.getElementById('colorSwatchesWrapper');
-            swatchesWrapper.innerHTML = ""; 
-            
-            if (colorKey !== 'none' && colorOptionsMap[colorKey]) {
-                colorContainer.style.display = "block";
-                
-                colorOptionsMap[colorKey].forEach((colorObj, index) => {
-                    let swatch = document.createElement('div');
-                    swatch.className = "color-circle";
-                    swatch.style.backgroundColor = colorObj.hex;
-                    swatch.setAttribute('data-color-name', colorObj.name);
-                    swatch.title = colorObj.name;
-                    
-                    // Auto-select first color variant
-                    if(index === 0) {
-                        swatch.classList.add('is-selected');
-                        trackedSelectedColor = colorObj.name;
-                    }
-                    
-                    swatch.addEventListener('click', function() {
-                        document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('is-selected'));
-                        this.classList.add('is-selected');
-                        trackedSelectedColor = this.getAttribute('data-color-name');
-                    });
-                    
-                    swatchesWrapper.appendChild(swatch);
-                });
-            } else {
-                colorContainer.style.display = "none";
-            }
-
-            // Handle Size Dropdown visibility mapping
-            const sizeContainer = document.getElementById('sizeSelectionContainer');
-            if (sizeKey !== 'none') {
-                sizeContainer.style.display = "block";
-            } else {
-                sizeContainer.style.display = "none";
-            }
-            
             document.getElementById('productModal').classList.add('is-active');
         }
 
         function adjustModalQty(amount) {
             const qtyInput = document.getElementById('modalQuantity');
-            if (qtyInput) {
-                let currentVal = parseInt(qtyInput.value) || 1;
-                let newVal = currentVal + amount;
-                if (newVal < 1) newVal = 1;
-                qtyInput.value = newVal;
-            }
+            let currentVal = parseInt(qtyInput.value) || 1;
+            let newVal = currentVal + amount;
+            if (newVal < 1) newVal = 1;
+            qtyInput.value = newVal;
         }
 
         function showToast(message) {
             const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toast-message');
-            toastMsg.innerText = message;
+            document.getElementById('toast-message').innerText = message;
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
         function triggerFlyAnimation() {
             const sourceImg = document.getElementById(currentSourceImgId) || document.getElementById('imagePreview');
             const cartIcon = document.getElementById('cart-icon-target');
-
             if (!sourceImg || !cartIcon) return;
 
             const imgRect = sourceImg.getBoundingClientRect();
@@ -481,9 +301,7 @@
                 flyingImg.style.opacity = '0.4';
             }, 10);
 
-            setTimeout(() => {
-                flyingImg.remove();
-            }, 800);
+            setTimeout(() => { flyingImg.remove(); }, 800);
         }
 
         function addToBasket() {
@@ -492,26 +310,16 @@
             const fileUrl = document.getElementById('uploaded_file_url').value;
             const quantityVal = parseInt(document.getElementById('modalQuantity').value) || 1;
             
-            const colorContainer = document.getElementById('colorSelectionContainer');
-            const selectedColor = colorContainer.style.display !== 'none' ? trackedSelectedColor : null;
-
-            const sizeContainer = document.getElementById('sizeSelectionContainer');
-            const selectedSize = sizeContainer.style.display !== 'none' ? document.getElementById('productSize').value : null;
-            
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            
             cart.push({ 
                 name: title, 
                 price: currentActivePrice, 
                 text: textValue, 
                 fileUrl: fileUrl || defaultProductImage,
-                quantity: quantityVal,
-                color: selectedColor,
-                size: selectedSize
+                quantity: quantityVal
             });
             localStorage.setItem('hg_cart', JSON.stringify(cart));
             
-            // Trigger Basket UI updates & animations
             triggerFlyAnimation();
             updateBadge();
             document.getElementById('productModal').classList.remove('is-active');
@@ -521,46 +329,25 @@
         function updateBadge() {
             const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
-            const badges = document.querySelectorAll('.cart-count');
-            badges.forEach(badge => badge.innerText = totalItems);
+            document.querySelectorAll('.cart-count').forEach(badge => badge.innerText = totalItems);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             updateBadge();
-
             const menuToggle = document.getElementById('menu-toggle');
             const navMenu = document.getElementById('nav-menu');
-            const dropdownLi = document.getElementById('dropdown-li');
-            const dropdownTrigger = document.getElementById('dropdown-trigger');
-
             if (menuToggle && navMenu) {
                 menuToggle.addEventListener('click', (e) => { e.stopPropagation(); navMenu.classList.toggle('is-open'); });
             }
-            if (dropdownTrigger && dropdownLi) {
-                dropdownTrigger.addEventListener('click', (e) => {
-                    if (window.innerWidth <= 992) { e.preventDefault(); e.stopPropagation(); dropdownLi.classList.toggle('is-open'); }
-                });
-            }
             document.addEventListener('click', () => {
                 if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
-                if (dropdownLi && dropdownLi.classList.contains('is-open')) dropdownLi.classList.remove('is-open');
             });
-
-            const qtyInput = document.getElementById('modalQuantity');
-            if (qtyInput) {
-                qtyInput.addEventListener('blur', () => {
-                    if (parseInt(qtyInput.value) < 1 || isNaN(parseInt(qtyInput.value))) {
-                        qtyInput.value = 1;
-                    }
-                });
-            }
         });
     </script>
+
     <footer class="site-footer">
         <div class="footer-content" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-top: 1px solid var(--border-color);">
-            <div class="footer-copyright" style="font-size: 12px; color: var(--text-muted);">
-                &copy; HG CUSTOMS 2026
-            </div>
+            <div class="footer-copyright" style="font-size: 12px; color: var(--text-muted);">&copy; HG CUSTOMS 2026</div>
             <ul class="footer-links" style="list-style: none; display: flex; gap: 30px; margin: 0;">
                 <li><a href="delivery-info.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Delivery Information</a></li>
                 <li><a href="privacy-policy.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Privacy Policy</a></li>
