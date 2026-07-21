@@ -4,31 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Coasters | HG Customs</title>
+    <!-- Google Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Cloudinary Widget Script -->
-    <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
-
+    <!-- Cloudinary Upload Widget Script -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+    
     <style>
-        :root { 
-            --text-dark: #000000; 
+        :root {
+            --text-dark: #000000;
             --text-muted: #555555;
-            --bg-light: #f9f9f9; 
-            --border-color: #e5e5e5; 
+            --bg-light: #f9f9f9;
+            --border-color: #e5e5e5;
+            --font-sans: 'Inter', sans-serif;
         }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-        
+        body { font-family: var(--font-sans); display: flex; flex-direction: column; min-height: 100vh; color: var(--text-dark); background-color: #ffffff; -webkit-font-smoothing: antialiased; position: relative; }
+
         /* --- Announcement Bar --- */
         .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
         .announcement-item { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; }
         .announcement-item i { font-size: 16px; }
         .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
 
-        /* --- Main Header Navigation --- */
+        /* --- Header & Navigation Styles --- */
         .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 1000; }
         .logo-img { height: 75px; width: auto; display: block; text-decoration: none; }
         .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
@@ -40,67 +43,31 @@
         .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
         .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        
+        /* Mobile Menu Toggle */
         .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
 
-        /* --- Catalog Area --- */
-        .catalog-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        .catalog-container h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 15px; border-bottom: 2px solid #000; margin-bottom: 30px; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .product-card { border: 1px solid var(--border-color); padding: 25px; display: flex; flex-direction: column; background: #fff; }
-        .product-image-wrapper { text-align: center; margin-bottom: 15px; border: 1px solid var(--border-color); padding: 10px; background: var(--bg-light); display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .product-image-wrapper img { max-width: 100%; height: 200px; object-fit: contain; }
-        .prod-title { font-size: 16px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
-        .prod-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
+        /* --- Main Container & Category Header --- */
+        main { flex: 1; max-width: 1200px; width: 100%; margin: 40px auto; padding: 0 20px; }
         
-        .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; letter-spacing: 1px; margin-top: auto; transition: background 0.2s; }
-        .btn-customize:hover { background: #222; }
-        
-        /* --- Modal Area --- */
-        .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
-        .modal.is-active { display: flex; }
-        .modal-content { background: #fff; max-width: 440px; width: 90%; padding: 35px; position: relative; border: 1px solid var(--border-color); max-height: 90vh; overflow-y: auto; }
-        .modal-content h2 { font-size: 18px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px; }
-        
-        .close-modal { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 20px; cursor: pointer; color: #999; }
-        .close-modal:hover { color: #000; }
-
-        .form-select { width: 100%; padding: 12px; margin: 5px 0 15px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; background-color: #fff; }
-        .form-textarea { width: 100%; height: 80px; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; resize: none; }
-        .upload-status-text { font-size: 12px; font-weight: 600; margin: -5px 0 15px 0; min-height: 16px; }
-        .option-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-top: 10px; margin-bottom: 8px; }
-
-        /* --- Color Circle Swatches Layout --- */
-        .color-swatches-grid { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 18px 0; }
-        .color-circle { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease; position: relative; box-shadow: inset 0 0 2px rgba(0,0,0,0.2); }
-        .color-circle:hover { transform: scale(1.1); }
-        .color-circle.is-selected { border-color: #000000; transform: scale(1.15); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; }
-        .color-circle[data-color-name="White"] { border: 1px solid #dcdcdc; }
-
-        /* --- Preview Image & Quantity Selector --- */
-        .preview-container { text-align: center; margin-bottom: 15px; background: var(--bg-light); border: 1px solid var(--border-color); padding: 10px; display: flex; align-items: center; justify-content: center; }
-        .preview-container img { max-width: 100%; height: 140px; object-fit: contain; }
-        
-        .quantity-wrapper { display: flex; align-items: center; justify-content: space-between; margin: 15px 0; padding-top: 10px; border-top: 1px solid var(--border-color); }
-        .quantity-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .quantity-controls { display: flex; align-items: center; border: 1px solid var(--border-color); }
-        .qty-btn { background: none; border: none; width: 36px; height: 36px; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
-        .qty-btn:hover { background: var(--bg-light); }
-        .qty-input { width: 45px; height: 36px; border: none; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); text-align: center; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; -moz-appearance: textfield; }
-        .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-
-        /* Flying Animation Style */
-        .flying-img {
-            position: fixed;
-            z-index: 9999;
-            pointer-events: none;
-            transition: all 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-            border-radius: 50%;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            object-fit: cover;
+        .page-title-section {
+            width: 100%;
+            margin-bottom: 30px;
         }
 
-        /* Toast Notification Styles */
-        .toast-notification {
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #000000;
+            text-align: left;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #000000;
+        }
+
+        /* Toast Notification Banner */
+        #toast-banner {
             position: fixed;
             bottom: -80px;
             right: 20px;
@@ -109,19 +76,195 @@
             padding: 15px 25px;
             border-radius: 4px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
             z-index: 3000;
-            transition: bottom 0.4s ease-in-out;
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: bottom 0.4s ease-in-out;
         }
-        .toast-notification.show { bottom: 20px; }
-        .toast-notification i { color: #28a745; font-size: 16px; }
+        #toast-banner.show { bottom: 20px; }
+        #toast-banner i { color: #28a745; font-size: 16px; }
+        #toast-banner a { color: #fff; font-weight: 600; text-decoration: underline; margin-left: 5px; }
 
+        /* Flying Animation Element */
+        .flyer {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: #111;
+            border-radius: 50%;
+            z-index: 3000;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* Product Card Design */
+        .product-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        }
+        .product-image-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 13px;
+            margin-bottom: 15px;
+            padding: 10px;
+            text-align: center;
+        }
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .product-price {
+            font-size: 15px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .btn-view {
+            margin-top: auto;
+            background: #000;
+            color: #fff;
+            text-align: center;
+            padding: 14px;
+            border: none;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+        .product-card:hover .btn-view {
+            background: #222;
+        }
+
+        /* Modal Overlay & Customizer Box */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 35px;
+            border: 1px solid var(--border-color);
+            max-width: 440px;
+            width: 90%;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: none; border: none;
+            font-size: 20px; cursor: pointer; color: #999;
+        }
+        .modal-close:hover { color: #000; }
+        .modal-title { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+        .modal-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        /* Color Swatch Circles */
+        .color-options { display: flex; gap: 12px; }
+        .color-circle {
+            width: 32px; height: 32px; border-radius: 50%;
+            border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease; box-shadow: inset 0 0 2px rgba(0,0,0,0.2);
+        }
+        .color-circle:hover { transform: scale(1.1); }
+        .color-circle.selected { border-color: #000000; transform: scale(1.15); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; }
+        .color-circle[title="White"] { border: 1px solid #dcdcdc; }
+        .color-circle[title="White"].selected { border: 2px solid #000; }
+        
+        /* Cloudinary Button and Image Preview */
+        .btn-upload-cloudinary {
+            width: 100%; background: #444; color: #fff; border: none;
+            padding: 14px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+            transition: background 0.2s; text-align: center;
+        }
+        .btn-upload-cloudinary:hover { background: #222; }
+        .upload-status { font-size: 12px; color: #28a745; margin-top: 8px; font-weight: 600; display: none; word-break: break-all; }
+        
+        .btn-add-cart {
+            width: 100%; background: #000; color: #fff; border: none;
+            padding: 14px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-add-cart:hover { background: #222; }
+
+        /* Mobile Scroll to Top Button */
+        #scroll-to-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1500;
+            background: #111;
+            color: #fff;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: background 0.2s, opacity 0.2s;
+        }
+        #scroll-to-top:hover { background: #333; }
+
+        /* --- Footer Styles --- */
+        .site-footer { background-color: #ffffff; border-top: 1px solid var(--border-color); margin-top: auto; }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; }
+        .footer-copyright { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; }
+        .footer-links { display: flex; list-style: none; gap: 30px; margin: 0; }
+        .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--text-dark); }
+
+        /* Responsive Breakpoints */
         @media (max-width: 992px) {
+            .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
             .main-header { padding: 20px; }
             .mobile-toggle { display: block; order: 1; }
             .logo-link { order: 2; }
@@ -130,14 +273,18 @@
             .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
             .nav-links.is-open { display: flex; }
             .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
-            
-            .logo-img { height: 60px; }
+            main { margin: 20px auto; padding: 0 15px; }
+            .page-title { font-size: 22px; }
+            .products-grid { grid-template-columns: 1fr; gap: 20px; }
+            .footer-content { flex-direction: column; gap: 15px; text-align: center; padding: 20px 0; }
+            .footer-links { justify-content: center; flex-wrap: wrap; gap: 15px; }
+            #scroll-to-top { display: flex; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Announcement Bar -->
+    <!-- Announcement Bar -->
     <div class="announcement-bar">
         <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i><div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div></a>
         <a href="#" class="announcement-item"><i class="fa-regular fa-clock"></i><div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div></a>
@@ -147,11 +294,9 @@
     <!-- Main Navigation Header -->
     <header class="main-header">
         <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
-        
         <a href="index.html" class="logo-link">
             <img src="logo.png" alt="HG Customs Logo" class="logo-img">
         </a>
-
         <nav>
             <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Home</a></li>
@@ -162,210 +307,107 @@
             </ul>
         </nav>
         <div class="header-actions">
-            <a href="cart.html" class="cart-icon" id="cart-icon-target" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
+            <a href="cart.html" class="cart-icon" id="cart-nav-link" aria-label="Cart">
+                <i class="fa-solid fa-basket-shopping"></i>
+                <span class="cart-count">0</span>
+            </a>
         </div>
     </header>
 
-    <main class="catalog-container">
-        <h1>Custom Printed Coasters</h1>
-        <div class="product-grid">
+    <!-- Main Content Area: Coasters Grid -->
+    <main>
+        <div class="page-title-section">
+            <h1 class="page-title">Custom Coasters Collection</h1>
+        </div>
+        
+        <div class="products-grid">
             <!-- Product 1 -->
-            <div class="product-card">
-                <div class="product-image-wrapper">
-                    <img src="coaster.jpg" alt="Square Hardtop Coaster" id="img-coaster-1">
+            <div class="product-card" onclick="openModal('Glossy Square Coaster', 6.99, event)">
+                <div class="product-image-placeholder">Coaster Image Placeholder 1</div>
+                <div class="product-info">
+                    <div class="product-title">Glossy Square Coaster</div>
+                    <div class="product-price">£6.99</div>
+                    <div class="btn-view">Customize & Buy</div>
                 </div>
-                <div class="prod-title">Square Hardtop Coaster</div>
-                <div class="prod-price">£4.99</div>
-                <button class="btn-customize" onclick="openProductModal('Square Hardtop Coaster', 4.99, 'coaster.jpg', 'none', 'none', 'img-coaster-1')">Design & Buy</button>
             </div>
-            
+
             <!-- Product 2 -->
-            <div class="product-card">
-                <div class="product-image-wrapper">
-                    <img src="coaster.jpg" alt="Round Wooden Coaster" id="img-coaster-2">
+            <div class="product-card" onclick="openModal('Round Wooden Coaster', 7.50, event)">
+                <div class="product-image-placeholder">Coaster Image Placeholder 2</div>
+                <div class="product-info">
+                    <div class="product-title">Round Wooden Coaster</div>
+                    <div class="product-price">£7.50</div>
+                    <div class="btn-view">Customize & Buy</div>
                 </div>
-                <div class="prod-title">Round Wooden Coaster</div>
-                <div class="prod-price">£5.49</div>
-                <button class="btn-customize" onclick="openProductModal('Round Wooden Coaster', 5.49, 'coaster.jpg', 'none', 'none', 'img-coaster-2')">Design & Buy</button>
             </div>
-            
+
             <!-- Product 3 -->
-            <div class="product-card">
-                <div class="product-image-wrapper">
-                    <img src="coaster.jpg" alt="Glass Coaster" id="img-coaster-3">
+            <div class="product-card" onclick="openModal('Cork Backed Slate Coaster', 8.99, event)">
+                <div class="product-image-placeholder">Coaster Image Placeholder 3</div>
+                <div class="product-info">
+                    <div class="product-title">Cork Backed Slate Coaster</div>
+                    <div class="product-price">£8.99</div>
+                    <div class="btn-view">Customize & Buy</div>
                 </div>
-                <div class="prod-title">Glass Coaster</div>
-                <div class="prod-price">£6.99</div>
-                <button class="btn-customize" onclick="openProductModal('Glass Coaster', 6.99, 'coaster.jpg', 'none', 'none', 'img-coaster-3')">Design & Buy</button>
             </div>
-            
+
             <!-- Product 4 -->
-            <div class="product-card">
-                <div class="product-image-wrapper">
-                    <img src="coaster.jpg" alt="Slate Coaster Set (Pack of 4)" id="img-coaster-4">
+            <div class="product-card" onclick="openModal('Set of 4 Custom Coasters', 22.99, event)">
+                <div class="product-image-placeholder">Coaster Image Placeholder 4</div>
+                <div class="product-info">
+                    <div class="product-title">Set of 4 Custom Coasters</div>
+                    <div class="product-price">£22.99</div>
+                    <div class="btn-view">Customize & Buy</div>
                 </div>
-                <div class="prod-title">Slate Coaster Set (4 Pack)</div>
-                <div class="prod-price">£16.99</div>
-                <button class="btn-customize" onclick="openProductModal('Slate Coaster Set (4 Pack)', 16.99, 'coaster.jpg', 'none', 'none', 'img-coaster-4')">Design & Buy</button>
             </div>
         </div>
     </main>
 
-    <!-- Modal Area -->
-    <div class="modal" id="productModal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="document.getElementById('productModal').classList.remove('is-active')">&times;</button>
-            <div id="imagePreviewContainer" class="preview-container">
-                <img id="imagePreview" src="" alt="Design Preview">
-            </div>
-            <h2 id="modalTitle">Product</h2>
+    <!-- Customization Pop-Up Modal -->
+    <div id="customizer-modal" class="modal-overlay" onclick="handleModalClick(event)">
+        <div class="modal-content" id="modal-box-element" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modal-product-title" class="modal-title"></div>
+            <div id="modal-product-price" class="modal-price"></div>
 
-            <textarea id="userText" class="form-textarea" placeholder="Inscription notes, text choices or formatting requirements..."></textarea>
-            <button id="upload_widget" class="btn-customize" style="background: #444; margin-bottom: 10px;">Upload Design File</button>
-            <div id="upload-status-message" class="upload-status-text"></div>
-            <input type="hidden" id="uploaded_file_url">
-            
-            <div class="quantity-wrapper">
-                <span class="quantity-label">Quantity</span>
-                <div class="quantity-controls">
-                    <button type="button" class="qty-btn" onclick="adjustModalQty(-1)">-</button>
-                    <input type="number" id="modalQuantity" class="qty-input" value="1" min="1">
-                    <button type="button" class="qty-btn" onclick="adjustModalQty(1)">+</button>
+            <div class="form-group">
+                <label>Select Finish:</label>
+                <div class="color-options">
+                    <div class="color-circle selected" style="background-color: #ffffff;" onclick="selectColor(this, 'White')" title="White"></div>
+                    <div class="color-circle" style="background-color: #111111;" onclick="selectColor(this, 'Black')" title="Black"></div>
+                    <div class="color-circle" style="background-color: #d7ccc8;" onclick="selectColor(this, 'Natural Wood')" title="Natural Wood"></div>
                 </div>
             </div>
 
-            <button id="add-to-basket-btn" class="btn-customize" onclick="addToBasket()">Add To Basket</button>
+            <div class="form-group">
+                <label>Upload Custom Artwork/Photo (Optional):</label>
+                <button type="button" class="btn-upload-cloudinary" onclick="openCloudinaryWidget()">Upload Image</button>
+                <div id="upload-status" class="upload-status">✓ Image attached successfully!</div>
+            </div>
+
+            <button class="btn-add-cart" id="modal-submit-btn" onclick="addToCartFromModal(event)">Add to Basket</button>
         </div>
     </div>
 
-    <div id="toast" class="toast-notification">
+    <!-- Toast Notification Banner -->
+    <div id="toast-banner">
         <i class="fa-solid fa-circle-check"></i>
-        <span id="toast-message">Item added to basket!</span>
+        <span>Item added to basket!</span>
+        <a href="cart.html">View Basket</a>
     </div>
 
-    <script>
-        let currentActivePrice = 0;
-        let defaultProductImage = "";
-        let currentSourceImgId = "";
+    <!-- Mobile Scroll to Top Button -->
+    <button id="scroll-to-top" onclick="scrollToTop()" aria-label="Scroll to top">
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
 
-        var myWidget = cloudinary.createUploadWidget({
-            cloudName: 'opdnamfa', 
-            uploadPreset: 'hg_customs_preset'
-        }, (error, result) => {
-            if (!error && result && result.event === "success") { 
-                const secureUrl = result.info.secure_url;
-                document.getElementById('uploaded_file_url').value = secureUrl;
-                document.getElementById('imagePreview').src = secureUrl;
-                const statusMsg = document.getElementById('upload-status-message');
-                statusMsg.innerText = "✓ Image uploaded successfully!";
-                statusMsg.style.color = "#28a745";
-            }
-        });
-
-        document.getElementById("upload_widget").addEventListener("click", function(){ myWidget.open(); }, false);
-
-        function openProductModal(title, price, imagePath, colorKey, sizeKey, sourceImgId) {
-            document.getElementById('modalTitle').innerText = title;
-            currentActivePrice = price;
-            defaultProductImage = imagePath;
-            currentSourceImgId = sourceImgId;
-            document.getElementById('imagePreview').src = imagePath;
-            document.getElementById('uploaded_file_url').value = '';
-            document.getElementById('userText').value = '';
-            document.getElementById('upload-status-message').innerText = '';
-            document.getElementById('modalQuantity').value = 1;
-            document.getElementById('productModal').classList.add('is-active');
-        }
-
-        function adjustModalQty(amount) {
-            const qtyInput = document.getElementById('modalQuantity');
-            let currentVal = parseInt(qtyInput.value) || 1;
-            let newVal = currentVal + amount;
-            if (newVal < 1) newVal = 1;
-            qtyInput.value = newVal;
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-message').innerText = message;
-            toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 3000);
-        }
-
-        function triggerFlyAnimation() {
-            const sourceImg = document.getElementById(currentSourceImgId) || document.getElementById('imagePreview');
-            const cartIcon = document.getElementById('cart-icon-target');
-            if (!sourceImg || !cartIcon) return;
-
-            const imgRect = sourceImg.getBoundingClientRect();
-            const cartRect = cartIcon.getBoundingClientRect();
-
-            const flyingImg = document.createElement('img');
-            flyingImg.src = sourceImg.src;
-            flyingImg.classList.add('flying-img');
-            flyingImg.style.top = `${imgRect.top}px`;
-            flyingImg.style.left = `${imgRect.left}px`;
-            flyingImg.style.width = `${imgRect.width}px`;
-            flyingImg.style.height = `${imgRect.height}px`;
-
-            document.body.appendChild(flyingImg);
-
-            setTimeout(() => {
-                flyingImg.style.top = `${cartRect.top + 5}px`;
-                flyingImg.style.left = `${cartRect.left + 5}px`;
-                flyingImg.style.width = '20px';
-                flyingImg.style.height = '20px';
-                flyingImg.style.opacity = '0.4';
-            }, 10);
-
-            setTimeout(() => { flyingImg.remove(); }, 800);
-        }
-
-        function addToBasket() {
-            const title = document.getElementById('modalTitle').innerText;
-            const textValue = document.getElementById('userText').value;
-            const fileUrl = document.getElementById('uploaded_file_url').value;
-            const quantityVal = parseInt(document.getElementById('modalQuantity').value) || 1;
-            
-            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            cart.push({ 
-                name: title, 
-                price: currentActivePrice, 
-                text: textValue, 
-                fileUrl: fileUrl || defaultProductImage,
-                quantity: quantityVal
-            });
-            localStorage.setItem('hg_cart', JSON.stringify(cart));
-            
-            triggerFlyAnimation();
-            updateBadge();
-            document.getElementById('productModal').classList.remove('is-active');
-            showToast(`${quantityVal}x ${title} added to basket!`);
-        }
-
-        function updateBadge() {
-            const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-            const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
-            document.querySelectorAll('.cart-count').forEach(badge => badge.innerText = totalItems);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            updateBadge();
-            const menuToggle = document.getElementById('menu-toggle');
-            const navMenu = document.getElementById('nav-menu');
-            if (menuToggle && navMenu) {
-                menuToggle.addEventListener('click', (e) => { e.stopPropagation(); navMenu.classList.toggle('is-open'); });
-            }
-            document.addEventListener('click', () => {
-                if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
-            });
-        });
-    </script>
-
+    <!-- Site Footer -->
     <footer class="site-footer">
-        <div class="footer-content" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-top: 1px solid var(--border-color);">
-            <div class="footer-copyright" style="font-size: 12px; color: var(--text-muted);">&copy; HG CUSTOMS 2026</div>
-            <ul class="footer-links" style="list-style: none; display: flex; gap: 30px; margin: 0;">
+        <div class="footer-content">
+            <div class="footer-copyright">
+                &copy; HG CUSTOMS 2026
+            </div>
+            <ul class="footer-links">
                 <li><a href="shipping-info.html">Delivery Information</a></li>
                 <li><a href="privacy-policy.html">Privacy Policy</a></li>
                 <li><a href="terms-of-service.html">Terms & Conditions</a></li>
@@ -373,5 +415,148 @@
             </ul>
         </div>
     </footer>
+
+    <script>
+        let activeProductTitle = "";
+        let activeProductPrice = 0;
+        let selectedColorName = "White";
+        let uploadedImageUrl = "No image uploaded";
+
+        function updateCartBadge() {
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
+            const badges = document.querySelectorAll('.cart-count');
+            badges.forEach(badge => badge.innerText = totalItems);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartBadge();
+
+            // Mobile Navigation Toggle
+            const menuToggle = document.getElementById('menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    navMenu.classList.toggle('is-open');
+                });
+            }
+
+            document.addEventListener('click', () => {
+                if (navMenu && navMenu.classList.contains('is-open')) {
+                    navMenu.classList.remove('is-open');
+                }
+            });
+        });
+
+        function openModal(title, price, event) {
+            activeProductTitle = title;
+            activeProductPrice = price;
+            selectedColorName = "White";
+            uploadedImageUrl = "No image uploaded";
+
+            const circles = document.querySelectorAll('.color-circle');
+            circles.forEach(c => c.classList.remove('selected'));
+            circles[0].classList.add('selected');
+
+            document.getElementById('upload-status').style.display = 'none';
+            document.getElementById('modal-product-title').innerText = title;
+            document.getElementById('modal-product-price').innerText = "£" + price.toFixed(2);
+            document.getElementById('customizer-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('customizer-modal').style.display = 'none';
+        }
+
+        function handleModalClick(event) {
+            if (event.target.id === 'customizer-modal') {
+                closeModal();
+            }
+        }
+
+        function selectColor(element, colorName) {
+            document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedColorName = colorName;
+        }
+
+        function openCloudinaryWidget() {
+            cloudinary.openUploadWidget({
+                cloudName: 'opdnamfa',
+                uploadPreset: 'hg_customs_preset',
+                sources: ['local', 'camera', 'url'],
+                multiple: false,
+                cropping: false
+            }, (error, result) => {
+                if (!error && result && result.event === "success") {
+                    uploadedImageUrl = result.info.secure_url;
+                    const statusDiv = document.getElementById('upload-status');
+                    statusDiv.style.display = 'block';
+                }
+            });
+        }
+
+        function addToCartFromModal(event) {
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            cart.push({
+                title: activeProductTitle,
+                price: activeProductPrice,
+                color: selectedColorName,
+                img: uploadedImageUrl,
+                quantity: 1
+            });
+            localStorage.setItem('hg_cart', JSON.stringify(cart));
+            updateCartBadge();
+
+            playFlyerAnimation(event);
+            closeModal();
+            showToastBanner();
+        }
+
+        function playFlyerAnimation(event) {
+            const buttonElement = document.getElementById('modal-submit-btn');
+            const targetBadge = document.getElementById('cart-nav-link');
+
+            if (!buttonElement || !targetBadge) return;
+
+            const startRect = buttonElement.getBoundingClientRect();
+            const targetRect = targetBadge.getBoundingClientRect();
+
+            const flyer = document.createElement('div');
+            flyer.classList.add('flyer');
+            flyer.style.left = startRect.left + (startRect.width / 2) - 20 + 'px';
+            flyer.style.top = startRect.top + (startRect.height / 2) - 20 + 'px';
+            document.body.appendChild(flyer);
+
+            setTimeout(() => {
+                flyer.style.left = targetRect.left + (targetRect.width / 2) - 20 + 'px';
+                flyer.style.top = targetRect.top + (targetRect.height / 2) - 20 + 'px';
+                flyer.style.transform = 'scale(0.2)';
+                flyer.style.opacity = '0.5';
+            }, 30);
+
+            setTimeout(() => {
+                flyer.remove();
+            }, 850);
+        }
+
+        function showToastBanner() {
+            const toast = document.getElementById('toast-banner');
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
 </html>
