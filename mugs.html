@@ -195,7 +195,7 @@
         }
         .modal-close:hover { color: #000; }
         .modal-title { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
-        .modal-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
+        .modal-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 15px; }
         
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -323,8 +323,8 @@
         
         <div class="products-grid">
             <!-- Product 1 -->
-            <div class="product-card" onclick="openModal('Background colour photo mug', 12.99, event, 'Backround')">
-                <img src="MUG1.PNG" alt="Backround colour mug" class="product-img">
+            <div class="product-card" onclick="openModal('Background colour photo mug', 12.99, event, 'Backround', 'Our classic ceramic mug featuring a custom background color choice and your personalized photo.')">
+                <img src="MUG1.png" alt="Backround colour mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Background Colour Photo Mug</div>
                     <div class="product-price">£12.99</div>
@@ -333,7 +333,7 @@
             </div>
 
             <!-- Product 2 -->
-            <div class="product-card" onclick="openModal('Color Changing Magic Mug', 15.99, event, 'magic')">
+            <div class="product-card" onclick="openModal('Color Changing Magic Mug', 15.99, event, 'magic', 'Watch your hidden custom photo magically appear when you pour hot liquid into this heat-sensitive mug.')">
                 <img src="MUG2.png" alt="Color Changing Magic Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Color Changing Magic Mug</div>
@@ -343,7 +343,7 @@
             </div>
 
             <!-- Product 3 -->
-            <div class="product-card" onclick="openModal('Enamel Camping Mug', 14.99, event, 'enamel')">
+            <div class="product-card" onclick="openModal('Enamel Camping Mug', 14.99, event, 'enamel', 'A rugged, lightweight retro-style metal camping mug built for outdoor adventures and rugged use.')">
                 <img src="MUG3.png" alt="Enamel Camping Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Enamel Camping Mug</div>
@@ -353,7 +353,7 @@
             </div>
 
             <!-- Product 4 -->
-            <div class="product-card" onclick="openModal('Two-Tone Accent Mug', 13.50, event, 'twotone')">
+            <div class="product-card" onclick="openModal('Two-Tone Accent Mug', 13.50, event, 'twotone', 'A vibrant ceramic mug featuring a striking two-tone color contrast design with your custom photo.')">
                 <img src="MUG4.png" alt="Two-Tone Accent Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Two-Tone Accent Mug</div>
@@ -363,7 +363,7 @@
             </div>
 
             <!-- Product 5 -->
-            <div class="product-card" onclick="openModal('Large Mega Mug (15oz)', 16.99, event, 'mega')">
+            <div class="product-card" onclick="openModal('Large Mega Mug (15oz)', 16.99, event, 'mega', 'An extra-large 15oz heavy-duty ceramic mega mug for those who need a bigger caffeine boost every morning.')">
                 <img src="MUG5.png" alt="Large Mega Mug (15oz)" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Large Mega Mug (15oz)</div>
@@ -373,7 +373,7 @@
             </div>
 
             <!-- Product 6 -->
-            <div class="product-card" onclick="openModal('Heart Handle Love Mug', 14.50, event, 'heart')">
+            <div class="product-card" onclick="openModal('Heart Handle Love Mug', 14.50, event, 'heart', 'A lovely custom photo mug featuring a charming heart-shaped handle, perfect for loved ones and gifts.')">
                 <img src="MUG6.png" alt="Heart Handle Love Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Heart Handle Love Mug</div>
@@ -391,10 +391,22 @@
             <div id="modal-product-title" class="modal-title"></div>
             <div id="modal-product-price" class="modal-price"></div>
 
+            <!-- Product Description Element -->
+            <div id="modal-product-desc" style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;"></div>
+
+            <!-- Primary Product Color Picker -->
             <div class="form-group">
-                <label id="selected-color-label">Select Background Color: Beige</label>
+                <label id="selected-color-label">Select Color: Beige</label>
                 <div class="color-options" id="modal-color-options">
                     <!-- Dynamically populated color swatches -->
+                </div>
+            </div>
+
+            <!-- Secondary Mug Inner Colour Picker -->
+            <div class="form-group">
+                <label id="inner-color-label">Mug Inner Colour: Plain White</label>
+                <div class="color-options" id="modal-inner-color-options">
+                    <!-- Dynamically populated universal inner options -->
                 </div>
             </div>
 
@@ -439,7 +451,18 @@
         let activeProductTitle = "";
         let activeProductPrice = 0;
         let selectedColorName = "Beige";
+        let selectedInnerColorName = "Plain White";
         let uploadedImageUrl = "No image uploaded";
+
+        // Universal inner color choices for all 6 mugs
+        const universalInnerColors = [
+            { name: "Plain White", hex: "#ffffff" },
+            { name: "Red", hex: "#E53935" },
+            { name: "Blue", hex: "#1E88E5" },
+            { name: "Green", hex: "#43A047" },
+            { name: "Black", hex: "#212121" },
+            { name: "Yellow", hex: "#FDD835" }
+        ];
 
         // Separately defined color lists for each product category key
         const productColorLists = {
@@ -519,11 +542,15 @@
             });
         });
 
-        function openModal(title, price, event, productKey) {
+        function openModal(title, price, event, productKey, description) {
             activeProductTitle = title;
             activeProductPrice = price;
             uploadedImageUrl = "No image uploaded";
 
+            // Set description text
+            document.getElementById('modal-product-desc').innerText = description || "";
+
+            // 1. Primary Colors setup
             const colors = productColorLists[productKey] || [{ name: "White", hex: "#ffffff" }];
             selectedColorName = colors[0].name;
 
@@ -536,7 +563,6 @@
                 circle.style.backgroundColor = colorObj.hex;
                 circle.setAttribute('title', colorObj.name);
                 
-                // Add specific border styling for white/light colors if needed
                 if (colorObj.hex.toLowerCase() === '#ffffff') {
                     circle.style.border = '1px solid #dcdcdc';
                 }
@@ -548,6 +574,30 @@
             });
 
             document.getElementById('selected-color-label').innerText = `Select Color: ${selectedColorName}`;
+
+            // 2. Secondary Inner Colors setup
+            selectedInnerColorName = universalInnerColors[0].name;
+            const innerContainer = document.getElementById('modal-inner-color-options');
+            innerContainer.innerHTML = "";
+
+            universalInnerColors.forEach((innerObj, index) => {
+                const circle = document.createElement('div');
+                circle.className = "color-circle" + (index === 0 ? " selected" : "");
+                circle.style.backgroundColor = innerObj.hex;
+                circle.setAttribute('title', innerObj.name);
+                
+                if (innerObj.hex.toLowerCase() === '#ffffff') {
+                    circle.style.border = '1px solid #dcdcdc';
+                }
+
+                circle.onclick = function() {
+                    selectInnerColor(this, innerObj.name);
+                };
+                innerContainer.appendChild(circle);
+            });
+
+            document.getElementById('inner-color-label').innerText = `Mug Inner Colour: ${selectedInnerColorName}`;
+
             document.getElementById('upload-status').style.display = 'none';
             document.getElementById('modal-product-title').innerText = title;
             document.getElementById('modal-product-price').innerText = "£" + price.toFixed(2);
@@ -565,10 +615,19 @@
         }
 
         function selectColor(element, colorName) {
-            document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+            const parentContainer = document.getElementById('modal-color-options');
+            parentContainer.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
             element.classList.add('selected');
             selectedColorName = colorName;
             document.getElementById('selected-color-label').innerText = `Select Color: ${selectedColorName}`;
+        }
+
+        function selectInnerColor(element, colorName) {
+            const parentContainer = document.getElementById('modal-inner-color-options');
+            parentContainer.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedInnerColorName = colorName;
+            document.getElementById('inner-color-label').innerText = `Mug Inner Colour: ${selectedInnerColorName}`;
         }
 
         function openCloudinaryWidget() {
@@ -593,6 +652,7 @@
                 title: activeProductTitle,
                 price: activeProductPrice,
                 color: selectedColorName,
+                innerColor: selectedInnerColorName,
                 img: uploadedImageUrl,
                 quantity: 1
             });
