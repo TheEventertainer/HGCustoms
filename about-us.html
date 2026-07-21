@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Story | About Us | HG Customs</title>
+    <title>Custom Mugs | HG Customs</title>
+    <!-- Google Fonts & FontAwesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Cloudinary Upload Widget Script -->
+    <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
     
     <style>
         :root {
@@ -19,7 +23,7 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-sans); color: var(--text-dark); background-color: #ffffff; -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+        body { font-family: var(--font-sans); display: flex; flex-direction: column; min-height: 100vh; color: var(--text-dark); background-color: #ffffff; -webkit-font-smoothing: antialiased; position: relative; }
 
         /* --- Announcement Bar --- */
         .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
@@ -27,100 +31,481 @@
         .announcement-item i { font-size: 16px; }
         .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
 
-        /* --- Main Header Navigation --- */
+        /* --- Header & Navigation Styles --- */
         .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 1000; }
-        .logo img { height: 75px; display: block; }
+        .logo-img { height: 75px; width: auto; display: block; text-decoration: none; }
         .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
         .nav-links > li { position: relative; padding: 10px 0; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; padding-bottom: 4px; transition: border-color 0.3s; }
-        .nav-links > li > a:hover,
-        .nav-links > li.active > a { border-bottom: 2px solid #000; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 500; font-size: 14px; letter-spacing: 0.5px; transition: border-color 0.2s, font-weight 0.2s; padding-bottom: 4px; }
+        .nav-links a:hover { color: #000; }
+        .nav-links a.active { font-weight: 700; border-bottom: 2px solid #000; }
         
         .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
         .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        
+        /* Mobile Menu Toggle */
         .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
 
-        /* --- About Content --- */
-        .about-container { max-width: 800px; margin: 60px auto; padding: 0 40px; flex-grow: 1; }
-        .about-container h1 { font-size: 36px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 15px; }
-        .about-content p { font-size: 15px; line-height: 1.8; color: var(--text-muted); margin-bottom: 25px; }
-        .about-content h2 { font-size: 20px; text-transform: uppercase; letter-spacing: 0.5px; margin: 40px 0 15px 0; }
-        .brand-accent-box { background-color: var(--bg-light); padding: 40px; border-left: 4px solid #000; margin: 40px 0; text-align: center; }
+        /* --- Main Container & Category Header --- */
+        main { flex: 1; max-width: 1200px; width: 100%; margin: 40px auto; padding: 0 20px; }
         
-        /* --- Footer Section --- */
-        .site-footer { background-color: #ffffff; padding: 30px 40px; border-top: 1px solid var(--border-color); margin-top: auto; }
+        .page-title-section {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #000000;
+            text-align: left;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #000000;
+        }
+
+        /* --- About Us Section Styles --- */
+        .about-section {
+            margin-top: 60px;
+            padding: 40px;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+        }
+
+        .about-title {
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            color: #000000;
+        }
+
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .about-content p {
+            margin: 0;
+        }
+
+        /* Toast Notification Banner */
+        #toast-banner {
+            position: fixed;
+            bottom: -80px;
+            right: 20px;
+            background: #000;
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: bottom 0.4s ease-in-out;
+        }
+        #toast-banner.show { bottom: 20px; }
+        #toast-banner i { color: #28a745; font-size: 16px; }
+        #toast-banner a { color: #fff; font-weight: 600; text-decoration: underline; margin-left: 5px; }
+
+        /* Flying Animation Element */
+        .flyer {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: #111;
+            border-radius: 50%;
+            z-index: 3000;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* Product Card Design */
+        .product-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        }
+        .product-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+            margin-bottom: 15px;
+            background-color: var(--bg-light);
+        }
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .product-price {
+            font-size: 15px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .btn-view {
+            margin-top: auto;
+            background: #000;
+            color: #fff;
+            text-align: center;
+            padding: 14px;
+            border: none;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+        .product-card:hover .btn-view {
+            background: #222;
+        }
+
+        /* Modal Overlay & Customizer Box */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 35px;
+            border: 1px solid var(--border-color);
+            max-width: 440px;
+            width: 90%;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: none; border: none;
+            font-size: 20px; cursor: pointer; color: #999;
+        }
+        .modal-close:hover { color: #000; }
+        .modal-title { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+        .modal-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 15px; }
+        
+        /* Modal Product Image Preview */
+        .modal-img-container {
+            width: 100%;
+            height: 180px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-light);
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .modal-product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        /* Color Swatch Circles Grid */
+        .color-options { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 10px; 
+            max-height: 180px; 
+            overflow-y: auto; 
+            padding: 8px; 
+            border: 1px solid var(--border-color); 
+            background: var(--bg-light); 
+        }
+        .color-circle {
+            width: 32px; height: 32px; border-radius: 50%;
+            border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease; box-shadow: inset 0 0 2px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+        .color-circle:hover { transform: scale(1.1); }
+        .color-circle.selected { border-color: #000000; transform: scale(1.15); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; }
+        
+        /* Cloudinary Button and Image Preview */
+        .btn-upload-cloudinary {
+            width: 100%; background: #444; color: #fff; border: none;
+            padding: 14px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer;
+            transition: background 0.2s; text-align: center;
+        }
+        .btn-upload-cloudinary:hover { background: #222; }
+        .upload-status { font-size: 12px; color: #28a745; margin-top: 8px; font-weight: 600; display: none; word-break: break-all; }
+        
+        .btn-add-cart {
+            width: 100%; background: #000; color: #fff; border: none;
+            padding: 14px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: background 0.2s;
+        }
+        .btn-add-cart:hover { background: #222; }
+
+        /* Mobile Scroll to Top Button */
+        #scroll-to-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1500;
+            background: #111;
+            color: #fff;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: background 0.2s, opacity 0.2s;
+        }
+        #scroll-to-top:hover { background: #333; }
+
+        /* --- Footer Styles --- */
+        .site-footer { background-color: #ffffff; border-top: 1px solid var(--border-color); margin-top: auto; }
         .footer-content { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; }
         .footer-copyright { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; }
         .footer-links { display: flex; list-style: none; gap: 30px; margin: 0; }
         .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; transition: color 0.2s; }
         .footer-links a:hover { color: var(--text-dark); }
 
+        /* Responsive Breakpoints */
         @media (max-width: 992px) {
             .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
             .main-header { padding: 20px; }
             .mobile-toggle { display: block; order: 1; }
-            .logo { order: 2; }
-            .logo img { height: 35px; }
+            .logo-link { order: 2; }
             .header-actions { order: 3; }
             nav { width: 100%; order: 4; }
             .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
             .nav-links.is-open { display: flex; }
             .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
-            .about-container { margin: 40px auto; padding: 0 20px; }
-            .about-container h1 { font-size: 28px; }
+            main { margin: 20px auto; padding: 0 15px; }
+            .page-title { font-size: 22px; }
+            .products-grid { grid-template-columns: 1fr; gap: 20px; }
+            .about-section { padding: 20px; margin-top: 40px; }
+            .about-title { font-size: 18px; margin-bottom: 15px; }
+            .about-content { font-size: 14px; gap: 15px; }
             .footer-content { flex-direction: column; gap: 15px; text-align: center; padding: 20px 0; }
             .footer-links { justify-content: center; flex-wrap: wrap; gap: 15px; }
+            #scroll-to-top { display: flex; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Announcement Bar -->
     <div class="announcement-bar">
         <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i><div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div></a>
         <a href="#" class="announcement-item"><i class="fa-regular fa-clock"></i><div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div></a>
         <a href="#" class="announcement-item"><i class="fa-regular fa-circle-check"></i><div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div></a>
     </div>
 
+    <!-- Main Navigation Header -->
     <header class="main-header">
         <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
-        <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a></div>
+        <a href="index.html" class="logo-link">
+            <img src="logo.png" alt="HG Customs Logo" class="logo-img">
+        </a>
         <nav>
             <ul class="nav-links" id="nav-menu">
-                <li><a href="mugs.html">Mugs</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="mugs.html" class="active">Mugs</a></li>
                 <li><a href="t-shirts.html">T-shirts</a></li>
                 <li><a href="coasters.html">Coasters</a></li>
                 <li><a href="merchandise.html">Merchandise</a></li>
-                <li><a href="index.html">Home</a></li>
             </ul>
         </nav>
         <div class="header-actions">
-            <a href="cart.html" class="cart-icon" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
+            <a href="cart.html" class="cart-icon" id="cart-nav-link" aria-label="Cart">
+                <i class="fa-solid fa-basket-shopping"></i>
+                <span class="cart-count">0</span>
+            </a>
         </div>
     </header>
 
-    <main class="about-container">
-        <h1>Our Story</h1>
-        <div class="about-content">
-            <p>Welcome to HG Customs. We believe that everyday items shouldn't be plain, generic, or mass-produced. Our mission is simple: to help you bring your ideas to life through high-quality, customized craftsmanship.</p>
-            
-            <div class="brand-accent-box">
-                <div style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 28px;">"Made your way, just for you."</div>
-            </div>
-            
-            <h2>The Craftsmanship Promise</h2>
-            <p>Unlike large automation warehouses, we take the time to review your text submissions and thoroughly inspect every individual product before it leaves our workspace.</p>
+    <!-- Main Content Area: Mugs Grid -->
+    <main>
+        <div class="page-title-section">
+            <h1 class="page-title">Custom Mugs Collection</h1>
         </div>
+        
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-card" onclick="openModal('Background colour photo mug', 12.99, 'MUG1.png', event, 'Backround', 'Our classic ceramic mug featuring a custom background color choice and your personalized photo.')">
+                <img src="MUG1.png" alt="Backround colour mug" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Background Colour Photo Mug</div>
+                    <div class="product-price">£12.99</div>
+                    <div class="btn-view">Customize & Buy</div>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card" onclick="openModal('Color Changing Magic Mug', 15.99, 'MUG2.png', event, 'magic', 'Watch your hidden custom photo magically appear when you pour hot liquid into this heat-sensitive mug.')">
+                <img src="MUG2.png" alt="Color Changing Magic Mug" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Color Changing Magic Mug</div>
+                    <div class="product-price">£15.99</div>
+                    <div class="btn-view">Customize & Buy</div>
+                </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card" onclick="openModal('Enamel Camping Mug', 14.99, 'MUG3.png', event, 'enamel', 'A rugged, lightweight retro-style metal camping mug built for outdoor adventures and rugged use.')">
+                <img src="MUG3.png" alt="Enamel Camping Mug" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Enamel Camping Mug</div>
+                    <div class="product-price">£14.99</div>
+                    <div class="btn-view">Customize & Buy</div>
+                </div>
+            </div>
+
+            <!-- Product 4 -->
+            <div class="product-card" onclick="openModal('Two-Tone Accent Mug', 13.50, 'MUG4.png', event, 'twotone', 'A vibrant ceramic mug featuring a striking two-tone color contrast design with your custom photo.')">
+                <img src="MUG4.png" alt="Two-Tone Accent Mug" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Two-Tone Accent Mug</div>
+                    <div class="product-price">£13.50</div>
+                    <div class="btn-view">Customize & Buy</div>
+                </div>
+            </div>
+
+            <!-- Product 5 -->
+            <div class="product-card" onclick="openModal('Large Mega Mug (15oz)', 16.99, 'MUG5.png', event, 'mega', 'An extra-large 15oz heavy-duty ceramic mega mug for those who need a bigger caffeine boost every morning.')">
+                <img src="MUG5.png" alt="Large Mega Mug (15oz)" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Large Mega Mug (15oz)</div>
+                    <div class="product-price">£16.99</div>
+                    <div class="btn-view">Customize & Buy</div>
+                </div>
+            </div>
+
+            <!-- Product 6 -->
+            <div class="product-card" onclick="openModal('Heart Handle Love Mug', 14.50, 'MUG6.png', event, 'heart', 'A lovely custom photo mug featuring a charming heart-shaped handle, perfect for loved ones and gifts.')">
+                <img src="MUG6.png" alt="Heart Handle Love Mug" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">Heart Handle Love Mug</div>
+                    <div class="product-price">£14.50</div>
+                    <div class="btn-view">Customize & Buy</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Us Section -->
+        <section class="about-section">
+            <h2 class="about-title">Our Story</h2>
+            <div class="about-content">
+                <p>What started as a hobby quickly became something we fell in love with.</p>
+                <p>We first began creating personalised mugs for ourselves, using our mug press to bring our favourite ideas to life. From TV shows and films we loved to unique designs that reflected our personalities, we discovered just how special it felt to create something completely personal.</p>
+                <p>Before long, we were making gifts for family and friends too. Some of our most meaningful creations were dedicated to our pets. After losing a much-loved family pet, creating personalised mugs and coasters became a beautiful way to celebrate her memory and keep a little piece of her close to us every day. It reminded us that a simple personalised gift can hold so much love, comfort and meaning.</p>
+                <p>That experience inspired us to share what we love with others.</p>
+                <p>Today, we create a range of personalised products, including mugs, t-shirts, coasters and more. Whether you’re celebrating a birthday, marking a special occasion, remembering someone you love, or simply treating yourself, we believe every item should tell a story.</p>
+                <p>Every order is created with care, creativity and attention to detail because we know these aren’t just products—they’re keepsakes. Our goal is to help you create something truly unique that you’ll be proud to give and treasure for years to come.</p>
+                <p>Thank you for supporting our small business. We can’t wait to help bring your ideas to life.</p>
+            </div>
+        </section>
     </main>
 
+    <!-- Customization Pop-Up Modal -->
+    <div id="customizer-modal" class="modal-overlay" onclick="handleModalClick(event)">
+        <div class="modal-content" id="modal-box-element" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modal-product-title" class="modal-title"></div>
+            <div id="modal-product-price" class="modal-price"></div>
+
+            <!-- Modal Product Image Preview (Added Above Description) -->
+            <div class="modal-img-container">
+                <img id="modal-product-image" src="" alt="Product Preview" class="modal-product-img">
+            </div>
+
+            <!-- Product Description Element -->
+            <div id="modal-product-desc" style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;"></div>
+
+            <!-- Primary Product Color Picker -->
+            <div class="form-group">
+                <label id="selected-color-label">SELECT BACKGROUND COLOUR: BEIGE</label>
+                <div class="color-options" id="modal-color-options">
+                    <!-- Dynamically populated color swatches -->
+                </div>
+            </div>
+
+            <!-- Secondary Mug Inner Colour Picker -->
+            <div class="form-group">
+                <label id="inner-color-label">MUG INNER COLOUR: PLAIN WHITE</label>
+                <div class="color-options" id="modal-inner-color-options">
+                    <!-- Dynamically populated universal inner options -->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Upload Custom Artwork/Photo (Optional):</label>
+                <button type="button" class="btn-upload-cloudinary" onclick="openCloudinaryWidget()">Upload Image</button>
+                <div id="upload-status" class="upload-status">✓ Image attached successfully!</div>
+            </div>
+
+            <button class="btn-add-cart" id="modal-submit-btn" onclick="addToCartFromModal(event)">Add to Basket</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification Banner -->
+    <div id="toast-banner">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>Item added to basket!</span>
+        <a href="cart.html">View Basket</a>
+    </div>
+
+    <!-- Mobile Scroll to Top Button -->
+    <button id="scroll-to-top" onclick="scrollToTop()" aria-label="Scroll to top">
+        <i class="fa-solid fa-chevron-up"></i>
+    </button>
+
+    <!-- Site Footer -->
     <footer class="site-footer">
         <div class="footer-content">
-            <!-- Copyright Section (Left) -->
             <div class="footer-copyright">
                 &copy; HG CUSTOMS 2026
             </div>
-
-            <!-- Utility Links (Right) -->
             <ul class="footer-links">
                 <li><a href="shipping-info.html">Delivery Information</a></li>
                 <li><a href="privacy-policy.html">Privacy Policy</a></li>
@@ -131,29 +516,273 @@
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Calculate total units across line items
-            const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+        let activeProductTitle = "";
+        let activeProductPrice = 0;
+        let selectedColorName = "Beige";
+        let selectedInnerColorName = "Plain White";
+        let uploadedImageUrl = "No image uploaded";
+
+        // Universal inner color choices for all 6 mugs
+        const universalInnerColors = [
+            { name: "Plain White", hex: "#ffffff" },
+            { name: "Red", hex: "#E53935" },
+            { name: "Blue", hex: "#1E88E5" },
+            { name: "Green", hex: "#43A047" },
+            { name: "Black", hex: "#212121" },
+            { name: "Yellow", hex: "#FDD835" }
+        ];
+
+        // Separately defined color lists for each product category key
+        const productColorLists = {
+            Backround: [
+                { name: "Beige", hex: "#D6B597" },
+                { name: "Grey", hex: "#B9BDC4" },
+                { name: "Sage Green", hex: "#B7BFA8" },
+                { name: "Dusty Pink", hex: "#D1B2B6" },
+                { name: "Taupe", hex: "#B7A08C" },
+                { name: "Dusty Blue", hex: "#8FA3BE" },
+                { name: "Lavender", hex: "#C2B3D1" },
+                { name: "Terracotta", hex: "#C78F7B" },
+                { name: "Cream", hex: "#F0E5D1" },
+                { name: "Olive Green", hex: "#8E9480" },
+                { name: "Caramel", hex: "#B78D6B" },
+                { name: "Slate Blue", hex: "#6E778E" },
+                { name: "Muted Mint", hex: "#B7C7C2" },
+                { name: "Warm Sand", hex: "#E2C9AA" },
+                { name: "Mauve", hex: "#B9A6B8" },
+                { name: "Charcoal", hex: "#585858" }
+            ],
+            magic: [
+                { name: "Matte Black", hex: "#111111" },
+                { name: "Gloss Black", hex: "#222222" }
+            ],
+            enamel: [
+                { name: "White", hex: "#ffffff" },
+                { name: "Grey", hex: "#B9BDC4" },
+                { name: "Sage Green", hex: "#B7BFA8" },
+                { name: "Charcoal", hex: "#585858" }
+            ],
+            twotone: [
+                { name: "Dusty Pink", hex: "#D1B2B6" },
+                { name: "Dusty Blue", hex: "#8FA3BE" },
+                { name: "Terracotta", hex: "#C78F7B" },
+                { name: "Lavender", hex: "#C2B3D1" }
+            ],
+            mega: [
+                { name: "Warm Sand", hex: "#E2C9AA" },
+                { name: "Taupe", hex: "#B7A08C" },
+                { name: "Caramel", hex: "#B78D6B" },
+                { name: "Olive Green", hex: "#8E9480" }
+            ],
+            heart: [
+                { name: "Mauve", hex: "#B9A6B8" },
+                { name: "Muted Mint", hex: "#B7C7C2" },
+                { name: "Slate Blue", hex: "#6E778E" },
+                { name: "Dusty Pink", hex: "#D1B2B6" }
+            ]
+        };
+
+        function updateCartBadge() {
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
-            
             const badges = document.querySelectorAll('.cart-count');
             badges.forEach(badge => badge.innerText = totalItems);
+        }
 
-            // Responsive Navigation Handles
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartBadge();
+
+            // Mobile Navigation Toggle
             const menuToggle = document.getElementById('menu-toggle');
             const navMenu = document.getElementById('nav-menu');
 
             if (menuToggle && navMenu) {
-                menuToggle.addEventListener('click', (e) => { 
-                    e.stopPropagation(); 
-                    navMenu.classList.toggle('is-open'); 
+                menuToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    navMenu.classList.toggle('is-open');
                 });
             }
 
-            // Close layout handles when clicking window backdrop
             document.addEventListener('click', () => {
-                if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
+                if (navMenu && navMenu.classList.contains('is-open')) {
+                    navMenu.classList.remove('is-open');
+                }
             });
+        });
+
+        function openModal(title, price, imgSrc, event, productKey, description) {
+            activeProductTitle = title;
+            activeProductPrice = price;
+            uploadedImageUrl = "No image uploaded";
+
+            // Set modal product image preview
+            document.getElementById('modal-product-image').src = imgSrc;
+
+            // Set description text
+            document.getElementById('modal-product-desc').innerText = description || "";
+
+            // 1. Primary Colors setup
+            const colors = productColorLists[productKey] || [{ name: "White", hex: "#ffffff" }];
+            selectedColorName = colors[0].name;
+
+            const container = document.getElementById('modal-color-options');
+            container.innerHTML = "";
+
+            colors.forEach((colorObj, index) => {
+                const circle = document.createElement('div');
+                circle.className = "color-circle" + (index === 0 ? " selected" : "");
+                circle.style.backgroundColor = colorObj.hex;
+                circle.setAttribute('title', colorObj.name);
+                
+                if (colorObj.hex.toLowerCase() === '#ffffff') {
+                    circle.style.border = '1px solid #dcdcdc';
+                }
+
+                circle.onclick = function() {
+                    selectColor(this, colorObj.name);
+                };
+                container.appendChild(circle);
+            });
+
+            document.getElementById('selected-color-label').innerText = `SELECT BACKGROUND COLOUR: ${selectedColorName.toUpperCase()}`;
+
+            // 2. Secondary Inner Colors setup
+            selectedInnerColorName = universalInnerColors[0].name;
+            const innerContainer = document.getElementById('modal-inner-color-options');
+            innerContainer.innerHTML = "";
+
+            universalInnerColors.forEach((innerObj, index) => {
+                const circle = document.createElement('div');
+                circle.className = "color-circle" + (index === 0 ? " selected" : "");
+                circle.style.backgroundColor = innerObj.hex;
+                circle.setAttribute('title', innerObj.name);
+                
+                if (innerObj.hex.toLowerCase() === '#ffffff') {
+                    circle.style.border = '1px solid #dcdcdc';
+                }
+
+                circle.onclick = function() {
+                    selectInnerColor(this, innerObj.name);
+                };
+                innerContainer.appendChild(circle);
+            });
+
+            document.getElementById('inner-color-label').innerText = `MUG INNER COLOUR: ${selectedInnerColorName.toUpperCase()}`;
+
+            document.getElementById('upload-status').style.display = 'none';
+            document.getElementById('modal-product-title').innerText = title;
+            document.getElementById('modal-product-price').innerText = "£" + price.toFixed(2);
+            document.getElementById('customizer-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('customizer-modal').style.display = 'none';
+        }
+
+        function handleModalClick(event) {
+            if (event.target.id === 'customizer-modal') {
+                closeModal();
+            }
+        }
+
+        function selectColor(element, colorName) {
+            const parentContainer = document.getElementById('modal-color-options');
+            parentContainer.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedColorName = colorName;
+            document.getElementById('selected-color-label').innerText = `SELECT BACKGROUND COLOUR: ${selectedColorName.toUpperCase()}`;
+        }
+
+        function selectInnerColor(element, colorName) {
+            const parentContainer = document.getElementById('modal-inner-color-options');
+            parentContainer.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedInnerColorName = colorName;
+            document.getElementById('inner-color-label').innerText = `MUG INNER COLOUR: ${selectedInnerColorName.toUpperCase()}`;
+        }
+
+        function openCloudinaryWidget() {
+            cloudinary.openUploadWidget({
+                cloudName: 'opdnamfa',
+                uploadPreset: 'hg_customs_preset',
+                sources: ['local', 'camera', 'url'],
+                multiple: false,
+                cropping: false
+            }, (error, result) => {
+                if (!error && result && result.event === "success") {
+                    uploadedImageUrl = result.info.secure_url;
+                    const statusDiv = document.getElementById('upload-status');
+                    statusDiv.style.display = 'block';
+                }
+            });
+        }
+
+        function addToCartFromModal(event) {
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            cart.push({
+                title: activeProductTitle,
+                price: activeProductPrice,
+                color: selectedColorName,
+                innerColor: selectedInnerColorName,
+                img: uploadedImageUrl,
+                quantity: 1
+            });
+            localStorage.setItem('hg_cart', JSON.stringify(cart));
+            updateCartBadge();
+
+            playFlyerAnimation(event);
+            closeModal();
+            showToastBanner();
+        }
+
+        function playFlyerAnimation(event) {
+            const buttonElement = document.getElementById('modal-submit-btn');
+            const targetBadge = document.getElementById('cart-nav-link');
+
+            if (!buttonElement || !targetBadge) return;
+
+            const startRect = buttonElement.getBoundingClientRect();
+            const targetRect = targetBadge.getBoundingClientRect();
+
+            const flyer = document.createElement('div');
+            flyer.classList.add('flyer');
+            flyer.style.left = startRect.left + (startRect.width / 2) - 20 + 'px';
+            flyer.style.top = startRect.top + (startRect.height / 2) - 20 + 'px';
+            document.body.appendChild(flyer);
+
+            setTimeout(() => {
+                flyer.style.left = targetRect.left + (targetRect.width / 2) - 20 + 'px';
+                flyer.style.top = targetRect.top + (targetRect.height / 2) - 20 + 'px';
+                flyer.style.transform = 'scale(0.2)';
+                flyer.style.opacity = '0.5';
+            }, 30);
+
+            setTimeout(() => {
+                flyer.remove();
+            }, 850);
+        }
+
+        function showToastBanner() {
+            const toast = document.getElementById('toast-banner');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', () => {
+            const scrollTopBtn = document.getElementById('scroll-to-top');
+            if (scrollTopBtn) {
+                if (window.scrollY > 300) {
+                    scrollTopBtn.style.display = 'flex';
+                } else {
+                    scrollTopBtn.style.display = 'none';
+                }
+            }
         });
     </script>
 </body>
