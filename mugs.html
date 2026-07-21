@@ -197,6 +197,22 @@
         .modal-title { font-size: 18px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
         .modal-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 15px; }
         
+        /* Modal Product Image Preview */
+        .modal-img-container {
+            width: 100%;
+            height: 180px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-light);
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .modal-product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
         
@@ -323,8 +339,8 @@
         
         <div class="products-grid">
             <!-- Product 1 -->
-            <div class="product-card" onclick="openModal('Background colour photo mug', 12.99, event, 'Backround', 'Upload your pet photo and we will apply it to our classic background as seen in the product image. Be sure to choose your mug colour and background colour.')">
-                <img src="MUG1.PNG" alt="Backround colour mug" class="product-img">
+            <div class="product-card" onclick="openModal('Background colour photo mug', 12.99, 'MUG1.png', event, 'Backround', 'Our classic ceramic mug featuring a custom background color choice and your personalized photo.')">
+                <img src="MUG1.png" alt="Backround colour mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Background Colour Photo Mug</div>
                     <div class="product-price">£12.99</div>
@@ -333,7 +349,7 @@
             </div>
 
             <!-- Product 2 -->
-            <div class="product-card" onclick="openModal('Color Changing Magic Mug', 15.99, event, 'magic', 'Watch your hidden custom photo magically appear when you pour hot liquid into this heat-sensitive mug.')">
+            <div class="product-card" onclick="openModal('Color Changing Magic Mug', 15.99, 'MUG2.png', event, 'magic', 'Watch your hidden custom photo magically appear when you pour hot liquid into this heat-sensitive mug.')">
                 <img src="MUG2.png" alt="Color Changing Magic Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Color Changing Magic Mug</div>
@@ -343,7 +359,7 @@
             </div>
 
             <!-- Product 3 -->
-            <div class="product-card" onclick="openModal('Enamel Camping Mug', 14.99, event, 'enamel', 'A rugged, lightweight retro-style metal camping mug built for outdoor adventures and rugged use.')">
+            <div class="product-card" onclick="openModal('Enamel Camping Mug', 14.99, 'MUG3.png', event, 'enamel', 'A rugged, lightweight retro-style metal camping mug built for outdoor adventures and rugged use.')">
                 <img src="MUG3.png" alt="Enamel Camping Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Enamel Camping Mug</div>
@@ -353,7 +369,7 @@
             </div>
 
             <!-- Product 4 -->
-            <div class="product-card" onclick="openModal('Two-Tone Accent Mug', 13.50, event, 'twotone', 'A vibrant ceramic mug featuring a striking two-tone color contrast design with your custom photo.')">
+            <div class="product-card" onclick="openModal('Two-Tone Accent Mug', 13.50, 'MUG4.png', event, 'twotone', 'A vibrant ceramic mug featuring a striking two-tone color contrast design with your custom photo.')">
                 <img src="MUG4.png" alt="Two-Tone Accent Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Two-Tone Accent Mug</div>
@@ -363,7 +379,7 @@
             </div>
 
             <!-- Product 5 -->
-            <div class="product-card" onclick="openModal('Large Mega Mug (15oz)', 16.99, event, 'mega', 'An extra-large 15oz heavy-duty ceramic mega mug for those who need a bigger caffeine boost every morning.')">
+            <div class="product-card" onclick="openModal('Large Mega Mug (15oz)', 16.99, 'MUG5.png', event, 'mega', 'An extra-large 15oz heavy-duty ceramic mega mug for those who need a bigger caffeine boost every morning.')">
                 <img src="MUG5.png" alt="Large Mega Mug (15oz)" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Large Mega Mug (15oz)</div>
@@ -373,7 +389,7 @@
             </div>
 
             <!-- Product 6 -->
-            <div class="product-card" onclick="openModal('Heart Handle Love Mug', 14.50, event, 'heart', 'A lovely custom photo mug featuring a charming heart-shaped handle, perfect for loved ones and gifts.')">
+            <div class="product-card" onclick="openModal('Heart Handle Love Mug', 14.50, 'MUG6.png', event, 'heart', 'A lovely custom photo mug featuring a charming heart-shaped handle, perfect for loved ones and gifts.')">
                 <img src="MUG6.png" alt="Heart Handle Love Mug" class="product-img">
                 <div class="product-info">
                     <div class="product-title">Heart Handle Love Mug</div>
@@ -391,12 +407,17 @@
             <div id="modal-product-title" class="modal-title"></div>
             <div id="modal-product-price" class="modal-price"></div>
 
+            <!-- Modal Product Image Preview (Added Above Description) -->
+            <div class="modal-img-container">
+                <img id="modal-product-image" src="" alt="Product Preview" class="modal-product-img">
+            </div>
+
             <!-- Product Description Element -->
             <div id="modal-product-desc" style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;"></div>
 
             <!-- Primary Product Color Picker -->
             <div class="form-group">
-                <label id="selected-color-label">Select Background Color: Beige</label>
+                <label id="selected-color-label">SELECT BACKGROUND COLOUR: BEIGE</label>
                 <div class="color-options" id="modal-color-options">
                     <!-- Dynamically populated color swatches -->
                 </div>
@@ -404,7 +425,7 @@
 
             <!-- Secondary Mug Inner Colour Picker -->
             <div class="form-group">
-                <label id="inner-color-label">Mug Inner Colour: Plain White</label>
+                <label id="inner-color-label">MUG INNER COLOUR: PLAIN WHITE</label>
                 <div class="color-options" id="modal-inner-color-options">
                     <!-- Dynamically populated universal inner options -->
                 </div>
@@ -542,10 +563,13 @@
             });
         });
 
-        function openModal(title, price, event, productKey, description) {
+        function openModal(title, price, imgSrc, event, productKey, description) {
             activeProductTitle = title;
             activeProductPrice = price;
             uploadedImageUrl = "No image uploaded";
+
+            // Set modal product image preview
+            document.getElementById('modal-product-image').src = imgSrc;
 
             // Set description text
             document.getElementById('modal-product-desc').innerText = description || "";
@@ -573,7 +597,7 @@
                 container.appendChild(circle);
             });
 
-            document.getElementById('selected-color-label').innerText = `Select Color: ${selectedColorName}`;
+            document.getElementById('selected-color-label').innerText = `SELECT BACKGROUND COLOUR: ${selectedColorName.toUpperCase()}`;
 
             // 2. Secondary Inner Colors setup
             selectedInnerColorName = universalInnerColors[0].name;
@@ -596,7 +620,7 @@
                 innerContainer.appendChild(circle);
             });
 
-            document.getElementById('inner-color-label').innerText = `Mug Inner Colour: ${selectedInnerColorName}`;
+            document.getElementById('inner-color-label').innerText = `MUG INNER COLOUR: ${selectedInnerColorName.toUpperCase()}`;
 
             document.getElementById('upload-status').style.display = 'none';
             document.getElementById('modal-product-title').innerText = title;
@@ -619,7 +643,7 @@
             parentContainer.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
             element.classList.add('selected');
             selectedColorName = colorName;
-            document.getElementById('selected-color-label').innerText = `Select Color: ${selectedColorName}`;
+            document.getElementById('selected-color-label').innerText = `SELECT BACKGROUND COLOUR: ${selectedColorName.toUpperCase()}`;
         }
 
         function selectInnerColor(element, colorName) {
@@ -627,7 +651,7 @@
             parentContainer.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
             element.classList.add('selected');
             selectedInnerColorName = colorName;
-            document.getElementById('inner-color-label').innerText = `Mug Inner Colour: ${selectedInnerColorName}`;
+            document.getElementById('inner-color-label').innerText = `MUG INNER COLOUR: ${selectedInnerColorName.toUpperCase()}`;
         }
 
         function openCloudinaryWidget() {
