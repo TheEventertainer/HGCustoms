@@ -8,127 +8,540 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Cloudinary Widget Script -->
     <script src="https://upload-widget.cloudinary.com/latest/global/all.js" type="text/javascript"></script>
 
     <style>
-        :root { --text-dark: #000000; --text-muted: #555555; --bg-light: #f9f9f9; --border-color: #e5e5e5; }
+        :root { 
+            --text-dark: #000000; 
+            --text-muted: #555555;
+            --bg-light: #f9f9f9; 
+            --border-color: #e5e5e5; 
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; }
+        body { font-family: 'Inter', sans-serif; color: var(--text-dark); background-color: #ffffff; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
         
-        /* Navigation (Copied from Mugs page) */
-        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; text-transform: uppercase; border-bottom: 1px solid #333; }
-        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); position: relative; z-index: 1000; }
-        .logo { font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
-        .nav-links { display: flex; list-style: none; gap: 30px; }
+        /* --- Announcement Bar --- */
+        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
+        .announcement-item { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; }
+        .announcement-item i { font-size: 16px; }
+        .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
+
+        /* --- Main Header Navigation --- */
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 1000; }
+        .logo img { height: 55px; display: block; }
+        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
         .nav-links > li { position: relative; padding: 10px 0; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; text-transform: uppercase; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; padding-bottom: 4px; transition: border-color 0.3s; }
+        .nav-links > li > a:hover { border-bottom: 2px solid #000; }
+        .nav-links i { font-size: 10px; margin-left: 5px; }
+
+        /* --- Dropdown Menu Styling --- */
+        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background-color: #ffffff; border: 1px solid var(--border-color); min-width: 180px; list-style: none; display: flex; flex-direction: column; box-shadow: 0 4px 12px rgba(0,0,0,0.08); opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease; margin-top: 5px; z-index: 1100; }
+        .dropdown-menu li { border-bottom: 1px solid var(--bg-light); }
+        .dropdown-menu li:last-child { border-bottom: none; }
+        .dropdown-menu a { display: block; padding: 12px 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-dark); white-space: nowrap; border-bottom: none !important; }
+        .dropdown-menu a:hover { background-color: var(--bg-light); color: #000000; }
+        .has-dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; }
         
-        .dropdown-menu { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: #fff; border: 1px solid var(--border-color); min-width: 180px; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.08); z-index: 1100; }
-        .has-dropdown:hover .dropdown-menu { display: block; }
-        .dropdown-menu a { display: block; padding: 12px 20px; font-size: 11px; }
+        .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
+        .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
+        .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
 
-        /* Catalog & Grid (3x2 Layout) */
+        /* --- Catalog Area --- */
         .catalog-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-        .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .product-card { border: 1px solid var(--border-color); padding: 25px; text-align: center; }
-        .product-image { width: 100%; height: 250px; background: var(--bg-light); margin-bottom: 20px; display: block; }
-        .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; }
-
-        /* Modal */
+        .catalog-container h1 { font-size: 24px; text-transform: uppercase; letter-spacing: 1px; padding-bottom: 15px; border-bottom: 2px solid #000; margin-bottom: 30px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { border: 1px solid var(--border-color); padding: 25px; display: flex; flex-direction: column; background: #fff; }
+        .product-image-wrapper { text-align: center; margin-bottom: 15px; border: 1px solid var(--border-color); padding: 10px; background: var(--bg-light); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .product-image-wrapper img { max-width: 100%; height: 200px; object-fit: contain; }
+        .prod-title { font-size: 16px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
+        .prod-price { font-size: 15px; color: var(--text-muted); font-weight: 600; margin-bottom: 20px; }
+        
+        .btn-customize { background: #000; color: #fff; border: none; padding: 14px; width: 100%; cursor: pointer; text-transform: uppercase; font-size: 11px; font-weight: 600; letter-spacing: 1px; margin-top: auto; transition: background 0.2s; }
+        .btn-customize:hover { background: #222; }
+        
+        /* --- Modal Area --- */
         .modal { position: fixed; top:0; left:0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal.is-active { display: flex; }
-        .modal-content { background: #fff; width: 400px; padding: 35px; position: relative; }
-        .color-swatch-grid { display: flex; gap: 10px; margin: 15px 0; }
-        .color-swatch { width: 30px; height: 30px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
-        .color-swatch.is-selected { border-color: #000; }
-        .form-select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid var(--border-color); }
+        .modal-content { background: #fff; max-width: 440px; width: 90%; padding: 35px; position: relative; border: 1px solid var(--border-color); max-height: 90vh; overflow-y: auto; }
+        .modal-content h2 { font-size: 18px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px; }
+        
+        .close-modal { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 20px; cursor: pointer; color: #999; }
+        .close-modal:hover { color: #000; }
+
+        .form-select { width: 100%; padding: 12px; margin: 5px 0 15px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; background-color: #fff; }
+        .form-textarea { width: 100%; height: 80px; padding: 12px; margin: 10px 0; border: 1px solid var(--border-color); font-family: 'Inter', sans-serif; font-size: 13px; resize: none; }
+        .upload-status-text { font-size: 12px; font-weight: 600; margin: -5px 0 15px 0; min-height: 16px; }
+        .option-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-top: 10px; margin-bottom: 8px; }
+
+        /* --- Color Circle Swatches Layout --- */
+        .color-swatches-grid { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 18px 0; }
+        .color-circle { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease; position: relative; box-shadow: inset 0 0 2px rgba(0,0,0,0.2); }
+        .color-circle:hover { transform: scale(1.1); }
+        .color-circle.is-selected { border-color: #000000; transform: scale(1.15); box-shadow: 0 0 0 2px #fff, 0 0 0 4px #000; }
+        .color-circle[data-color-name="White"] { border: 1px solid #dcdcdc; }
+        .color-circle[data-color-name="White"].is-selected { border: 2px solid #000; }
+
+        /* --- Preview Image & Quantity Selector --- */
+        .preview-container { text-align: center; margin-bottom: 15px; background: var(--bg-light); border: 1px solid var(--border-color); padding: 10px; display: flex; align-items: center; justify-content: center; }
+        .preview-container img { max-width: 100%; height: 140px; object-fit: contain; }
+        
+        .quantity-wrapper { display: flex; align-items: center; justify-content: space-between; margin: 15px 0; padding-top: 10px; border-top: 1px solid var(--border-color); }
+        .quantity-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .quantity-controls { display: flex; align-items: center; border: 1px solid var(--border-color); }
+        .qty-btn { background: none; border: none; width: 36px; height: 36px; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+        .qty-btn:hover { background: var(--bg-light); }
+        .qty-input { width: 45px; height: 36px; border: none; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color); text-align: center; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; -moz-appearance: textfield; }
+        .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+        /* Flying Animation Style */
+        .flying-img {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            transition: all 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            object-fit: cover;
+        }
+
+        /* Toast Notification Styles */
+        .toast-notification {
+            position: fixed;
+            bottom: -80px;
+            right: 20px;
+            background: #000;
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            z-index: 3000;
+            transition: bottom 0.4s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast-notification.show {
+            bottom: 20px;
+        }
+        .toast-notification i {
+            color: #28a745;
+            font-size: 16px;
+        }
+
+        @media (max-width: 992px) {
+            .main-header { padding: 20px; }
+            .mobile-toggle { display: block; order: 1; }
+            .logo { order: 2; }
+            .header-actions { order: 3; }
+            nav { width: 100%; order: 4; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
+            .nav-links.is-open { display: flex; }
+            .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
+            .dropdown-menu { position: relative; top: 0; left: 0; transform: none; box-shadow: none; border: none; opacity: 1; visibility: visible; display: none; margin-top: 10px; background: var(--bg-light); }
+            .has-dropdown.is-open .dropdown-menu { display: flex; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="announcement-bar">FREE UK DELIVERY ON ORDERS OVER £50</div>
+    <!-- Top Announcement Bar -->
+    <div class="announcement-bar">
+        <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i><div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div></a>
+        <a href="#" class="announcement-item"><i class="fa-regular fa-clock"></i><div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div></a>
+        <a href="#" class="announcement-item"><i class="fa-regular fa-circle-check"></i><div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div></a>
+    </div>
+
+    <!-- Main Navigation Header -->
     <header class="main-header">
-        <div class="logo"><a href="index.html" style="text-decoration:none; color:#000;">HG Customs</a></div>
+        <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
+        <div class="logo"><a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a></div>
         <nav>
-            <ul class="nav-links">
+            <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Home</a></li>
-                <li class="has-dropdown">
-                    <a href="#">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
+                <li class="has-dropdown" id="dropdown-li">
+                    <a href="#" id="dropdown-trigger">Custom Products <i class="fa-solid fa-chevron-down"></i></a>
                     <ul class="dropdown-menu">
                         <li><a href="mugs.html">Custom Mugs</a></li>
                         <li><a href="t-shirts.html">Custom T-Shirts</a></li>
                         <li><a href="coasters.html">Custom Coasters</a></li>
+                        <li><a href="merchandise.html">Band & Show Merch</a></li>
                     </ul>
                 </li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
-        <div class="cart-icon"><i class="fa-solid fa-basket-shopping"></i></div>
+        <div class="header-actions">
+            <a href="#" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></a>
+            <a href="#" aria-label="Account"><i class="fa-regular fa-user"></i></a>
+            <a href="cart.html" class="cart-icon" id="cart-icon-target" aria-label="Cart"><i class="fa-solid fa-basket-shopping"></i><span class="cart-count">0</span></a>
+        </div>
     </header>
 
     <main class="catalog-container">
         <h1>Custom Graphic T-Shirts</h1>
         <div class="product-grid">
-            <!-- 6 Product Placeholders -->
-            <script>
-                const tees = ["Essential Tee", "Heavyweight", "V-Neck", "Long Sleeve", "Organic Cotton", "Premium Fit"];
-                tees.forEach(name => {
-                    document.write(`
-                        <div class="product-card">
-                            <div class="product-image"></div>
-                            <h3>${name}</h3>
-                            <button class="btn-customize" style="margin-top:15px;" onclick="openModal('${name}')">Design & Buy</button>
-                        </div>
-                    `);
-                });
-            </script>
+            <!-- Product 1 -->
+            <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="tshirt.jpg" alt="Essential Tee" id="img-tshirt-1">
+                </div>
+                <div class="prod-title">Essential Tee</div>
+                <div class="prod-price">£18.99</div>
+                <button class="btn-customize" onclick="openProductModal('Essential Tee', 18.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-tshirt-1')">Design & Buy</button>
+            </div>
+            
+            <!-- Product 2 -->
+            <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="tshirt.jpg" alt="Heavyweight Tee" id="img-tshirt-2">
+                </div>
+                <div class="prod-title">Heavyweight Tee</div>
+                <div class="prod-price">£22.99</div>
+                <button class="btn-customize" onclick="openProductModal('Heavyweight Tee', 22.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-tshirt-2')">Design & Buy</button>
+            </div>
+            
+            <!-- Product 3 -->
+            <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="tshirt.jpg" alt="V-Neck Tee" id="img-tshirt-3">
+                </div>
+                <div class="prod-title">V-Neck Tee</div>
+                <div class="prod-price">£19.99</div>
+                <button class="btn-customize" onclick="openProductModal('V-Neck Tee', 19.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-tshirt-3')">Design & Buy</button>
+            </div>
+            
+            <!-- Product 4 -->
+            <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="tshirt.jpg" alt="Long Sleeve Tee" id="img-tshirt-4">
+                </div>
+                <div class="prod-title">Long Sleeve Tee</div>
+                <div class="prod-price">£24.99</div>
+                <button class="btn-customize" onclick="openProductModal('Long Sleeve Tee', 24.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-tshirt-4')">Design & Buy</button>
+            </div>
+            
+            <!-- Product 5 -->
+            <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="tshirt.jpg" alt="Organic Cotton Tee" id="img-tshirt-5">
+                </div>
+                <div class="prod-title">Organic Cotton Tee</div>
+                <div class="prod-price">£21.99</div>
+                <button class="btn-customize" onclick="openProductModal('Organic Cotton Tee', 21.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-tshirt-5')">Design & Buy</button>
+            </div>
+            
+            <!-- Product 6 -->
+            <div class="product-card">
+                <div class="product-image-wrapper">
+                    <img src="tshirt.jpg" alt="Premium Fit Tee" id="img-tshirt-6">
+                </div>
+                <div class="prod-title">Premium Fit Tee</div>
+                <div class="prod-price">£25.99</div>
+                <button class="btn-customize" onclick="openProductModal('Premium Fit Tee', 25.99, 'tshirt.jpg', 'apparel_colors', 'sizes', 'img-tshirt-6')">Design & Buy</button>
+            </div>
         </div>
     </main>
 
+    <!-- Unified Configurator Modal Window -->
     <div class="modal" id="productModal">
         <div class="modal-content">
-            <h2 id="modalTitle">Select Options</h2>
-            <div class="color-swatch-grid">
-                <div class="color-swatch" style="background:#fff; border:1px solid #ccc" onclick="selectColor(this)"></div>
-                <div class="color-swatch" style="background:#000" onclick="selectColor(this)"></div>
-                <div class="color-swatch" style="background:#ff0000" onclick="selectColor(this)"></div>
-                <div class="color-swatch" style="background:#0000ff" onclick="selectColor(this)"></div>
-                <div class="color-swatch" style="background:#008000" onclick="selectColor(this)"></div>
+            <button class="close-modal" onclick="document.getElementById('productModal').classList.remove('is-active')">&times;</button>
+            
+            <!-- Target Image Preview Box Container -->
+            <div id="imagePreviewContainer" class="preview-container">
+                <img id="imagePreview" src="" alt="Design Preview">
             </div>
-            <select class="form-select">
-                <option>XS</option><option>S</option><option>M</option><option>L</option>
-                <option>XL</option><option>XXL</option><option>XXXL</option>
-            </select>
-            <button class="btn-customize" onclick="closeModal()">Close</button>
+
+            <h2 id="modalTitle">Product</h2>
+
+            <!-- Visual Color Swatches Selector Wrapper -->
+            <div id="colorSelectionContainer">
+                <label class="option-label">Select Colour</label>
+                <div id="colorSwatchesWrapper" class="color-swatches-grid"></div>
+            </div>
+
+            <!-- Dynamic Size Dropdown Selector Wrapper -->
+            <div id="sizeSelectionContainer">
+                <label class="option-label" for="productSize">Select Size</label>
+                <select id="productSize" class="form-select">
+                    <option value="XS">XS</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                    <option value="L">L</option>
+                    <option value="XL">XL</option>
+                    <option value="XXL">XXL</option>
+                    <option value="XXXL">XXXL</option>
+                </select>
+            </div>
+
+            <textarea id="userText" class="form-textarea" placeholder="Inscription notes, text choices or formatting requirements..."></textarea>
+            
+            <button id="upload_widget" class="btn-customize" style="background: #444; margin-bottom: 10px;">Upload Design File</button>
+            <div id="upload-status-message" class="upload-status-text"></div>
+            <input type="hidden" id="uploaded_file_url">
+            
+            <!-- Standard Quantity Selection Control Wrapper -->
+            <div class="quantity-wrapper">
+                <span class="quantity-label">Quantity</span>
+                <div class="quantity-controls">
+                    <button type="button" class="qty-btn" onclick="adjustModalQty(-1)">-</button>
+                    <input type="number" id="modalQuantity" class="qty-input" value="1" min="1">
+                    <button type="button" class="qty-btn" onclick="adjustModalQty(1)">+</button>
+                </div>
+            </div>
+
+            <button id="add-to-basket-btn" class="btn-customize" onclick="addToBasket()">Add To Basket</button>
         </div>
+    </div>
+
+    <!-- Toast Notification Popup Container -->
+    <div id="toast" class="toast-notification">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-message">Item added to basket!</span>
     </div>
 
     <script>
-        function openModal(name) {
-            document.getElementById('modalTitle').innerText = name;
+        let currentActivePrice = 0;
+        let defaultProductImage = "";
+        let trackedSelectedColor = null;
+        let currentSourceImgId = "";
+
+        // Apparel color options
+        const colorOptionsMap = {
+            apparel_colors: [
+                { name: "White", hex: "#ffffff" },
+                { name: "Black", hex: "#000000" },
+                { name: "Red", hex: "#e60000" },
+                { name: "Blue", hex: "#0055ff" },
+                { name: "Green", hex: "#009933" }
+            ]
+        };
+
+        // Initialize Cloudinary Widget Configuration
+        var myWidget = cloudinary.createUploadWidget({
+            cloudName: 'opdnamfa', 
+            uploadPreset: 'hg_customs_preset'
+        }, (error, result) => {
+            if (!error && result && result.event === "success") { 
+                const secureUrl = result.info.secure_url;
+                document.getElementById('uploaded_file_url').value = secureUrl;
+                
+                const previewImg = document.getElementById('imagePreview');
+                if (previewImg) {
+                    previewImg.src = secureUrl;
+                }
+
+                const statusMsg = document.getElementById('upload-status-message');
+                statusMsg.innerText = "✓ Image uploaded successfully!";
+                statusMsg.style.color = "#28a745";
+            }
+        });
+
+        document.getElementById("upload_widget").addEventListener("click", function(){
+            myWidget.open();
+        }, false);
+
+        function openProductModal(title, price, imagePath, colorKey, sizeKey, sourceImgId) {
+            document.getElementById('modalTitle').innerText = title;
+            currentActivePrice = price;
+            defaultProductImage = imagePath;
+            trackedSelectedColor = null; 
+            currentSourceImgId = sourceImgId;
+            
+            const previewImg = document.getElementById('imagePreview');
+            if (previewImg) {
+                previewImg.src = imagePath;
+            }
+            
+            // Clean interface parameters
+            document.getElementById('uploaded_file_url').value = '';
+            document.getElementById('userText').value = '';
+            document.getElementById('upload-status-message').innerText = '';
+            document.getElementById('modalQuantity').value = 1;
+            
+            // Handle Circle Color Swatches render logic
+            const colorContainer = document.getElementById('colorSelectionContainer');
+            const swatchesWrapper = document.getElementById('colorSwatchesWrapper');
+            swatchesWrapper.innerHTML = ""; 
+            
+            if (colorKey !== 'none' && colorOptionsMap[colorKey]) {
+                colorContainer.style.display = "block";
+                
+                colorOptionsMap[colorKey].forEach((colorObj, index) => {
+                    let swatch = document.createElement('div');
+                    swatch.className = "color-circle";
+                    swatch.style.backgroundColor = colorObj.hex;
+                    swatch.setAttribute('data-color-name', colorObj.name);
+                    swatch.title = colorObj.name;
+                    
+                    if(index === 0) {
+                        swatch.classList.add('is-selected');
+                        trackedSelectedColor = colorObj.name;
+                    }
+                    
+                    swatch.addEventListener('click', function() {
+                        document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('is-selected'));
+                        this.classList.add('is-selected');
+                        trackedSelectedColor = this.getAttribute('data-color-name');
+                    });
+                    
+                    swatchesWrapper.appendChild(swatch);
+                });
+            } else {
+                colorContainer.style.display = "none";
+            }
+
+            // Handle Size Dropdown visibility
+            const sizeContainer = document.getElementById('sizeSelectionContainer');
+            if (sizeKey !== 'none') {
+                sizeContainer.style.display = "block";
+            } else {
+                sizeContainer.style.display = "none";
+            }
+            
             document.getElementById('productModal').classList.add('is-active');
         }
-        function closeModal() { document.getElementById('productModal').classList.remove('is-active'); }
-        function selectColor(el) {
-            document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('is-selected'));
-            el.classList.add('is-selected');
+
+        function adjustModalQty(amount) {
+            const qtyInput = document.getElementById('modalQuantity');
+            if (qtyInput) {
+                let currentVal = parseInt(qtyInput.value) || 1;
+                let newVal = currentVal + amount;
+                if (newVal < 1) newVal = 1;
+                qtyInput.value = newVal;
+            }
         }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function triggerFlyAnimation() {
+            const sourceImg = document.getElementById(currentSourceImgId) || document.getElementById('imagePreview');
+            const cartIcon = document.getElementById('cart-icon-target');
+
+            if (!sourceImg || !cartIcon) return;
+
+            const imgRect = sourceImg.getBoundingClientRect();
+            const cartRect = cartIcon.getBoundingClientRect();
+
+            const flyingImg = document.createElement('img');
+            flyingImg.src = sourceImg.src;
+            flyingImg.classList.add('flying-img');
+            flyingImg.style.top = `${imgRect.top}px`;
+            flyingImg.style.left = `${imgRect.left}px`;
+            flyingImg.style.width = `${imgRect.width}px`;
+            flyingImg.style.height = `${imgRect.height}px`;
+
+            document.body.appendChild(flyingImg);
+
+            setTimeout(() => {
+                flyingImg.style.top = `${cartRect.top + 5}px`;
+                flyingImg.style.left = `${cartRect.left + 5}px`;
+                flyingImg.style.width = '20px';
+                flyingImg.style.height = '20px';
+                flyingImg.style.opacity = '0.4';
+            }, 10);
+
+            setTimeout(() => {
+                flyingImg.remove();
+            }, 800);
+        }
+
+        function addToBasket() {
+            const title = document.getElementById('modalTitle').innerText;
+            const textValue = document.getElementById('userText').value;
+            const fileUrl = document.getElementById('uploaded_file_url').value;
+            const quantityVal = parseInt(document.getElementById('modalQuantity').value) || 1;
+            
+            const colorContainer = document.getElementById('colorSelectionContainer');
+            const selectedColor = colorContainer.style.display !== 'none' ? trackedSelectedColor : null;
+
+            const sizeContainer = document.getElementById('sizeSelectionContainer');
+            const selectedSize = sizeContainer.style.display !== 'none' ? document.getElementById('productSize').value : null;
+            
+            let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            
+            cart.push({ 
+                name: title, 
+                price: currentActivePrice, 
+                text: textValue, 
+                fileUrl: fileUrl || defaultProductImage,
+                quantity: quantityVal,
+                color: selectedColor,
+                size: selectedSize
+            });
+            localStorage.setItem('hg_cart', JSON.stringify(cart));
+            
+            triggerFlyAnimation();
+            updateBadge();
+            document.getElementById('productModal').classList.remove('is-active');
+            showToast(`${quantityVal}x ${title} added to basket!`);
+        }
+
+        function updateBadge() {
+            const cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
+            const badges = document.querySelectorAll('.cart-count');
+            badges.forEach(badge => badge.innerText = totalItems);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateBadge();
+
+            const menuToggle = document.getElementById('menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const dropdownLi = document.getElementById('dropdown-li');
+            const dropdownTrigger = document.getElementById('dropdown-trigger');
+
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', (e) => { e.stopPropagation(); navMenu.classList.toggle('is-open'); });
+            }
+            if (dropdownTrigger && dropdownLi) {
+                dropdownTrigger.addEventListener('click', (e) => {
+                    if (window.innerWidth <= 992) { e.preventDefault(); e.stopPropagation(); dropdownLi.classList.toggle('is-open'); }
+                });
+            }
+            document.addEventListener('click', () => {
+                if (navMenu && navMenu.classList.contains('is-open')) navMenu.classList.remove('is-open');
+                if (dropdownLi && dropdownLi.classList.contains('is-open')) dropdownLi.classList.remove('is-open');
+            });
+
+            const qtyInput = document.getElementById('modalQuantity');
+            if (qtyInput) {
+                qtyInput.addEventListener('blur', () => {
+                    if (parseInt(qtyInput.value) < 1 || isNaN(parseInt(qtyInput.value))) {
+                        qtyInput.value = 1;
+                    }
+                });
+            }
+        });
     </script>
     <footer class="site-footer">
-    <div class="footer-content" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-top: 1px solid var(--border-color);">
-        
-        <!-- Copyright Section (Left) -->
-        <div class="footer-copyright" style="font-size: 12px; color: var(--text-muted);">
-            &copy; HG CUSTOMS 2026
+        <div class="footer-content" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-top: 1px solid var(--border-color);">
+            <div class="footer-copyright" style="font-size: 12px; color: var(--text-muted);">
+                &copy; HG CUSTOMS 2026
+            </div>
+            <ul class="footer-links" style="list-style: none; display: flex; gap: 30px; margin: 0;">
+                <li><a href="delivery-info.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Delivery Information</a></li>
+                <li><a href="privacy-policy.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Privacy Policy</a></li>
+                <li><a href="terms.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Terms & Conditions</a></li>
+                <li><a href="contact.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Contact</a></li>
+            </ul>
         </div>
-
-        <!-- Utility Links (Right) -->
-        <ul class="footer-links" style="list-style: none; display: flex; gap: 30px; margin: 0;">
-            <li><a href="delivery-info.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Delivery Information</a></li>
-            <li><a href="privacy-policy.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Privacy Policy</a></li>
-            <li><a href="terms.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Terms & Conditions</a></li>
-            <li><a href="contact.html" style="text-decoration: none; color: var(--text-muted); font-size: 12px;">Contact</a></li>
-        </ul>
-    </div>
-</footer>
+    </footer>
 </body>
 </html>
