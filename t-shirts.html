@@ -39,7 +39,7 @@
         .nav-links a:hover { color: #000; }
         .nav-links a.active { font-weight: 700; border-bottom: 2px solid #000; }
         
-        .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
+        .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; order: 3; }
         .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
         .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); background: none; border: none; }
@@ -426,24 +426,6 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            updateBadge();
-            const menuToggle = document.getElementById('menu-toggle');
-            const navMenu = document.getElementById('nav-menu');
-            
-            if (menuToggle && navMenu) {
-                menuToggle.addEventListener('click', (e) => { 
-                    e.stopPropagation(); 
-                    navMenu.classList.toggle('is-open'); 
-                });
-            }
-            
-            document.addEventListener('click', (e) => {
-                if (navMenu && navMenu.classList.contains('is-open') && !navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
-                    navMenu.classList.remove('is-open');
-                }
-            });
-        });
     </script>
 
     <footer class="site-footer">
