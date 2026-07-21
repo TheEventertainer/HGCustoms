@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Mugs | HG Customs</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Cloudinary Upload Widget Script -->
     <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
@@ -13,54 +14,34 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; display: flex; flex-direction: column; min-height: 100vh; color: #111; background-color: #fafafa; position: relative; }
 
-        /* Announcement Bar - Matched Exact Proportions */
-        .announcement-bar {
-            background-color: #000;
-            color: #fff;
-            padding: 8px 40px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            font-size: 0.75rem;
-            letter-spacing: 0.3px;
+        /* Announcement Bar - Matched to T-shirts */
+        .announcement-bar { 
+            background-color: #000000; 
+            color: #ffffff; 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 12px 20px; 
+            font-size: 11px; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+            border-bottom: 1px solid #333; 
         }
-
-        .announcement-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .announcement-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            color: #ffffff; 
+            text-decoration: none; 
         }
-
-        .announcement-icon {
-            width: 16px;
-            height: 16px;
-            fill: none;
-            stroke: #fff;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            flex-shrink: 0;
+        .announcement-item i { 
+            font-size: 16px; 
         }
-
-        .announcement-text {
-            display: flex;
-            flex-direction: column;
-            text-transform: uppercase;
-            line-height: 1.1;
-        }
-
-        .announcement-text strong {
-            font-weight: 600;
-            font-size: 0.72rem;
-            letter-spacing: 0.5px;
-            color: #fff;
-        }
-
-        .announcement-text span {
-            color: #ccc;
-            font-size: 0.65rem;
-            text-transform: none;
-            margin-top: 1px;
+        .announcement-text span { 
+            display: block; 
+            color: #ccc; 
+            font-size: 10px; 
+            text-transform: none; 
+            margin-top: 2px; 
         }
 
         /* Header Styles */
@@ -69,7 +50,7 @@
         
         .header-actions { display: flex; align-items: center; gap: 15px; }
 
-        /* Navigation rules updated to center the desktop menu */
+        /* Navigation rules */
         nav { display: flex; gap: 20px; align-items: center; justify-content: center; flex: 1; }
         nav a { text-decoration: none; color: #666; font-size: 0.95rem; font-weight: 400; transition: color 0.2s, font-weight 0.2s; white-space: nowrap; }
         nav a:hover { color: #000; }
@@ -130,7 +111,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        /* Products Grid (3 x 2 on Desktop) */
+        /* Products Grid */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -303,40 +284,9 @@
 
     <!-- Top Announcement Bar -->
     <div class="announcement-bar">
-        <div class="announcement-item">
-            <svg class="announcement-icon" viewBox="0 0 24 24">
-                <rect x="1" y="3" width="15" height="13"></rect>
-                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                <circle cx="5.5" cy="18.5" r="2.5"></circle>
-                <circle cx="18.5" cy="18.5" r="2.5"></circle>
-            </svg>
-            <div class="announcement-text">
-                <strong>Free UK Delivery</strong>
-                <span>On orders over £50</span>
-            </div>
-        </div>
-
-        <div class="announcement-item">
-            <svg class="announcement-icon" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-            <div class="announcement-text">
-                <strong>Fast Turnaround</strong>
-                <span>Quick & reliable</span>
-            </div>
-        </div>
-
-        <div class="announcement-item">
-            <svg class="announcement-icon" viewBox="0 0 24 24">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-            <div class="announcement-text">
-                <strong>Made Just For You</strong>
-                <span>Unique. Personal. Yours.</span>
-            </div>
-        </div>
+        <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i><div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div></a>
+        <a href="#" class="announcement-item"><i class="fa-regular fa-clock"></i><div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div></a>
+        <a href="#" class="announcement-item"><i class="fa-regular fa-circle-check"></i><div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div></a>
     </div>
 
     <!-- Header & Navigation -->
@@ -365,7 +315,7 @@
         </div>
     </header>
 
-    <!-- Main Content Area: 6 Mugs Grid -->
+    <!-- Main Content Area: Mugs Grid -->
     <main>
         <h1>Custom Mugs Collection</h1>
         <p class="subtitle">Choose a mug style below to customize colors and upload optional designs.</p>
