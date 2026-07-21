@@ -291,18 +291,36 @@
                 let itemTotal = (parseFloat(item.price) || 0) * qty;
                 subtotal += itemTotal;
                 
-                // Flexible properties reading to handle multi-color selections (e.g. inner/outer color or standard color)
                 let title = item.name || item.title || "Custom Item";
                 let displayColor = "";
-                if (item.innerColor && item.outerColor) {
-                    displayColor = `Inner Color: ${item.innerColor} | Outer Color: ${item.outerColor}`;
+                
+                // Directly extract color properties, falling back to checking raw fields or object keys if named differently
+                let bgCol = item.backgroundColour || item.backgroundcolor || item.colour || item.color;
+                let inCol = item.innerColour || item.innercolour;
+
+                if (bgCol && inCol) {
+                    displayColor = `Background: ${bgCol} | Inner: ${inCol}`;
+                } else if (bgCol) {
+                    displayColor = `Background: ${bgCol}`;
+                } else if (inCol) {
+                    displayColor = `Inner: ${inCol}`;
                 } else if (item.color) {
                     displayColor = `Color: ${item.color}`;
                 } else {
-                    displayColor = "Color: Standard";
+                    // Fallback: if properties are nested or stored under custom labels, search object values manually
+                    let foundColorVal = "";
+                    for (let key in item) {
+                        if (key.toLowerCase().includes('color') || key.toLowerCase().includes('colour')) {
+                            if (item[key] && typeof item[key] === 'string' && item[key] !== "None") {
+                                foundColorVal = item[key];
+                                break;
+                            }
+                        }
+                    }
+                    displayColor = foundColorVal ? `Color: ${foundColorVal}` : "Color: Standard";
                 }
 
-                let notesInfo = item.text ? ` | Notes: ${item.text}` : "";
+                let notesInfo = (item.customizationNote && item.customizationNote !== "None") ? ` | Notes: ${item.customizationNote}` : "";
                 summary += `Item ${index + 1}: ${title} | ${displayColor} | Qty: ${qty}${notesInfo}\n`;
                 
                 container.innerHTML += `
@@ -310,7 +328,7 @@
                         <div class="item-details">
                             <strong>${title}</strong>
                             <p>${displayColor}</p>
-                            ${item.text ? `<p>Notes: ${item.text}</p>` : ""}
+                            ${item.customizationNote && item.customizationNote !== "None" ? `<p>Notes: ${item.customizationNote}</p>` : ""}
                         </div>
                         <div class="cart-item-actions">
                             <div style="font-weight: 600; margin-bottom: 5px;">£${itemTotal.toFixed(2)}</div>
