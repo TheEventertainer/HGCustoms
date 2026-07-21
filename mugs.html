@@ -66,6 +66,30 @@
             border-bottom: 2px solid #000000;
         }
 
+        /* --- Category Banner Styles --- */
+        .category-banner-container {
+            width: 100%;
+            margin-bottom: 30px;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .category-banner-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        @media (min-width: 993px) {
+            .category-banner-container {
+                max-height: 350px;
+            }
+            .category-banner-img {
+                height: 100%;
+            }
+        }
+
         /* --- About Us Section Styles --- */
         .about-section {
             margin-top: 60px;
@@ -393,6 +417,18 @@
             <h1 class="page-title">Custom Pet Mug Collection</h1>
         </div>
         
+        <!-- Category Banner Image (Desktop Landscape & Mobile Alternate Option) -->
+        <div class="category-banner-container">
+            <picture>
+                <!-- Mobile Alternate Image (< 992px) -->
+                <source media="(max-width: 992px)" srcset="mobile-banner.jpg">
+                <!-- Desktop Landscape Image (>= 993px) -->
+                <source media="(min-width: 993px)" srcset="desktop-banner.jpg">
+                <!-- Fallback Image -->
+                <img src="desktop-banner.jpg" alt="Custom Pet Mugs Banner" class="category-banner-img">
+            </picture>
+        </div>
+
         <div class="products-grid">
             <!-- Product 1 -->
             <div class="product-card" onclick="openModal('Background', 12.99, 'MUG1a.PNG', 'MUG1b.PNG', event, 'Background', 'Upload your best pet photo and we will add it to our classic design, with customized background colour and choice of mug handle and inner colour. ', false)">
