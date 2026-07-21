@@ -423,7 +423,7 @@
                 <!-- Mobile Alternate Image (< 992px) -->
                 <source media="(max-width: 992px)" srcset="mobile-banner.png">
                 <!-- Desktop Landscape Image (>= 993px) -->
-                <source media="(min-width: 993px)" srcset="desktop-banner.png">
+                <source media="(min-width: 993px)" srcset="desktop-banner.png" style="object-fit: contain; width: 100%; height: auto;">
                 <!-- Fallback Image -->
                 <img src="desktop-banner.jpg" alt="Custom Pet Mugs Banner" class="category-banner-img">
             </picture>
