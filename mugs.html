@@ -372,50 +372,50 @@
         
         <div class="products-grid">
             <!-- Product 1 -->
-            <div class="product-card" onclick="openModal('Background colour photo mug', 12.99, 'MUG1a.PNG', 'MUG1b.PNG', event, 'Backround', 'Our classic ceramic mug featuring a custom background color choice and your personalized photo.')">
-                <img src="MUG1a.PNG" alt="Backround colour mug" class="product-img">
+            <div class="product-card" onclick="openModal('Background', 12.99, 'MUG1a.PNG', 'MUG1b.PNG', event, 'Background', 'Upload your pets best photo and we will add it to our classic design, with customized background colour and choice of mug handle and inner colour. ')">
+                <img src="MUG1a.PNG" alt="Classic Background Mug" class="product-img">
                 <div class="product-info">
-                    <div class="product-title">Background Colour Photo Mug</div>
+                    <div class="product-title">Bakground</div>
                     <div class="product-price">£12.99</div>
                     <div class="btn-view">Customize & Buy</div>
                 </div>
             </div>
 
             <!-- Product 2 -->
-            <div class="product-card" onclick="openModal('Color Changing Magic Mug', 15.99, 'MUG2a.PNG', 'MUG2b.PNG', event, 'magic', 'Watch your hidden custom photo magically appear when you pour hot liquid into this heat-sensitive mug.')">
-                <img src="MUG2a.PNG" alt="Color Changing Magic Mug" class="product-img">
+            <div class="product-card" onclick="openModal('troublemaker', 15.99, 'MUG2a.PNG', 'MUG2b.PNG', event, 'troublemaker', 'Turn your beloved pet into a customised Established Troublemaker, uploading your own image to add to our design.')">
+                <img src="MUG2a.PNG" alt="Established Troublemaker mug" class="product-img">
                 <div class="product-info">
-                    <div class="product-title">Color Changing Magic Mug</div>
+                    <div class="product-title">Troublemaker Mug</div>
                     <div class="product-price">£15.99</div>
                     <div class="btn-view">Customize & Buy</div>
                 </div>
             </div>
 
             <!-- Product 3 -->
-            <div class="product-card" onclick="openModal('Enamel Camping Mug', 14.99, 'MUG3a.PNG', 'MUG3b.PNG', event, 'enamel', 'A rugged, lightweight retro-style metal camping mug built for outdoor adventures and rugged use.')">
-                <img src="MUG3a.PNG" alt="Enamel Camping Mug" class="product-img">
+            <div class="product-card" onclick="openModal('lifebetter', 14.99, 'MUG3a.PNG', 'MUG3b.PNG', event, 'lifebetter', 'Upload your own pet image to add to our design, choosing your own floor colour beneath your pet.')">
+                <img src="MUG3a.PNG" alt="Life Is Better Mug" class="product-img">
                 <div class="product-info">
-                    <div class="product-title">Enamel Camping Mug</div>
+                    <div class="product-title">Life Is Better Mug</div>
                     <div class="product-price">£14.99</div>
                     <div class="btn-view">Customize & Buy</div>
                 </div>
             </div>
 
             <!-- Product 4 -->
-            <div class="product-card" onclick="openModal('Two-Tone Accent Mug', 13.50, 'MUG4a.PNG', 'MUG4b.PNG', event, 'twotone', 'A vibrant ceramic mug featuring a striking two-tone color contrast design with your custom photo.')">
-                <img src="MUG4a.PNG" alt="Two-Tone Accent Mug" class="product-img">
+            <div class="product-card" onclick="openModal('Back', 13.50, 'MUG4a.PNG', 'MUG4b.PNG', event, 'back', 'We know you love the back of your pets head, so we can now immortalise it on your very own custom mug.')">
+                <img src="MUG4a.PNG" alt="Back of head Mug" class="product-img">
                 <div class="product-info">
-                    <div class="product-title">Two-Tone Accent Mug</div>
+                    <div class="product-title">Back of head Mug</div>
                     <div class="product-price">£13.50</div>
                     <div class="btn-view">Customize & Buy</div>
                 </div>
             </div>
 
             <!-- Product 5 -->
-            <div class="product-card" onclick="openModal('Large Mega Mug (15oz)', 16.99, 'MUG5a.PNG', 'MUG5b.PNG', event, 'mega', 'An extra-large 15oz heavy-duty ceramic mega mug for those who need a bigger caffeine boost every morning.')">
-                <img src="MUG5a.PNG" alt="Large Mega Mug (15oz)" class="product-img">
+            <div class="product-card" onclick="openModal('shadow', 16.99, 'MUG5a.PNG', 'MUG5b.PNG', event, 'shadow', 'Upload your own image to add to our design, this will be pluralised for images with multiple pets.')">
+                <img src="MUG5a.PNG" alt="My Shadow My Heart Mug" class="product-img">
                 <div class="product-info">
-                    <div class="product-title">Large Mega Mug (15oz)</div>
+                    <div class="product-title">My SHadow My Heart Mug (15oz)</div>
                     <div class="product-price">£16.99</div>
                     <div class="btn-view">Customize & Buy</div>
                 </div>
@@ -529,7 +529,7 @@
 
         // Separately defined color lists for each product category key
         const productColorLists = {
-            Backround: [
+            Background: [
                 { name: "Beige", hex: "#D6B597" },
                 { name: "Grey", hex: "#B9BDC4" },
                 { name: "Sage Green", hex: "#B7BFA8" },
@@ -547,34 +547,30 @@
                 { name: "Mauve", hex: "#B9A6B8" },
                 { name: "Charcoal", hex: "#585858" }
             ],
-            magic: [
-                { name: "Matte Black", hex: "#111111" },
-                { name: "Gloss Black", hex: "#222222" }
-            ],
-            enamel: [
-                { name: "White", hex: "#ffffff" },
+            lifebetter: [
+                { name: "Beige", hex: "#D6B597" },
                 { name: "Grey", hex: "#B9BDC4" },
                 { name: "Sage Green", hex: "#B7BFA8" },
+                { name: "Dusty Pink", hex: "#D1B2B6" },
+                { name: "Taupe", hex: "#B7A08C" },
+                { name: "Dusty Blue", hex: "#8FA3BE" },
+                { name: "Lavender", hex: "#C2B3D1" },
+                { name: "Terracotta", hex: "#C78F7B" },
+                { name: "Cream", hex: "#F0E5D1" },
+                { name: "Olive Green", hex: "#8E9480" },
+                { name: "Caramel", hex: "#B78D6B" },
+                { name: "Slate Blue", hex: "#6E778E" },
+                { name: "Muted Mint", hex: "#B7C7C2" },
+                { name: "Warm Sand", hex: "#E2C9AA" },
+                { name: "Mauve", hex: "#B9A6B8" },
                 { name: "Charcoal", hex: "#585858" }
             ],
-            twotone: [
-                { name: "Dusty Pink", hex: "#D1B2B6" },
-                { name: "Dusty Blue", hex: "#8FA3BE" },
-                { name: "Terracotta", hex: "#C78F7B" },
-                { name: "Lavender", hex: "#C2B3D1" }
+            back: [
+                { name: "Flowers", hex: "#D1B2B6" },
+                { name: "Sky", hex: "#8FA3BE" },
+                { name: "Beach", hex: "#C78F7B" },
+                { name: "Rainbow bridge", hex: "#C2B3D1" }
             ],
-            mega: [
-                { name: "Warm Sand", hex: "#E2C9AA" },
-                { name: "Taupe", hex: "#B7A08C" },
-                { name: "Caramel", hex: "#B78D6B" },
-                { name: "Olive Green", hex: "#8E9480" }
-            ],
-            heart: [
-                { name: "Mauve", hex: "#B9A6B8" },
-                { name: "Muted Mint", hex: "#B7C7C2" },
-                { name: "Slate Blue", hex: "#6E778E" },
-                { name: "Dusty Pink", hex: "#D1B2B6" }
-            ]
         };
 
         function updateCartBadge() {
