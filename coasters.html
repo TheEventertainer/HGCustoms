@@ -239,6 +239,22 @@
         .color-circle[title="White"] { border: 1px solid #dcdcdc; }
         .color-circle[title="White"].selected { border: 2px solid #000; }
         
+        /* Customization Notes Textarea */
+        .customization-notes-input {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            font-family: var(--font-sans);
+            font-size: 13px;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .customization-notes-input:focus {
+            border-color: #000;
+        }
+
         /* Cloudinary Button and Image Preview */
         .btn-upload-cloudinary {
             width: 100%; background: #444; color: #fff; border: none;
@@ -294,14 +310,14 @@
         /* Responsive Breakpoints */
         @media (max-width: 992px) {
             .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
-            .main-header { padding: 20px; }
-            .mobile-toggle { display: block; order: 1; }
-            .logo-link { order: 2; }
-            .header-actions { order: 3; }
-            nav { width: 100%; order: 4; }
-            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; }
+            .main-header { display: grid; grid-template-columns: auto 1fr auto; align-items: center; padding: 15px 20px; }
+            .mobile-toggle { display: block; order: 1; justify-self: start; }
+            .logo-link { order: 2; justify-self: center; }
+            .header-actions { order: 3; justify-self: end; }
+            nav { width: 100%; grid-column: 1 / -1; order: 4; }
+            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 10px; text-align: left; }
             .nav-links.is-open { display: flex; }
-            .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
+            .nav-links > li { padding: 5px 0; width: 100%; text-align: left; }
             main { margin: 20px auto; padding: 0 15px; }
             .page-title { font-size: 22px; }
             .products-grid { grid-template-columns: 1fr; gap: 20px; }
@@ -331,7 +347,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="mugs.html">Pet Mugs</a></li>
                 <li><a href="t-shirts.html">T-shirts</a></li>
-                <li><a href="coasters.html"class="active">Coasters</a></li>
+                <li><a href="coasters.html" class="active">Coasters</a></li>
                 <li><a href="merchandise.html">Merchandise</a></li>
                 <li><a href="about-us.html">About Us</a></li>
             </ul>
@@ -418,6 +434,11 @@
                     <div class="color-circle" style="background-color: #111111;" onclick="selectColor(this, 'Black')" title="Black"></div>
                     <div class="color-circle" style="background-color: #d7ccc8;" onclick="selectColor(this, 'Natural Wood')" title="Natural Wood"></div>
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="customizationNotes">Customization Notes / Instructions:</label>
+                <textarea id="customizationNotes" class="customization-notes-input" placeholder="Enter any text, font preferences, or special instructions here..."></textarea>
             </div>
 
             <div class="form-group">
@@ -527,11 +548,12 @@
 
             const circles = document.querySelectorAll('.color-circle');
             circles.forEach(c => c.classList.remove('selected'));
-            circles[0].classList.add('selected');
+            if(circles.length > 0) circles[0].classList.add('selected');
 
             document.getElementById('modalPreviewImage').src = imagePath;
             document.getElementById('upload-status').style.display = 'none';
             document.getElementById('modalQuantity').value = 1;
+            document.getElementById('customizationNotes').value = '';
             document.getElementById('modal-product-title').innerText = title;
             document.getElementById('modal-product-price').innerText = "£" + price.toFixed(2);
             document.getElementById('customizer-modal').style.display = 'flex';
@@ -568,12 +590,14 @@
         function addToCartFromModal(event) {
             const quantityVal = parseInt(document.getElementById('modalQuantity').value) || 1;
             const finalImage = uploadedImageUrl || defaultProductImage;
+            const notesVal = document.getElementById('customizationNotes').value.trim();
 
             let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
             cart.push({
                 title: activeProductTitle,
                 price: activeProductPrice,
                 color: selectedColorName,
+                notes: notesVal,
                 img: finalImage,
                 quantity: quantityVal
             });
