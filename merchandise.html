@@ -160,18 +160,17 @@
         .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; transition: color 0.2s; }
         .footer-links a:hover { color: var(--text-dark); }
 
-        /* Responsive Breakpoints & Mobile Header Layout Fix */
+        /* Standardized Mobile Header Layout */
         @media (max-width: 992px) {
             .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
             
-            /* Re-ordered Flex items for clean mobile navigation header layout */
-            .main-header { padding: 15px 20px; flex-wrap: wrap; }
-            .mobile-toggle { display: block; order: 1; flex: 0 0 auto; }
-            .logo-link { order: 2; flex: 1; text-align: center; }
-            .logo-img { height: 50px; margin: 0 auto; }
-            .header-actions { order: 3; flex: 0 0 auto; }
+            .main-header { padding: 15px 20px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; }
+            .mobile-toggle { display: block; grid-column: 1; text-align: left; }
+            .logo-link { grid-column: 2; text-align: center; display: flex; justify-content: center; }
+            .logo-img { height: 60px; width: auto; }
+            .header-actions { grid-column: 3; justify-self: end; }
             
-            nav { width: 100%; order: 4; }
+            nav { width: 100%; grid-column: 1 / -1; }
             .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 15px; }
             .nav-links.is-open { display: flex; }
             .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
