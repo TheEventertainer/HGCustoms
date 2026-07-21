@@ -309,6 +309,12 @@
         let defaultProductImage = "";
         let currentSourceImgId = "";
 
+        // Mobile Menu Toggle Script Fix
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.classList.toggle('is-open');
+        });
+
         var myWidget = cloudinary.createUploadWidget({
             cloudName: 'opdnamfa', 
             uploadPreset: 'hg_customs_preset',
