@@ -13,16 +13,11 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; display: flex; flex-direction: column; min-height: 100vh; color: #111; background-color: #fafafa; position: relative; }
 
-        /* Announcement Bar Matching Reference Screenshot */
-        .announcement-bar {
-            background-color: #000;
-            color: #fff;
-            padding: 12px 40px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            font-size: 0.75rem;
-            letter-spacing: 0.5px;
+        /* --- Announcement Bar --- */
+        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
+        .announcement-item { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; }
+        .announcement-item i { font-size: 16px; }
+        .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
         }
 
         .announcement-item {
