@@ -325,6 +325,26 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .product-grid { grid-template-columns: 1fr; }
   .logo img { height: 60px; }
 }
+
+.how-to-banner {
+  margin: 0 0 36px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.how-to-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.how-to-desktop { display: block; }
+.how-to-mobile { display: none; }
+@media (max-width: 768px) {
+  .how-to-desktop { display: none; }
+  .how-to-mobile { display: block; }
+  .how-to-banner { margin-bottom: 28px; border-radius: 8px; }
+}
+
 </style>
 </head>
 <body>
@@ -400,6 +420,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 <main class="main">
   <h1 class="page-title">Pet Mugs</h1>
   <p class="page-intro">Celebrate your furry best friend with a personalised mug made just for them. Beautiful, practical and full of love.</p>
+  <div class="how-to-banner">
+    <img class="how-to-desktop" src="desktop-banner.png" alt="How to create your very own mug – pick a design, choose your mug colour, add your dog's image">
+    <img class="how-to-mobile" src="mobile-banner.png" alt="How to create your very own mug – pick a design, choose your mug colour, add your dog's image">
+  </div>
   <div class="product-grid" id="productGrid"></div>
 </main>
 
