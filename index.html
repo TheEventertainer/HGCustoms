@@ -167,12 +167,23 @@ img { max-width: 100%; height: auto; display: block; }
 /* Hero */
 .hero {
   position: relative;
-  background: linear-gradient(135deg, #f9f9f9 0%, #f1dfd5 100%);
-  min-height: 480px;
+  background-color: #f9f9f9;
+  background-image: url('hero-background.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 520px;
   display: flex;
   align-items: center;
   padding: 60px 80px;
 }
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.55) 45%, rgba(255,255,255,0.15) 100%);
+  z-index: 1;
+}
+.hero-content { max-width: 480px; position: relative; z-index: 2; }
 .hero-content { max-width: 480px; }
 .hero-sub {
   font-size: 12px;
@@ -427,25 +438,25 @@ img { max-width: 100%; height: auto; display: block; }
   <div class="categories-grid">
     <a href="mugs.html" class="category-card">
       <div class="img-wrap">
-        <img src="images/colour-splash-pet-mug-a.png" alt="Custom Mugs" onerror="this.style.display='none'">
+        <img src="images/colour-splash-pet-mug-a.jpg" alt="Custom Mugs" onerror="this.style.display='none'">
       </div>
       <h3>Mugs</h3>
     </a>
     <a href="t-shirts.html" class="category-card">
       <div class="img-wrap">
-        <img src="images/create-your-own-tshirt-a.png" alt="T-Shirts" onerror="this.style.display='none'">
+        <img src="images/create-your-own-tshirt-a.jpg" alt="T-Shirts" onerror="this.style.display='none'">
       </div>
       <h3>T-Shirts & Hoodies</h3>
     </a>
     <a href="coasters.html" class="category-card">
       <div class="img-wrap">
-        <img src="images/bulk-order-coasters.png" alt="Coasters" onerror="this.style.display='none'">
+        <img src="images/bulk-order-coasters.jpg" alt="Coasters" onerror="this.style.display='none'">
       </div>
       <h3>Coasters</h3>
     </a>
     <a href="merchandise.html" class="category-card">
       <div class="img-wrap">
-        <img src="images/merch-bulk-cover.png" alt="Merch & Bulk" onerror="this.style.display='none'">
+        <img src="images/merch-bulk-cover.jpg" alt="Merch & Bulk" onerror="this.style.display='none'">
       </div>
       <h3>Merch & Bulk</h3>
     </a>
