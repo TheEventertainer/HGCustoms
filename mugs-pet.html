@@ -327,21 +327,27 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 .how-to-banner {
+  width: 100%;
+  max-width: 100%;
   margin: 0 0 36px;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  line-height: 0;
 }
 .how-to-banner img {
   width: 100%;
+  max-width: 100%;
   height: auto;
-  display: block;
+  vertical-align: top;
 }
-.how-to-desktop { display: block; }
-.how-to-mobile { display: none; }
+/* Desktop: show only desktop banner */
+.how-to-banner .how-to-desktop { display: block !important; }
+.how-to-banner .how-to-mobile { display: none !important; }
+/* Phone / small tablet: show only mobile banner */
 @media (max-width: 768px) {
-  .how-to-desktop { display: none; }
-  .how-to-mobile { display: block; }
+  .how-to-banner .how-to-desktop { display: none !important; }
+  .how-to-banner .how-to-mobile { display: block !important; }
   .how-to-banner { margin-bottom: 28px; border-radius: 8px; }
 }
 
