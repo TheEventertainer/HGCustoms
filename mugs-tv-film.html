@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shipping Info | HG Customs</title>
+<title>TV & Film Mugs | HG Customs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
@@ -346,6 +346,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </style>
 </head>
 <body>
+
 <div class="announcement-bar">
   <a href="#" class="announcement-item">
     <i class="fa-solid fa-truck"></i>
@@ -418,14 +419,61 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </nav>
 
 
-
-
 <main class="main">
-  <h1 class="page-title">Shipping Info</h1>
-  <div style="max-width:720px;margin:0 auto;font-size:14px;line-height:1.7;color:#333">
-    <p>We offer fast UK turnaround. Free UK delivery on orders over £50. You’ll receive tracking details once your order ships. International shipping may be available on request.</p>
-  </div>
+  <h1 class="page-title">TV & Film Mugs</h1>
+  <p class="page-intro">For the fans who know. Iconic designs with a knowing wink.</p>
+  <div class="product-grid" id="productGrid"></div>
 </main>
+
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <button class="modal-close" id="closeModal" aria-label="Close">×</button>
+    <div class="modal-image">
+      <img id="modalImg" src="" alt="">
+    </div>
+    <div class="modal-body">
+      <h2 id="modalTitle"></h2>
+      <div class="modal-price" id="modalPrice"></div>
+      <p class="modal-desc" id="modalDesc"></p>
+
+      <div class="colour-section" id="mugColourSection" style="display:none">
+        <label id="colourLabel">Colour</label>
+        <div class="swatches" id="mugSwatches"></div>
+        <p class="colour-disclaimer">Colours may vary slightly from those shown due to screen settings and the manufacturing process.</p>
+      </div>
+
+      <div class="colour-section" id="bgColourSection" style="display:none">
+        <label>Background Splash Colour</label>
+        <div class="swatches" id="bgSwatches"></div>
+      </div>
+
+      <div class="colour-section" id="bulkSection" style="display:none">
+        <label>Quantity (min 10, max 100)</label>
+        <p class="bulk-qty-note">Bulk pricing is per unit. Minimum order 10 units.</p>
+        <input type="number" id="bulkQty" min="10" max="100" value="10" style="width:100px;padding:8px;border:1px solid #e5e5e5;font-size:14px">
+      </div>
+
+      <div class="qty-row" id="qtyRow">
+        <button type="button" id="qtyMinus">−</button>
+        <span id="qtyValue">1</span>
+        <button type="button" id="qtyPlus">+</button>
+      </div>
+
+      <div class="notes-field">
+        <textarea id="notesField" placeholder="Add a note for personalisation (optional)"></textarea>
+      </div>
+
+      <div class="upload-area" id="uploadArea" style="display:none">
+        Click to upload your photo / design
+        <input type="file" id="fileInput" accept="image/*" style="display:none">
+        <div class="upload-status" id="uploadStatus"></div>
+      </div>
+
+      <button class="add-btn" id="addToBasketBtn">Add to Basket</button>
+    </div>
+  </div>
+</div>
+
 
 <footer class="site-footer">
   <div class="footer-content">
@@ -440,7 +488,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </footer>
 <div class="toast" id="toast"></div>
 <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
-
 
 <script>
 
@@ -464,6 +511,192 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2200);
 }
+function addToCart(product, fromEl) {
+  const cart = getCart();
+  cart.push(product);
+  saveCart(cart);
+  showToast('Added to basket');
+  flyToCart(fromEl, product.image);
+}
+function flyToCart(fromEl, imgSrc) {
+  const cartIcon = document.querySelector('.cart-icon') || document.getElementById('cartBadge');
+  if (!cartIcon) return;
+  const start = fromEl
+    ? fromEl.getBoundingClientRect()
+    : (document.getElementById('addToBasketBtn') || document.body).getBoundingClientRect();
+  const end = cartIcon.getBoundingClientRect();
+  const flyer = document.createElement(imgSrc ? 'img' : 'div');
+  flyer.className = 'fly-item';
+  if (imgSrc) {
+    flyer.src = imgSrc;
+    flyer.onerror = function() { this.style.background = '#ddd'; this.removeAttribute('src'); };
+  } else {
+    flyer.style.background = '#ddd';
+  }
+  flyer.style.left = (start.left + start.width / 2 - 24) + 'px';
+  flyer.style.top = (start.top + start.height / 2 - 24) + 'px';
+  document.body.appendChild(flyer);
+  flyer.offsetHeight;
+  const dx = end.left + end.width / 2 - 24 - (start.left + start.width / 2 - 24);
+  const dy = end.top + end.height / 2 - 24 - (start.top + start.height / 2 - 24);
+  flyer.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(0.3)';
+  flyer.style.opacity = '0.4';
+  setTimeout(function() { flyer.remove(); }, 750);
+}
+
+
+const products = [{"id": "HG-MUG-TV-001", "title": "World's Best Boss Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "worlds-best-boss-mug.jpg", "imgB": "worlds-best-boss-mug.jpg", "colours": false, "bgSplash": false, "upload": false}, {"id": "HG-MUG-TV-002", "title": "World's Greatest Lawyer Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "worlds-greatest-lawyer-mug.jpg", "imgB": "worlds-greatest-lawyer-mug.jpg", "colours": false, "bgSplash": false, "upload": false}, {"id": "HG-MUG-TV-003", "title": "Chicken Brothers Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "chicken-brothers-mug.jpg", "imgB": "chicken-brothers-mug.jpg", "colours": false, "bgSplash": false, "upload": false}];
+const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
+const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
+
+let currentProduct = null;
+let selectedMugColour = mugColours[0];
+let selectedBgColour = bgColours[0];
+let qty = 1;
+let uploadedUrl = '';
+
+const grid = document.getElementById('productGrid');
+products.forEach((p, i) => {
+  const card = document.createElement('div');
+  card.className = 'product-card';
+  card.innerHTML = `
+    <div class="img-wrap"><img src="${p.imgA}" alt="${p.title}" onerror="this.style.opacity=0.3"></div>
+    <div class="info">
+      <h3>${p.title}</h3>
+      <div class="price">£${p.price.toFixed(2)}</div>
+      <button class="btn" data-index="${i}">${p.upload || p.colours || p.bulk ? 'Personalise' : 'Add details'}</button>
+    </div>`;
+  grid.appendChild(card);
+});
+
+grid.addEventListener('click', e => {
+  const btn = e.target.closest('[data-index]');
+  if (!btn) return;
+  openModal(products[+btn.dataset.index]);
+});
+
+function openModal(p) {
+  currentProduct = p;
+  qty = 1;
+  uploadedUrl = '';
+  selectedMugColour = mugColours[0];
+  selectedBgColour = bgColours[0];
+
+  document.getElementById('modalImg').src = p.imgB || p.imgA;
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalPrice').textContent = '£' + p.price.toFixed(2);
+  document.getElementById('modalDesc').textContent = p.desc;
+  document.getElementById('qtyValue').textContent = '1';
+  document.getElementById('notesField').value = '';
+  document.getElementById('uploadStatus').style.display = 'none';
+
+  const mugSec = document.getElementById('mugColourSection');
+  const mugSw = document.getElementById('mugSwatches');
+  mugSw.innerHTML = '';
+  if (p.colours) {
+    mugSec.style.display = 'block';
+    document.getElementById('colourLabel').textContent = p.colourLabel || 'Colour (Inner & Handle)';
+    mugColours.forEach((c, i) => {
+      const s = document.createElement('div');
+      s.className = 'swatch' + (i === 0 ? ' selected' : '');
+      s.style.background = c.hex;
+      if (c.name === 'White') s.style.border = '1px solid #ccc';
+      s.title = c.name;
+      s.onclick = () => {
+        mugSw.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
+        s.classList.add('selected');
+        selectedMugColour = c;
+      };
+      mugSw.appendChild(s);
+    });
+  } else {
+    mugSec.style.display = 'none';
+  }
+
+  const bgSec = document.getElementById('bgColourSection');
+  const bgSw = document.getElementById('bgSwatches');
+  bgSw.innerHTML = '';
+  if (p.bgSplash) {
+    bgSec.style.display = 'block';
+    bgColours.forEach((c, i) => {
+      const s = document.createElement('div');
+      s.className = 'swatch' + (i === 0 ? ' selected' : '');
+      s.style.background = c.hex;
+      s.title = c.name;
+      s.onclick = () => {
+        bgSw.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
+        s.classList.add('selected');
+        selectedBgColour = c;
+      };
+      bgSw.appendChild(s);
+    });
+  } else {
+    bgSec.style.display = 'none';
+  }
+
+  const bulkSec = document.getElementById('bulkSection');
+  const qtyRow = document.getElementById('qtyRow');
+  if (p.bulk) {
+    bulkSec.style.display = 'block';
+    qtyRow.style.display = 'none';
+    document.getElementById('bulkQty').value = 10;
+  } else {
+    bulkSec.style.display = 'none';
+    qtyRow.style.display = 'flex';
+  }
+
+  document.getElementById('uploadArea').style.display = p.upload ? 'block' : 'none';
+  document.getElementById('productModal').classList.add('open');
+}
+
+document.getElementById('closeModal').onclick = () => {
+  document.getElementById('productModal').classList.remove('open');
+};
+document.getElementById('productModal').addEventListener('click', e => {
+  if (e.target.id === 'productModal') document.getElementById('productModal').classList.remove('open');
+});
+
+document.getElementById('qtyMinus').onclick = () => {
+  qty = Math.max(1, qty - 1);
+  document.getElementById('qtyValue').textContent = qty;
+};
+document.getElementById('qtyPlus').onclick = () => {
+  qty++;
+  document.getElementById('qtyValue').textContent = qty;
+};
+
+document.getElementById('uploadArea').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = e => {
+  const file = e.target.files[0];
+  if (file) {
+    uploadedUrl = file.name;
+    document.getElementById('uploadStatus').style.display = 'block';
+    document.getElementById('uploadStatus').textContent = '✓ ' + file.name + ' ready';
+  }
+};
+
+document.getElementById('addToBasketBtn').onclick = function() {
+  if (!currentProduct) return;
+  const btn = this;
+  const isBulk = !!currentProduct.bulk;
+  const finalQty = isBulk ? Math.min(100, Math.max(10, parseInt(document.getElementById('bulkQty').value, 10) || 10)) : qty;
+  addToCart({
+    id: currentProduct.id,
+    title: currentProduct.title,
+    price: currentProduct.price,
+    qty: finalQty,
+    colour: currentProduct.colours ? selectedMugColour.name : null,
+    backgroundColour: currentProduct.bgSplash ? selectedBgColour.name : null,
+    notes: document.getElementById('notesField').value.trim(),
+    image: currentProduct.imgA,
+    uploadUrl: uploadedUrl,
+    sku: currentProduct.id,
+    bulk: isBulk
+  }, btn);
+  document.getElementById('productModal').classList.remove('open');
+};
+
+
 document.getElementById('menu-toggle').addEventListener('click', () => {
   document.getElementById('mobileNav').classList.toggle('open');
 });
@@ -478,7 +711,6 @@ if (backBtn) {
   });
 }
 updateCartBadge();
-
 
 </script>
 </body>
