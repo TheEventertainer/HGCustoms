@@ -276,18 +276,25 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .section-title { text-align: center; font-size: 22px; text-transform: uppercase; letter-spacing: 1.5px; margin: 48px 0 24px; }
 
 /* Cart */
-.cart-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+.cart-table { width: 100%; border-collapse: collapse; margin-bottom: 0; }
 .cart-table th {
   text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
   padding: 10px 8px; border-bottom: 1px solid var(--border-color); color: var(--text-muted);
+  position: sticky; top: 0; background: #fff; z-index: 1;
 }
-.cart-table td { padding: 16px 8px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 14px; }
+.cart-table td { padding: 14px 8px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 14px; }
 .cart-item-info { display: flex; gap: 14px; align-items: center; }
-.cart-item-info img { width: 64px; height: 64px; object-fit: cover; background: var(--bg-light); }
+.cart-item-info img { width: 64px; height: 64px; object-fit: cover; background: var(--bg-light); flex-shrink: 0; }
 .cart-item-info h4 { font-size: 14px; margin-bottom: 4px; }
 .cart-item-info .meta { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
-.cart-item-info .sku { font-size: 11px; color: #888; margin-top: 2px; }
 .cart-empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+.cart-layout { display: block; }
+.cart-items-scroll {
+  width: 100%;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+  overflow: visible;
+}
 .cart-summary { max-width: 400px; margin-left: auto; border: 1px solid var(--border-color); padding: 20px; }
 .cart-summary .row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; }
 .cart-summary .total { font-size: 18px; font-weight: 700; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-color); }
@@ -375,9 +382,47 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 
+
+/* Desktop cart: list scrolls, summary stays on one screen */
+@media (min-width: 901px) {
+  .cart-page .announcement-bar { padding: 8px 20px; }
+  .cart-page .main-header { padding: 12px 40px; }
+  .cart-page .logo img { height: 60px; }
+  .cart-page .main {
+    padding: 20px 24px 20px;
+    flex: 0 0 auto;
+  }
+  .cart-page .page-title {
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  .cart-page .cart-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    align-items: start;
+  }
+  .cart-page .cart-items-scroll {
+    max-height: calc(100vh - 220px);
+    overflow-y: auto;
+    margin-bottom: 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  .cart-page .cart-summary {
+    max-width: none;
+    margin-left: 0;
+    position: sticky;
+    top: 16px;
+  }
+  .cart-page .cart-item-info img { width: 56px; height: 56px; }
+  .cart-page .cart-table td { padding: 12px 8px; }
+  .cart-page .site-footer { padding: 14px 40px; }
+  .cart-page .checkout-btn, .cart-page .empty-btn { margin-top: 10px; padding: 12px; }
+}
+
 </style>
 </head>
-<body>
+<body class="cart-page">
 
 <div class="announcement-bar">
   <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i><div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div></a>
@@ -464,10 +509,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     <p style="margin-top:12px"><a href="mugs.html" style="text-decoration:underline">Continue shopping</a></p>
   </div>
   <div id="cartWrap" style="display:none">
+    <div class="cart-layout">
+    <div class="cart-items-scroll">
     <table class="cart-table">
       <thead><tr><th>Product</th><th>Price</th><th>Qty</th><th>Total</th></tr></thead>
       <tbody id="cartBody"></tbody>
     </table>
+    </div>
     <div class="cart-summary">
       <div class="row"><span>Subtotal</span><span id="cartSubtotal">£0.00</span></div>
       <div class="row"><span>Discount <small id="cartDiscountLabel">—</small></span><span id="cartDiscount">—</span></div>
@@ -479,7 +527,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <div class="row total"><span>Total</span><span id="cartTotal">£0.00</span></div>
       <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
       <button class="empty-btn" id="emptyBasket">Empty Basket</button>
-      <p style="font-size:12px;color:#555;margin-top:12px;line-height:1.5">Try code <strong>WELCOME10</strong> for 10% off. PayPal + Formbold will be connected next — SKUs, colours, sizes, notes and uploads are already captured.</p>
+      <p style="font-size:12px;color:#555;margin-top:12px;line-height:1.5">Try code <strong>WELCOME10</strong> for 10% off. PayPal + Formbold will be connected next — colours, sizes, notes and uploads are already captured for fulfilment.</p>
+    </div>
     </div>
   </div>
 </main>
@@ -591,7 +640,6 @@ function renderCart() {
         <div>
           <h4>${item.title||'Item'}</h4>
           <div class="meta">${meta.join(' · ')}</div>
-          <div class="sku">SKU: ${item.sku||item.id||'—'}</div>
           <button class="remove-btn" data-idx="${idx}">Remove</button>
         </div>
       </div></td>
