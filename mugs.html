@@ -1,131 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Custom Mugs | Hazel's Gift</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom Mugs | HG Customs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --text-dark: #000000;
+  --text-muted: #555555;
+  --bg-light: #f9f9f9;
+  --border-color: #e5e5e5;
+  --font-sans: 'Inter', sans-serif;
+  --font-script: 'Playfair Display', serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  color: var(--text-dark);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; height: auto; display: block; }
+
+.announcement-bar {
+  background: #000; color: #fff;
+  display: flex; justify-content: space-around;
+  padding: 12px 20px; font-size: 11px;
+  letter-spacing: 1px; text-transform: uppercase;
+  border-bottom: 1px solid #333;
+}
+.announcement-item { display: flex; align-items: center; gap: 10px; color: #fff; }
+.announcement-item i { font-size: 16px; }
+.announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
+
+.main-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 40px; border-bottom: 1px solid var(--border-color);
+  background: #fff; position: relative; z-index: 1000;
+}
+.logo img { height: 75px; display: block; }
+.nav-links { display: flex; list-style: none; gap: 28px; align-items: center; }
+.nav-links > li { position: relative; padding: 10px 0; }
+.nav-links > li > a {
+  font-weight: 700; font-size: 13px; letter-spacing: 1px;
+  padding-bottom: 4px;
+}
+.nav-links > li > a:hover,
+.nav-links > li.active > a { border-bottom: 2px solid #000; }
+.nav-links .dropdown {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  background: #fff; border: 1px solid var(--border-color);
+  min-width: 180px; padding: 8px 0; opacity: 0; visibility: hidden;
+  transition: all 0.2s; z-index: 50; box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.nav-links > li:hover .dropdown { opacity: 1; visibility: visible; }
+.nav-links .dropdown a {
+  display: block; padding: 10px 18px; font-size: 13px; font-weight: 400;
+}
+.nav-links .dropdown a:hover { background: var(--bg-light); }
+.header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
+.header-actions a { color: var(--text-dark); position: relative; }
+.cart-count {
+  position: absolute; top: -8px; right: -10px;
+  background: #000; color: #fff; font-size: 10px;
+  width: 16px; height: 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-weight: bold;
+}
+.mobile-toggle { display: none; font-size: 22px; cursor: pointer; background: none; border: none; }
+.mobile-nav {
+  display: none; background: #fff; border-bottom: 1px solid var(--border-color);
+  padding: 10px 20px 20px;
+}
+.mobile-nav.open { display: block; }
+.mobile-nav a {
+  display: block; padding: 12px 0; font-size: 14px; font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+.mobile-nav .sub { padding-left: 16px; font-weight: 400; font-size: 13px; }
+
+.main { max-width: 1200px; margin: 0 auto; padding: 48px 24px 60px; flex: 1; width: 100%; }
+.page-title {
+  font-size: 28px; text-transform: uppercase; letter-spacing: 1.5px;
+  text-align: center; margin-bottom: 10px;
+}
+.page-intro {
+  text-align: center; color: var(--text-muted); max-width: 520px;
+  margin: 0 auto 40px; font-size: 14px; line-height: 1.6;
+}
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.hub-tile {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: var(--bg-light);
+}
+.hub-tile img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.4s;
+}
+.hub-tile:hover img { transform: scale(1.05); }
+.hub-tile .overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 22px; color: #fff;
+}
+.hub-tile h3 {
+  font-size: 16px; text-transform: uppercase; letter-spacing: 1px;
+  font-weight: 700; margin-bottom: 4px;
+}
+.hub-tile span { font-size: 12px; opacity: 0.9; }
+
+.site-footer {
+  background: #fff; padding: 28px 40px;
+  border-top: 1px solid var(--border-color); margin-top: auto;
+}
+.footer-content {
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 1200px; margin: 0 auto;
+}
+.footer-copyright { font-size: 12px; color: var(--text-muted); }
+.footer-links { display: flex; list-style: none; gap: 28px; }
+.footer-links a { font-size: 12px; color: var(--text-muted); }
+.footer-links a:hover { color: var(--text-dark); }
+
+@media (max-width: 900px) {
+  .announcement-bar { flex-direction: column; gap: 10px; align-items: center; }
+  .main-header { padding: 15px 20px; }
+  .nav-links { display: none; }
+  .mobile-toggle { display: block; }
+  .hub-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .footer-content { flex-direction: column; gap: 16px; text-align: center; }
+}
+@media (max-width: 520px) {
+  .hub-grid { grid-template-columns: 1fr; }
+  .logo img { height: 60px; }
+}
+</style>
 </head>
 <body>
-  <div class="announcement-bar">Handmade with heart · Free UK shipping on orders over £50 · Personalised just for you</div>
 
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="logo">Hazel's Gift<span>Custom Gifts, Made from the Heart</span></a>
-      <ul class="nav-desktop">
-        <li><a href="index.html">Home</a></li>
-        <li class="active">
-          <a href="mugs.html" class="bold">Mugs</a>
-          <div class="dropdown">
-            <a href="mugs-pet.html">Pet</a>
-            <a href="mugs-our-designs.html">Our Designs</a>
-            <a href="mugs-tv-film.html">TV & Film</a>
-            <a href="mugs-occasions.html">Occasions</a>
-            <a href="mugs-seasonal.html">Seasonal</a>
-            <a href="mugs-custom.html">Custom Designs</a>
-          </div>
-        </li>
-        <li>
-          <a href="t-shirts.html" class="bold">T-Shirts & Hoodies</a>
-          <div class="dropdown"><a href="t-shirts.html">Custom Designs</a></div>
-        </li>
-        <li><a href="coasters.html" class="bold">Coasters</a></li>
-        <li><a href="merchandise.html" class="bold">Merch & Bulk</a></li>
-        <li><a href="about-us.html">About</a></li>
-        <li><a href="contact-us.html">Contact</a></li>
-      </ul>
-      <div class="header-actions">
-        <a href="cart.html" class="cart-link">🛒<span class="cart-badge" style="display:none">0</span></a>
-        <button class="mobile-toggle" aria-label="Menu">☰</button>
-      </div>
-    </div>
-    <nav class="mobile-nav" id="mobileNav">
-      <a href="index.html">Home</a>
-      <a href="mugs.html"><strong>Mugs</strong></a>
-      <a href="mugs-pet.html" class="sub">Pet</a>
-      <a href="mugs-our-designs.html" class="sub">Our Designs</a>
-      <a href="mugs-tv-film.html" class="sub">TV & Film</a>
-      <a href="mugs-occasions.html" class="sub">Occasions</a>
-      <a href="mugs-seasonal.html" class="sub">Seasonal</a>
-      <a href="mugs-custom.html" class="sub">Custom Designs</a>
-      <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
-      <a href="coasters.html"><strong>Coasters</strong></a>
-      <a href="merchandise.html"><strong>Merch & Bulk</strong></a>
-      <a href="about-us.html">About</a>
-      <a href="contact-us.html">Contact</a>
-      <a href="cart.html">Basket</a>
-    </nav>
-  </header>
+<div class="announcement-bar">
+  <a href="#" class="announcement-item">
+    <i class="fa-solid fa-truck"></i>
+    <div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div>
+  </a>
+  <a href="#" class="announcement-item">
+    <i class="fa-regular fa-clock"></i>
+    <div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div>
+  </a>
+  <a href="#" class="announcement-item">
+    <i class="fa-regular fa-circle-check"></i>
+    <div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div>
+  </a>
+</div>
 
-  <main class="main">
-    <h1 class="page-title">Custom Mugs</h1>
-    <p class="page-intro">Thoughtful mugs, made personal. From pets and passions to special moments and custom creations — find the perfect mug to gift or keep.</p>
-
-    <div class="hub-grid">
-      <a href="mugs-pet.html" class="hub-tile">
-        <img src="images/colour-splash-pet-mug-a.jpg" alt="Pet Mugs" />
-        <div class="overlay"><h3>Pet</h3><span>View Collection →</span></div>
-      </a>
-      <a href="mugs-our-designs.html" class="hub-tile">
-        <img src="images/perfectly-beautiful-mug.jpg" alt="Our Designs" />
-        <div class="overlay"><h3>Our Designs</h3><span>View Collection →</span></div>
-      </a>
-      <a href="mugs-tv-film.html" class="hub-tile">
-        <img src="images/worlds-best-boss-mug.jpg" alt="TV & Film" />
-        <div class="overlay"><h3>TV & Film</h3><span>View Collection →</span></div>
-      </a>
-      <a href="mugs-occasions.html" class="hub-tile">
-        <img src="images/happy-birthday-mug.jpg" alt="Occasions" />
-        <div class="overlay"><h3>Occasions</h3><span>View Collection →</span></div>
-      </a>
-      <a href="mugs-seasonal.html" class="hub-tile">
-        <img src="images/spooky-season-ghost-mug.jpg" alt="Seasonal" />
-        <div class="overlay"><h3>Seasonal</h3><span>View Collection →</span></div>
-      </a>
-      <a href="mugs-custom.html" class="hub-tile">
-        <img src="images/create-your-own-mug-a.jpg" alt="Custom Designs" />
-        <div class="overlay"><h3>Custom Designs</h3><span>View Collection →</span></div>
-      </a>
-    </div>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <a href="index.html" class="logo">Hazel's Gift</a>
-        <p>Handmade with heart. Custom merchandise made just for you.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Shop</h4>
+<header class="main-header">
+  <button class="mobile-toggle" id="menu-toggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+  <div class="logo">
+    <a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a>
+  </div>
+  <nav>
+    <ul class="nav-links">
+      <li class="active">
         <a href="mugs.html">Mugs</a>
+        <div class="dropdown">
+          <a href="mugs-pet.html">Pet</a>
+          <a href="mugs-our-designs.html">Our Designs</a>
+          <a href="mugs-tv-film.html">TV & Film</a>
+          <a href="mugs-occasions.html">Occasions</a>
+          <a href="mugs-seasonal.html">Seasonal</a>
+          <a href="mugs-custom.html">Custom Designs</a>
+        </div>
+      </li>
+      <li>
         <a href="t-shirts.html">T-Shirts & Hoodies</a>
-        <a href="coasters.html">Coasters</a>
-        <a href="merchandise.html">Merch & Bulk</a>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <a href="about-us.html">About Us</a>
-        <a href="contact-us.html">Contact</a>
-      </div>
-      <div class="footer-col">
-        <h4>Info</h4>
-        <a href="shipping-info.html">Shipping</a>
-        <a href="refund-policy.html">Refunds</a>
-        <a href="privacy-policy.html">Privacy</a>
-        <a href="terms-of-service.html">Terms</a>
-      </div>
-    </div>
-    <div class="footer-bottom">© 2026 Hazel's Gift. All rights reserved.</div>
-  </footer>
+        <div class="dropdown"><a href="t-shirts.html">Custom Designs</a></div>
+      </li>
+      <li><a href="coasters.html">Coasters</a></li>
+      <li><a href="merchandise.html">Merch & Bulk</a></li>
+      <li><a href="about-us.html">About</a></li>
+      <li><a href="contact-us.html">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="header-actions">
+    <a href="cart.html" class="cart-icon" aria-label="Cart">
+      <i class="fa-solid fa-basket-shopping"></i>
+      <span class="cart-count" id="cartBadge">0</span>
+    </a>
+  </div>
+</header>
 
-  <script src="js/cart.js"></script>
-  <script>
-    document.querySelector('.mobile-toggle').addEventListener('click', () => {
-      document.getElementById('mobileNav').classList.toggle('open');
-    });
-  </script>
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="mugs.html"><strong>Mugs</strong></a>
+  <a href="mugs-pet.html" class="sub">Pet</a>
+  <a href="mugs-our-designs.html" class="sub">Our Designs</a>
+  <a href="mugs-tv-film.html" class="sub">TV & Film</a>
+  <a href="mugs-occasions.html" class="sub">Occasions</a>
+  <a href="mugs-seasonal.html" class="sub">Seasonal</a>
+  <a href="mugs-custom.html" class="sub">Custom Designs</a>
+  <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
+  <a href="coasters.html"><strong>Coasters</strong></a>
+  <a href="merchandise.html"><strong>Merch & Bulk</strong></a>
+  <a href="about-us.html">About</a>
+  <a href="contact-us.html">Contact</a>
+  <a href="cart.html">Basket</a>
+</nav>
+
+<main class="main">
+  <h1 class="page-title">Custom Mugs</h1>
+  <p class="page-intro">Thoughtful mugs, made personal. From pets and passions to special moments and custom creations — find the perfect mug to gift or keep.</p>
+
+  <div class="hub-grid">
+    <a href="mugs-pet.html" class="hub-tile">
+      <img src="images/colour-splash-pet-mug-a.png" alt="Pet Mugs" onerror="this.parentElement.style.background='#f0f0f0'">
+      <div class="overlay"><h3>Pet</h3><span>View Collection →</span></div>
+    </a>
+    <a href="mugs-our-designs.html" class="hub-tile">
+      <img src="images/perfectly-beautiful-mug.png" alt="Our Designs" onerror="this.parentElement.style.background='#f0f0f0'">
+      <div class="overlay"><h3>Our Designs</h3><span>View Collection →</span></div>
+    </a>
+    <a href="mugs-tv-film.html" class="hub-tile">
+      <img src="images/worlds-best-boss-mug.png" alt="TV & Film" onerror="this.parentElement.style.background='#f0f0f0'">
+      <div class="overlay"><h3>TV & Film</h3><span>View Collection →</span></div>
+    </a>
+    <a href="mugs-occasions.html" class="hub-tile">
+      <img src="images/happy-birthday-mug.png" alt="Occasions" onerror="this.parentElement.style.background='#f0f0f0'">
+      <div class="overlay"><h3>Occasions</h3><span>View Collection →</span></div>
+    </a>
+    <a href="mugs-seasonal.html" class="hub-tile">
+      <img src="images/spooky-season-ghost-mug.png" alt="Seasonal" onerror="this.parentElement.style.background='#f0f0f0'">
+      <div class="overlay"><h3>Seasonal</h3><span>View Collection →</span></div>
+    </a>
+    <a href="mugs-custom.html" class="hub-tile">
+      <img src="images/create-your-own-mug-a.png" alt="Custom Designs" onerror="this.parentElement.style.background='#f0f0f0'">
+      <div class="overlay"><h3>Custom Designs</h3><span>View Collection →</span></div>
+    </a>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-content">
+    <div class="footer-copyright">&copy; 2026 HG Customs. All rights reserved.</div>
+    <ul class="footer-links">
+      <li><a href="shipping-info.html">Delivery Information</a></li>
+      <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      <li><a href="terms-of-service.html">Terms of Service</a></li>
+      <li><a href="refund-policy.html">Refund Policy</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+const CART_KEY = 'hg_cart';
+function getCart() {
+  try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; }
+}
+function updateCartBadge() {
+  const count = getCart().reduce((s, i) => s + (i.qty || 1), 0);
+  const el = document.getElementById('cartBadge');
+  if (el) { el.textContent = count; el.style.display = count > 0 ? 'flex' : 'none'; }
+}
+document.getElementById('menu-toggle').addEventListener('click', () => {
+  document.getElementById('mobileNav').classList.toggle('open');
+});
+updateCartBadge();
+</script>
 </body>
 </html>

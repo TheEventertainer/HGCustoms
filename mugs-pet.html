@@ -1,383 +1,732 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pet Mugs | Hazel's Gift</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pet Mugs | HG Customs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --text-dark: #000000;
+  --text-muted: #555555;
+  --bg-light: #f9f9f9;
+  --border-color: #e5e5e5;
+  --font-sans: 'Inter', sans-serif;
+  --font-script: 'Playfair Display', serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  color: var(--text-dark);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; height: auto; display: block; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+.announcement-bar {
+  background: #000; color: #fff;
+  display: flex; justify-content: space-around;
+  padding: 12px 20px; font-size: 11px;
+  letter-spacing: 1px; text-transform: uppercase;
+  border-bottom: 1px solid #333;
+}
+.announcement-item { display: flex; align-items: center; gap: 10px; color: #fff; }
+.announcement-item i { font-size: 16px; }
+.announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
+
+.main-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 40px; border-bottom: 1px solid var(--border-color);
+  background: #fff; position: relative; z-index: 1000;
+}
+.logo img { height: 75px; display: block; }
+.nav-links { display: flex; list-style: none; gap: 28px; align-items: center; }
+.nav-links > li { position: relative; padding: 10px 0; }
+.nav-links > li > a {
+  font-weight: 700; font-size: 13px; letter-spacing: 1px; padding-bottom: 4px;
+}
+.nav-links > li > a:hover,
+.nav-links > li.active > a { border-bottom: 2px solid #000; }
+.nav-links .dropdown {
+  position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  background: #fff; border: 1px solid var(--border-color);
+  min-width: 180px; padding: 8px 0; opacity: 0; visibility: hidden;
+  transition: all 0.2s; z-index: 50; box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+.nav-links > li:hover .dropdown { opacity: 1; visibility: visible; }
+.nav-links .dropdown a {
+  display: block; padding: 10px 18px; font-size: 13px; font-weight: 400;
+}
+.nav-links .dropdown a:hover { background: var(--bg-light); }
+.header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
+.header-actions a { color: var(--text-dark); position: relative; }
+.cart-count {
+  position: absolute; top: -8px; right: -10px;
+  background: #000; color: #fff; font-size: 10px;
+  width: 16px; height: 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-weight: bold;
+}
+.mobile-toggle { display: none; font-size: 22px; cursor: pointer; background: none; border: none; }
+.mobile-nav {
+  display: none; background: #fff; border-bottom: 1px solid var(--border-color);
+  padding: 10px 20px 20px;
+}
+.mobile-nav.open { display: block; }
+.mobile-nav a {
+  display: block; padding: 12px 0; font-size: 14px; font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+.mobile-nav .sub { padding-left: 16px; font-weight: 400; font-size: 13px; }
+
+.main { max-width: 1200px; margin: 0 auto; padding: 40px 24px 60px; flex: 1; width: 100%; }
+.page-title {
+  font-size: 26px; text-transform: uppercase; letter-spacing: 1.5px;
+  text-align: center; margin-bottom: 8px;
+}
+.page-intro {
+  text-align: center; color: var(--text-muted); max-width: 520px;
+  margin: 0 auto 36px; font-size: 14px; line-height: 1.6;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.product-card {
+  border: 1px solid var(--border-color);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+.product-card .img-wrap {
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--bg-light);
+}
+.product-card img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.4s;
+}
+.product-card:hover img { transform: scale(1.04); }
+.product-card .info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.product-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+.product-card .price {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.product-card .btn {
+  margin-top: auto;
+  background: #0d0d0d;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 12px 16px;
+  text-align: center;
+  transition: background 0.2s;
+}
+.product-card .btn:hover { background: #333; }
+
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #fff;
+  max-width: 900px;
+  width: 100%;
+  max-height: 92vh;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 12px; right: 14px;
+  font-size: 24px;
+  color: #666;
+  z-index: 5;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.modal-image {
+  background: var(--bg-light);
+  display: flex; align-items: center; justify-content: center;
+  padding: 30px;
+}
+.modal-image img { max-height: 400px; object-fit: contain; }
+.modal-body { padding: 28px 24px; }
+.modal-body h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.modal-price {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.modal-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+.colour-section { margin-bottom: 16px; }
+.colour-section label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 10px;
+  color: var(--text-muted);
+}
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; }
+.swatch {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  position: relative;
+}
+.swatch:hover { transform: scale(1.1); }
+.swatch.selected {
+  border-color: #000;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px #000;
+}
+.swatch.selected::after {
+  content: '✓';
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 11px; font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+.colour-disclaimer {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 10px 0 16px;
+  line-height: 1.4;
+}
+.qty-row {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+}
+.qty-row button {
+  width: 32px; height: 32px;
+  border: 1px solid var(--border-color);
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.upload-area {
+  border: 1.5px dashed var(--border-color);
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 14px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.upload-area:hover { border-color: #000; }
+.notes-field textarea {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  padding: 10px;
+  font-family: inherit;
+  font-size: 13px;
+  min-height: 70px;
+  resize: vertical;
+}
+.add-btn {
+  width: 100%;
+  background: #0d0d0d;
+  color: #fff;
+  padding: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 18px;
+  transition: background 0.2s;
+}
+.add-btn:hover { background: #333; }
+
+.toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%);
+  background: #0d0d0d; color: #fff;
+  padding: 12px 24px; font-size: 13px;
+  z-index: 3000; opacity: 0; transition: opacity 0.3s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; }
+
+.site-footer {
+  background: #fff; padding: 28px 40px;
+  border-top: 1px solid var(--border-color); margin-top: auto;
+}
+.footer-content {
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 1200px; margin: 0 auto;
+}
+.footer-copyright { font-size: 12px; color: var(--text-muted); }
+.footer-links { display: flex; list-style: none; gap: 28px; }
+.footer-links a { font-size: 12px; color: var(--text-muted); }
+
+@media (max-width: 900px) {
+  .announcement-bar { flex-direction: column; gap: 10px; align-items: center; }
+  .main-header { padding: 15px 20px; }
+  .nav-links { display: none; }
+  .mobile-toggle { display: block; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .modal { grid-template-columns: 1fr; }
+  .footer-content { flex-direction: column; gap: 16px; text-align: center; }
+}
+@media (max-width: 520px) {
+  .product-grid { grid-template-columns: 1fr; }
+  .logo img { height: 60px; }
+}
+</style>
 </head>
 <body>
-  <div class="announcement-bar">Handmade with heart · Free UK shipping on orders over £50 · Personalised just for you</div>
 
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="logo">Hazel's Gift<span>Custom Gifts, Made from the Heart</span></a>
-      <ul class="nav-desktop">
-        <li><a href="index.html">Home</a></li>
-        <li class="active">
-          <a href="mugs.html" class="bold">Mugs</a>
-          <div class="dropdown">
-            <a href="mugs-pet.html">Pet</a>
-            <a href="mugs-our-designs.html">Our Designs</a>
-            <a href="mugs-tv-film.html">TV & Film</a>
-            <a href="mugs-occasions.html">Occasions</a>
-            <a href="mugs-seasonal.html">Seasonal</a>
-            <a href="mugs-custom.html">Custom Designs</a>
-          </div>
-        </li>
-        <li><a href="t-shirts.html" class="bold">T-Shirts & Hoodies</a></li>
-        <li><a href="coasters.html" class="bold">Coasters</a></li>
-        <li><a href="merchandise.html" class="bold">Merch & Bulk</a></li>
-        <li><a href="about-us.html">About</a></li>
-        <li><a href="contact-us.html">Contact</a></li>
-      </ul>
-      <div class="header-actions">
-        <a href="cart.html" class="cart-link">🛒<span class="cart-badge" style="display:none">0</span></a>
-        <button class="mobile-toggle" aria-label="Menu">☰</button>
-      </div>
+<div class="announcement-bar">
+  <a href="#" class="announcement-item">
+    <i class="fa-solid fa-truck"></i>
+    <div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div>
+  </a>
+  <a href="#" class="announcement-item">
+    <i class="fa-regular fa-clock"></i>
+    <div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div>
+  </a>
+  <a href="#" class="announcement-item">
+    <i class="fa-regular fa-circle-check"></i>
+    <div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div>
+  </a>
+</div>
+
+<header class="main-header">
+  <button class="mobile-toggle" id="menu-toggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+  <div class="logo">
+    <a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a>
+  </div>
+  <nav>
+    <ul class="nav-links">
+      <li class="active">
+        <a href="mugs.html">Mugs</a>
+        <div class="dropdown">
+          <a href="mugs-pet.html">Pet</a>
+          <a href="mugs-our-designs.html">Our Designs</a>
+          <a href="mugs-tv-film.html">TV & Film</a>
+          <a href="mugs-occasions.html">Occasions</a>
+          <a href="mugs-seasonal.html">Seasonal</a>
+          <a href="mugs-custom.html">Custom Designs</a>
+        </div>
+      </li>
+      <li>
+        <a href="t-shirts.html">T-Shirts & Hoodies</a>
+        <div class="dropdown"><a href="t-shirts.html">Custom Designs</a></div>
+      </li>
+      <li><a href="coasters.html">Coasters</a></li>
+      <li><a href="merchandise.html">Merch & Bulk</a></li>
+      <li><a href="about-us.html">About</a></li>
+      <li><a href="contact-us.html">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="header-actions">
+    <a href="cart.html" class="cart-icon" aria-label="Cart">
+      <i class="fa-solid fa-basket-shopping"></i>
+      <span class="cart-count" id="cartBadge">0</span>
+    </a>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="mugs.html"><strong>Mugs</strong></a>
+  <a href="mugs-pet.html" class="sub">Pet</a>
+  <a href="mugs-our-designs.html" class="sub">Our Designs</a>
+  <a href="mugs-tv-film.html" class="sub">TV & Film</a>
+  <a href="mugs-occasions.html" class="sub">Occasions</a>
+  <a href="mugs-seasonal.html" class="sub">Seasonal</a>
+  <a href="mugs-custom.html" class="sub">Custom Designs</a>
+  <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
+  <a href="coasters.html"><strong>Coasters</strong></a>
+  <a href="merchandise.html"><strong>Merch & Bulk</strong></a>
+  <a href="about-us.html">About</a>
+  <a href="contact-us.html">Contact</a>
+  <a href="cart.html">Basket</a>
+</nav>
+
+<main class="main">
+  <h1 class="page-title">Pet Mugs</h1>
+  <p class="page-intro">Celebrate your furry best friend with a personalised mug made just for them. Beautiful, practical and full of love.</p>
+  <div class="product-grid" id="productGrid"></div>
+</main>
+
+<!-- Customisation Modal -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <button class="modal-close" id="closeModal" aria-label="Close">×</button>
+    <div class="modal-image">
+      <img id="modalImg" src="" alt="">
     </div>
-    <nav class="mobile-nav" id="mobileNav">
-      <a href="index.html">Home</a>
-      <a href="mugs.html"><strong>Mugs</strong></a>
-      <a href="mugs-pet.html" class="sub">Pet</a>
-      <a href="mugs-our-designs.html" class="sub">Our Designs</a>
-      <a href="mugs-tv-film.html" class="sub">TV & Film</a>
-      <a href="mugs-occasions.html" class="sub">Occasions</a>
-      <a href="mugs-seasonal.html" class="sub">Seasonal</a>
-      <a href="mugs-custom.html" class="sub">Custom Designs</a>
-      <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
-      <a href="coasters.html"><strong>Coasters</strong></a>
-      <a href="merchandise.html"><strong>Merch & Bulk</strong></a>
-      <a href="about-us.html">About</a>
-      <a href="contact-us.html">Contact</a>
-      <a href="cart.html">Basket</a>
-    </nav>
-  </header>
+    <div class="modal-body">
+      <h2 id="modalTitle"></h2>
+      <div class="modal-price" id="modalPrice"></div>
+      <p class="modal-desc" id="modalDesc"></p>
 
-  <main class="main">
-    <h1 class="page-title">Pet Mugs</h1>
-    <p class="page-intro">Celebrate your furry best friend with a personalised mug made just for them. Beautiful, practical and full of love.</p>
-
-    <div class="product-grid" id="productGrid">
-      <!-- Products injected by JS for clarity, or hard-coded below -->
-    </div>
-  </main>
-
-  <!-- Customisation Modal -->
-  <div class="modal-overlay" id="productModal">
-    <div class="modal" style="position:relative">
-      <button class="modal-close" id="closeModal">×</button>
-      <div class="modal-image">
-        <img id="modalImg" src="" alt="" />
+      <div class="colour-section" id="mugColourSection">
+        <label>Mug Colour (Inner & Handle)</label>
+        <div class="swatches" id="mugSwatches"></div>
       </div>
-      <div class="modal-body">
-        <h2 id="modalTitle"></h2>
-        <div class="modal-price" id="modalPrice"></div>
-        <p class="modal-desc" id="modalDesc"></p>
 
-        <div class="colour-section" id="mugColourSection">
-          <label>Mug Colour (Inner & Handle)</label>
-          <div class="swatches" id="mugSwatches"></div>
-        </div>
-
-        <div class="colour-section" id="bgColourSection" style="display:none">
-          <label>Background Splash Colour</label>
-          <div class="swatches" id="bgSwatches"></div>
-        </div>
-
-        <p class="colour-disclaimer">Please note: Colours shown on screen are a close representation. Slight variations may occur due to manufacturing processes, screen settings, and the nature of sublimation printing.</p>
-
-        <div class="colour-section">
-          <label>Quantity</label>
-          <div class="qty-control">
-            <button type="button" id="qtyMinus">−</button>
-            <span id="qtyValue">1</span>
-            <button type="button" id="qtyPlus">+</button>
-          </div>
-        </div>
-
-        <div class="upload-area" id="uploadArea" style="display:none">
-          <p>📷 Click to upload or drag & drop your pet photo<br><small>PNG or JPG, max 10MB</small></p>
-          <input type="file" id="fileInput" accept="image/*" style="display:none" />
-        </div>
-        <div id="uploadStatus" style="font-size:12px;color:var(--success);margin-bottom:12px;display:none"></div>
-
-        <div class="notes-field">
-          <label style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);display:block;margin-bottom:8px">Notes (optional)</label>
-          <textarea id="notesField" placeholder="Any special requests or instructions..."></textarea>
-        </div>
-
-        <button class="btn-primary" id="addToBasketBtn" style="margin-top:20px">Add to Basket</button>
+      <div class="colour-section" id="bgColourSection" style="display:none">
+        <label>Background Splash Colour</label>
+        <div class="swatches" id="bgSwatches"></div>
       </div>
+
+      <p class="colour-disclaimer">Please note: Colours shown on screen are a close representation. Slight variations may occur due to manufacturing processes, screen settings, and the nature of sublimation printing.</p>
+
+      <div class="colour-section">
+        <label>Quantity</label>
+        <div class="qty-row">
+          <button type="button" id="qtyMinus">−</button>
+          <span id="qtyValue">1</span>
+          <button type="button" id="qtyPlus">+</button>
+        </div>
+      </div>
+
+      <div class="upload-area" id="uploadArea" style="display:none">
+        📷 Click to upload your pet photo<br>
+        <small>PNG or JPG, max 10MB</small>
+        <input type="file" id="fileInput" accept="image/*" style="display:none">
+      </div>
+      <div id="uploadStatus" style="font-size:12px;color:#2a7;margin-bottom:10px;display:none"></div>
+
+      <div class="notes-field">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);display:block;margin-bottom:8px">Notes (optional)</label>
+        <textarea id="notesField" placeholder="Any special requests or instructions..."></textarea>
+      </div>
+
+      <button class="add-btn" id="addToBasketBtn">Add to Basket</button>
     </div>
   </div>
+</div>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <a href="index.html" class="logo">Hazel's Gift</a>
-        <p>Handmade with heart. Custom merchandise made just for you.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Shop</h4>
-        <a href="mugs.html">Mugs</a>
-        <a href="t-shirts.html">T-Shirts & Hoodies</a>
-        <a href="coasters.html">Coasters</a>
-        <a href="merchandise.html">Merch & Bulk</a>
-      </div>
-      <div class="footer-col">
-        <h4>Company</h4>
-        <a href="about-us.html">About Us</a>
-        <a href="contact-us.html">Contact</a>
-      </div>
-      <div class="footer-col">
-        <h4>Info</h4>
-        <a href="shipping-info.html">Shipping</a>
-        <a href="refund-policy.html">Refunds</a>
-        <a href="privacy-policy.html">Privacy</a>
-        <a href="terms-of-service.html">Terms</a>
-      </div>
-    </div>
-    <div class="footer-bottom">© 2026 Hazel's Gift. All rights reserved.</div>
-  </footer>
+<div class="toast" id="toast"></div>
 
-  <script src="js/cart.js"></script>
-  <script>
-    // Product data for Pet mugs
-    const products = [
-      {
-        id: 'HG-MUG-PET-001',
-        title: 'Colour Splash Personalised Pet Mug',
-        price: 10.00,
-        desc: 'Turn your pets into a mug you’ll treasure! Upload a photo of your dog, cat or any other pet and we’ll transform it into a beautiful colour-splash portrait design.',
-        imgA: 'images/colour-splash-pet-mug-a.jpg',
-        imgB: 'images/colour-splash-pet-mug-b.jpg',
-        colours: true,
-        bgSplash: true,
-        upload: true
-      },
-      {
-        id: 'HG-MUG-PET-002',
-        title: 'Trouble Maker Personalised Pet Mug',
-        price: 10.00,
-        desc: 'Celebrate your mischievous pets with a mug made just for them! Upload photos and we’ll create a detailed illustrated portrait finished with the playful “Established Troublemakers” design.',
-        imgA: 'images/trouble-maker-pet-mug-a.jpg',
-        imgB: 'images/trouble-maker-pet-mug-b.jpg',
-        colours: true,
-        bgSplash: false,
-        upload: true
-      },
-      {
-        id: 'HG-MUG-PET-003',
-        title: 'Life is Better Personalised Pet Mug',
-        price: 10.00,
-        desc: 'Celebrate the special bond you share with your beloved pet. Upload a photo and we’ll transform it into a beautiful personalised illustrated portrait finished with “Life is better with you”.',
-        imgA: 'images/life-is-better-pet-mug-a.jpg',
-        imgB: 'images/life-is-better-pet-mug-b.jpg',
-        colours: true,
-        bgSplash: false,
-        upload: true
-      },
-      {
-        id: 'HG-MUG-PET-004',
-        title: 'Flower Field Personalised Pet Mug',
-        price: 10.00,
-        desc: 'Turn your favourite four-legged friend into a mug you’ll treasure! Upload a photo and we’ll transform it into a beautiful floral portrait design surrounded by delicate wildflowers.',
-        imgA: 'images/flower-field-pet-mug-a.jpg',
-        imgB: 'images/flower-field-pet-mug-b.jpg',
-        colours: true,
-        bgSplash: false,
-        upload: true
-      },
-      {
-        id: 'HG-MUG-PET-005',
-        title: 'My Shadow Personalised Pet Mug',
-        price: 10.00,
-        desc: 'Celebrate the pets who are always by your side. Upload photos and we’ll create a beautiful personalised illustrated portrait surrounded by the heartfelt words “My Shadows, My Heart”.',
-        imgA: 'images/my-shadow-pet-mug-a.jpg',
-        imgB: 'images/my-shadow-pet-mug-b.jpg',
-        colours: true,
-        bgSplash: false,
-        upload: true
-      },
-      {
-        id: 'HG-MUG-PET-006',
-        title: 'Outside Feels Like Home Mug',
-        price: 8.00,
-        desc: 'For those who feel most at home in the great outdoors. A peaceful mountain and woodland scene — the perfect companion for slow mornings and cosy moments.',
-        imgA: 'images/outside-feels-like-home-mug.jpg',
-        imgB: 'images/outside-feels-like-home-mug.jpg',
-        colours: false,
-        bgSplash: false,
-        upload: false
-      }
-    ];
+<footer class="site-footer">
+  <div class="footer-content">
+    <div class="footer-copyright">&copy; 2026 HG Customs. All rights reserved.</div>
+    <ul class="footer-links">
+      <li><a href="shipping-info.html">Delivery Information</a></li>
+      <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      <li><a href="terms-of-service.html">Terms of Service</a></li>
+      <li><a href="refund-policy.html">Refund Policy</a></li>
+    </ul>
+  </div>
+</footer>
 
-    const mugColours = [
-      { name: 'White', hex: '#ffffff' },
-      { name: 'Black', hex: '#1a1a1a' },
-      { name: 'Grey', hex: '#8a8a8a' },
-      { name: 'Dark Green', hex: '#2d5a3d' },
-      { name: 'Dark Blue', hex: '#1e3a6e' },
-      { name: 'Pink', hex: '#e8a0b0' },
-      { name: 'Sage', hex: '#9caf88' }
-    ];
+<script>
+const CART_KEY = 'hg_cart';
+function getCart() {
+  try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; }
+}
+function saveCart(cart) {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  updateCartBadge();
+}
+function updateCartBadge() {
+  const count = getCart().reduce((s, i) => s + (i.qty || 1), 0);
+  const el = document.getElementById('cartBadge');
+  if (el) { el.textContent = count; el.style.display = count > 0 ? 'flex' : 'none'; }
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+function addToCart(product) {
+  const cart = getCart();
+  cart.push(product);
+  saveCart(cart);
+  showToast('Added to basket');
+}
 
-    const bgColours = [
-      { name: 'Beige', hex: '#D6B597' },
-      { name: 'Grey', hex: '#B9BDC4' },
-      { name: 'Sage Green', hex: '#B7BFA8' },
-      { name: 'Dusty Pink', hex: '#D1B2B6' },
-      { name: 'Taupe', hex: '#B7A08C' },
-      { name: 'Dusty Blue', hex: '#8FA3BE' },
-      { name: 'Lavender', hex: '#C2B3D1' },
-      { name: 'Terracotta', hex: '#C78F7B' },
-      { name: 'Cream', hex: '#F0E5D1' },
-      { name: 'Olive Green', hex: '#8E9480' },
-      { name: 'Caramel', hex: '#B78D6B' },
-      { name: 'Slate Blue', hex: '#6E778E' },
-      { name: 'Muted Mint', hex: '#B7C7C2' },
-      { name: 'Warm Sand', hex: '#E2C9AA' },
-      { name: 'Mauve', hex: '#B9A6B8' },
-      { name: 'Charcoal', hex: '#585858' }
-    ];
+const products = [
+  {
+    id: 'HG-MUG-PET-001',
+    title: 'Colour Splash Personalised Pet Mug',
+    price: 10.00,
+    desc: 'Turn your pets into a mug you’ll treasure! Upload a photo of your dog, cat or any other pet and we’ll transform it into a beautiful colour-splash portrait design.',
+    imgA: 'images/colour-splash-pet-mug-a.png',
+    imgB: 'images/colour-splash-pet-mug-b.png',
+    colours: true,
+    bgSplash: true,
+    upload: true
+  },
+  {
+    id: 'HG-MUG-PET-002',
+    title: 'Trouble Maker Personalised Pet Mug',
+    price: 10.00,
+    desc: 'Celebrate your mischievous pets with a mug made just for them! Upload photos and we’ll create a detailed illustrated portrait finished with the playful “Established Troublemakers” design.',
+    imgA: 'images/trouble-maker-pet-mug-a.png',
+    imgB: 'images/trouble-maker-pet-mug-b.png',
+    colours: true,
+    bgSplash: false,
+    upload: true
+  },
+  {
+    id: 'HG-MUG-PET-003',
+    title: 'Life is Better Personalised Pet Mug',
+    price: 10.00,
+    desc: 'Celebrate the special bond you share with your beloved pet. Upload a photo and we’ll transform it into a beautiful personalised illustrated portrait finished with “Life is better with you”.',
+    imgA: 'images/life-is-better-pet-mug-a.png',
+    imgB: 'images/life-is-better-pet-mug-b.png',
+    colours: true,
+    bgSplash: false,
+    upload: true
+  },
+  {
+    id: 'HG-MUG-PET-004',
+    title: 'Flower Field Personalised Pet Mug',
+    price: 10.00,
+    desc: 'Turn your favourite four-legged friend into a mug you’ll treasure! Upload a photo and we’ll transform it into a beautiful floral portrait design surrounded by delicate wildflowers.',
+    imgA: 'images/flower-field-pet-mug-a.png',
+    imgB: 'images/flower-field-pet-mug-b.png',
+    colours: true,
+    bgSplash: false,
+    upload: true
+  },
+  {
+    id: 'HG-MUG-PET-005',
+    title: 'My Shadow Personalised Pet Mug',
+    price: 10.00,
+    desc: 'Celebrate the pets who are always by your side. Upload photos and we’ll create a beautiful personalised illustrated portrait surrounded by the heartfelt words “My Shadows, My Heart”.',
+    imgA: 'images/my-shadow-pet-mug-a.png',
+    imgB: 'images/my-shadow-pet-mug-b.png',
+    colours: true,
+    bgSplash: false,
+    upload: true
+  },
+  {
+    id: 'HG-MUG-PET-006',
+    title: 'Outside Feels Like Home Mug',
+    price: 8.00,
+    desc: 'For those who feel most at home in the great outdoors. A peaceful mountain and woodland scene — the perfect companion for slow mornings and cosy moments.',
+    imgA: 'images/outside-feels-like-home-mug.png',
+    imgB: 'images/outside-feels-like-home-mug.png',
+    colours: false,
+    bgSplash: false,
+    upload: false
+  }
+];
 
-    let currentProduct = null;
-    let selectedMugColour = mugColours[0];
-    let selectedBgColour = bgColours[0];
-    let qty = 1;
-    let uploadedUrl = '';
+const mugColours = [
+  { name: 'White', hex: '#ffffff' },
+  { name: 'Black', hex: '#1a1a1a' },
+  { name: 'Grey', hex: '#8a8a8a' },
+  { name: 'Dark Green', hex: '#2d5a3d' },
+  { name: 'Dark Blue', hex: '#1e3a6e' },
+  { name: 'Pink', hex: '#e8a0b0' },
+  { name: 'Sage', hex: '#9caf88' }
+];
 
-    // Render product cards
-    const grid = document.getElementById('productGrid');
-    products.forEach((p, i) => {
-      const card = document.createElement('div');
-      card.className = 'product-card';
-      card.innerHTML = `
-        <div class="img-wrap"><img src="${p.imgA}" alt="${p.title}" /></div>
-        <div class="info">
-          <h3>${p.title}</h3>
-          <div class="price">£${p.price.toFixed(2)}</div>
-          <button class="btn" data-index="${i}">Personalise</button>
-        </div>`;
-      grid.appendChild(card);
+const bgColours = [
+  { name: 'Beige', hex: '#D6B597' },
+  { name: 'Grey', hex: '#B9BDC4' },
+  { name: 'Sage Green', hex: '#B7BFA8' },
+  { name: 'Dusty Pink', hex: '#D1B2B6' },
+  { name: 'Taupe', hex: '#B7A08C' },
+  { name: 'Dusty Blue', hex: '#8FA3BE' },
+  { name: 'Lavender', hex: '#C2B3D1' },
+  { name: 'Terracotta', hex: '#C78F7B' },
+  { name: 'Cream', hex: '#F0E5D1' },
+  { name: 'Olive Green', hex: '#8E9480' },
+  { name: 'Caramel', hex: '#B78D6B' },
+  { name: 'Slate Blue', hex: '#6E778E' },
+  { name: 'Muted Mint', hex: '#B7C7C2' },
+  { name: 'Warm Sand', hex: '#E2C9AA' },
+  { name: 'Mauve', hex: '#B9A6B8' },
+  { name: 'Charcoal', hex: '#585858' }
+];
+
+let currentProduct = null;
+let selectedMugColour = mugColours[0];
+let selectedBgColour = bgColours[0];
+let qty = 1;
+let uploadedUrl = '';
+
+const grid = document.getElementById('productGrid');
+products.forEach((p, i) => {
+  const card = document.createElement('div');
+  card.className = 'product-card';
+  card.innerHTML = `
+    <div class="img-wrap"><img src="${p.imgA}" alt="${p.title}" onerror="this.style.opacity=0.3"></div>
+    <div class="info">
+      <h3>${p.title}</h3>
+      <div class="price">£${p.price.toFixed(2)}</div>
+      <button class="btn" data-index="${i}">Personalise</button>
+    </div>`;
+  grid.appendChild(card);
+});
+
+grid.addEventListener('click', e => {
+  const btn = e.target.closest('[data-index]');
+  if (!btn) return;
+  openModal(products[+btn.dataset.index]);
+});
+
+function openModal(p) {
+  currentProduct = p;
+  qty = 1;
+  uploadedUrl = '';
+  selectedMugColour = mugColours[0];
+  selectedBgColour = bgColours[0];
+
+  document.getElementById('modalImg').src = p.imgB || p.imgA;
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalPrice').textContent = '£' + p.price.toFixed(2);
+  document.getElementById('modalDesc').textContent = p.desc;
+  document.getElementById('qtyValue').textContent = '1';
+  document.getElementById('notesField').value = '';
+  document.getElementById('uploadStatus').style.display = 'none';
+
+  const mugSec = document.getElementById('mugColourSection');
+  const mugSw = document.getElementById('mugSwatches');
+  mugSw.innerHTML = '';
+  if (p.colours) {
+    mugSec.style.display = 'block';
+    mugColours.forEach((c, i) => {
+      const s = document.createElement('div');
+      s.className = 'swatch' + (i === 0 ? ' selected' : '');
+      s.style.background = c.hex;
+      if (c.name === 'White') s.style.border = '1px solid #ccc';
+      s.title = c.name;
+      s.onclick = () => {
+        mugSw.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
+        s.classList.add('selected');
+        selectedMugColour = c;
+      };
+      mugSw.appendChild(s);
     });
+  } else {
+    mugSec.style.display = 'none';
+  }
 
-    // Open modal
-    grid.addEventListener('click', e => {
-      const btn = e.target.closest('[data-index]');
-      if (!btn) return;
-      openModal(products[btn.dataset.index]);
+  const bgSec = document.getElementById('bgColourSection');
+  const bgSw = document.getElementById('bgSwatches');
+  bgSw.innerHTML = '';
+  if (p.bgSplash) {
+    bgSec.style.display = 'block';
+    bgColours.forEach((c, i) => {
+      const s = document.createElement('div');
+      s.className = 'swatch' + (i === 0 ? ' selected' : '');
+      s.style.background = c.hex;
+      s.title = c.name;
+      s.onclick = () => {
+        bgSw.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
+        s.classList.add('selected');
+        selectedBgColour = c;
+      };
+      bgSw.appendChild(s);
     });
+  } else {
+    bgSec.style.display = 'none';
+  }
 
-    function openModal(p) {
-      currentProduct = p;
-      qty = 1;
-      uploadedUrl = '';
-      selectedMugColour = mugColours[0];
-      selectedBgColour = bgColours[0];
+  document.getElementById('uploadArea').style.display = p.upload ? 'block' : 'none';
+  document.getElementById('productModal').classList.add('open');
+}
 
-      document.getElementById('modalImg').src = p.imgB || p.imgA;
-      document.getElementById('modalTitle').textContent = p.title;
-      document.getElementById('modalPrice').textContent = '£' + p.price.toFixed(2);
-      document.getElementById('modalDesc').textContent = p.desc;
-      document.getElementById('qtyValue').textContent = '1';
-      document.getElementById('notesField').value = '';
-      document.getElementById('uploadStatus').style.display = 'none';
+document.getElementById('closeModal').onclick = () => {
+  document.getElementById('productModal').classList.remove('open');
+};
+document.getElementById('productModal').addEventListener('click', e => {
+  if (e.target.id === 'productModal') document.getElementById('productModal').classList.remove('open');
+});
 
-      // Mug colours
-      const mugSec = document.getElementById('mugColourSection');
-      const mugSw = document.getElementById('mugSwatches');
-      mugSw.innerHTML = '';
-      if (p.colours) {
-        mugSec.style.display = 'block';
-        mugColours.forEach((c, i) => {
-          const s = document.createElement('div');
-          s.className = 'swatch' + (i === 0 ? ' selected' : '');
-          s.style.background = c.hex;
-          if (c.name === 'White') s.style.border = '1px solid #ddd';
-          s.title = c.name;
-          s.onclick = () => {
-            mugSw.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
-            s.classList.add('selected');
-            selectedMugColour = c;
-          };
-          mugSw.appendChild(s);
-        });
-      } else {
-        mugSec.style.display = 'none';
-      }
+document.getElementById('qtyMinus').onclick = () => {
+  qty = Math.max(1, qty - 1);
+  document.getElementById('qtyValue').textContent = qty;
+};
+document.getElementById('qtyPlus').onclick = () => {
+  qty++;
+  document.getElementById('qtyValue').textContent = qty;
+};
 
-      // Background splash
-      const bgSec = document.getElementById('bgColourSection');
-      const bgSw = document.getElementById('bgSwatches');
-      bgSw.innerHTML = '';
-      if (p.bgSplash) {
-        bgSec.style.display = 'block';
-        bgColours.forEach((c, i) => {
-          const s = document.createElement('div');
-          s.className = 'swatch' + (i === 0 ? ' selected' : '');
-          s.style.background = c.hex;
-          s.title = c.name;
-          s.onclick = () => {
-            bgSw.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
-            s.classList.add('selected');
-            selectedBgColour = c;
-          };
-          bgSw.appendChild(s);
-        });
-      } else {
-        bgSec.style.display = 'none';
-      }
+document.getElementById('uploadArea').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = e => {
+  const file = e.target.files[0];
+  if (file) {
+    uploadedUrl = file.name; // placeholder – wire Cloudinary later
+    document.getElementById('uploadStatus').style.display = 'block';
+    document.getElementById('uploadStatus').textContent = '✓ ' + file.name + ' ready';
+  }
+};
 
-      document.getElementById('uploadArea').style.display = p.upload ? 'block' : 'none';
-      document.getElementById('productModal').classList.add('open');
-    }
+document.getElementById('addToBasketBtn').onclick = () => {
+  if (!currentProduct) return;
+  addToCart({
+    id: currentProduct.id,
+    title: currentProduct.title,
+    price: currentProduct.price,
+    qty: qty,
+    colour: currentProduct.colours ? selectedMugColour.name : null,
+    backgroundColour: currentProduct.bgSplash ? selectedBgColour.name : null,
+    notes: document.getElementById('notesField').value.trim(),
+    image: currentProduct.imgA,
+    uploadUrl: uploadedUrl,
+    sku: currentProduct.id
+  });
+  document.getElementById('productModal').classList.remove('open');
+};
 
-    document.getElementById('closeModal').onclick = () => {
-      document.getElementById('productModal').classList.remove('open');
-    };
-    document.getElementById('productModal').addEventListener('click', e => {
-      if (e.target.id === 'productModal') document.getElementById('productModal').classList.remove('open');
-    });
-
-    document.getElementById('qtyMinus').onclick = () => { qty = Math.max(1, qty - 1); document.getElementById('qtyValue').textContent = qty; };
-    document.getElementById('qtyPlus').onclick = () => { qty++; document.getElementById('qtyValue').textContent = qty; };
-
-    // Simple file select (Cloudinary can be wired later)
-    document.getElementById('uploadArea').onclick = () => document.getElementById('fileInput').click();
-    document.getElementById('fileInput').onchange = e => {
-      const file = e.target.files[0];
-      if (file) {
-        uploadedUrl = 'local:' + file.name; // placeholder – replace with real Cloudinary upload
-        document.getElementById('uploadStatus').style.display = 'block';
-        document.getElementById('uploadStatus').textContent = '✓ ' + file.name + ' ready';
-      }
-    };
-
-    document.getElementById('addToBasketBtn').onclick = () => {
-      if (!currentProduct) return;
-      addToCart({
-        id: currentProduct.id,
-        title: currentProduct.title,
-        price: currentProduct.price,
-        qty: qty,
-        colour: currentProduct.colours ? selectedMugColour.name : null,
-        backgroundColour: currentProduct.bgSplash ? selectedBgColour.name : null,
-        notes: document.getElementById('notesField').value.trim(),
-        image: currentProduct.imgA,
-        uploadUrl: uploadedUrl,
-        sku: currentProduct.id
-      });
-      document.getElementById('productModal').classList.remove('open');
-    };
-
-    document.querySelector('.mobile-toggle').addEventListener('click', () => {
-      document.getElementById('mobileNav').classList.toggle('open');
-    });
-  </script>
+document.getElementById('menu-toggle').addEventListener('click', () => {
+  document.getElementById('mobileNav').classList.toggle('open');
+});
+updateCartBadge();
+</script>
 </body>
 </html>

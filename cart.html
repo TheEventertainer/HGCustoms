@@ -1,486 +1,342 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Basket | HG Customs</title>
-    <!-- Google Fonts & FontAwesome -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- PayPal SDK using Sandbox demo mode 'sb' for instant visibility -->
-    <script src="https://www.paypal.com/sdk/js?client-id=sb&currency=GBP"></script>
-    
-    <style>
-        :root {
-            --text-dark: #000000;
-            --text-muted: #555555;
-            --bg-light: #f9f9f9;
-            --border-color: #e5e5e5;
-            --font-sans: 'Inter', sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Basket | HG Customs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --text-dark: #000000;
+  --text-muted: #555555;
+  --bg-light: #f9f9f9;
+  --border-color: #e5e5e5;
+  --font-sans: 'Inter', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-sans);
+  color: var(--text-dark);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; height: auto; display: block; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-sans); display: flex; flex-direction: column; min-height: 100vh; color: var(--text-dark); background-color: #ffffff; -webkit-font-smoothing: antialiased; }
+.announcement-bar {
+  background: #000; color: #fff;
+  display: flex; justify-content: space-around;
+  padding: 12px 20px; font-size: 11px;
+  letter-spacing: 1px; text-transform: uppercase;
+  border-bottom: 1px solid #333;
+}
+.announcement-item { display: flex; align-items: center; gap: 10px; color: #fff; }
+.announcement-item i { font-size: 16px; }
+.announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
 
-        /* --- Announcement Bar --- */
-        .announcement-bar { background-color: #000000; color: #ffffff; display: flex; justify-content: space-around; padding: 12px 20px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid #333; }
-        .announcement-item { display: flex; align-items: center; gap: 10px; color: #ffffff; text-decoration: none; }
-        .announcement-item i { font-size: 16px; }
-        .announcement-text span { display: block; color: #ccc; font-size: 10px; text-transform: none; margin-top: 2px; }
+.main-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 40px; border-bottom: 1px solid var(--border-color);
+  background: #fff; position: relative; z-index: 1000;
+}
+.logo img { height: 75px; display: block; }
+.nav-links { display: flex; list-style: none; gap: 28px; align-items: center; }
+.nav-links > li { position: relative; padding: 10px 0; }
+.nav-links > li > a {
+  font-weight: 700; font-size: 13px; letter-spacing: 1px; padding-bottom: 4px;
+}
+.nav-links > li > a:hover,
+.nav-links > li.active > a { border-bottom: 2px solid #000; }
+.header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
+.header-actions a { color: var(--text-dark); position: relative; }
+.cart-count {
+  position: absolute; top: -8px; right: -10px;
+  background: #000; color: #fff; font-size: 10px;
+  width: 16px; height: 16px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-weight: bold;
+}
+.mobile-toggle { display: none; font-size: 22px; cursor: pointer; background: none; border: none; }
+.mobile-nav {
+  display: none; background: #fff; border-bottom: 1px solid var(--border-color);
+  padding: 10px 20px 20px;
+}
+.mobile-nav.open { display: block; }
+.mobile-nav a {
+  display: block; padding: 12px 0; font-size: 14px; font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
 
-        /* --- Header & Navigation Styles --- */
-        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; border-bottom: 1px solid var(--border-color); background: #fff; position: relative; z-index: 1000; }
-        .logo img { height: 75px; display: block; }
-        
-        .nav-links { display: flex; list-style: none; gap: 30px; align-items: center; }
-        .nav-links > li { position: relative; padding: 10px 0; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 13px; letter-spacing: 1px; padding-bottom: 4px; transition: border-color 0.3s; }
-        .nav-links > li > a:hover,
-        .nav-links > li.active > a { border-bottom: 2px solid #000; }
-        
-        .header-actions { display: flex; align-items: center; gap: 25px; font-size: 18px; }
-        .header-actions a { color: var(--text-dark); text-decoration: none; position: relative; }
-        .cart-icon .cart-count { position: absolute; top: -8px; right: -10px; background: #000; color: #fff; font-size: 10px; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        
-        /* Mobile Menu Toggle */
-        .mobile-toggle { display: none; font-size: 22px; cursor: pointer; color: var(--text-dark); }
+.main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 60px; flex: 1; width: 100%; }
+.page-title {
+  font-size: 26px; text-transform: uppercase; letter-spacing: 1.5px;
+  margin-bottom: 32px;
+}
 
-        /* --- Main Container --- */
-        main { flex: 1; max-width: 800px; width: 100%; margin: 40px auto; padding: 0 20px; }
-        h1 { margin-bottom: 24px; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.cart-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 40px;
+  align-items: start;
+}
+.cart-items { display: flex; flex-direction: column; gap: 16px; }
+.cart-item {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  align-items: start;
+}
+.cart-item img {
+  width: 90px; height: 90px; object-fit: cover;
+  background: var(--bg-light);
+}
+.cart-item h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.cart-item .meta { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+.cart-item .notes {
+  font-size: 12px; color: var(--text-muted);
+  background: #faf7f4; padding: 6px 8px; margin-top: 6px;
+}
+.qty-control {
+  display: flex; align-items: center; gap: 10px; margin-top: 8px;
+}
+.qty-control button {
+  width: 28px; height: 28px;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+}
+.order-summary {
+  border: 1px solid var(--border-color);
+  padding: 24px;
+  position: sticky;
+  top: 20px;
+}
+.order-summary h3 {
+  font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+  margin-bottom: 18px;
+}
+.summary-row {
+  display: flex; justify-content: space-between;
+  margin-bottom: 10px; font-size: 14px;
+}
+.summary-row.total {
+  font-size: 16px; font-weight: 700;
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid var(--border-color);
+}
+.checkout-btn {
+  display: block; width: 100%;
+  background: #0d0d0d; color: #fff;
+  text-align: center; padding: 14px;
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  margin-top: 20px; transition: background 0.2s;
+}
+.checkout-btn:hover { background: #333; }
+.empty-msg { color: var(--text-muted); font-size: 14px; }
+.empty-msg a { text-decoration: underline; }
 
-        /* --- Cart Content Styles --- */
-        .cart-item { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--border-color); padding: 20px; background: #fff; margin-bottom: 10px; border-radius: 4px; gap: 20px; }
-        .item-details { flex-grow: 1; }
-        .item-details strong { font-size: 1.05rem; }
-        .item-details p { font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; }
-        
-        /* Quantity Selector & Actions Group */
-        .cart-item-actions {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 10px;
-        }
+.site-footer {
+  background: #fff; padding: 28px 40px;
+  border-top: 1px solid var(--border-color); margin-top: auto;
+}
+.footer-content {
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 1200px; margin: 0 auto;
+}
+.footer-copyright { font-size: 12px; color: var(--text-muted); }
+.footer-links { display: flex; list-style: none; gap: 28px; }
+.footer-links a { font-size: 12px; color: var(--text-muted); }
 
-        .quantity-selector {
-            display: flex;
-            align-items: center;
-            border: 1px solid var(--border-color);
-            background: #fff;
-            border-radius: 4px;
-        }
-        .qty-btn {
-            background: none;
-            border: none;
-            width: 30px;
-            height: 30px;
-            font-size: 12px;
-            cursor: pointer;
-            color: var(--text-dark);
-            transition: background 0.2s;
-        }
-        .qty-btn:hover { background: var(--bg-light); }
-        .qty-input {
-            width: 35px;
-            text-align: center;
-            border: none;
-            font-family: var(--font-sans);
-            font-size: 13px;
-            font-weight: 600;
-            outline: none;
-            background: transparent;
-        }
-        .qty-input::-webkit-outer-spin-button,
-        .qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-
-        .btn-remove-item {
-            background: none;
-            border: none;
-            color: #e53935;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        .btn-remove-item:hover { color: #b71c1c; }
-        
-        /* --- Discount Section Styles --- */
-        .discount-container { background: #fff; padding: 20px; border-radius: 4px; margin: 20px 0; border: 1px solid var(--border-color); display: flex; gap: 10px; }
-        .discount-container input { flex: 1; padding: 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 0.95rem; font-family: inherit; }
-        .discount-container button { background: #000; color: #fff; border: none; padding: 0 20px; border-radius: 4px; cursor: pointer; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 12px; transition: background 0.2s; }
-        .discount-container button:hover { background: #222; }
-        .discount-msg { font-size: 0.85rem; margin-top: 6px; font-weight: 500; }
-
-        /* --- Pricing & Action Summary --- */
-        .totals-box { background: #fff; padding: 25px; border-radius: 4px; border: 1px solid var(--border-color); margin-top: 20px; }
-        .price-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 1rem; color: var(--text-muted); }
-        .price-row.total { font-weight: 700; font-size: 1.3rem; color: var(--text-dark); border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 15px; }
-        
-        #paypal-button-container { margin-top: 25px; }
-        
-        .actions-row { display: flex; justify-content: space-between; align-items: center; margin-top: 25px; }
-        .btn-shopping { background: #f0f0f0; color: var(--text-dark); border: none; padding: 12px 20px; cursor: pointer; text-decoration: none; border-radius: 4px; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; transition: background 0.2s; }
-        .btn-shopping:hover { background: #e0e0e0; }
-        .clear-btn { border: none; background: none; color: #e53935; cursor: pointer; font-weight: 500; font-size: 0.9rem; }
-        .clear-btn:hover { text-decoration: underline; }
-
-        /* --- Footer Styles --- */
-        .site-footer { background-color: #ffffff; padding: 30px 40px; border-top: 1px solid var(--border-color); margin-top: auto; }
-        .footer-content { display: flex; justify-content: space-between; align-items: center; padding: 20px 40px; }
-        .footer-copyright { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; }
-        .footer-links { display: flex; list-style: none; gap: 30px; margin: 0; }
-        .footer-links a { text-decoration: none; color: var(--text-muted); font-size: 12px; transition: color 0.2s; }
-        .footer-links a:hover { color: var(--text-dark); }
-
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-            .announcement-bar { flex-direction: column; gap: 10px; align-items: center; text-align: center; }
-            .main-header { padding: 15px 20px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; }
-            
-            .mobile-toggle { display: block; grid-column: 1; justify-self: start; order: 1; }
-            .logo { grid-column: 2; justify-self: center; order: 2; }
-            .logo img { height: 95px; }
-            .header-actions { grid-column: 3; justify-self: end; order: 3; }
-            
-            nav { grid-column: 1 / -1; width: 100%; order: 4; }
-            .nav-links { display: none; width: 100%; flex-direction: column; gap: 15px; padding: 20px 0 10px 0; border-top: 1px solid var(--border-color); margin-top: 15px; text-align: center; }
-            .nav-links.is-open { display: flex; }
-            .nav-links > li { padding: 5px 0; width: 100%; text-align: center; }
-
-            main { margin: 20px auto; padding: 0 15px; }
-            .footer-content { flex-direction: column; gap: 15px; text-align: center; padding: 20px 0; }
-            .footer-links { justify-content: center; flex-wrap: wrap; gap: 15px; }
-        }
-    </style>
+@media (max-width: 900px) {
+  .announcement-bar { flex-direction: column; gap: 10px; align-items: center; }
+  .main-header { padding: 15px 20px; }
+  .nav-links { display: none; }
+  .mobile-toggle { display: block; }
+  .cart-layout { grid-template-columns: 1fr; }
+  .footer-content { flex-direction: column; gap: 16px; text-align: center; }
+}
+@media (max-width: 520px) {
+  .cart-item { grid-template-columns: 70px 1fr; }
+  .logo img { height: 60px; }
+}
+</style>
 </head>
 <body>
 
-    <!-- Announcement Bar -->
-    <div class="announcement-bar">
-        <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i><div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div></a>
-        <a href="#" class="announcement-item"><i class="fa-regular fa-clock"></i><div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div></a>
-        <a href="#" class="announcement-item"><i class="fa-regular fa-circle-check"></i><div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div></a>
+<div class="announcement-bar">
+  <a href="#" class="announcement-item">
+    <i class="fa-solid fa-truck"></i>
+    <div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div>
+  </a>
+  <a href="#" class="announcement-item">
+    <i class="fa-regular fa-clock"></i>
+    <div class="announcement-text">FAST TURNAROUND <span>Quick & reliable</span></div>
+  </a>
+  <a href="#" class="announcement-item">
+    <i class="fa-regular fa-circle-check"></i>
+    <div class="announcement-text">MADE JUST FOR YOU <span>Unique. Personal. Yours.</span></div>
+  </a>
+</div>
+
+<header class="main-header">
+  <button class="mobile-toggle" id="menu-toggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+  <div class="logo">
+    <a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a>
+  </div>
+  <nav>
+    <ul class="nav-links">
+      <li>
+        <a href="mugs.html">Mugs</a>
+      </li>
+      <li><a href="t-shirts.html">T-Shirts & Hoodies</a></li>
+      <li><a href="coasters.html">Coasters</a></li>
+      <li><a href="merchandise.html">Merch & Bulk</a></li>
+      <li><a href="about-us.html">About</a></li>
+      <li><a href="contact-us.html">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="header-actions">
+    <a href="cart.html" class="cart-icon" aria-label="Cart">
+      <i class="fa-solid fa-basket-shopping"></i>
+      <span class="cart-count" id="cartBadge">0</span>
+    </a>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="mugs.html"><strong>Mugs</strong></a>
+  <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
+  <a href="coasters.html"><strong>Coasters</strong></a>
+  <a href="merchandise.html"><strong>Merch & Bulk</strong></a>
+  <a href="about-us.html">About</a>
+  <a href="contact-us.html">Contact</a>
+  <a href="cart.html">Basket</a>
+</nav>
+
+<main class="main">
+  <h1 class="page-title">Your Basket</h1>
+  <div class="cart-layout">
+    <div class="cart-items" id="cartItems"></div>
+    <div class="order-summary">
+      <h3>Order Summary</h3>
+      <div class="summary-row"><span>Subtotal</span><span id="subtotal">£0.00</span></div>
+      <div class="summary-row"><span>Shipping</span><span>Calculated at checkout</span></div>
+      <div class="summary-row total"><span>Total</span><span id="total">£0.00</span></div>
+      <button class="checkout-btn" id="checkoutBtn">Proceed to PayPal</button>
+      <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:12px">Secure checkout powered by PayPal</p>
     </div>
+  </div>
+</main>
 
-    <!-- Main Navigation Header -->
-    <header class="main-header">
-        <div class="mobile-toggle" id="menu-toggle"><i class="fa-solid fa-bars"></i></div>
-        <div class="logo">
-            <a href="index.html"><img src="logo.png" alt="HG Customs Logo"></a>
+<footer class="site-footer">
+  <div class="footer-content">
+    <div class="footer-copyright">&copy; 2026 HG Customs. All rights reserved.</div>
+    <ul class="footer-links">
+      <li><a href="shipping-info.html">Delivery Information</a></li>
+      <li><a href="privacy-policy.html">Privacy Policy</a></li>
+      <li><a href="terms-of-service.html">Terms of Service</a></li>
+      <li><a href="refund-policy.html">Refund Policy</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+const CART_KEY = 'hg_cart';
+function getCart() {
+  try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; }
+}
+function saveCart(cart) {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  updateCartBadge();
+}
+function updateCartBadge() {
+  const count = getCart().reduce((s, i) => s + (i.qty || 1), 0);
+  const el = document.getElementById('cartBadge');
+  if (el) { el.textContent = count; el.style.display = count > 0 ? 'flex' : 'none'; }
+}
+function removeFromCart(index) {
+  const cart = getCart();
+  cart.splice(index, 1);
+  saveCart(cart);
+  renderCart();
+}
+function updateQty(index, delta) {
+  const cart = getCart();
+  if (!cart[index]) return;
+  cart[index].qty = Math.max(1, (cart[index].qty || 1) + delta);
+  saveCart(cart);
+  renderCart();
+}
+
+function renderCart() {
+  const cart = getCart();
+  const container = document.getElementById('cartItems');
+  if (cart.length === 0) {
+    container.innerHTML = '<p class="empty-msg">Your basket is empty. <a href="mugs.html">Continue shopping</a></p>';
+    document.getElementById('subtotal').textContent = '£0.00';
+    document.getElementById('total').textContent = '£0.00';
+    return;
+  }
+  let html = '';
+  let total = 0;
+  cart.forEach((item, i) => {
+    const line = (item.price || 0) * (item.qty || 1);
+    total += line;
+    html += `
+      <div class="cart-item">
+        <img src="${item.image || ''}" alt="${item.title}" onerror="this.style.opacity=0.3">
+        <div>
+          <h4>${item.title}</h4>
+          <div class="meta">
+            ${item.colour ? 'Colour: ' + item.colour : ''}
+            ${item.backgroundColour ? ' · Splash: ' + item.backgroundColour : ''}
+          </div>
+          <div class="qty-control">
+            <button onclick="updateQty(${i}, -1)">−</button>
+            <span>${item.qty || 1}</span>
+            <button onclick="updateQty(${i}, 1)">+</button>
+          </div>
+          ${item.notes ? '<div class="notes">Notes: ' + item.notes + '</div>' : ''}
+          ${item.uploadUrl ? '<div class="notes">Upload: ' + item.uploadUrl + '</div>' : ''}
         </div>
-        <nav>
-            <ul class="nav-links" id="nav-menu">
-                <li><a href="mugs.html">Pet Mugs</a></li>
-                <li><a href="t-shirts.html">T-shirts</a></li>
-                <li><a href="coasters.html">Coasters</a></li>
-                <li><a href="merchandise.html">Merchandise</a></li>
-                <li><a href="about-us.html">About Us</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
-            </ul>
-        </nav>
-        <div class="header-actions">
-            <a href="cart.html" class="cart-icon" aria-label="Cart">
-                <i class="fa-solid fa-basket-shopping"></i>
-                <span class="cart-count">0</span>
-            </a>
+        <div style="text-align:right">
+          <div style="font-weight:700;font-size:14px">£${line.toFixed(2)}</div>
+          <button onclick="removeFromCart(${i})" style="color:#999;font-size:12px;margin-top:10px">Remove</button>
         </div>
-    </header>
+      </div>`;
+  });
+  container.innerHTML = html;
+  document.getElementById('subtotal').textContent = '£' + total.toFixed(2);
+  document.getElementById('total').textContent = '£' + total.toFixed(2);
+}
 
-    <!-- Main Content Area -->
-    <main>
-        <h1>Your Shopping Basket</h1>
-        
-        <div id="cart-items"></div>
+document.getElementById('checkoutBtn').onclick = () => {
+  const cart = getCart();
+  if (cart.length === 0) return alert('Your basket is empty');
+  localStorage.setItem('hg_last_order', JSON.stringify({
+    items: cart,
+    total: cart.reduce((s, i) => s + i.price * (i.qty || 1), 0),
+    ref: 'HG-' + Date.now().toString().slice(-6)
+  }));
+  // Later: real PayPal + Formbold. For now go to thank-you if present, else alert.
+  window.location.href = 'thank-you.html';
+};
 
-        <!-- Discount Code Option Box -->
-        <div class="discount-container" id="discount-wrapper">
-            <div style="flex:1;">
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" id="discount-code" placeholder="Enter discount code (e.g. SAVE10)">
-                    <button onclick="applyDiscount()">Apply</button>
-                </div>
-                <div id="discount-msg" class="discount-msg"></div>
-            </div>
-        </div>
-
-        <!-- Price Breakdown & Summary Section -->
-        <div class="totals-box">
-            <div class="price-row">
-                <span>Subtotal</span>
-                <span id="subtotal-price">£0.00</span>
-            </div>
-            <div class="price-row" id="discount-row" style="display: none; color: #2e7d32;">
-                <span>Discount Applied</span>
-                <span id="discount-amount">-£0.00</span>
-            </div>
-            <div class="price-row total">
-                <span>Total</span>
-                <span id="total-price">£0.00</span>
-            </div>
-
-            <!-- PayPal Interactive Checkout Container -->
-            <div id="paypal-button-container"></div>
-        </div>
-
-        <div class="actions-row">
-            <a href="mugs.html" class="btn-shopping">← Continue Shopping</a>
-            <button onclick="clearCart()" class="clear-btn">Clear Basket</button>
-        </div>
-    </main>
-
-    <!-- Site Footer -->
-    <footer class="site-footer">
-        <div class="footer-content">
-            <!-- Copyright Section (Left) -->
-            <div class="footer-copyright">
-                &copy; HG CUSTOMS 2026
-            </div>
-
-            <!-- Utility Links (Right) -->
-            <ul class="footer-links">
-                <li><a href="shipping-info.html">Delivery Information</a></li>
-                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                <li><a href="terms-of-service.html">Terms & Conditions</a></li>
-                <li><a href="refund-policy.html">Refund Policy</a></li>
-            </ul>
-        </div>
-    </footer>
-
-    <script>
-        // Cart State & Logic
-        let cart = JSON.parse(localStorage.getItem('hg_cart')) || [];
-        const container = document.getElementById('cart-items');
-        const subtotalDiv = document.getElementById('subtotal-price');
-        const totalDiv = document.getElementById('total-price');
-        const discountRow = document.getElementById('discount-row');
-        const discountAmountSpan = document.getElementById('discount-amount');
-        const discountMsg = document.getElementById('discount-msg');
-        
-        let discountMultiplier = 1; // 1 = no discount, 0.9 = 10% off, etc.
-        let discountValue = 0;
-        let summary = "--- NEW CUSTOM ORDER ---\n";
-
-        function updateCartBadge() {
-            const totalItems = cart.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
-            const badges = document.querySelectorAll('.cart-count');
-            badges.forEach(badge => badge.innerText = totalItems);
-        }
-
-        function renderCart() {
-            container.innerHTML = "";
-            let subtotal = 0;
-            summary = "--- NEW CUSTOM ORDER ---\n";
-
-            if (cart.length === 0) {
-                container.innerHTML = "<p style='color:#666; padding: 20px 0;'>Your basket is currently empty.</p>";
-                document.getElementById('discount-wrapper').style.display = 'none';
-                document.querySelector('.totals-box').style.display = 'none';
-                updateCartBadge();
-                return;
-            } else {
-                document.getElementById('discount-wrapper').style.display = 'flex';
-                document.querySelector('.totals-box').style.display = 'block';
-            }
-
-            cart.forEach((item, index) => {
-                let qty = parseInt(item.quantity) || 1;
-                let itemTotal = (parseFloat(item.price) || 0) * qty;
-                subtotal += itemTotal;
-                
-                let title = item.name || item.title || "Custom Item";
-                let displayColor = "";
-                
-                // Debugging helper: log the raw item object to your browser console to check keys
-                console.log("Cart Item Object:", item);
-
-                // Comprehensive extraction checking all common variants (including camelCase, lowercase, variations)
-                let bgCol = item.backgroundColour || item.backgroundcolor || item.bgColor || item.background_color;
-                let inCol = item.innerColour || item.innercolour || item.innerColor || item.inner_color;
-                let genericCol = item.color || item.colour;
-
-                if (bgCol && inCol) {
-                    displayColor = `Background: ${bgCol} | Inner: ${inCol}`;
-                } else if (bgCol) {
-                    displayColor = `Background: ${bgCol}`;
-                } else if (inCol) {
-                    displayColor = `Inner: ${inCol}`;
-                } else if (genericCol) {
-                    displayColor = `Color: ${genericCol}`;
-                } else {
-                    // Deep fallback: loop through every property key in the object to catch custom names
-                    let discoveredParts = [];
-                    for (let key in item) {
-                        let lowerKey = key.toLowerCase();
-                        if ((lowerKey.includes('color') || lowerKey.includes('colour') || lowerKey.includes('bg') || lowerKey.includes('inner')) && 
-                            typeof item[key] === 'string' && item[key].trim() !== "" && item[key] !== "None") {
-                            discoveredParts.push(`${key}: ${item[key]}`);
-                        }
-                    }
-                    if (discoveredParts.length > 0) {
-                        displayColor = discoveredParts.join(" | ");
-                    } else {
-                        displayColor = "Color: Standard";
-                    }
-                }
-
-                let notesInfo = (item.customizationNote && item.customizationNote !== "None") ? ` | Notes: ${item.customizationNote}` : "";
-                summary += `Item ${index + 1}: ${title} | ${displayColor} | Qty: ${qty}${notesInfo}\n`;
-                
-                container.innerHTML += `
-                    <div class="cart-item">
-                        <div class="item-details">
-                            <strong>${title}</strong>
-                            <p>${displayColor}</p>
-                            ${item.customizationNote && item.customizationNote !== "None" ? `<p>Notes: ${item.customizationNote}</p>` : ""}
-                        </div>
-                        <div class="cart-item-actions">
-                            <div style="font-weight: 600; margin-bottom: 5px;">£${itemTotal.toFixed(2)}</div>
-                            <div class="quantity-selector">
-                                <button class="qty-btn" onclick="updateQuantity(${index}, -1)">-</button>
-                                <input type="number" class="qty-input" value="${qty}" min="1" onchange="setQuantity(${index}, this.value)">
-                                <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
-                            </div>
-                            <button class="btn-remove-item" onclick="removeItem(${index})">Remove</button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            // Calculate active totals with discount factored in
-            let finalTotal = subtotal * discountMultiplier;
-            discountValue = subtotal - finalTotal;
-
-            subtotalDiv.innerText = "£" + subtotal.toFixed(2);
-            totalDiv.innerText = "£" + finalTotal.toFixed(2);
-
-            if (discountMultiplier < 1) {
-                discountRow.style.display = "flex";
-                discountAmountSpan.innerText = "-£" + discountValue.toFixed(2);
-            } else {
-                discountRow.style.display = "none";
-            }
-
-            updateCartBadge();
-            renderPayPalButtons();
-        }
-
-        function updateQuantity(index, change) {
-            if (cart[index]) {
-                let currentQty = parseInt(cart[index].quantity) || 1;
-                let newQty = currentQty + change;
-                if (newQty < 1) newQty = 1;
-                cart[index].quantity = newQty;
-                localStorage.setItem('hg_cart', JSON.stringify(cart));
-                renderCart();
-            }
-        }
-
-        function setQuantity(index, value) {
-            if (cart[index]) {
-                let newQty = parseInt(value);
-                if (isNaN(newQty) || newQty < 1) newQty = 1;
-                cart[index].quantity = newQty;
-                localStorage.setItem('hg_cart', JSON.stringify(cart));
-                renderCart();
-            }
-        }
-
-        function removeItem(index) {
-            cart.splice(index, 1);
-            localStorage.setItem('hg_cart', JSON.stringify(cart));
-            renderCart();
-        }
-
-        // Sample Discount Handler function
-        function applyDiscount() {
-            const codeInput = document.getElementById('discount-code').value.trim().toUpperCase();
-            
-            if (codeInput === "SAVE10") {
-                discountMultiplier = 0.9;
-                discountMsg.style.color = "#2e7d32";
-                discountMsg.innerText = "Success! 10% discount applied.";
-                renderCart();
-            } else if (codeInput === "") {
-                discountMsg.style.color = "#c62828";
-                discountMsg.innerText = "Please enter a valid code.";
-            } else {
-                discountMultiplier = 1;
-                discountMsg.style.color = "#c62828";
-                discountMsg.innerText = "Invalid discount code.";
-                renderCart();
-            }
-        }
-
-        // Initialize Cart Rendering and Responsive Navigation on Load
-        document.addEventListener('DOMContentLoaded', () => {
-            renderCart();
-
-            // Mobile Navigation Menu Toggle
-            const menuToggle = document.getElementById('menu-toggle');
-            const navMenu = document.getElementById('nav-menu');
-
-            if (menuToggle && navMenu) {
-                menuToggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    navMenu.classList.toggle('is-open');
-                });
-            }
-
-            document.addEventListener('click', () => {
-                if (navMenu && navMenu.classList.contains('is-open')) {
-                    navMenu.classList.remove('is-open');
-                }
-            });
-        });
-
-        // PayPal Integration Logic (Sandbox Demo Mode Ready)
-        function renderPayPalButtons() {
-            const paypalContainer = document.getElementById('paypal-button-container');
-            paypalContainer.innerHTML = ""; // Clear existing buttons to prevent duplication on re-render
-
-            if (cart.length > 0 && window.paypal) {
-                paypal.Buttons({
-                    createOrder: function(data, actions) {
-                        let currentSubtotal = cart.reduce((sum, item) => sum + ((parseFloat(item.price) || 0) * (parseInt(item.quantity) || 1)), 0);
-                        let finalCalculatedTotal = (currentSubtotal * discountMultiplier).toFixed(2);
-                        
-                        return actions.order.create({
-                            purchase_units: [{ amount: { value: finalCalculatedTotal } }]
-                        });
-                    },
-                    onApprove: function(data, actions) {
-                        return actions.order.capture().then(function(details) {
-                            triggerFormBold(summary);
-                        });
-                    }
-                }).render('#paypal-button-container');
-            }
-        }
-
-        // Trigger FormBold Submission Post-Payment
-        function triggerFormBold(orderData) {
-            fetch("https://formbold.com/s/oYA8D", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    Order_Summary: orderData,
-                    _subject: "New Paid Order Received",
-                    Customer_Email: "Customer"
-                })
-            }).then(() => {
-                localStorage.removeItem('hg_cart');
-                window.location.href = "thank-you.html"; 
-            });
-        }
-
-        function clearCart() {
-            localStorage.removeItem('hg_cart');
-            location.reload();
-        }
-    </script>
+document.getElementById('menu-toggle').addEventListener('click', () => {
+  document.getElementById('mobileNav').classList.toggle('open');
+});
+updateCartBadge();
+renderCart();
+</script>
 </body>
 </html>
