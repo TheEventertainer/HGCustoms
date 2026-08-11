@@ -596,7 +596,7 @@ let currentProduct = null;
 let selectedMugColour = mugColours[0];
 let selectedBgColour = bgColours[0];
 let qty = 1;
-let uploadedUrl = ';
+let uploadedUrl = '';
 
 const grid = document.getElementById('productGrid');
 products.forEach((p, i) => {
@@ -621,7 +621,7 @@ grid.addEventListener('click', e => {
 function openModal(p) {
   currentProduct = p;
   qty = 1;
-  uploadedUrl = ';
+  uploadedUrl = '';
   selectedMugColour = mugColours[0];
   selectedBgColour = bgColours[0];
 
@@ -630,17 +630,17 @@ function openModal(p) {
   document.getElementById('modalPrice').textContent = '£' + p.price.toFixed(2);
   document.getElementById('modalDesc').textContent = p.desc;
   document.getElementById('qtyValue').textContent = '1';
-  document.getElementById('notesField').value = ';
+  document.getElementById('notesField').value = '';
   document.getElementById('uploadStatus').style.display = 'none';
 
   const mugSec = document.getElementById('mugColourSection');
   const mugSw = document.getElementById('mugSwatches');
-  mugSw.innerHTML = ';
+  mugSw.innerHTML = '';
   if (p.colours) {
     mugSec.style.display = 'block';
     mugColours.forEach((c, i) => {
       const s = document.createElement('div');
-      s.className = 'swatch' + (i === 0 ? ' selected' : ');
+      s.className = 'swatch' + (i === 0 ? ' selected' : '');
       s.style.background = c.hex;
       if (c.name === 'White') s.style.border = '1px solid #ccc';
       s.title = c.name;
@@ -657,12 +657,12 @@ function openModal(p) {
 
   const bgSec = document.getElementById('bgColourSection');
   const bgSw = document.getElementById('bgSwatches');
-  bgSw.innerHTML = ';
+  bgSw.innerHTML = '';
   if (p.bgSplash) {
     bgSec.style.display = 'block';
     bgColours.forEach((c, i) => {
       const s = document.createElement('div');
-      s.className = 'swatch' + (i === 0 ? ' selected' : ');
+      s.className = 'swatch' + (i === 0 ? ' selected' : '');
       s.style.background = c.hex;
       s.title = c.name;
       s.onclick = () => {
