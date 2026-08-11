@@ -261,7 +261,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .hero::before {
   content: ''; position: absolute; inset: 0;
-  background: linear-gradient(90deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.7) 42%, rgba(255,255,255,0.2) 100%);
+  background: linear-gradient(90deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.55) 45%, rgba(255,255,255,0.15) 100%);
   z-index: 1;
 }
 .hero-content { max-width: 480px; position: relative; z-index: 2; }
@@ -369,31 +369,53 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .modal { grid-template-columns: 1fr; }
   .footer-content { flex-direction: column; gap: 16px; text-align: center; }
   .hero {
-    padding: 36px 20px 40px;
-    min-height: 0;
-    background-position: 70% center;
+    padding: 32px 20px 36px;
+    min-height: 420px;
+    background-position: 65% center;
+    background-size: cover;
   }
   .hero::before {
-    /* Full soft white veil on mobile so text is always readable */
+    /* Keep image visible: soft left/bottom wash only */
     background: linear-gradient(
-      180deg,
-      rgba(255,255,255,0.94) 0%,
-      rgba(255,255,255,0.9) 55%,
-      rgba(255,255,255,0.75) 100%
+      160deg,
+      rgba(255,255,255,0.82) 0%,
+      rgba(255,255,255,0.55) 42%,
+      rgba(255,255,255,0.15) 70%,
+      rgba(255,255,255,0.05) 100%
     ) !important;
   }
   .hero-content {
     max-width: 100%;
-    background: rgba(255,255,255,0.72);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-    padding: 20px 18px;
-    border-radius: 8px;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
-  .hero-sub { color: #333; margin-bottom: 8px; font-size: 11px; }
-  .hero-title { font-size: 30px; color: #000; }
-  .hero-script { font-size: 26px; color: #111; margin-bottom: 12px; }
-  .hero-description { color: #333 !important; font-size: 14px; margin-bottom: 18px; }
+  .hero-sub {
+    color: #222;
+    margin-bottom: 8px;
+    font-size: 11px;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.9);
+  }
+  .hero-title {
+    font-size: 30px;
+    color: #000;
+    text-shadow: 0 1px 3px rgba(255,255,255,0.95), 0 0 12px rgba(255,255,255,0.8);
+  }
+  .hero-script {
+    font-size: 26px;
+    color: #111;
+    margin-bottom: 12px;
+    text-shadow: 0 1px 3px rgba(255,255,255,0.95), 0 0 12px rgba(255,255,255,0.8);
+  }
+  .hero-description {
+    color: #222 !important;
+    font-size: 14px;
+    margin-bottom: 18px;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.9);
+    max-width: 20em;
+  }
   .hero-btn { display: inline-block; }
 }
 @media (max-width: 768px) {
