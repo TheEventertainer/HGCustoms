@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pet Mugs | Hazel's Gift</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="announcement-bar">Handmade with heart · Free UK shipping on orders over £50 · Personalised just for you</div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">Hazel's Gift<span>Custom Gifts, Made from the Heart</span></a>
+      <ul class="nav-desktop">
+        <li><a href="index.html">Home</a></li>
+        <li class="active">
+          <a href="mugs.html" class="bold">Mugs</a>
+          <div class="dropdown">
+            <a href="mugs-pet.html">Pet</a>
+            <a href="mugs-our-designs.html">Our Designs</a>
+            <a href="mugs-tv-film.html">TV & Film</a>
+            <a href="mugs-occasions.html">Occasions</a>
+            <a href="mugs-seasonal.html">Seasonal</a>
+            <a href="mugs-custom.html">Custom Designs</a>
+          </div>
+        </li>
+        <li><a href="t-shirts.html" class="bold">T-Shirts & Hoodies</a></li>
+        <li><a href="coasters.html" class="bold">Coasters</a></li>
+        <li><a href="merchandise.html" class="bold">Merch & Bulk</a></li>
+        <li><a href="about-us.html">About</a></li>
+        <li><a href="contact-us.html">Contact</a></li>
+      </ul>
+      <div class="header-actions">
+        <a href="cart.html" class="cart-link">🛒<span class="cart-badge" style="display:none">0</span></a>
+        <button class="mobile-toggle" aria-label="Menu">☰</button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="index.html">Home</a>
+      <a href="mugs.html"><strong>Mugs</strong></a>
+      <a href="mugs-pet.html" class="sub">Pet</a>
+      <a href="mugs-our-designs.html" class="sub">Our Designs</a>
+      <a href="mugs-tv-film.html" class="sub">TV & Film</a>
+      <a href="mugs-occasions.html" class="sub">Occasions</a>
+      <a href="mugs-seasonal.html" class="sub">Seasonal</a>
+      <a href="mugs-custom.html" class="sub">Custom Designs</a>
+      <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
+      <a href="coasters.html"><strong>Coasters</strong></a>
+      <a href="merchandise.html"><strong>Merch & Bulk</strong></a>
+      <a href="about-us.html">About</a>
+      <a href="contact-us.html">Contact</a>
+      <a href="cart.html">Basket</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <h1 class="page-title">Pet Mugs</h1>
+    <p class="page-intro">Celebrate your furry best friend with a personalised mug made just for them. Beautiful, practical and full of love.</p>
+
+    <div class="product-grid" id="productGrid">
+      <!-- Products injected by JS for clarity, or hard-coded below -->
+    </div>
+  </main>
+
+  <!-- Customisation Modal -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal" style="position:relative">
+      <button class="modal-close" id="closeModal">×</button>
+      <div class="modal-image">
+        <img id="modalImg" src="" alt="" />
+      </div>
+      <div class="modal-body">
+        <h2 id="modalTitle"></h2>
+        <div class="modal-price" id="modalPrice"></div>
+        <p class="modal-desc" id="modalDesc"></p>
+
+        <div class="colour-section" id="mugColourSection">
+          <label>Mug Colour (Inner & Handle)</label>
+          <div class="swatches" id="mugSwatches"></div>
+        </div>
+
+        <div class="colour-section" id="bgColourSection" style="display:none">
+          <label>Background Splash Colour</label>
+          <div class="swatches" id="bgSwatches"></div>
+        </div>
+
+        <p class="colour-disclaimer">Please note: Colours shown on screen are a close representation. Slight variations may occur due to manufacturing processes, screen settings, and the nature of sublimation printing.</p>
+
+        <div class="colour-section">
+          <label>Quantity</label>
+          <div class="qty-control">
+            <button type="button" id="qtyMinus">−</button>
+            <span id="qtyValue">1</span>
+            <button type="button" id="qtyPlus">+</button>
+          </div>
+        </div>
+
+        <div class="upload-area" id="uploadArea" style="display:none">
+          <p>📷 Click to upload or drag & drop your pet photo<br><small>PNG or JPG, max 10MB</small></p>
+          <input type="file" id="fileInput" accept="image/*" style="display:none" />
+        </div>
+        <div id="uploadStatus" style="font-size:12px;color:var(--success);margin-bottom:12px;display:none"></div>
+
+        <div class="notes-field">
+          <label style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);display:block;margin-bottom:8px">Notes (optional)</label>
+          <textarea id="notesField" placeholder="Any special requests or instructions..."></textarea>
+        </div>
+
+        <button class="btn-primary" id="addToBasketBtn" style="margin-top:20px">Add to Basket</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">Hazel's Gift</a>
+        <p>Handmade with heart. Custom merchandise made just for you.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <a href="mugs.html">Mugs</a>
+        <a href="t-shirts.html">T-Shirts & Hoodies</a>
+        <a href="coasters.html">Coasters</a>
+        <a href="merchandise.html">Merch & Bulk</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about-us.html">About Us</a>
+        <a href="contact-us.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Info</h4>
+        <a href="shipping-info.html">Shipping</a>
+        <a href="refund-policy.html">Refunds</a>
+        <a href="privacy-policy.html">Privacy</a>
+        <a href="terms-of-service.html">Terms</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Hazel's Gift. All rights reserved.</div>
+  </footer>
+
+  <script src="js/cart.js"></script>
+  <script>
+    // Product data for Pet mugs
+    const products = [
+      {
+        id: 'HG-MUG-PET-001',
+        title: 'Colour Splash Personalised Pet Mug',
+        price: 10.00,
+        desc: 'Turn your pets into a mug you’ll treasure! Upload a photo of your dog, cat or any other pet and we’ll transform it into a beautiful colour-splash portrait design.',
+        imgA: 'images/colour-splash-pet-mug-a.jpg',
+        imgB: 'images/colour-splash-pet-mug-b.jpg',
+        colours: true,
+        bgSplash: true,
+        upload: true
+      },
+      {
+        id: 'HG-MUG-PET-002',
+        title: 'Trouble Maker Personalised Pet Mug',
+        price: 10.00,
+        desc: 'Celebrate your mischievous pets with a mug made just for them! Upload photos and we’ll create a detailed illustrated portrait finished with the playful “Established Troublemakers” design.',
+        imgA: 'images/trouble-maker-pet-mug-a.jpg',
+        imgB: 'images/trouble-maker-pet-mug-b.jpg',
+        colours: true,
+        bgSplash: false,
+        upload: true
+      },
+      {
+        id: 'HG-MUG-PET-003',
+        title: 'Life is Better Personalised Pet Mug',
+        price: 10.00,
+        desc: 'Celebrate the special bond you share with your beloved pet. Upload a photo and we’ll transform it into a beautiful personalised illustrated portrait finished with “Life is better with you”.',
+        imgA: 'images/life-is-better-pet-mug-a.jpg',
+        imgB: 'images/life-is-better-pet-mug-b.jpg',
+        colours: true,
+        bgSplash: false,
+        upload: true
+      },
+      {
+        id: 'HG-MUG-PET-004',
+        title: 'Flower Field Personalised Pet Mug',
+        price: 10.00,
+        desc: 'Turn your favourite four-legged friend into a mug you’ll treasure! Upload a photo and we’ll transform it into a beautiful floral portrait design surrounded by delicate wildflowers.',
+        imgA: 'images/flower-field-pet-mug-a.jpg',
+        imgB: 'images/flower-field-pet-mug-b.jpg',
+        colours: true,
+        bgSplash: false,
+        upload: true
+      },
+      {
+        id: 'HG-MUG-PET-005',
+        title: 'My Shadow Personalised Pet Mug',
+        price: 10.00,
+        desc: 'Celebrate the pets who are always by your side. Upload photos and we’ll create a beautiful personalised illustrated portrait surrounded by the heartfelt words “My Shadows, My Heart”.',
+        imgA: 'images/my-shadow-pet-mug-a.jpg',
+        imgB: 'images/my-shadow-pet-mug-b.jpg',
+        colours: true,
+        bgSplash: false,
+        upload: true
+      },
+      {
+        id: 'HG-MUG-PET-006',
+        title: 'Outside Feels Like Home Mug',
+        price: 8.00,
+        desc: 'For those who feel most at home in the great outdoors. A peaceful mountain and woodland scene — the perfect companion for slow mornings and cosy moments.',
+        imgA: 'images/outside-feels-like-home-mug.jpg',
+        imgB: 'images/outside-feels-like-home-mug.jpg',
+        colours: false,
+        bgSplash: false,
+        upload: false
+      }
+    ];
+
+    const mugColours = [
+      { name: 'White', hex: '#ffffff' },
+      { name: 'Black', hex: '#1a1a1a' },
+      { name: 'Grey', hex: '#8a8a8a' },
+      { name: 'Dark Green', hex: '#2d5a3d' },
+      { name: 'Dark Blue', hex: '#1e3a6e' },
+      { name: 'Pink', hex: '#e8a0b0' },
+      { name: 'Sage', hex: '#9caf88' }
+    ];
+
+    const bgColours = [
+      { name: 'Beige', hex: '#D6B597' },
+      { name: 'Grey', hex: '#B9BDC4' },
+      { name: 'Sage Green', hex: '#B7BFA8' },
+      { name: 'Dusty Pink', hex: '#D1B2B6' },
+      { name: 'Taupe', hex: '#B7A08C' },
+      { name: 'Dusty Blue', hex: '#8FA3BE' },
+      { name: 'Lavender', hex: '#C2B3D1' },
+      { name: 'Terracotta', hex: '#C78F7B' },
+      { name: 'Cream', hex: '#F0E5D1' },
+      { name: 'Olive Green', hex: '#8E9480' },
+      { name: 'Caramel', hex: '#B78D6B' },
+      { name: 'Slate Blue', hex: '#6E778E' },
+      { name: 'Muted Mint', hex: '#B7C7C2' },
+      { name: 'Warm Sand', hex: '#E2C9AA' },
+      { name: 'Mauve', hex: '#B9A6B8' },
+      { name: 'Charcoal', hex: '#585858' }
+    ];
+
+    let currentProduct = null;
+    let selectedMugColour = mugColours[0];
+    let selectedBgColour = bgColours[0];
+    let qty = 1;
+    let uploadedUrl = '';
+
+    // Render product cards
+    const grid = document.getElementById('productGrid');
+    products.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <div class="img-wrap"><img src="${p.imgA}" alt="${p.title}" /></div>
+        <div class="info">
+          <h3>${p.title}</h3>
+          <div class="price">£${p.price.toFixed(2)}</div>
+          <button class="btn" data-index="${i}">Personalise</button>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    // Open modal
+    grid.addEventListener('click', e => {
+      const btn = e.target.closest('[data-index]');
+      if (!btn) return;
+      openModal(products[btn.dataset.index]);
+    });
+
+    function openModal(p) {
+      currentProduct = p;
+      qty = 1;
+      uploadedUrl = '';
+      selectedMugColour = mugColours[0];
+      selectedBgColour = bgColours[0];
+
+      document.getElementById('modalImg').src = p.imgB || p.imgA;
+      document.getElementById('modalTitle').textContent = p.title;
+      document.getElementById('modalPrice').textContent = '£' + p.price.toFixed(2);
+      document.getElementById('modalDesc').textContent = p.desc;
+      document.getElementById('qtyValue').textContent = '1';
+      document.getElementById('notesField').value = '';
+      document.getElementById('uploadStatus').style.display = 'none';
+
+      // Mug colours
+      const mugSec = document.getElementById('mugColourSection');
+      const mugSw = document.getElementById('mugSwatches');
+      mugSw.innerHTML = '';
+      if (p.colours) {
+        mugSec.style.display = 'block';
+        mugColours.forEach((c, i) => {
+          const s = document.createElement('div');
+          s.className = 'swatch' + (i === 0 ? ' selected' : '');
+          s.style.background = c.hex;
+          if (c.name === 'White') s.style.border = '1px solid #ddd';
+          s.title = c.name;
+          s.onclick = () => {
+            mugSw.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
+            s.classList.add('selected');
+            selectedMugColour = c;
+          };
+          mugSw.appendChild(s);
+        });
+      } else {
+        mugSec.style.display = 'none';
+      }
+
+      // Background splash
+      const bgSec = document.getElementById('bgColourSection');
+      const bgSw = document.getElementById('bgSwatches');
+      bgSw.innerHTML = '';
+      if (p.bgSplash) {
+        bgSec.style.display = 'block';
+        bgColours.forEach((c, i) => {
+          const s = document.createElement('div');
+          s.className = 'swatch' + (i === 0 ? ' selected' : '');
+          s.style.background = c.hex;
+          s.title = c.name;
+          s.onclick = () => {
+            bgSw.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
+            s.classList.add('selected');
+            selectedBgColour = c;
+          };
+          bgSw.appendChild(s);
+        });
+      } else {
+        bgSec.style.display = 'none';
+      }
+
+      document.getElementById('uploadArea').style.display = p.upload ? 'block' : 'none';
+      document.getElementById('productModal').classList.add('open');
+    }
+
+    document.getElementById('closeModal').onclick = () => {
+      document.getElementById('productModal').classList.remove('open');
+    };
+    document.getElementById('productModal').addEventListener('click', e => {
+      if (e.target.id === 'productModal') document.getElementById('productModal').classList.remove('open');
+    });
+
+    document.getElementById('qtyMinus').onclick = () => { qty = Math.max(1, qty - 1); document.getElementById('qtyValue').textContent = qty; };
+    document.getElementById('qtyPlus').onclick = () => { qty++; document.getElementById('qtyValue').textContent = qty; };
+
+    // Simple file select (Cloudinary can be wired later)
+    document.getElementById('uploadArea').onclick = () => document.getElementById('fileInput').click();
+    document.getElementById('fileInput').onchange = e => {
+      const file = e.target.files[0];
+      if (file) {
+        uploadedUrl = 'local:' + file.name; // placeholder – replace with real Cloudinary upload
+        document.getElementById('uploadStatus').style.display = 'block';
+        document.getElementById('uploadStatus').textContent = '✓ ' + file.name + ' ready';
+      }
+    };
+
+    document.getElementById('addToBasketBtn').onclick = () => {
+      if (!currentProduct) return;
+      addToCart({
+        id: currentProduct.id,
+        title: currentProduct.title,
+        price: currentProduct.price,
+        qty: qty,
+        colour: currentProduct.colours ? selectedMugColour.name : null,
+        backgroundColour: currentProduct.bgSplash ? selectedBgColour.name : null,
+        notes: document.getElementById('notesField').value.trim(),
+        image: currentProduct.imgA,
+        uploadUrl: uploadedUrl,
+        sku: currentProduct.id
+      });
+      document.getElementById('productModal').classList.remove('open');
+    };
+
+    document.querySelector('.mobile-toggle').addEventListener('click', () => {
+      document.getElementById('mobileNav').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
