@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mugs | HG Customs</title>
+<title>Our Designs – Apparel | HG Customs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
@@ -391,7 +391,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li>
-        <a href="mugs.html"><strong>Mugs</strong></a>
+        <a href="mugs.html">Mugs</a>
         <div class="dropdown">
           <a href="mugs-pet.html">Pet</a>
           <a href="mugs-our-designs.html">Our Designs</a>
@@ -402,7 +402,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         </div>
       </li>
       <li>
-        <a href="t-shirts.html">T-Shirts & Hoodies</a>
+        <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
         <div class="dropdown">
           <a href="tshirts-pet.html">Pet</a>
           <a href="tshirts-our-designs.html">Our Designs</a>
@@ -458,35 +458,53 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 
 <main class="main">
-  <h1 class="page-title">Mugs</h1>
-  <p class="page-intro">Browse our mug collections.</p>
-  <div class="hub-grid">
-    <a href="mugs-pet.html" class="hub-tile">
-      <img src="hub-pet.jpg" alt="Pet" onerror="this.parentElement.style.background='#f0f0f0'">
-      <div class="overlay"><h3>Pet</h3><span>Personalised pet portraits</span></div>
-    </a>
-    <a href="mugs-our-designs.html" class="hub-tile">
-      <img src="hub-our-designs.jpg" alt="Our Designs" onerror="this.parentElement.style.background='#f0f0f0'">
-      <div class="overlay"><h3>Our Designs</h3><span>Ready-to-gift favourites</span></div>
-    </a>
-    <a href="mugs-tv-film.html" class="hub-tile">
-      <img src="hub-tv-film.jpg" alt="TV & Film" onerror="this.parentElement.style.background='#f0f0f0'">
-      <div class="overlay"><h3>TV & Film</h3><span>For the fans who know</span></div>
-    </a>
-    <a href="mugs-occasions.html" class="hub-tile">
-      <img src="hub-occasions.jpg" alt="Occasions" onerror="this.parentElement.style.background='#f0f0f0'">
-      <div class="overlay"><h3>Occasions</h3><span>Birthdays & milestones</span></div>
-    </a>
-    <a href="mugs-seasonal.html" class="hub-tile">
-      <img src="hub-seasonal.jpg" alt="Seasonal" onerror="this.parentElement.style.background='#f0f0f0'">
-      <div class="overlay"><h3>Seasonal</h3><span>Spooky season & more</span></div>
-    </a>
-    <a href="mugs-custom.html" class="hub-tile">
-      <img src="hub-custom.jpg" alt="Custom Designs" onerror="this.parentElement.style.background='#f0f0f0'">
-      <div class="overlay"><h3>Custom Designs</h3><span>Your idea, your mug</span></div>
-    </a>
-  </div>
+  <h1 class="page-title">Our Designs – Apparel</h1>
+  <p class="page-intro">Ready-to-wear designs. Choose size and colour.</p>
+  <div class="product-grid" id="productGrid"></div>
 </main>
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <button class="modal-close" id="closeModal" aria-label="Close">×</button>
+    <div class="modal-image"><img id="modalImg" src="" alt=""></div>
+    <div class="modal-body">
+      <h2 id="modalTitle"></h2>
+      <div class="modal-price" id="modalPrice"></div>
+      <p class="modal-desc" id="modalDesc"></p>
+      <div class="colour-section" id="mugColourSection" style="display:none">
+        <label id="colourLabel">Colour</label>
+        <div class="swatches" id="mugSwatches"></div>
+        <div class="selected-colour-label" id="selectedColourLabel"></div>
+        <p class="colour-disclaimer">Colours may vary slightly from those shown due to screen settings and the manufacturing process.</p>
+      </div>
+      <div class="colour-section" id="bgColourSection" style="display:none">
+        <label>Background Splash Colour</label>
+        <div class="swatches" id="bgSwatches"></div>
+        <div class="selected-colour-label" id="selectedBgLabel"></div>
+      </div>
+      <div class="colour-section" id="sizeSection" style="display:none">
+        <label>Size</label>
+        <div class="size-row" id="sizeRow"></div>
+      </div>
+      <div class="colour-section" id="bulkSection" style="display:none">
+        <label>Quantity (min 10, max 100)</label>
+        <p class="bulk-qty-note">Bulk pricing is per unit. Minimum order 10 units.</p>
+        <input type="number" id="bulkQty" min="10" max="100" value="10" style="width:100px;padding:8px;border:1px solid #e5e5e5;font-size:14px">
+      </div>
+      <div class="qty-row" id="qtyRow">
+        <button type="button" id="qtyMinus">−</button>
+        <span id="qtyValue">1</span>
+        <button type="button" id="qtyPlus">+</button>
+      </div>
+      <div class="notes-field"><textarea id="notesField" placeholder="Add a note for personalisation (optional)"></textarea></div>
+      <div class="upload-area" id="uploadArea" style="display:none">
+        Click to upload your photo / design
+        <input type="file" id="fileInput" accept="image/*" style="display:none">
+        <div class="upload-status" id="uploadStatus"></div>
+      </div>
+      <button class="add-btn" id="addToBasketBtn">Add to Basket</button>
+    </div>
+  </div>
+</div>
 
 
 <footer class="site-footer">
@@ -563,6 +581,164 @@ function flyToCart(fromEl, imgSrc) {
   setTimeout(() => flyer.remove(), 750);
 }
 
+
+const products = [{"id": "HG-TS-OD-001", "title": "Classic Motif T-Shirt", "price": 16, "desc": "Ready-to-wear design on a quality tee. Choose size and colour.", "imgA": "tshirt-placeholder-2.jpg", "imgB": "tshirt-placeholder-2.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"}, {"id": "HG-TS-OD-002", "title": "Statement Design Tee", "price": 16, "desc": "Bold everyday graphic — no upload needed.", "imgA": "tshirt-placeholder-2b.jpg", "imgB": "tshirt-placeholder-2b.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"}, {"id": "HG-TS-OD-003", "title": "Everyday Graphic Tee", "price": 16, "desc": "Simple, soft and easy to wear.", "imgA": "tshirt-placeholder-3.jpg", "imgB": "tshirt-placeholder-3.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"}];
+const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Black", "hex": "#1a1a1a"}];
+const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
+const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+let currentProduct = null;
+let selectedMugColour = mugColours[0];
+let selectedBgColour = bgColours[0];
+let selectedSize = 'M';
+let qty = 1;
+let uploadedUrl = '';
+
+const grid = document.getElementById('productGrid');
+products.forEach((p, i) => {
+  const card = document.createElement('div');
+  card.className = 'product-card';
+  card.innerHTML = `
+    <div class="img-wrap"><img src="${p.imgA}" alt="${p.title}" onerror="this.style.opacity=0.3"></div>
+    <div class="info">
+      <h3>${p.title}</h3>
+      <div class="price">£${Number(p.price).toFixed(2)}</div>
+      <button class="btn" data-index="${i}">${p.upload || p.colours || p.sizes || p.bulk ? 'Personalise' : 'View / Add'}</button>
+    </div>`;
+  grid.appendChild(card);
+});
+
+grid.addEventListener('click', e => {
+  const btn = e.target.closest('[data-index]');
+  if (!btn) return;
+  openModal(products[+btn.dataset.index]);
+});
+
+function openModal(p) {
+  currentProduct = p;
+  qty = 1; uploadedUrl = '';
+  selectedMugColour = mugColours[0];
+  selectedBgColour = bgColours[0];
+  selectedSize = 'M';
+  document.getElementById('modalImg').src = p.imgB || p.imgA;
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalPrice').textContent = '£' + Number(p.price).toFixed(2);
+  document.getElementById('modalDesc').textContent = p.desc;
+  document.getElementById('qtyValue').textContent = '1';
+  document.getElementById('notesField').value = '';
+  document.getElementById('uploadStatus').style.display = 'none';
+
+  const mugSec = document.getElementById('mugColourSection');
+  const mugSw = document.getElementById('mugSwatches');
+  const selLab = document.getElementById('selectedColourLabel');
+  mugSw.innerHTML = '';
+  if (p.colours) {
+    mugSec.style.display = 'block';
+    document.getElementById('colourLabel').textContent = p.colourLabel || 'Colour';
+    mugColours.forEach((c, i) => {
+      const s = document.createElement('div');
+      s.className = 'swatch' + (i === 0 ? ' selected' : '');
+      s.style.background = c.hex;
+      if (c.name === 'White') s.style.boxShadow = '0 0 0 1px #ccc';
+      s.title = c.name;
+      s.onclick = () => {
+        mugSw.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
+        s.classList.add('selected');
+        selectedMugColour = c;
+        selLab.textContent = 'Selected: ' + c.name;
+      };
+      mugSw.appendChild(s);
+    });
+    selLab.textContent = 'Selected: ' + selectedMugColour.name;
+  } else mugSec.style.display = 'none';
+
+  const bgSec = document.getElementById('bgColourSection');
+  const bgSw = document.getElementById('bgSwatches');
+  const bgLab = document.getElementById('selectedBgLabel');
+  bgSw.innerHTML = '';
+  if (p.bgSplash) {
+    bgSec.style.display = 'block';
+    bgColours.forEach((c, i) => {
+      const s = document.createElement('div');
+      s.className = 'swatch' + (i === 0 ? ' selected' : '');
+      s.style.background = c.hex;
+      s.title = c.name;
+      s.onclick = () => {
+        bgSw.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
+        s.classList.add('selected');
+        selectedBgColour = c;
+        bgLab.textContent = 'Selected: ' + c.name;
+      };
+      bgSw.appendChild(s);
+    });
+    bgLab.textContent = 'Selected: ' + selectedBgColour.name;
+  } else bgSec.style.display = 'none';
+
+  const sizeSec = document.getElementById('sizeSection');
+  const sizeRow = document.getElementById('sizeRow');
+  sizeRow.innerHTML = '';
+  if (p.sizes) {
+    sizeSec.style.display = 'block';
+    sizes.forEach(sz => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'size-btn' + (sz === 'M' ? ' selected' : '');
+      b.textContent = sz;
+      b.onclick = () => {
+        sizeRow.querySelectorAll('.size-btn').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+        selectedSize = sz;
+      };
+      sizeRow.appendChild(b);
+    });
+  } else sizeSec.style.display = 'none';
+
+  const bulkSec = document.getElementById('bulkSection');
+  const qtyRow = document.getElementById('qtyRow');
+  if (p.bulk) {
+    bulkSec.style.display = 'block'; qtyRow.style.display = 'none';
+    document.getElementById('bulkQty').value = 10;
+  } else {
+    bulkSec.style.display = 'none'; qtyRow.style.display = 'flex';
+  }
+  document.getElementById('uploadArea').style.display = p.upload ? 'block' : 'none';
+  document.getElementById('productModal').classList.add('open');
+}
+
+document.getElementById('closeModal').onclick = () => document.getElementById('productModal').classList.remove('open');
+document.getElementById('productModal').addEventListener('click', e => {
+  if (e.target.id === 'productModal') document.getElementById('productModal').classList.remove('open');
+});
+document.getElementById('qtyMinus').onclick = () => { qty = Math.max(1, qty-1); document.getElementById('qtyValue').textContent = qty; };
+document.getElementById('qtyPlus').onclick = () => { qty++; document.getElementById('qtyValue').textContent = qty; };
+document.getElementById('uploadArea').onclick = () => document.getElementById('fileInput').click();
+document.getElementById('fileInput').onchange = e => {
+  const file = e.target.files[0];
+  if (file) {
+    uploadedUrl = file.name; // Cloudinary URL will replace this when connected
+    document.getElementById('uploadStatus').style.display = 'block';
+    document.getElementById('uploadStatus').textContent = '✓ ' + file.name + ' ready (Cloudinary link pending setup)';
+  }
+};
+document.getElementById('addToBasketBtn').onclick = function() {
+  if (!currentProduct) return;
+  const isBulk = !!currentProduct.bulk;
+  const finalQty = isBulk ? Math.min(100, Math.max(10, parseInt(document.getElementById('bulkQty').value,10)||10)) : qty;
+  addToCart({
+    id: currentProduct.id,
+    sku: currentProduct.id,
+    title: currentProduct.title,
+    price: currentProduct.price,
+    qty: finalQty,
+    colour: currentProduct.colours ? selectedMugColour.name : null,
+    backgroundColour: currentProduct.bgSplash ? selectedBgColour.name : null,
+    size: currentProduct.sizes ? selectedSize : null,
+    notes: document.getElementById('notesField').value.trim(),
+    image: currentProduct.imgA,
+    uploadUrl: uploadedUrl,
+    bulk: isBulk
+  }, this);
+  document.getElementById('productModal').classList.remove('open');
+};
 
 
 document.getElementById('menu-toggle')?.addEventListener('click', () => {
