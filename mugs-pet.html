@@ -313,8 +313,20 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .footer-links a { font-size: 12px; color: var(--text-muted); }
 
 @media (max-width: 900px) {
-  .announcement-bar { flex-direction: column; gap: 10px; align-items: center; }
-  .main-header { padding: 15px 20px; }
+  .announcement-bar {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 6px 10px;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    gap: 4px;
+  }
+  .announcement-item { gap: 5px; }
+  .announcement-item i { font-size: 11px; }
+  .announcement-text span { display: none; } /* hide sub-lines on mobile */
+  .main-header { padding: 12px 16px; }
   .nav-links { display: none; }
   .mobile-toggle { display: block; }
   .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -323,24 +335,29 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 @media (max-width: 520px) {
   .product-grid { grid-template-columns: 1fr; }
-  .logo img { height: 60px; }
+  .logo img { height: 56px; }
+  .announcement-bar { padding: 5px 6px; font-size: 8px; }
+  .announcement-item i { font-size: 10px; }
 }
 
 .how-to-banner {
   width: 100%;
-  max-width: 100%;
+  max-width: none;
   margin: 0 0 36px;
+  padding: 0;
   border-radius: 0;
   overflow: hidden;
   line-height: 0;
+  box-sizing: border-box;
 }
 .how-to-banner img {
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  display: block;
-  vertical-align: top;
-  object-fit: cover;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  display: block !important;
+  margin: 0;
+  padding: 0;
+  object-fit: fill;
 }
 /* Desktop: show only desktop banner */
 .how-to-banner .how-to-desktop { display: block !important; }
@@ -350,6 +367,51 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .how-to-banner .how-to-desktop { display: none !important; }
   .how-to-banner .how-to-mobile { display: block !important; }
   .how-to-banner { margin-bottom: 28px; border-radius: 8px; }
+}
+
+
+/* Back to top (mobile-focused, visible on all small screens) */
+.back-to-top {
+  position: fixed;
+  bottom: 22px;
+  right: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s, transform 0.25s;
+}
+.back-to-top.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (min-width: 901px) {
+  .back-to-top { bottom: 28px; right: 28px; }
+}
+
+/* Fly-to-cart animation */
+.fly-item {
+  position: fixed;
+  z-index: 10000;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: cover;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.7s;
 }
 
 </style>
@@ -485,6 +547,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </div>
 
 <div class="toast" id="toast"></div>
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
 
 <footer class="site-footer">
   <div class="footer-content">
@@ -518,11 +581,35 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2200);
 }
-function addToCart(product) {
+function addToCart(product, fromEl) {
   const cart = getCart();
   cart.push(product);
   saveCart(cart);
   showToast('Added to basket');
+  flyToCart(fromEl, product.image);
+}
+
+function flyToCart(fromEl, imgSrc) {
+  const cartIcon = document.querySelector('.cart-icon') || document.getElementById('cartBadge');
+  if (!cartIcon) return;
+  const start = fromEl
+    ? fromEl.getBoundingClientRect()
+    : (document.getElementById('addToBasketBtn') || document.body).getBoundingClientRect();
+  const end = cartIcon.getBoundingClientRect();
+  const flyer = document.createElement('img');
+  flyer.className = 'fly-item';
+  flyer.src = imgSrc || '';
+  flyer.onerror = function() { this.style.background = '#ddd'; this.removeAttribute('src'); };
+  flyer.style.left = (start.left + start.width / 2 - 24) + 'px';
+  flyer.style.top = (start.top + start.height / 2 - 24) + 'px';
+  document.body.appendChild(flyer);
+  // force reflow
+  flyer.offsetHeight;
+  const dx = end.left + end.width / 2 - 24 - (start.left + start.width / 2 - 24);
+  const dy = end.top + end.height / 2 - 24 - (start.top + start.height / 2 - 24);
+  flyer.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(0.3)';
+  flyer.style.opacity = '0.4';
+  setTimeout(function() { flyer.remove(); }, 750);
 }
 
 const products = [
@@ -737,8 +824,9 @@ document.getElementById('fileInput').onchange = e => {
   }
 };
 
-document.getElementById('addToBasketBtn').onclick = () => {
+document.getElementById('addToBasketBtn').onclick = function() {
   if (!currentProduct) return;
+  const btn = this;
   addToCart({
     id: currentProduct.id,
     title: currentProduct.title,
@@ -750,13 +838,23 @@ document.getElementById('addToBasketBtn').onclick = () => {
     image: currentProduct.imgA,
     uploadUrl: uploadedUrl,
     sku: currentProduct.id
-  });
+  }, btn);
   document.getElementById('productModal').classList.remove('open');
 };
 
 document.getElementById('menu-toggle').addEventListener('click', () => {
   document.getElementById('mobileNav').classList.toggle('open');
 });
+// Back to top
+const backBtn = document.getElementById('backToTop');
+window.addEventListener('scroll', function() {
+  if (window.scrollY > 320) backBtn.classList.add('show');
+  else backBtn.classList.remove('show');
+});
+backBtn.addEventListener('click', function() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
 updateCartBadge();
 </script>
 </body>
