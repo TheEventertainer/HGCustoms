@@ -500,8 +500,8 @@ const products = [
     title: 'Colour Splash Personalised Pet Mug',
     price: 10.00,
     desc: 'Turn your pets into a mug you’ll treasure! Upload a photo of your dog, cat or any other pet and we’ll transform it into a beautiful colour-splash portrait design.',
-    imgA: 'images/colour-splash-pet-mug-a.jpg',
-    imgB: 'images/colour-splash-pet-mug-b.jpg',
+    imgA: 'colour-splash-pet-mug-a.jpg',
+    imgB: 'colour-splash-pet-mug-b.jpg',
     colours: true,
     bgSplash: true,
     upload: true
@@ -511,8 +511,8 @@ const products = [
     title: 'Trouble Maker Personalised Pet Mug',
     price: 10.00,
     desc: 'Celebrate your mischievous pets with a mug made just for them! Upload photos and we’ll create a detailed illustrated portrait finished with the playful “Established Troublemakers” design.',
-    imgA: 'images/trouble-maker-pet-mug-a.jpg',
-    imgB: 'images/trouble-maker-pet-mug-b.jpg',
+    imgA: 'trouble-maker-pet-mug-a.jpg',
+    imgB: 'trouble-maker-pet-mug-b.jpg',
     colours: true,
     bgSplash: false,
     upload: true
@@ -522,8 +522,8 @@ const products = [
     title: 'Life is Better Personalised Pet Mug',
     price: 10.00,
     desc: 'Celebrate the special bond you share with your beloved pet. Upload a photo and we’ll transform it into a beautiful personalised illustrated portrait finished with “Life is better with you”.',
-    imgA: 'images/life-is-better-pet-mug-a.jpg',
-    imgB: 'images/life-is-better-pet-mug-b.jpg',
+    imgA: 'life-is-better-pet-mug-a.jpg',
+    imgB: 'life-is-better-pet-mug-b.jpg',
     colours: true,
     bgSplash: false,
     upload: true
@@ -533,8 +533,8 @@ const products = [
     title: 'Flower Field Personalised Pet Mug',
     price: 10.00,
     desc: 'Turn your favourite four-legged friend into a mug you’ll treasure! Upload a photo and we’ll transform it into a beautiful floral portrait design surrounded by delicate wildflowers.',
-    imgA: 'images/flower-field-pet-mug-a.jpg',
-    imgB: 'images/flower-field-pet-mug-b.jpg',
+    imgA: 'flower-field-pet-mug-a.jpg',
+    imgB: 'flower-field-pet-mug-b.jpg',
     colours: true,
     bgSplash: false,
     upload: true
@@ -544,8 +544,8 @@ const products = [
     title: 'My Shadow Personalised Pet Mug',
     price: 10.00,
     desc: 'Celebrate the pets who are always by your side. Upload photos and we’ll create a beautiful personalised illustrated portrait surrounded by the heartfelt words “My Shadows, My Heart”.',
-    imgA: 'images/my-shadow-pet-mug-a.jpg',
-    imgB: 'images/my-shadow-pet-mug-b.jpg',
+    imgA: 'my-shadow-pet-mug-a.jpg',
+    imgB: 'my-shadow-pet-mug-b.jpg',
     colours: true,
     bgSplash: false,
     upload: true
@@ -555,8 +555,8 @@ const products = [
     title: 'Outside Feels Like Home Mug',
     price: 8.00,
     desc: 'For those who feel most at home in the great outdoors. A peaceful mountain and woodland scene — the perfect companion for slow mornings and cosy moments.',
-    imgA: 'images/outside-feels-like-home-mug.jpg',
-    imgB: 'images/outside-feels-like-home-mug.jpg',
+    imgA: 'outside-feels-like-home-mug.jpg',
+    imgB: 'outside-feels-like-home-mug.jpg',
     colours: false,
     bgSplash: false,
     upload: false
@@ -596,7 +596,7 @@ let currentProduct = null;
 let selectedMugColour = mugColours[0];
 let selectedBgColour = bgColours[0];
 let qty = 1;
-let uploadedUrl = '';
+let uploadedUrl = ';
 
 const grid = document.getElementById('productGrid');
 products.forEach((p, i) => {
@@ -621,7 +621,7 @@ grid.addEventListener('click', e => {
 function openModal(p) {
   currentProduct = p;
   qty = 1;
-  uploadedUrl = '';
+  uploadedUrl = ';
   selectedMugColour = mugColours[0];
   selectedBgColour = bgColours[0];
 
@@ -630,17 +630,17 @@ function openModal(p) {
   document.getElementById('modalPrice').textContent = '£' + p.price.toFixed(2);
   document.getElementById('modalDesc').textContent = p.desc;
   document.getElementById('qtyValue').textContent = '1';
-  document.getElementById('notesField').value = '';
+  document.getElementById('notesField').value = ';
   document.getElementById('uploadStatus').style.display = 'none';
 
   const mugSec = document.getElementById('mugColourSection');
   const mugSw = document.getElementById('mugSwatches');
-  mugSw.innerHTML = '';
+  mugSw.innerHTML = ';
   if (p.colours) {
     mugSec.style.display = 'block';
     mugColours.forEach((c, i) => {
       const s = document.createElement('div');
-      s.className = 'swatch' + (i === 0 ? ' selected' : '');
+      s.className = 'swatch' + (i === 0 ? ' selected' : ');
       s.style.background = c.hex;
       if (c.name === 'White') s.style.border = '1px solid #ccc';
       s.title = c.name;
@@ -657,12 +657,12 @@ function openModal(p) {
 
   const bgSec = document.getElementById('bgColourSection');
   const bgSw = document.getElementById('bgSwatches');
-  bgSw.innerHTML = '';
+  bgSw.innerHTML = ';
   if (p.bgSplash) {
     bgSec.style.display = 'block';
     bgColours.forEach((c, i) => {
       const s = document.createElement('div');
-      s.className = 'swatch' + (i === 0 ? ' selected' : '');
+      s.className = 'swatch' + (i === 0 ? ' selected' : ');
       s.style.background = c.hex;
       s.title = c.name;
       s.onclick = () => {
