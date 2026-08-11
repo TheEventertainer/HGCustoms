@@ -375,9 +375,57 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 
+
+/* Desktop: fit homepage in one viewport without awkward dead space */
+@media (min-width: 901px) {
+  .home-page .announcement-bar { padding: 8px 20px; }
+  .home-page .main-header { padding: 12px 40px; }
+  .home-page .logo img { height: 60px; }
+  .home-page .hero {
+    min-height: 0;
+    height: clamp(280px, 42vh, 420px);
+    padding: 36px 64px;
+  }
+  .home-page .hero-title { font-size: 36px; }
+  .home-page .hero-script { font-size: 30px; margin-bottom: 10px; }
+  .home-page .hero-description { font-size: 14px; margin-bottom: 16px; }
+  .home-page .hero-btn { padding: 12px 22px; }
+  .home-page .main {
+    padding: 20px 24px 24px;
+    flex: 0 0 auto;
+  }
+  .home-page .section-title {
+    font-size: 18px;
+    margin: 8px 0 16px;
+  }
+  .home-page .categories-grid {
+    gap: 16px;
+    margin-top: 0;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .home-page .category-card .img-wrap {
+    aspect-ratio: 4 / 3;
+  }
+  .home-page .category-card h3 {
+    padding: 10px;
+    font-size: 12px;
+  }
+  .home-page .site-footer {
+    padding: 16px 40px;
+  }
+}
+/* Tall desktop monitors: allow hero a bit more room but still avoid force-scroll */
+@media (min-width: 901px) and (min-height: 900px) {
+  .home-page .hero {
+    height: clamp(320px, 48vh, 480px);
+  }
+}
+
 </style>
 </head>
-<body>
+<body class="home-page">
 
 <div class="announcement-bar">
   <a href="#" class="announcement-item"><i class="fa-solid fa-truck"></i><div class="announcement-text">FREE UK DELIVERY <span>On orders over £50</span></div></a>
