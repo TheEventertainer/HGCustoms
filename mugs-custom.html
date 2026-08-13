@@ -603,6 +603,7 @@ let selectedBgColour = bgColours[0];
 let selectedSize = 'M';
 let qty = 1;
 let uploadedUrl = '';
+let uploading = false;
 
 const grid = document.getElementById('productGrid');
 products.forEach((p, i) => {
@@ -721,13 +722,54 @@ document.getElementById('productModal').addEventListener('click', e => {
 });
 document.getElementById('qtyMinus').onclick = () => { qty = Math.max(1, qty-1); document.getElementById('qtyValue').textContent = qty; };
 document.getElementById('qtyPlus').onclick = () => { qty++; document.getElementById('qtyValue').textContent = qty; };
-document.getElementById('uploadArea').onclick = () => document.getElementById('fileInput').click();
-document.getElementById('fileInput').onchange = e => {
+const CLOUDINARY_CLOUD_NAME = 'opdnamfa';
+const CLOUDINARY_UPLOAD_PRESET = 'hg_customs_preset';
+
+document.getElementById('uploadArea').onclick = () => {
+  if (!uploading) document.getElementById('fileInput').click();
+};
+document.getElementById('fileInput').onchange = async (e) => {
   const file = e.target.files[0];
-  if (file) {
-    uploadedUrl = file.name; // Cloudinary URL will replace this when connected
-    document.getElementById('uploadStatus').style.display = 'block';
-    document.getElementById('uploadStatus').textContent = '✓ ' + file.name + ' ready (Cloudinary link pending setup)';
+  if (!file) return;
+  const status = document.getElementById('uploadStatus');
+  status.style.display = 'block';
+
+  if (!CLOUDINARY_CLOUD_NAME || CLOUDINARY_CLOUD_NAME.includes('HERE') ||
+      !CLOUDINARY_UPLOAD_PRESET || CLOUDINARY_UPLOAD_PRESET.includes('HERE')) {
+    uploadedUrl = file.name;
+    status.style.color = '#a33';
+    status.textContent = 'Upload saved as filename only — Cloudinary not configured yet.';
+    return;
+  }
+
+  uploading = true;
+  status.style.color = '#555';
+  status.textContent = 'Uploading ' + file.name + '…';
+
+  try {
+    const body = new FormData();
+    body.append('file', file);
+    body.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    body.append('folder', 'hg-customs-orders');
+
+    const res = await fetch(
+      'https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD_NAME + '/image/upload',
+      { method: 'POST', body }
+    );
+    const data = await res.json();
+    if (!res.ok || !data.secure_url) {
+      throw new Error(data.error && data.error.message ? data.error.message : 'Upload failed');
+    }
+    uploadedUrl = data.secure_url;
+    status.style.color = '#2d5a3d';
+    status.textContent = '✓ Photo uploaded — ready to add to basket';
+  } catch (err) {
+    console.error(err);
+    uploadedUrl = '';
+    status.style.color = '#a33';
+    status.textContent = 'Upload failed. Please try another image or WhatsApp us the photo.';
+  } finally {
+    uploading = false;
   }
 };
 document.getElementById('addToBasketBtn').onclick = function() {
