@@ -531,10 +531,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         <button type="button" class="apply-btn" id="applyDiscount">Apply</button>
       </div>
       <div id="discountMsg" class="discount-msg"></div>
+      <div class="row"><span>Delivery</span><span id="cartShipping">£2.99</span></div>
+      <p id="freeShipNudge" style="font-size:12px;color:#2d5a3d;margin:0 0 10px;line-height:1.45;display:none"></p>
       <div class="row total"><span>Total</span><span id="cartTotal">£0.00</span></div>
       <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
       <button class="empty-btn" id="emptyBasket">Empty Basket</button>
-      <p style="font-size:12px;color:#555;margin-top:12px;line-height:1.5">Try code <strong>WELCOME10</strong> for 10% off. PayPal + Formbold will be connected next — colours, sizes, notes and uploads are already captured for fulfilment.</p>
+      <p style="font-size:12px;color:#555;margin-top:12px;line-height:1.5">UK delivery <strong>£2.99</strong> on orders under £50; <strong>free</strong> on orders £50+. Try code <strong>WELCOME10</strong> for 10% off. Delivery is calculated automatically.</p>
     </div>
     </div>
   </div>
@@ -673,23 +675,59 @@ function renderCart() {
   });
   updateTotals();
 }
+const FLAT_SHIPPING = 2.99;
+const FREE_SHIPPING_THRESHOLD = 50;
+const NUDGE_FROM = 30; // show "add £X more for free delivery" from this amount
+
+function getDiscountAmount(sub) {
+  const disc = getDiscount();
+  if (disc && DISCOUNT_CODES[disc]) {
+    const d = DISCOUNT_CODES[disc];
+    if (d.type === 'percent') return sub * (d.value / 100);
+    return d.value;
+  }
+  return 0;
+}
+
+function getShipping(afterDiscount) {
+  if (afterDiscount >= FREE_SHIPPING_THRESHOLD) return 0;
+  return FLAT_SHIPPING;
+}
+
 function updateTotals() {
   const cart = getCart();
   const sub = cartSubtotal(cart);
   const disc = getDiscount();
-  let discountAmt = 0;
+  let discountAmt = getDiscountAmount(sub);
   let label = '—';
   if (disc && DISCOUNT_CODES[disc]) {
-    const d = DISCOUNT_CODES[disc];
-    if (d.type === 'percent') discountAmt = sub * (d.value/100);
-    else discountAmt = d.value;
-    label = disc + ' (' + d.label + ')';
+    label = disc + ' (' + DISCOUNT_CODES[disc].label + ')';
   }
-  const total = Math.max(0, sub - discountAmt);
-  document.getElementById('cartSubtotal').textContent = '£'+sub.toFixed(2);
-  document.getElementById('cartDiscount').textContent = discountAmt ? ('−£'+discountAmt.toFixed(2)) : '—';
+  const afterDiscount = Math.max(0, sub - discountAmt);
+  const shipping = cart.length ? getShipping(afterDiscount) : 0;
+  const total = afterDiscount + shipping;
+
+  document.getElementById('cartSubtotal').textContent = '£' + sub.toFixed(2);
+  document.getElementById('cartDiscount').textContent = discountAmt ? ('−£' + discountAmt.toFixed(2)) : '—';
   document.getElementById('cartDiscountLabel').textContent = label;
-  document.getElementById('cartTotal').textContent = '£'+total.toFixed(2);
+  const shipEl = document.getElementById('cartShipping');
+  if (shipEl) shipEl.textContent = shipping === 0 ? 'FREE' : ('£' + shipping.toFixed(2));
+  document.getElementById('cartTotal').textContent = '£' + total.toFixed(2);
+
+  const nudge = document.getElementById('freeShipNudge');
+  if (nudge) {
+    if (cart.length && afterDiscount >= NUDGE_FROM && afterDiscount < FREE_SHIPPING_THRESHOLD) {
+      const need = FREE_SHIPPING_THRESHOLD - afterDiscount;
+      nudge.style.display = 'block';
+      nudge.textContent = 'Add £' + need.toFixed(2) + ' more for free UK delivery.';
+    } else if (cart.length && afterDiscount >= FREE_SHIPPING_THRESHOLD) {
+      nudge.style.display = 'block';
+      nudge.textContent = 'You’ve unlocked free UK delivery.';
+    } else {
+      nudge.style.display = 'none';
+      nudge.textContent = '';
+    }
+  }
 }
 document.getElementById('applyDiscount')?.addEventListener('click', () => {
   const code = (document.getElementById('discountCode').value || '').trim().toUpperCase();
@@ -716,11 +754,10 @@ document.getElementById('checkoutBtn')?.addEventListener('click', () => {
   if (!cart.length) return;
   const disc = getDiscount();
   const sub = cartSubtotal(cart);
-  let discountAmt = 0;
-  if (disc && DISCOUNT_CODES[disc]) {
-    const d = DISCOUNT_CODES[disc];
-    discountAmt = d.type==='percent' ? sub*(d.value/100) : d.value;
-  }
+  const discountAmt = getDiscountAmount(sub);
+  const afterDiscount = Math.max(0, sub - discountAmt);
+  const shipping = getShipping(afterDiscount);
+  const total = afterDiscount + shipping;
   const lines = cart.map((item,i) => [
     `Item ${i+1}: ${item.title}`,
     `SKU: ${item.sku||item.id||''}`,
@@ -732,12 +769,14 @@ document.getElementById('checkoutBtn')?.addEventListener('click', () => {
     item.notes?`Notes: ${item.notes}`:'',
     item.uploadUrl?`Upload: ${item.uploadUrl}`:'',
     item.image?`Thumb: ${item.image}`:''
-  ].filter(Boolean).join('\\n')).join('\\n\\n');
-  const summary = lines + '\\n\\nSubtotal: £'+sub.toFixed(2) +
-    (disc ? '\\nDiscount ('+disc+'): −£'+discountAmt.toFixed(2) : '') +
-    '\\nTotal: £'+Math.max(0,sub-discountAmt).toFixed(2);
+  ].filter(Boolean).join('\n')).join('\n\n');
+  const summary = lines +
+    '\n\nSubtotal: £' + sub.toFixed(2) +
+    (disc ? '\nDiscount (' + disc + '): −£' + discountAmt.toFixed(2) : '') +
+    '\nDelivery: ' + (shipping === 0 ? 'FREE' : ('£' + shipping.toFixed(2))) +
+    '\nTotal: £' + total.toFixed(2);
   sessionStorage.setItem('hg_last_order', summary);
-  alert('Order summary ready for PayPal/Formbold integration.\\n\\n' + summary.slice(0,600));
+  alert('Order summary ready for PayPal/Formbold integration.\n\n' + summary.slice(0, 700));
 });
 renderCart();
 
