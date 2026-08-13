@@ -819,7 +819,10 @@ document.getElementById('checkoutBtn')?.addEventListener('click', () => {
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
 
-const FORMBOLD_ORDER_URL = 'https://formbold.com/s/oYA8D';
+const EMAILJS_SERVICE = 'service_3f9n2xd';
+const EMAILJS_PUBLIC_KEY = '2zyHc2R-sNDCYCsR2';
+const EMAILJS_ORDER_TO_US = 'template_lszbqio';
+const EMAILJS_ORDER_TO_CUSTOMER = 'template_o2mkrbr';
 
 function buildOrderRef() {
   const t = Date.now().toString(36).toUpperCase();
@@ -921,16 +924,16 @@ document.getElementById('checkoutForm')?.addEventListener('submit', async (e) =>
     : 'Discount: —';
   const deliveryLabel = shipping === 0 ? 'FREE' : ('£' + shipping.toFixed(2));
 
-  const payload = {
+  const params = {
     name: name,
     email: email,
-    phone: phone,
+    phone: phone || '—',
     address1: address1,
-    address2: address2,
+    address2: address2 || '—',
     city: city,
     postcode: postcode,
     country: country,
-    delivery_notes: deliveryNotes,
+    delivery_notes: deliveryNotes || '—',
     order_ref: orderRef,
     order_lines: orderLines,
     subtotal: sub.toFixed(2),
@@ -938,25 +941,8 @@ document.getElementById('checkoutForm')?.addEventListener('submit', async (e) =>
     discount_amount: discountAmt ? discountAmt.toFixed(2) : '0.00',
     discount_line: discountLine,
     delivery: deliveryLabel,
-    delivery_label: deliveryLabel,
     total: total.toFixed(2),
-    order_json: JSON.stringify(cart),
-    subject: 'HG Customs order ' + orderRef,
-    message: buildCustomerEmailBody({
-      name: name,
-      order_ref: orderRef,
-      order_lines: orderLines,
-      subtotal: sub.toFixed(2),
-      discount_line: discountLine,
-      delivery_label: deliveryLabel,
-      total: total.toFixed(2),
-      address1: address1,
-      address2: address2,
-      city: city,
-      postcode: postcode,
-      country: country,
-      phone: phone
-    })
+    order_json: JSON.stringify(cart)
   };
 
   btn.disabled = true;
@@ -964,19 +950,16 @@ document.getElementById('checkoutForm')?.addEventListener('submit', async (e) =>
   status.textContent = 'Sending your order…';
 
   try {
-    const body = new FormData();
-    Object.keys(payload).forEach(function (k) { body.append(k, payload[k]); });
+    if (!window.emailjs) throw new Error('EmailJS failed to load');
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
-    const res = await fetch(FORMBOLD_ORDER_URL, {
-      method: 'POST',
-      body: body,
-      headers: { Accept: 'application/json' }
-    });
-
-    if (!res.ok) throw new Error('Formbold error ' + res.status);
+    // 1) Full order to HG Customs
+    await emailjs.send(EMAILJS_SERVICE, EMAILJS_ORDER_TO_US, params);
+    // 2) Confirmation to customer
+    await emailjs.send(EMAILJS_SERVICE, EMAILJS_ORDER_TO_CUSTOMER, params);
 
     sessionStorage.setItem('hg_last_order_ref', orderRef);
-    sessionStorage.setItem('hg_last_order', payload.message);
+    sessionStorage.setItem('hg_last_order', JSON.stringify(params));
     saveCart([]);
     saveDiscount(null);
     window.location.href = 'thank-you.html';
@@ -1004,5 +987,6 @@ if (backBtn) {
 updateCartBadge();
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </body>
 </html>
