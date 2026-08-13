@@ -427,6 +427,35 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .cart-page .checkout-btn, .cart-page .empty-btn { margin-top: 10px; padding: 12px; }
 }
 
+
+.checkout-panel {
+  display: none;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+  text-align: left;
+}
+.checkout-panel.open { display: block; }
+.checkout-panel h3 {
+  font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+.checkout-panel label {
+  display: block; font-size: 11px; font-weight: 600; margin: 10px 0 4px; color: #555;
+}
+.checkout-panel input, .checkout-panel textarea {
+  width: 100%; border: 1px solid var(--border-color); padding: 10px;
+  font-size: 13px; font-family: inherit; background: #fff;
+}
+.checkout-panel .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.checkout-note {
+  font-size: 11px; color: #777; margin: 12px 0; line-height: 1.45;
+}
+.checkout-status { font-size: 12px; margin-top: 10px; display: none; }
+.checkout-status.err { color: #a33; display: block; }
+.checkout-status.ok { color: #2d5a3d; display: block; }
+#placeOrderBtn:disabled { opacity: 0.6; cursor: wait; }
+
 </style>
 </head>
 <body class="cart-page">
@@ -536,7 +565,40 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <div class="row total"><span>Total</span><span id="cartTotal">£0.00</span></div>
       <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
       <button class="empty-btn" id="emptyBasket">Empty Basket</button>
-      <p style="font-size:12px;color:#555;margin-top:12px;line-height:1.5">UK delivery <strong>£2.99</strong> on orders under £50; <strong>FREE</strong> on orders £50+. Delivery is calculated automatically.</p>
+      <p style="font-size:12px;color:#555;margin-top:12px;line-height:1.5">UK delivery <strong>£2.99</strong> on orders under £50; <strong>free</strong> on orders £50+. Try code <strong>WELCOME10</strong> for 10% off. Delivery is calculated automatically.</p>
+
+      <div class="checkout-panel" id="checkoutPanel">
+        <h3>Delivery details</h3>
+        <form id="checkoutForm" novalidate>
+          <label for="coName">Full name *</label>
+          <input type="text" id="coName" name="name" required autocomplete="name">
+          <label for="coEmail">Email *</label>
+          <input type="email" id="coEmail" name="email" required autocomplete="email">
+          <label for="coPhone">Phone</label>
+          <input type="tel" id="coPhone" name="phone" autocomplete="tel">
+          <label for="coAddress1">Address line 1 *</label>
+          <input type="text" id="coAddress1" name="address1" required autocomplete="address-line1">
+          <label for="coAddress2">Address line 2</label>
+          <input type="text" id="coAddress2" name="address2" autocomplete="address-line2">
+          <div class="row2">
+            <div>
+              <label for="coCity">Town / City *</label>
+              <input type="text" id="coCity" name="city" required autocomplete="address-level2">
+            </div>
+            <div>
+              <label for="coPostcode">Postcode *</label>
+              <input type="text" id="coPostcode" name="postcode" required autocomplete="postal-code">
+            </div>
+          </div>
+          <label for="coCountry">Country *</label>
+          <input type="text" id="coCountry" name="country" value="United Kingdom" required autocomplete="country-name">
+          <label for="coDeliveryNotes">Delivery notes (optional)</label>
+          <textarea id="coDeliveryNotes" name="delivery_notes" rows="2" placeholder="e.g. leave with neighbour"></textarea>
+          <p class="checkout-note">By placing this order you agree to our <a href="terms-of-service.html" style="text-decoration:underline">Terms</a> and <a href="privacy-policy.html" style="text-decoration:underline">Privacy Policy</a>. Card payment will be added shortly; this step confirms your order details with us.</p>
+          <button type="submit" class="checkout-btn" id="placeOrderBtn">Place order</button>
+          <div class="checkout-status" id="checkoutStatus"></div>
+        </form>
+      </div>
     </div>
     </div>
   </div>
@@ -752,31 +814,178 @@ document.getElementById('emptyBasket')?.addEventListener('click', () => {
 document.getElementById('checkoutBtn')?.addEventListener('click', () => {
   const cart = getCart();
   if (!cart.length) return;
+  const panel = document.getElementById('checkoutPanel');
+  panel.classList.add('open');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+
+const FORMBOLD_ORDER_URL = 'https://formbold.com/s/oYA8D';
+
+function buildOrderRef() {
+  const t = Date.now().toString(36).toUpperCase();
+  return 'HG-' + t.slice(-8);
+}
+
+function buildOrderLines(cart) {
+  return cart.map((item, i) => {
+    const bits = [
+      (i + 1) + '. ' + (item.title || 'Item'),
+      'SKU: ' + (item.sku || item.id || '—'),
+      'Qty: ' + (item.qty || 1),
+      'Unit: £' + Number(item.price || 0).toFixed(2),
+      'Line: £' + (Number(item.price || 0) * (item.qty || 1)).toFixed(2)
+    ];
+    if (item.colour) bits.push('Colour: ' + item.colour);
+    if (item.backgroundColour) bits.push('Background: ' + item.backgroundColour);
+    if (item.size) bits.push('Size: ' + item.size);
+    if (item.notes) bits.push('Notes: ' + item.notes);
+    if (item.uploadUrl) bits.push('Upload: ' + item.uploadUrl);
+    if (item.image) bits.push('Image ref: ' + item.image);
+    return bits.join(' | ');
+  }).join('\n');
+}
+
+function buildCustomerEmailBody(data) {
+  // Plain-text body Formbold can include in auto-reply via {{message}} or similar
+  return [
+    'Hi ' + data.name.split(' ')[0] + ',',
+    '',
+    'Thank you for your order with HG Customs.',
+    '',
+    'Order reference: ' + data.order_ref,
+    '',
+    "We've received your details and will start preparing your personalised items.",
+    'You will receive tracking information once your order has been dispatched.',
+    '',
+    '—— Your order ——',
+    data.order_lines,
+    '',
+    'Subtotal: £' + data.subtotal,
+    data.discount_line,
+    'Delivery: ' + data.delivery_label,
+    'Total: £' + data.total,
+    '',
+    '—— Delivery address ——',
+    data.name,
+    data.address1,
+    data.address2,
+    data.city,
+    data.postcode,
+    data.country,
+    data.phone ? ('Tel: ' + data.phone) : '',
+    '',
+    'Questions? Email hg-customs@hotmail.com or WhatsApp +44 7702 498975.',
+    '',
+    'Made your way, just for you.',
+    'HG Customs',
+    'https://www.hgcustoms.co.uk'
+  ].filter(function (line, idx, arr) {
+    // keep single blanks but drop trailing empties from optional fields carefully
+    return true;
+  }).join('\n').replace(/\n{3,}/g, '\n\n');
+}
+
+document.getElementById('checkoutForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const cart = getCart();
+  if (!cart.length) return;
+
+  const status = document.getElementById('checkoutStatus');
+  const btn = document.getElementById('placeOrderBtn');
+  const name = document.getElementById('coName').value.trim();
+  const email = document.getElementById('coEmail').value.trim();
+  const phone = document.getElementById('coPhone').value.trim();
+  const address1 = document.getElementById('coAddress1').value.trim();
+  const address2 = document.getElementById('coAddress2').value.trim();
+  const city = document.getElementById('coCity').value.trim();
+  const postcode = document.getElementById('coPostcode').value.trim();
+  const country = document.getElementById('coCountry').value.trim();
+  const deliveryNotes = document.getElementById('coDeliveryNotes').value.trim();
+
+  if (!name || !email || !address1 || !city || !postcode || !country) {
+    status.className = 'checkout-status err';
+    status.textContent = 'Please complete all required fields.';
+    return;
+  }
+
   const disc = getDiscount();
   const sub = cartSubtotal(cart);
   const discountAmt = getDiscountAmount(sub);
   const afterDiscount = Math.max(0, sub - discountAmt);
   const shipping = getShipping(afterDiscount);
   const total = afterDiscount + shipping;
-  const lines = cart.map((item,i) => [
-    `Item ${i+1}: ${item.title}`,
-    `SKU: ${item.sku||item.id||''}`,
-    `Qty: ${item.qty||1}`,
-    `Price: £${(item.price||0).toFixed(2)}`,
-    item.colour?`Colour: ${item.colour}`:'',
-    item.backgroundColour?`Background: ${item.backgroundColour}`:'',
-    item.size?`Size: ${item.size}`:'',
-    item.notes?`Notes: ${item.notes}`:'',
-    item.uploadUrl?`Upload: ${item.uploadUrl}`:'',
-    item.image?`Thumb: ${item.image}`:''
-  ].filter(Boolean).join('\n')).join('\n\n');
-  const summary = lines +
-    '\n\nSubtotal: £' + sub.toFixed(2) +
-    (disc ? '\nDiscount (' + disc + '): −£' + discountAmt.toFixed(2) : '') +
-    '\nDelivery: ' + (shipping === 0 ? 'FREE' : ('£' + shipping.toFixed(2))) +
-    '\nTotal: £' + total.toFixed(2);
-  sessionStorage.setItem('hg_last_order', summary);
-  alert('Order summary ready for PayPal/Formbold integration.\n\n' + summary.slice(0, 700));
+  const orderRef = buildOrderRef();
+  const orderLines = buildOrderLines(cart);
+  const discountLine = (disc && discountAmt)
+    ? ('Discount (' + disc + '): −£' + discountAmt.toFixed(2))
+    : 'Discount: —';
+  const deliveryLabel = shipping === 0 ? 'FREE' : ('£' + shipping.toFixed(2));
+
+  const payload = {
+    name: name,
+    email: email,
+    phone: phone,
+    address1: address1,
+    address2: address2,
+    city: city,
+    postcode: postcode,
+    country: country,
+    delivery_notes: deliveryNotes,
+    order_ref: orderRef,
+    order_lines: orderLines,
+    subtotal: sub.toFixed(2),
+    discount_code: disc || '',
+    discount_amount: discountAmt ? discountAmt.toFixed(2) : '0.00',
+    discount_line: discountLine,
+    delivery: deliveryLabel,
+    delivery_label: deliveryLabel,
+    total: total.toFixed(2),
+    order_json: JSON.stringify(cart),
+    subject: 'HG Customs order ' + orderRef,
+    message: buildCustomerEmailBody({
+      name: name,
+      order_ref: orderRef,
+      order_lines: orderLines,
+      subtotal: sub.toFixed(2),
+      discount_line: discountLine,
+      delivery_label: deliveryLabel,
+      total: total.toFixed(2),
+      address1: address1,
+      address2: address2,
+      city: city,
+      postcode: postcode,
+      country: country,
+      phone: phone
+    })
+  };
+
+  btn.disabled = true;
+  status.className = 'checkout-status ok';
+  status.textContent = 'Sending your order…';
+
+  try {
+    const body = new FormData();
+    Object.keys(payload).forEach(function (k) { body.append(k, payload[k]); });
+
+    const res = await fetch(FORMBOLD_ORDER_URL, {
+      method: 'POST',
+      body: body,
+      headers: { Accept: 'application/json' }
+    });
+
+    if (!res.ok) throw new Error('Formbold error ' + res.status);
+
+    sessionStorage.setItem('hg_last_order_ref', orderRef);
+    sessionStorage.setItem('hg_last_order', payload.message);
+    saveCart([]);
+    saveDiscount(null);
+    window.location.href = 'thank-you.html';
+  } catch (err) {
+    console.error(err);
+    btn.disabled = false;
+    status.className = 'checkout-status err';
+    status.textContent = 'Sorry — we could not send the order. Please try again or WhatsApp us on +44 7702 498975.';
+  }
 });
 renderCart();
 
