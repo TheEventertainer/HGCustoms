@@ -498,7 +498,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 <main class="main">
   <h1 class="page-title">Custom Apparel</h1>
-  <p class="page-intro">Upload your design, photo or text to create your very own custom T-shirt.  White, grey or black. Sizes XS–XXXL. Other colour options coming soon!</p>
+  <p class="page-intro">Upload your design. T-shirts £12 · Pullover hoodies £19. Multiple colours · Sizes XS–XXXL.</p>
   <div class="how-to-banner">
     <img class="how-to-desktop" src="tshirt-banner-desktop.JPG" alt="How to create your very own t-shirt">
     <img class="how-to-mobile" src="tshirt-banner-mobile.JPG" alt="How to create your very own t-shirt">
@@ -537,7 +537,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
             </div>
           </div>
           <div id="sizeGuideTableWrap"></div>
-          <p class="size-guide-note">Measurements are approximate. Allow 1–2 cm (about ½ inch) tolerance.</p>
+          <p class="size-guide-note">Measurements are approximate. Allow 1–2 cm (about ½ inch) tolerance. Unsure? WhatsApp us on +44 7702 498975.</p>
         </div>
       </div>
       <div class="colour-section" id="bulkSection" style="display:none">
@@ -638,10 +638,29 @@ function flyToCart(fromEl, imgSrc) {
 
 
 const products = [
-  {"id": "HG-TS-CUS-001", "title": "Create Your Own T-Shirt", "price": 12, "desc": "Upload your design, logo or photo. Choose white, grey or black. Sizes XS–XXXL.", "imgA": "create-your-own-tshirt-a.jpg", "imgB": "create-your-own-tshirt-a.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"},
-  {"id": "HG-TS-CUS-002", "title": "Create Your Own Hoodie", "price": 19, "desc": "Pullover hoodie with your artwork. Choose size and colour (white, grey or black). Sizes XS–XXXL.", "imgA": "create-your-own-tshirt-b.jpg", "imgB": "create-your-own-tshirt-b.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"}
+  {"id": "HG-TS-CUS-001", "title": "Create Your Own T-Shirt", "price": 12, "desc": "Upload your design, logo or photo. Choose from nine garment colours. Sizes XS–XXXL.", "imgA": "create-your-own-tshirt-a.jpg", "imgB": "create-your-own-tshirt-a.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "T-Shirt Colour", "colourSet": "tshirt"},
+  {"id": "HG-TS-CUS-002", "title": "Create Your Own Hoodie", "price": 19, "desc": "Pullover hoodie with your artwork. Choose from six colours. Sizes XS–XXXL.", "imgA": "create-your-own-tshirt-b.jpg", "imgB": "create-your-own-tshirt-b.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Hoodie Colour", "colourSet": "hoodie"}
 ];
-const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Black", "hex": "#1a1a1a"}];
+const tshirtColours = [
+  {"name": "Black", "hex": "#1a1a1a"},
+  {"name": "White", "hex": "#ffffff"},
+  {"name": "Light Grey", "hex": "#c8c8c8"},
+  {"name": "Classic Olive", "hex": "#5c5a3c"},
+  {"name": "Navy", "hex": "#1b2a4a"},
+  {"name": "Red", "hex": "#c41e3a"},
+  {"name": "Zinc", "hex": "#6e7168"},
+  {"name": "Khaki", "hex": "#b8a882"},
+  {"name": "Sky", "hex": "#7eb8d9"}
+];
+const hoodieColours = [
+  {"name": "Black", "hex": "#1a1a1a"},
+  {"name": "Light Grey", "hex": "#c8c8c8"},
+  {"name": "Navy", "hex": "#1b2a4a"},
+  {"name": "Charcoal", "hex": "#3d3d3d"},
+  {"name": "Blue", "hex": "#2b5a9e"},
+  {"name": "Burgundy", "hex": "#6b1e2e"}
+];
+const mugColours = tshirtColours;
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
 const sizeGuideLabels = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
@@ -709,7 +728,7 @@ function setSizeGuideUnit(unit) {
 }
 
 let currentProduct = null;
-let selectedMugColour = mugColours[0];
+let selectedMugColour = tshirtColours[0];
 let selectedBgColour = bgColours[0];
 let selectedSize = 'M';
 let qty = 1;
@@ -739,7 +758,8 @@ grid.addEventListener('click', e => {
 function openModal(p) {
   currentProduct = p;
   qty = 1; uploadedUrl = '';
-  selectedMugColour = mugColours[0];
+  const activeColours = (p.colourSet === 'hoodie' || (p.title && /hoodie/i.test(p.title))) ? hoodieColours : tshirtColours;
+  selectedMugColour = activeColours[0];
   selectedBgColour = bgColours[0];
   selectedSize = 'M';
   document.getElementById('modalImg').src = p.imgB || p.imgA;
@@ -757,11 +777,12 @@ function openModal(p) {
   if (p.colours) {
     mugSec.style.display = 'block';
     document.getElementById('colourLabel').textContent = p.colourLabel || 'Colour';
-    mugColours.forEach((c, i) => {
+    const colourList = (p.colourSet === 'hoodie' || (p.title && /hoodie/i.test(p.title))) ? hoodieColours : tshirtColours;
+    colourList.forEach((c, i) => {
       const s = document.createElement('div');
       s.className = 'swatch' + (i === 0 ? ' selected' : '');
       s.style.background = c.hex;
-      if (c.name === 'White') s.style.boxShadow = '0 0 0 1px #ccc';
+      if (c.name === 'White' || c.name === 'Light Grey' || c.name === 'Sky') s.style.boxShadow = '0 0 0 1px #ccc';
       s.title = c.name;
       s.onclick = () => {
         mugSw.querySelectorAll('.swatch').forEach(x => x.classList.remove('selected'));
