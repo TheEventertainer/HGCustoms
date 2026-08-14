@@ -466,8 +466,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 <main class="main">
   <h1 class="page-title">Our Designs – Coasters</h1>
-  <p class="page-intro">Ready-made etched slate designs.</p>
-  <div class="product-grid" id="productGrid"></div>
+  <p class="page-intro">New designs are on the way — check back soon.</p>
+  <div class="how-to-banner holding-banner">
+    <img class="how-to-desktop" src="coasters-holding-desktop.jpg" alt="Coaster designs coming soon">
+    <img class="how-to-mobile" src="coasters-holding-mobile.jpg" alt="Coaster designs coming soon">
+  </div>
+  <div class="product-grid" id="productGrid" style="display:none"></div>
 </main>
 <div class="modal-overlay" id="productModal">
   <div class="modal">
@@ -589,7 +593,7 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-CO-OD-001", "title": "Home Slate Coaster", "price": 12.0, "desc": "Etched grey slate with a classic motif.", "imgA": "coaster-design-1.jpg", "imgB": "coaster-design-1.jpg", "colours": false, "bgSplash": false, "upload": false, "sizes": false}, {"id": "HG-CO-OD-002", "title": "Love Slate Coaster", "price": 12.0, "desc": "A simple love design on durable slate.", "imgA": "coaster-design-2.jpg", "imgB": "coaster-design-2.jpg", "colours": false, "bgSplash": false, "upload": false, "sizes": false}, {"id": "HG-CO-OD-003", "title": "Family Top Coaster", "price": 12.0, "desc": "Everyday family-friendly slate coaster.", "imgA": "coaster-design-3.jpg", "imgB": "coaster-design-3.jpg", "colours": false, "bgSplash": false, "upload": false, "sizes": false}];
+const products = [];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];

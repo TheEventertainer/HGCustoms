@@ -466,8 +466,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 <main class="main">
   <h1 class="page-title">Our Designs – Apparel</h1>
-  <p class="page-intro">Ready-to-wear designs. Choose size and colour.</p>
-  <div class="product-grid" id="productGrid"></div>
+  <p class="page-intro">New designs are on the way — check back soon.</p>
+  <div class="how-to-banner holding-banner">
+    <img class="how-to-desktop" src="tshirt-holding-desktop.jpg" alt="T-shirt designs coming soon">
+    <img class="how-to-mobile" src="tshirt-holding-mobile.jpg" alt="T-shirt designs coming soon">
+  </div>
+  <div class="product-grid" id="productGrid" style="display:none"></div>
 </main>
 <div class="modal-overlay" id="productModal">
   <div class="modal">
@@ -589,7 +593,7 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-TS-OD-001", "title": "Classic Motif T-Shirt", "price": 16, "desc": "Ready-to-wear design on a quality tee. Choose size and colour.", "imgA": "tshirt-placeholder-2.jpg", "imgB": "tshirt-placeholder-2.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"}, {"id": "HG-TS-OD-002", "title": "Statement Design Tee", "price": 16, "desc": "Bold everyday graphic — no upload needed.", "imgA": "tshirt-placeholder-2b.jpg", "imgB": "tshirt-placeholder-2b.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"}, {"id": "HG-TS-OD-003", "title": "Everyday Graphic Tee", "price": 16, "desc": "Simple, soft and easy to wear.", "imgA": "tshirt-placeholder-3.jpg", "imgB": "tshirt-placeholder-3.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"}];
+const products = [];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Black", "hex": "#1a1a1a"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
