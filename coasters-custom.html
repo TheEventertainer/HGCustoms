@@ -466,8 +466,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 <main class="main">
   <h1 class="page-title">Custom Coasters</h1>
-  <p class="page-intro">Upload a photo, logo or design for etching on slate.</p>
-  <div class="product-grid" id="productGrid"></div>
+  <p class="page-intro">Square coasters only. Sublimation or slate etching — upload your design.</p>
+  <div class="how-to-banner">
+    <img class="how-to-desktop" src="coaster-banner-desktop.jpg" alt="How to create your very own coaster">
+    <img class="how-to-mobile" src="coaster-banner-mobile.jpg" alt="How to create your very own coaster">
+  </div>
+  <div class="product-grid grid-2" id="productGrid"></div>
 </main>
 <div class="modal-overlay" id="productModal">
   <div class="modal">
@@ -589,7 +593,10 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-CO-CUS-001", "title": "Create Your Own Slate Coaster", "price": 12.0, "desc": "Upload any photo or design for etching on grey slate.", "imgA": "coaster-custom-1.jpg", "imgB": "coaster-custom-1.jpg", "colours": false, "bgSplash": false, "upload": true, "sizes": false}, {"id": "HG-CO-CUS-002", "title": "Photo Etch Slate Coaster", "price": 12.0, "desc": "Your photo, etched into natural slate.", "imgA": "coaster-custom-2.jpg", "imgB": "coaster-custom-2.jpg", "colours": false, "bgSplash": false, "upload": true, "sizes": false}, {"id": "HG-CO-CUS-003", "title": "Logo Slate Coaster", "price": 12.0, "desc": "Upload a logo or monogram for a custom slate coaster.", "imgA": "coaster-custom-3.jpg", "imgB": "coaster-custom-3.jpg", "colours": false, "bgSplash": false, "upload": true, "sizes": false}];
+const products = [
+  {"id": "HG-CO-CUS-001", "title": "Sublimated Picture Coaster", "price": 8, "desc": "Full-colour sublimation on a white square coaster. Upload your photo, logo or design.", "imgA": "coaster-custom-1.jpg", "imgB": "coaster-custom-1.jpg", "colours": false, "bgSplash": false, "upload": true, "sizes": false},
+  {"id": "HG-CO-CUS-002", "title": "Slate Etched Coaster", "price": 12, "desc": "Your design or photo etched onto natural grey slate (square). Upload your image and any wording in the notes.", "imgA": "coaster-custom-2.jpg", "imgB": "coaster-custom-2.jpg", "colours": false, "bgSplash": false, "upload": true, "sizes": false}
+];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
