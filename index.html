@@ -6,7 +6,7 @@
 <title>HG Customs | Custom Mugs, Apparel & Merchandise</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,500&family=Allura&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 
@@ -17,6 +17,7 @@
   --border-color: #e5e5e5;
   --font-sans: 'Inter', sans-serif;
   --font-script: 'Playfair Display', serif;
+  --font-brand-script: 'Allura', cursive;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -266,8 +267,27 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 .hero-content { max-width: 480px; position: relative; z-index: 2; }
 .hero-sub { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; color: #555; }
-.hero-title { font-size: 44px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
-.hero-script { font-family: var(--font-script); font-style: italic; font-weight: 700; font-size: 32px; margin-bottom: 16px; color: #111; }
+.hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 44px;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.12;
+  margin-bottom: 2px;
+  letter-spacing: -0.02em;
+  color: #1a1a2e;
+}
+.hero-script {
+  font-family: var(--font-brand-script), cursive;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 42px;
+  margin-bottom: 14px;
+  color: #1a1a2e;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+}
+
 .hero-description { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 24px; }
 .hero-btn {
   display: inline-block; background: #0d0d0d; color: #fff;
@@ -407,21 +427,24 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   }
   /* MOBILE ONLY — title: force single line */
   .hero-title {
-    font-size: clamp(18px, 5.2vw, 24px);
-    color: #0d0d0d;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(20px, 5.6vw, 26px);
+    font-weight: 600;
+    color: #1a1a2e;
     text-shadow: none;
     line-height: 1.1;
     white-space: nowrap;
     letter-spacing: -0.02em;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
   .hero-script {
-    font-size: clamp(16px, 4.5vw, 20px);
-    font-weight: 700;
-    color: #0d0d0d;
+    font-family: var(--font-brand-script), cursive;
+    font-size: clamp(24px, 6.5vw, 30px);
+    font-weight: 400;
+    color: #1a1a2e;
     margin-bottom: 10px;
     text-shadow: none;
-    line-height: 1.2;
+    line-height: 1.25;
   }
   /* MOBILE ONLY — body copy stays in clear left zone */
   .hero-description {
@@ -459,8 +482,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     height: clamp(280px, 42vh, 420px);
     padding: 36px 64px;
   }
-  .home-page .hero-title { font-size: 36px; }
-  .home-page .hero-script { font-size: 30px; margin-bottom: 10px; }
+  .home-page .hero-title { font-size: 40px; }
+  .home-page .hero-script { font-size: 34px; margin-bottom: 10px; }
   .home-page .hero-description { font-size: 14px; margin-bottom: 16px; }
   .home-page .hero-btn { padding: 12px 22px; }
   .home-page .main {
@@ -590,10 +613,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 <main class="main">
   <h2 class="section-title">Shop by Category</h2>
   <div class="categories-grid">
-    <a href="mugs.html" class="category-card"><div class="img-wrap"><img src="home-mugs.JPG" alt="Mugs" onerror="this.style.display='none'"></div><h3>Mugs</h3></a>
-    <a href="t-shirts.html" class="category-card"><div class="img-wrap"><img src="home-tshirts.JPG" alt="T-Shirts" onerror="this.style.display='none'"></div><h3>T-Shirts & Hoodies</h3></a>
-    <a href="coasters.html" class="category-card"><div class="img-wrap"><img src="home-coasters.JPG" alt="Coasters" onerror="this.style.display='none'"></div><h3>Coasters</h3></a>
-    <a href="merchandise.html" class="category-card"><div class="img-wrap"><img src="home-merch.JPG" alt="Merch" onerror="this.style.display='none'"></div><h3>Merch & Bulk</h3></a>
+    <a href="mugs.html" class="category-card"><div class="img-wrap"><img src="cat-mugs.jpg" alt="Mugs" onerror="this.style.display='none'"></div><h3>Mugs</h3></a>
+    <a href="t-shirts.html" class="category-card"><div class="img-wrap"><img src="cat-tshirts.jpg" alt="T-Shirts" onerror="this.style.display='none'"></div><h3>T-Shirts & Hoodies</h3></a>
+    <a href="coasters.html" class="category-card"><div class="img-wrap"><img src="cat-coasters.jpg" alt="Coasters" onerror="this.style.display='none'"></div><h3>Coasters</h3></a>
+    <a href="merchandise.html" class="category-card"><div class="img-wrap"><img src="cat-merch.jpg" alt="Merch" onerror="this.style.display='none'"></div><h3>Merch & Bulk</h3></a>
   </div>
 </main>
 
