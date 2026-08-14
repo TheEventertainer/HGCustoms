@@ -267,7 +267,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .hero-content { max-width: 480px; position: relative; z-index: 2; }
 .hero-sub { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; color: #555; }
 .hero-title { font-size: 42px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
-.hero-script { font-family: var(--font-script); font-style: italic; font-weight: 700; font-size: 36px; margin-bottom: 16px; color: #111; }
+.hero-script { font-family: var(--font-script); font-style: italic; font-weight: 700; font-size: 32px; margin-bottom: 16px; color: #111; }
 .hero-description { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 24px; }
 .hero-btn {
   display: inline-block; background: #0d0d0d; color: #fff;
@@ -369,20 +369,29 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .modal { grid-template-columns: 1fr; }
   .footer-content { flex-direction: column; gap: 16px; text-align: center; }
   .hero {
-    padding: 28px 20px 32px;
-    min-height: 520px;
+    padding: 24px 20px 28px;
+    /* Shorter than full screen so category section peeks below */
+    min-height: 0;
+    height: auto;
+    max-height: 72vh;
     background-image: url('hero-background-mobile.jpg') !important;
     background-position: right center;
     background-size: cover;
     background-color: #f3ebe3;
     align-items: flex-start;
   }
+  .home-page .main {
+    padding-top: 8px;
+  }
+  .home-page .section-title {
+    margin-top: 20px;
+  }
   .hero::before {
     display: none !important;
     background: none !important;
   }
   .hero-content {
-    max-width: 65%;
+    max-width: 58%;
     background: transparent;
     padding: 8px 0 0;
     border-radius: 0;
@@ -397,13 +406,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     text-shadow: none;
   }
   .hero-title {
-    font-size: 24px;
+    font-size: 28px;
     color: #0d0d0d;
     text-shadow: none;
     line-height: 1.15;
   }
   .hero-script {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     color: #0d0d0d;
     margin-bottom: 12px;
