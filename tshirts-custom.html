@@ -195,6 +195,38 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   font-size: 12px; font-weight: 600; background: #fff;
 }
 .size-btn.selected { background: #111; color: #fff; border-color: #111; }
+.size-guide-toggle {
+  display: inline-block; margin-top: 10px; font-size: 12px; font-weight: 600;
+  color: #111; text-decoration: underline; cursor: pointer; background: none; border: none;
+  padding: 0; font-family: inherit;
+}
+.size-guide-panel {
+  display: none; margin-top: 12px; padding: 12px; border: 1px solid var(--border-color);
+  background: #fafafa; font-size: 12px; line-height: 1.45;
+}
+.size-guide-panel.open { display: block; }
+.size-guide-head {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px;
+  margin-bottom: 10px;
+}
+.size-guide-head strong { font-size: 13px; }
+.unit-toggle { display: flex; gap: 0; border: 1px solid #ccc; }
+.unit-toggle button {
+  padding: 4px 10px; font-size: 11px; font-weight: 600; border: none; background: #fff;
+  cursor: pointer; font-family: inherit;
+}
+.unit-toggle button.active { background: #111; color: #fff; }
+.size-guide-table {
+  width: 100%; border-collapse: collapse; font-size: 11px;
+}
+.size-guide-table th, .size-guide-table td {
+  border: 1px solid #e0e0e0; padding: 6px 4px; text-align: center;
+}
+.size-guide-table th { background: #eee; font-weight: 600; }
+.size-guide-table td:first-child, .size-guide-table th:first-child {
+  text-align: left; font-weight: 600; white-space: nowrap;
+}
+.size-guide-note { margin-top: 8px; font-size: 11px; color: var(--text-muted); }
 .qty-row { display: flex; align-items: center; gap: 12px; margin: 16px 0; }
 .qty-row button {
   width: 32px; height: 32px; border: 1px solid var(--border-color);
@@ -466,8 +498,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 <main class="main">
   <h1 class="page-title">Custom Apparel</h1>
-  <p class="page-intro">Upload your design. White, grey or black. Sizes XS–XXXL.</p>
-  <div class="product-grid" id="productGrid"></div>
+  <p class="page-intro">Upload your design. T-shirts £12 · Pullover hoodies £19. White, grey or black. Sizes XS–XXXL.</p>
+  <div class="how-to-banner">
+    <img class="how-to-desktop" src="tshirt-banner-desktop.jpg" alt="How to create your very own t-shirt">
+    <img class="how-to-mobile" src="tshirt-banner-mobile.jpg" alt="How to create your very own t-shirt">
+  </div>
+  <div class="product-grid grid-2" id="productGrid"></div>
 </main>
 <div class="modal-overlay" id="productModal">
   <div class="modal">
@@ -491,6 +527,18 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <div class="colour-section" id="sizeSection" style="display:none">
         <label>Size</label>
         <div class="size-row" id="sizeRow"></div>
+        <button type="button" class="size-guide-toggle" id="sizeGuideToggle">Size guide</button>
+        <div class="size-guide-panel" id="sizeGuidePanel" aria-hidden="true">
+          <div class="size-guide-head">
+            <strong id="sizeGuideTitle">Size guide</strong>
+            <div class="unit-toggle" role="group" aria-label="Measurement unit">
+              <button type="button" id="unitIn" class="active">Inches</button>
+              <button type="button" id="unitCm">cm</button>
+            </div>
+          </div>
+          <div id="sizeGuideTableWrap"></div>
+          <p class="size-guide-note">Measurements are approximate. Allow 1–2 cm (about ½ inch) tolerance. Unsure? WhatsApp us on +44 7702 498975.</p>
+        </div>
       </div>
       <div class="colour-section" id="bulkSection" style="display:none">
         <label>Quantity (min 10, max 100)</label>
@@ -589,10 +637,77 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-TS-CUS-001", "title": "Create Your Own T-Shirt", "price": 15, "desc": "Upload your design, logo or photo. White, grey or black. Sizes XS–XXXL.", "imgA": "create-your-own-tshirt-a.jpg", "imgB": "create-your-own-tshirt-a.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"}, {"id": "HG-TS-CUS-002", "title": "Create Your Own Hoodie", "price": 15, "desc": "Custom hoodie with your artwork. Choose size and colour.", "imgA": "create-your-own-tshirt-b.jpg", "imgB": "create-your-own-tshirt-b.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"}, {"id": "HG-TS-CUS-003", "title": "Fully Custom Apparel", "price": 15, "desc": "Tell us what you need in the notes and upload your file.", "imgA": "tshirt-placeholder-1.jpg", "imgB": "tshirt-placeholder-1.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"}];
+const products = [
+  {"id": "HG-TS-CUS-001", "title": "Create Your Own T-Shirt", "price": 12, "desc": "Upload your design, logo or photo. Choose white, grey or black. Sizes XS–XXXL.", "imgA": "create-your-own-tshirt-a.jpg", "imgB": "create-your-own-tshirt-a.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"},
+  {"id": "HG-TS-CUS-002", "title": "Create Your Own Hoodie", "price": 19, "desc": "Pullover hoodie with your artwork. Choose size and colour (white, grey or black). Sizes XS–XXXL.", "imgA": "create-your-own-tshirt-b.jpg", "imgB": "create-your-own-tshirt-b.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Garment Colour"}
+];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Black", "hex": "#1a1a1a"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+const sizeGuideLabels = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
+
+// All values stored in inches; cm = inches * 2.54
+const sizeGuides = {
+  tshirt: {
+    title: "T-shirt size guide",
+    rows: [
+      { label: "Chest", values: ["33–35", "35–37", "38–40", "41–43", "44–45", "47–49", "50–52"], range: true }
+    ]
+  },
+  hoodie: {
+    title: "Pullover hoodie size guide",
+    rows: [
+      { label: "Chest", values: [41, 43, 45, 48, 50, 52, 54] },
+      { label: "Half chest", values: [20.5, 21.5, 22.5, 24, 25, 26, 27] },
+      { label: "Sleeve length", values: [21, 21.5, 22.5, 23.5, 24.5, 25.5, 26.5] },
+      { label: "Length", values: [22.5, 26, 27, 28, 29, 30, 31] }
+    ]
+  }
+};
+let sizeGuideUnit = "in"; // "in" | "cm"
+let sizeGuideKey = "tshirt";
+
+function inToCm(n) {
+  return Math.round(n * 2.54 * 10) / 10;
+}
+function formatRangeInches(str) {
+  // "33–35" -> cm
+  const m = String(str).match(/([\d.]+)\s*[–-]\s*([\d.]+)/);
+  if (!m) return str;
+  return inToCm(+m[1]) + "–" + inToCm(+m[2]);
+}
+function formatCell(val, isRange) {
+  if (sizeGuideUnit === "in") {
+    if (isRange) return val;
+    return (typeof val === "number" && val % 1 !== 0) ? val : val;
+  }
+  if (isRange) return formatRangeInches(val);
+  return inToCm(+val);
+}
+function renderSizeGuide() {
+  const guide = sizeGuides[sizeGuideKey];
+  if (!guide) return;
+  document.getElementById("sizeGuideTitle").textContent = guide.title + (sizeGuideUnit === "cm" ? " (cm)" : " (inches)");
+  let html = '<table class="size-guide-table"><thead><tr><th></th>';
+  sizeGuideLabels.forEach(l => { html += "<th>" + l + "</th>"; });
+  html += "</tr></thead><tbody>";
+  guide.rows.forEach(row => {
+    html += "<tr><td>" + row.label + "</td>";
+    row.values.forEach(v => {
+      html += "<td>" + formatCell(v, !!row.range) + "</td>";
+    });
+    html += "</tr>";
+  });
+  html += "</tbody></table>";
+  document.getElementById("sizeGuideTableWrap").innerHTML = html;
+}
+function setSizeGuideUnit(unit) {
+  sizeGuideUnit = unit;
+  document.getElementById("unitIn").classList.toggle("active", unit === "in");
+  document.getElementById("unitCm").classList.toggle("active", unit === "cm");
+  renderSizeGuide();
+}
+
 let currentProduct = null;
 let selectedMugColour = mugColours[0];
 let selectedBgColour = bgColours[0];
@@ -683,9 +798,22 @@ function openModal(p) {
 
   const sizeSec = document.getElementById('sizeSection');
   const sizeRow = document.getElementById('sizeRow');
+  const guidePanel = document.getElementById('sizeGuidePanel');
+  const guideToggle = document.getElementById('sizeGuideToggle');
   sizeRow.innerHTML = '';
+  if (guidePanel) {
+    guidePanel.classList.remove('open');
+    guidePanel.setAttribute('aria-hidden', 'true');
+  }
   if (p.sizes) {
     sizeSec.style.display = 'block';
+    sizeGuideKey = (p.title && /hoodie/i.test(p.title)) ? 'hoodie' : 'tshirt';
+    sizeGuideUnit = 'in';
+    if (document.getElementById('unitIn')) {
+      document.getElementById('unitIn').classList.add('active');
+      document.getElementById('unitCm').classList.remove('active');
+    }
+    renderSizeGuide();
     sizes.forEach(sz => {
       const b = document.createElement('button');
       b.type = 'button';
@@ -789,6 +917,15 @@ document.getElementById('addToBasketBtn').onclick = function() {
   document.getElementById('productModal').classList.remove('open');
 };
 
+
+document.getElementById('sizeGuideToggle')?.addEventListener('click', () => {
+  const panel = document.getElementById('sizeGuidePanel');
+  if (!panel) return;
+  const open = panel.classList.toggle('open');
+  panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+});
+document.getElementById('unitIn')?.addEventListener('click', () => setSizeGuideUnit('in'));
+document.getElementById('unitCm')?.addEventListener('click', () => setSizeGuideUnit('cm'));
 
 document.getElementById('menu-toggle')?.addEventListener('click', () => {
   document.getElementById('mobileNav').classList.toggle('open');
