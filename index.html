@@ -267,7 +267,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .hero-content { max-width: 480px; position: relative; z-index: 2; }
 .hero-sub { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; color: #555; }
 .hero-title { font-size: 42px; font-weight: 700; line-height: 1.15; margin-bottom: 4px; }
-.hero-script { font-family: var(--font-script); font-style: italic; font-size: 36px; margin-bottom: 16px; }
+.hero-script { font-family: var(--font-script); font-style: italic; font-weight: 700; font-size: 32px; margin-bottom: 16px; color: #111; }
 .hero-description { font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 24px; }
 .hero-btn {
   display: inline-block; background: #0d0d0d; color: #fff;
@@ -369,52 +369,54 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .modal { grid-template-columns: 1fr; }
   .footer-content { flex-direction: column; gap: 16px; text-align: center; }
   .hero {
-    padding: 32px 20px 36px;
-    min-height: 420px;
-    background-position: 65% center;
+    padding: 28px 20px 32px;
+    min-height: 520px;
+    background-image: url('hero-background-mobile.jpg') !important;
+    background-position: right center;
     background-size: cover;
+    background-color: #f3ebe3;
+    align-items: flex-start;
   }
   .hero::before {
-    /* Keep image visible: soft left/bottom wash only */
-    background: linear-gradient(
-      160deg,
-      rgba(255,255,255,0.82) 0%,
-      rgba(255,255,255,0.55) 42%,
-      rgba(255,255,255,0.15) 70%,
-      rgba(255,255,255,0.05) 100%
-    ) !important;
+    display: none !important;
+    background: none !important;
   }
   .hero-content {
-    max-width: 100%;
+    max-width: 58%;
     background: transparent;
-    padding: 0;
+    padding: 8px 0 0;
     border-radius: 0;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
   }
   .hero-sub {
-    color: #222;
-    margin-bottom: 8px;
+    color: #333;
+    margin-bottom: 10px;
     font-size: 11px;
-    text-shadow: 0 1px 2px rgba(255,255,255,0.9);
+    letter-spacing: 1.5px;
+    text-shadow: none;
   }
   .hero-title {
-    font-size: 30px;
-    color: #000;
-    text-shadow: 0 1px 3px rgba(255,255,255,0.95), 0 0 12px rgba(255,255,255,0.8);
+    font-size: 28px;
+    color: #0d0d0d;
+    text-shadow: none;
+    line-height: 1.15;
   }
   .hero-script {
-    font-size: 26px;
-    color: #111;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0d0d0d;
     margin-bottom: 12px;
-    text-shadow: 0 1px 3px rgba(255,255,255,0.95), 0 0 12px rgba(255,255,255,0.8);
+    text-shadow: none;
+    line-height: 1.25;
   }
   .hero-description {
-    color: #222 !important;
-    font-size: 14px;
+    color: #333 !important;
+    font-size: 13px;
     margin-bottom: 18px;
-    text-shadow: 0 1px 2px rgba(255,255,255,0.9);
-    max-width: 20em;
+    text-shadow: none;
+    max-width: 100%;
+    line-height: 1.5;
   }
   .hero-btn { display: inline-block; }
 }
@@ -561,7 +563,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 <section class="hero">
   <div class="hero-content">
     <div class="hero-sub">Welcome to HG Customs</div>
-    <h1 class="hero-title">Thoughtfully made, Uniquely yours.,</h1>
+    <h1 class="hero-title">Thoughtfully Made</h1>
+    <div class="hero-script">Uniquely yours</div>
     <p class="hero-description">Hand-finished custom mugs, apparel, coasters and merchandise — personalised with your photos, pets and ideas.</p>
     <a href="mugs.html" class="hero-btn">Shop Mugs</a>
   </div>
