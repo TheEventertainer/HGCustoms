@@ -580,33 +580,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <p style="font-size:12px;color:#555;margin-top:12px;line-height:1.5">UK delivery <strong>£2.99</strong> on orders under £50; <strong>free</strong> on orders £50+. Try code <strong>WELCOME10</strong> for 10% off. Delivery is calculated automatically.</p>
 
       <div class="checkout-panel" id="checkoutPanel">
-        <h3>Delivery details</h3>
+        <h3>Checkout</h3>
         <form id="checkoutForm" novalidate>
-          <label for="coName">Full name *</label>
-          <input type="text" id="coName" name="name" required autocomplete="name">
-          <label for="coEmail">Email *</label>
-          <input type="email" id="coEmail" name="email" required autocomplete="email">
-          <label for="coPhone">Phone</label>
-          <input type="tel" id="coPhone" name="phone" autocomplete="tel">
-          <label for="coAddress1">Address line 1 *</label>
-          <input type="text" id="coAddress1" name="address1" required autocomplete="address-line1">
-          <label for="coAddress2">Address line 2</label>
-          <input type="text" id="coAddress2" name="address2" autocomplete="address-line2">
-          <div class="row2">
-            <div>
-              <label for="coCity">Town / City *</label>
-              <input type="text" id="coCity" name="city" required autocomplete="address-level2">
-            </div>
-            <div>
-              <label for="coPostcode">Postcode *</label>
-              <input type="text" id="coPostcode" name="postcode" required autocomplete="postal-code">
-            </div>
-          </div>
-          <label for="coCountry">Country *</label>
-          <input type="text" id="coCountry" name="country" value="United Kingdom" required autocomplete="country-name">
+          <p class="checkout-note" style="margin-top:0">Name, email and delivery address are collected securely by <strong>PayPal</strong> when you pay. Optional note only below.</p>
           <label for="coDeliveryNotes">Delivery notes (optional)</label>
-          <textarea id="coDeliveryNotes" name="delivery_notes" rows="2" placeholder="e.g. leave with neighbour"></textarea>
-          <p class="checkout-note">By paying you agree to our <a href="terms-of-service.html" style="text-decoration:underline">Terms</a> and <a href="privacy-policy.html" style="text-decoration:underline">Privacy Policy</a>. Complete delivery details above, then pay securely with PayPal (sandbox mode for testing).</p>
+          <textarea id="coDeliveryNotes" name="delivery_notes" rows="2" placeholder="e.g. leave with neighbour, gift message"></textarea>
+          <p class="checkout-note">By paying you agree to our <a href="terms-of-service.html" style="text-decoration:underline">Terms</a> and <a href="privacy-policy.html" style="text-decoration:underline">Privacy Policy</a>.</p>
           <div id="paypal-button-container" style="margin-top:12px;max-width:420px"></div>
           <p id="paypalSandboxNote" style="font-size:11px;color:#888;margin-top:8px;line-height:1.4">Sandbox test mode — use a PayPal sandbox buyer account. No real money is taken.</p>
           <div class="checkout-status" id="checkoutStatus"></div>
@@ -943,18 +922,6 @@ function getCheckoutTotals() {
 }
 
 function validateCheckoutForm() {
-  const name = document.getElementById('coName').value.trim();
-  const email = document.getElementById('coEmail').value.trim();
-  const address1 = document.getElementById('coAddress1').value.trim();
-  const city = document.getElementById('coCity').value.trim();
-  const postcode = document.getElementById('coPostcode').value.trim();
-  const country = document.getElementById('coCountry').value.trim();
-  if (!name || !email || !address1 || !city || !postcode || !country) {
-    return { ok: false, message: 'Please fill in all required delivery fields before paying.' };
-  }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { ok: false, message: 'Please enter a valid email address.' };
-  }
   if (!getCart().length) {
     return { ok: false, message: 'Your basket is empty.' };
   }
@@ -963,15 +930,62 @@ function validateCheckoutForm() {
 
 function buildOrderParams(paypalDetails) {
   const { cart, sub, disc, discountAmt, shipping, total } = getCheckoutTotals();
-  const name = document.getElementById('coName').value.trim();
-  const email = document.getElementById('coEmail').value.trim();
-  const phone = document.getElementById('coPhone').value.trim();
-  const address1 = document.getElementById('coAddress1').value.trim();
-  const address2 = document.getElementById('coAddress2').value.trim();
-  const city = document.getElementById('coCity').value.trim();
-  const postcode = document.getElementById('coPostcode').value.trim();
-  const country = document.getElementById('coCountry').value.trim();
-  const deliveryNotes = document.getElementById('coDeliveryNotes').value.trim();
+  const notesEl = document.getElementById('coDeliveryNotes');
+  const deliveryNotes = notesEl ? notesEl.value.trim() : '';
+
+  // Defaults
+  let name = '—';
+  let email = '—';
+  let phone = '—';
+  let address1 = '—';
+  let address2 = '—';
+  let city = '—';
+  let postcode = '—';
+  let country = '—';
+
+  let paypalTxn = '—';
+  let paypalPayerEmail = '—';
+  let paypalStatus = '—';
+
+  if (paypalDetails) {
+    paypalStatus = paypalDetails.status || 'COMPLETED';
+    try {
+      paypalTxn = (paypalDetails.purchase_units && paypalDetails.purchase_units[0] &&
+        paypalDetails.purchase_units[0].payments && paypalDetails.purchase_units[0].payments.captures &&
+        paypalDetails.purchase_units[0].payments.captures[0] &&
+        paypalDetails.purchase_units[0].payments.captures[0].id) || paypalDetails.id || '—';
+    } catch (e) { paypalTxn = paypalDetails.id || '—'; }
+
+    const payer = paypalDetails.payer || {};
+    if (payer.email_address) {
+      email = payer.email_address;
+      paypalPayerEmail = payer.email_address;
+    }
+    if (payer.name) {
+      const n = payer.name;
+      name = [n.given_name, n.surname].filter(Boolean).join(' ').trim() || name;
+    }
+    if (payer.phone && payer.phone.phone_number && payer.phone.phone_number.national_number) {
+      phone = String(payer.phone.phone_number.national_number);
+    }
+
+    const pu = (paypalDetails.purchase_units && paypalDetails.purchase_units[0]) || {};
+    const ship = pu.shipping || {};
+    if (ship.name && ship.name.full_name) {
+      name = ship.name.full_name || name;
+    }
+    const addr = ship.address || {};
+    if (addr.address_line_1) address1 = addr.address_line_1;
+    if (addr.address_line_2) address2 = addr.address_line_2;
+    if (addr.admin_area_2) city = addr.admin_area_2;
+    if (addr.admin_area_1) {
+      // region / county — append to city line if useful
+      if (city && city !== '—') city = city + (addr.admin_area_1 ? ', ' + addr.admin_area_1 : '');
+      else city = addr.admin_area_1 || city;
+    }
+    if (addr.postal_code) postcode = addr.postal_code;
+    if (addr.country_code) country = addr.country_code;
+  }
 
   const orderRef = 'HG-' + Date.now().toString(36).toUpperCase();
   const orderLines = cart.map(function (item, i) {
@@ -993,19 +1007,6 @@ function buildOrderParams(paypalDetails) {
     : 'Discount: —';
   const deliveryLabel = shipping === 0 ? 'Free' : ('£' + shipping.toFixed(2));
   const orderLinesHtml = buildOrderLinesHtml(cart);
-
-  let paypalTxn = '—';
-  let paypalPayerEmail = '—';
-  let paypalStatus = '—';
-  if (paypalDetails) {
-    paypalStatus = paypalDetails.status || 'COMPLETED';
-    paypalTxn = (paypalDetails.purchase_units && paypalDetails.purchase_units[0] && paypalDetails.purchase_units[0].payments && paypalDetails.purchase_units[0].payments.captures && paypalDetails.purchase_units[0].payments.captures[0] && paypalDetails.purchase_units[0].payments.captures[0].id)
-      || paypalDetails.id
-      || '—';
-    if (paypalDetails.payer && paypalDetails.payer.email_address) {
-      paypalPayerEmail = paypalDetails.payer.email_address;
-    }
-  }
 
   return {
     name: name,
@@ -1095,7 +1096,7 @@ function initPayPalButtons() {
           }
         }],
         application_context: {
-          shipping_preference: 'NO_SHIPPING',
+          shipping_preference: 'GET_FROM_FILE',
           user_action: 'PAY_NOW',
           brand_name: 'HG Customs'
         }
