@@ -165,7 +165,17 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   background: #fff; max-width: 900px; width: 100%; max-height: 90vh;
   overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; position: relative;
 }
-.modal-close { position: absolute; top: 12px; right: 14px; font-size: 24px; z-index: 2; color: #333; width: 36px; height: 36px; }
+.modal-close {
+  position: absolute; top: 10px; right: 10px; z-index: 20;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.95); color: #111;
+  font-size: 26px; line-height: 1; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25); border: 1px solid rgba(0,0,0,0.08);
+}
+.modal-close:hover { background: #111; color: #fff; }
+@media (max-width: 768px) {
+  .modal-close { top: 8px; right: 8px; width: 44px; height: 44px; font-size: 28px; box-shadow: 0 3px 14px rgba(0,0,0,0.35); }
+}
 .modal-image { background: var(--bg-light); }
 .modal-image img { width: 100%; height: 100%; object-fit: cover; min-height: 320px; }
 .modal-body { padding: 28px; }
@@ -565,7 +575,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <div class="row total"><span>Total</span><span id="cartTotal">£0.00</span></div>
       <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
       <button class="empty-btn" id="emptyBasket">Empty Basket</button>
-      <p style="font-size:12px;color:#555;margin-top:12px;line-height:1.5">UK delivery <strong>£2.99</strong> on orders under £50; <strong>FREE</strong> on orders £50+. Delivery is calculated automatically.</p>
+      <p style="font-size:12px;color:#555;margin-top:12px;line-height:1.5">UK delivery <strong>£2.99</strong> on orders under £50; <strong>free</strong> on orders £50+. Try code <strong>WELCOME10</strong> for 10% off. Delivery is calculated automatically.</p>
 
       <div class="checkout-panel" id="checkoutPanel">
         <h3>Delivery details</h3>
@@ -842,7 +852,6 @@ function buildOrderLines(cart) {
     if (item.size) lines.push('   Size: ' + item.size);
     if (item.notes) lines.push('   Notes: ' + item.notes);
     if (item.uploadUrl) lines.push('   Upload: ' + item.uploadUrl);
-    if (item.image) lines.push('   Image: ' + item.image);
     return lines.join('\n');
   }).join('\n\n');
 }
@@ -859,7 +868,6 @@ function buildOrderLinesHtml(cart) {
     if (item.size) rows.push('Size: ' + item.size);
     if (item.notes) rows.push('Notes: ' + item.notes);
     if (item.uploadUrl) rows.push('Upload: ' + item.uploadUrl);
-    if (item.image) rows.push('Image: ' + item.image);
     return '<div style="margin:0 0 16px;padding:0 0 12px;border-bottom:1px solid #eee;font-size:14px;line-height:1.55;color:#333;">' + rows.join('<br>') + '</div>';
   }).join('');
 }
