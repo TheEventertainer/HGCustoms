@@ -392,6 +392,27 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 
+
+.holding-cta {
+  text-align: center;
+  margin: 8px 0 36px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #333;
+}
+.holding-cta a {
+  display: inline-block;
+  margin-top: 12px;
+  background: #111;
+  color: #fff;
+  padding: 12px 22px;
+  text-decoration: none;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.holding-cta a:hover { background: #333; }
+
 </style>
 </head>
 <body>
@@ -476,8 +497,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 <main class="main">
   <h1 class="page-title">Occasions</h1>
-  <p class="page-intro">Personalised mugs for life’s special moments.</p>
-  <div class="product-grid" id="productGrid"></div>
+  <p class="page-intro">New designs are on the way — check back soon.</p>
+  <div class="how-to-banner holding-banner">
+    <img class="how-to-desktop" src="desktop-banner.png" alt="Mug designs coming soon">
+    <img class="how-to-mobile" src="mobile-banner.png" alt="Mug designs coming soon">
+  </div>
+  <p class="holding-cta">In the meantime, you can design your own mug here.<br><a href="mugs-custom.html">Design your own mug</a></p>
+  <div class="product-grid" id="productGrid" style="display:none"></div>
 </main>
 <div class="modal-overlay" id="productModal">
   <div class="modal">
@@ -600,7 +626,7 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-MUG-OCC-001", "title": "Happy Birthday Mug", "price": 9.0, "desc": "Personalise with a photo or message.", "imgA": "happy-birthday-mug.jpg", "imgB": "happy-birthday-mug.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-OCC-002", "title": "Happy Retirement Mug", "price": 9.0, "desc": "Mark a new chapter with a personalised message or photo.", "imgA": "happy-retirement-mug.jpg", "imgB": "happy-retirement-mug.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-OCC-003", "title": "New Baby Mug", "price": 9.0, "desc": "Welcome a new arrival — name, date or photo.", "imgA": "new-baby-mug.jpg", "imgB": "new-baby-mug.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-OCC-004", "title": "Thank You Mug", "price": 9.0, "desc": "A lasting thank-you they’ll use every day.", "imgA": "thank-you-mug.jpg", "imgB": "thank-you-mug.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-OCC-005", "title": "Wedding / Anniversary Mug", "price": 9.0, "desc": "Names, dates or a favourite photo.", "imgA": "wedding-anniversary-mug.jpg", "imgB": "wedding-anniversary-mug.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-OCC-006", "title": "Just Because Mug", "price": 9.0, "desc": "No occasion needed — just because.", "imgA": "just-because-mug.jpg", "imgB": "just-because-mug.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}];
+const products = [];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];

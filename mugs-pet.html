@@ -392,6 +392,25 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 
+
+.product-grid.center-odd {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
+}
+.product-grid.center-odd .product-card {
+  flex: 0 1 calc((100% - 56px) / 3);
+  max-width: 360px;
+  min-width: 220px;
+}
+@media (max-width: 768px) {
+  .product-grid.center-odd .product-card {
+    flex: 0 1 100%;
+    max-width: 100%;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -604,7 +623,7 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-MUG-PET-001", "title": "Colour Splash Personalised Pet Mug", "price": 10.0, "desc": "Turn your pets into a mug you’ll treasure! Upload a photo and we’ll transform it into a beautiful colour-splash portrait design.", "imgA": "colour-splash-pet-mug-a.jpg", "imgB": "colour-splash-pet-mug-b.jpg", "colours": true, "bgSplash": true, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-002", "title": "Trouble Maker Personalised Pet Mug", "price": 10.0, "desc": "Celebrate your mischievous pets with a detailed illustrated portrait finished with the playful “Established Troublemakers” design.", "imgA": "trouble-maker-pet-mug-a.jpg", "imgB": "trouble-maker-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-003", "title": "Life is Better Personalised Pet Mug", "price": 10.0, "desc": "A beautiful personalised illustrated portrait finished with “Life is better with you”.", "imgA": "life-is-better-pet-mug-a.jpg", "imgB": "life-is-better-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-004", "title": "Flower Field Personalised Pet Mug", "price": 10.0, "desc": "A floral portrait design surrounded by delicate wildflowers.", "imgA": "flower-field-pet-mug-a.jpg", "imgB": "flower-field-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-005", "title": "My Shadow Personalised Pet Mug", "price": 10.0, "desc": "Personalised illustrated portrait with “My Shadows, My Heart”.", "imgA": "my-shadow-pet-mug-a.jpg", "imgB": "my-shadow-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-006", "title": "Outside Feels Like Home Mug", "price": 8.0, "desc": "A peaceful mountain and woodland scene — perfect for slow mornings.", "imgA": "outside-feels-like-home-mug.jpg", "imgB": "outside-feels-like-home-mug.jpg", "colours": false, "bgSplash": false, "upload": false}];
+const products = [{"id": "HG-MUG-PET-001", "title": "Colour Splash Personalised Pet Mug", "price": 10.0, "desc": "Turn your pets into a mug you\u2019ll treasure! Upload a photo and we\u2019ll transform it into a beautiful colour-splash portrait design.", "imgA": "colour-splash-pet-mug-a.jpg", "imgB": "colour-splash-pet-mug-b.jpg", "colours": true, "bgSplash": true, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-002", "title": "Trouble Maker Personalised Pet Mug", "price": 10.0, "desc": "Celebrate your mischievous pets with a detailed illustrated portrait finished with the playful \u201cEstablished Troublemakers\u201d design.", "imgA": "trouble-maker-pet-mug-a.jpg", "imgB": "trouble-maker-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-003", "title": "Life is Better Personalised Pet Mug", "price": 10.0, "desc": "A beautiful personalised illustrated portrait finished with \u201cLife is better with you\u201d.", "imgA": "life-is-better-pet-mug-a.jpg", "imgB": "life-is-better-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-004", "title": "Flower Field Personalised Pet Mug", "price": 10.0, "desc": "A floral portrait design surrounded by delicate wildflowers.", "imgA": "flower-field-pet-mug-a.jpg", "imgB": "flower-field-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-005", "title": "My Shadow Personalised Pet Mug", "price": 10.0, "desc": "Personalised illustrated portrait with \u201cMy Shadows, My Heart\u201d.", "imgA": "my-shadow-pet-mug-a.jpg", "imgB": "my-shadow-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
@@ -617,6 +636,9 @@ let uploadedUrl = '';
 let uploading = false;
 
 const grid = document.getElementById('productGrid');
+if (products.length === 5) grid.classList.add('center-odd');
+else if (products.length === 2) grid.classList.add('grid-2');
+else if (products.length === 1) grid.classList.add('grid-1');
 products.forEach((p, i) => {
   const card = document.createElement('div');
   card.className = 'product-card';
