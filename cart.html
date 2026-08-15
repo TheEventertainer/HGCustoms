@@ -587,7 +587,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           <textarea id="coDeliveryNotes" name="delivery_notes" rows="2" placeholder="e.g. leave with neighbour, gift message"></textarea>
           <p class="checkout-note">By paying you agree to our <a href="terms-of-service.html" style="text-decoration:underline">Terms</a> and <a href="privacy-policy.html" style="text-decoration:underline">Privacy Policy</a>.</p>
           <div id="paypal-button-container" style="margin-top:12px;max-width:420px"></div>
-          <p id="paypalSandboxNote" style="font-size:11px;color:#888;margin-top:8px;line-height:1.4">Sandbox test mode — use a PayPal sandbox buyer account. No real money is taken.</p>
+          <p id="paypalSandboxNote" style="font-size:11px;color:#888;margin-top:8px;line-height:1.4">Payments are processed securely by PayPal. You will only be charged when you complete payment.</p>
           <div class="checkout-status" id="checkoutStatus"></div>
         </form>
       </div>
@@ -610,7 +610,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </footer>
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="https://www.paypal.com/sdk/js?client-id=BAAq7zkoWfWFai5TNkDA74ZFIL2TAVYVkj0abwoCYiXgp8POduaBQUc2cHx7PBVWDKHqTHIj1eURpYC3xw&currency=GBP&intent=capture" data-sdk-integration-source="button-factory"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=BAAlc0b4GGz8ZZZpecF1kiINHu10Una6o2TAbMQcTfFpiu0B5h5ohU0_jMGs_cZ82sl-xPKRk1Xhe7el2E&currency=GBP&intent=capture" data-sdk-integration-source="button-factory"></script>
 <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
 
 <script>
@@ -824,9 +824,9 @@ const EMAILJS_SERVICE = 'service_3f9n2xd';
 const EMAILJS_PUBLIC_KEY = '2zyHc2R-sNDCYCsR2';
 const EMAILJS_ORDER_TO_US = 'template_lszbqio';
 const EMAILJS_ORDER_TO_CUSTOMER = 'template_o2mkrbr';
-const PAYPAL_CLIENT_ID = 'BAAq7zkoWfWFai5TNkDA74ZFIL2TAVYVkj0abwoCYiXgp8POduaBQUc2cHx7PBVWDKHqTHIj1eURpYC3xw';
+const PAYPAL_CLIENT_ID = 'BAAlc0b4GGz8ZZZpecF1kiINHu10Una6o2TAbMQcTfFpiu0B5h5ohU0_jMGs_cZ82sl-xPKRk1Xhe7el2E';
 const PAYPAL_CURRENCY = 'GBP';
-const PAYPAL_MODE = 'sandbox'; // change to 'live' and Client ID when going live
+const PAYPAL_MODE = 'live';
 
 
 function buildOrderRef() {
@@ -1008,6 +1008,21 @@ function buildOrderParams(paypalDetails) {
   const deliveryLabel = shipping === 0 ? 'Free' : ('£' + shipping.toFixed(2));
   const orderLinesHtml = buildOrderLinesHtml(cart);
 
+  const paymentMethod = 'PayPal (' + PAYPAL_MODE + ')';
+  const paymentBlock =
+    'Payment method: ' + paymentMethod + '\n' +
+    'PayPal transaction ID: ' + paypalTxn + '\n' +
+    'PayPal status: ' + paypalStatus;
+
+  // Prepend payment info so it shows even if the EmailJS template has no {{payment_method}} field
+  const orderLinesWithPay = paymentBlock + '\n\n' + orderLines;
+  const orderLinesHtmlWithPay =
+    '<div style="margin:0 0 16px;padding:12px;background:#f5f5f5;border-radius:8px;font-size:14px;line-height:1.55;color:#333;">' +
+    '<strong>Payment method:</strong> ' + paymentMethod + '<br>' +
+    '<strong>PayPal transaction ID:</strong> ' + paypalTxn + '<br>' +
+    '<strong>PayPal status:</strong> ' + paypalStatus +
+    '</div>' + orderLinesHtml;
+
   return {
     name: name,
     email: email,
@@ -1019,8 +1034,8 @@ function buildOrderParams(paypalDetails) {
     country: country,
     delivery_notes: deliveryNotes || '—',
     order_ref: orderRef,
-    order_lines: orderLines,
-    order_lines_html: orderLinesHtml,
+    order_lines: orderLinesWithPay,
+    order_lines_html: orderLinesHtmlWithPay,
     subtotal: sub.toFixed(2),
     discount_code: (disc && disc.code) || '',
     discount_amount: discountAmt ? discountAmt.toFixed(2) : '0.00',
@@ -1031,7 +1046,10 @@ function buildOrderParams(paypalDetails) {
     paypal_transaction_id: paypalTxn,
     paypal_payer_email: paypalPayerEmail,
     paypal_status: paypalStatus,
-    payment_method: 'PayPal (' + PAYPAL_MODE + ')'
+    payment_method: paymentMethod,
+    // Aliases some templates use
+    payment: paymentMethod,
+    paymentMethod: paymentMethod
   };
 }
 
