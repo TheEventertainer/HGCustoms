@@ -465,6 +465,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .checkout-status.err { color: #a33; display: block; }
 .checkout-status.ok { color: #2d5a3d; display: block; }
 #placeOrderBtn:disabled { opacity: 0.6; cursor: wait; }
+#paypal-button-container { min-height: 45px; }
+#paypal-button-container.paypal-busy { opacity: 0.6; pointer-events: none; }
 
 </style>
 </head>
@@ -604,8 +606,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           <input type="text" id="coCountry" name="country" value="United Kingdom" required autocomplete="country-name">
           <label for="coDeliveryNotes">Delivery notes (optional)</label>
           <textarea id="coDeliveryNotes" name="delivery_notes" rows="2" placeholder="e.g. leave with neighbour"></textarea>
-          <p class="checkout-note">By placing this order you agree to our <a href="terms-of-service.html" style="text-decoration:underline">Terms</a> and <a href="privacy-policy.html" style="text-decoration:underline">Privacy Policy</a>. Card payment will be added shortly; this step confirms your order details with us.</p>
-          <button type="submit" class="checkout-btn" id="placeOrderBtn">Place order</button>
+          <p class="checkout-note">By paying you agree to our <a href="terms-of-service.html" style="text-decoration:underline">Terms</a> and <a href="privacy-policy.html" style="text-decoration:underline">Privacy Policy</a>. Complete delivery details above, then pay securely with PayPal (sandbox mode for testing).</p>
+          <div id="paypal-button-container" style="margin-top:12px;max-width:420px"></div>
+          <p id="paypalSandboxNote" style="font-size:11px;color:#888;margin-top:8px;line-height:1.4">Sandbox test mode — use a PayPal sandbox buyer account. No real money is taken.</p>
           <div class="checkout-status" id="checkoutStatus"></div>
         </form>
       </div>
@@ -628,6 +631,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </footer>
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=BAAq7zkoWfWFai5TNkDA74ZFIL2TAVYVkj0abwoCYiXgp8POduaBQUc2cHx7PBVWDKHqTHIj1eURpYC3xw&currency=GBP&intent=capture" data-sdk-integration-source="button-factory"></script>
 <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
 
 <script>
@@ -828,12 +832,23 @@ document.getElementById('checkoutBtn')?.addEventListener('click', () => {
   const panel = document.getElementById('checkoutPanel');
   panel.classList.add('open');
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  setTimeout(function () {
+    const box = document.getElementById('paypal-button-container');
+    if (box && !box.getAttribute('data-rendered')) {
+      initPayPalButtons();
+      box.setAttribute('data-rendered', '1');
+    }
+  }, 100);
 });
 
 const EMAILJS_SERVICE = 'service_3f9n2xd';
 const EMAILJS_PUBLIC_KEY = '2zyHc2R-sNDCYCsR2';
 const EMAILJS_ORDER_TO_US = 'template_lszbqio';
 const EMAILJS_ORDER_TO_CUSTOMER = 'template_o2mkrbr';
+const PAYPAL_CLIENT_ID = 'BAAq7zkoWfWFai5TNkDA74ZFIL2TAVYVkj0abwoCYiXgp8POduaBQUc2cHx7PBVWDKHqTHIj1eURpYC3xw';
+const PAYPAL_CURRENCY = 'GBP';
+const PAYPAL_MODE = 'sandbox'; // change to 'live' and Client ID when going live
+
 
 function buildOrderRef() {
   const t = Date.now().toString(36).toUpperCase();
@@ -912,13 +927,42 @@ function buildCustomerEmailBody(data) {
   }).join('\n').replace(/\n{3,}/g, '\n\n');
 }
 
-document.getElementById('checkoutForm')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const cart = getCart();
-  if (!cart.length) return;
 
-  const status = document.getElementById('checkoutStatus');
-  const btn = document.getElementById('placeOrderBtn');
+function getCheckoutTotals() {
+  const cart = getCart();
+  const sub = cartSubtotal(cart);
+  const disc = getDiscount();
+  let discountAmt = 0;
+  if (disc && disc.type === 'percent') discountAmt = sub * (disc.value / 100);
+  else if (disc && disc.type === 'fixed') discountAmt = disc.value;
+  discountAmt = Math.min(discountAmt, sub);
+  const afterDisc = Math.max(0, sub - discountAmt);
+  const shipping = afterDisc >= 50 ? 0 : (cart.length ? 2.99 : 0);
+  const total = afterDisc + shipping;
+  return { cart, sub, disc, discountAmt, afterDisc, shipping, total };
+}
+
+function validateCheckoutForm() {
+  const name = document.getElementById('coName').value.trim();
+  const email = document.getElementById('coEmail').value.trim();
+  const address1 = document.getElementById('coAddress1').value.trim();
+  const city = document.getElementById('coCity').value.trim();
+  const postcode = document.getElementById('coPostcode').value.trim();
+  const country = document.getElementById('coCountry').value.trim();
+  if (!name || !email || !address1 || !city || !postcode || !country) {
+    return { ok: false, message: 'Please fill in all required delivery fields before paying.' };
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { ok: false, message: 'Please enter a valid email address.' };
+  }
+  if (!getCart().length) {
+    return { ok: false, message: 'Your basket is empty.' };
+  }
+  return { ok: true };
+}
+
+function buildOrderParams(paypalDetails) {
+  const { cart, sub, disc, discountAmt, shipping, total } = getCheckoutTotals();
   const name = document.getElementById('coName').value.trim();
   const email = document.getElementById('coEmail').value.trim();
   const phone = document.getElementById('coPhone').value.trim();
@@ -929,27 +973,41 @@ document.getElementById('checkoutForm')?.addEventListener('submit', async (e) =>
   const country = document.getElementById('coCountry').value.trim();
   const deliveryNotes = document.getElementById('coDeliveryNotes').value.trim();
 
-  if (!name || !email || !address1 || !city || !postcode || !country) {
-    status.className = 'checkout-status err';
-    status.textContent = 'Please complete all required fields.';
-    return;
+  const orderRef = 'HG-' + Date.now().toString(36).toUpperCase();
+  const orderLines = cart.map(function (item, i) {
+    const lines = [
+      (i + 1) + '. ' + (item.title || 'Item'),
+      '   SKU: ' + (item.sku || item.id || '—'),
+      '   Qty: ' + (item.qty || 1) + ' × £' + Number(item.price || 0).toFixed(2)
+    ];
+    if (item.colour) lines.push('   Colour: ' + item.colour);
+    if (item.backgroundColour) lines.push('   Background: ' + item.backgroundColour);
+    if (item.size) lines.push('   Size: ' + item.size);
+    if (item.notes) lines.push('   Notes: ' + item.notes);
+    if (item.uploadUrl) lines.push('   Upload: ' + item.uploadUrl);
+    return lines.join('\n');
+  }).join('\n\n');
+
+  const discountLine = discountAmt > 0
+    ? ('Discount' + (disc && disc.code ? ' (' + disc.code + ')' : '') + ': -£' + discountAmt.toFixed(2))
+    : 'Discount: —';
+  const deliveryLabel = shipping === 0 ? 'Free' : ('£' + shipping.toFixed(2));
+  const orderLinesHtml = buildOrderLinesHtml(cart);
+
+  let paypalTxn = '—';
+  let paypalPayerEmail = '—';
+  let paypalStatus = '—';
+  if (paypalDetails) {
+    paypalStatus = paypalDetails.status || 'COMPLETED';
+    paypalTxn = (paypalDetails.purchase_units && paypalDetails.purchase_units[0] && paypalDetails.purchase_units[0].payments && paypalDetails.purchase_units[0].payments.captures && paypalDetails.purchase_units[0].payments.captures[0] && paypalDetails.purchase_units[0].payments.captures[0].id)
+      || paypalDetails.id
+      || '—';
+    if (paypalDetails.payer && paypalDetails.payer.email_address) {
+      paypalPayerEmail = paypalDetails.payer.email_address;
+    }
   }
 
-  const disc = getDiscount();
-  const sub = cartSubtotal(cart);
-  const discountAmt = getDiscountAmount(sub);
-  const afterDiscount = Math.max(0, sub - discountAmt);
-  const shipping = getShipping(afterDiscount);
-  const total = afterDiscount + shipping;
-  const orderRef = buildOrderRef();
-  const orderLines = buildOrderLines(cart);
-  const discountLine = (disc && discountAmt)
-    ? ('Discount (' + disc + '): −£' + discountAmt.toFixed(2))
-    : 'Discount: —';
-  const deliveryLabel = shipping === 0 ? 'FREE' : ('£' + shipping.toFixed(2));
-
-  const orderLinesHtml = buildOrderLinesHtml(cart);
-  const params = {
+  return {
     name: name,
     email: email,
     phone: phone || '—',
@@ -963,50 +1021,121 @@ document.getElementById('checkoutForm')?.addEventListener('submit', async (e) =>
     order_lines: orderLines,
     order_lines_html: orderLinesHtml,
     subtotal: sub.toFixed(2),
-    discount_code: disc || '',
+    discount_code: (disc && disc.code) || '',
     discount_amount: discountAmt ? discountAmt.toFixed(2) : '0.00',
     discount_line: discountLine,
     delivery: deliveryLabel,
     total: total.toFixed(2),
-    order_json: JSON.stringify(cart)
+    order_json: JSON.stringify(cart),
+    paypal_transaction_id: paypalTxn,
+    paypal_payer_email: paypalPayerEmail,
+    paypal_status: paypalStatus,
+    payment_method: 'PayPal (' + PAYPAL_MODE + ')'
   };
+}
 
-  btn.disabled = true;
-  status.className = 'checkout-status ok';
-  status.textContent = 'Sending your order…';
+async function sendOrderEmails(params) {
+  const status = document.getElementById('checkoutStatus');
+  if (!window.emailjs) throw new Error('EmailJS library failed to load — check your connection and refresh');
+  emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
-  try {
-    if (!window.emailjs) throw new Error('EmailJS library failed to load — check your connection and refresh');
-    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-
-    // Keep payload modest (EmailJS free tier can reject huge fields)
-    if (params.order_json && params.order_json.length > 4000) {
-      params.order_json = params.order_json.slice(0, 4000) + '…[truncated]';
-    }
-
-    status.textContent = 'Sending order to HG Customs…';
-    await emailjs.send(EMAILJS_SERVICE, EMAILJS_ORDER_TO_US, params);
-
-    status.textContent = 'Sending your confirmation email…';
-    await new Promise(function (r) { setTimeout(r, 600); });
-    await emailjs.send(EMAILJS_SERVICE, EMAILJS_ORDER_TO_CUSTOMER, params);
-
-    sessionStorage.setItem('hg_last_order_ref', orderRef);
-    sessionStorage.setItem('hg_last_order', JSON.stringify(params));
-    saveCart([]);
-    saveDiscount(null);
-    window.location.href = 'thank-you.html';
-  } catch (err) {
-    console.error('Order email error', err);
-    btn.disabled = false;
-    status.className = 'checkout-status err';
-    var detail = '';
-    if (err && err.text) detail = err.text;
-    else if (err && err.message) detail = err.message;
-    else detail = String(err);
-    status.textContent = 'Could not send order: ' + detail + ' — try again or WhatsApp +44 7702 498975';
+  if (params.order_json && params.order_json.length > 4000) {
+    params.order_json = params.order_json.slice(0, 4000) + '…[truncated]';
   }
+
+  status.className = 'checkout-status ok';
+  status.textContent = 'Payment received — sending order to HG Customs…';
+  await emailjs.send(EMAILJS_SERVICE, EMAILJS_ORDER_TO_US, params);
+
+  status.textContent = 'Sending your confirmation email…';
+  await new Promise(function (r) { setTimeout(r, 600); });
+  await emailjs.send(EMAILJS_SERVICE, EMAILJS_ORDER_TO_CUSTOMER, params);
+
+  sessionStorage.setItem('hg_last_order_ref', params.order_ref);
+  sessionStorage.setItem('hg_last_order', JSON.stringify(params));
+  saveCart([]);
+  saveDiscount(null);
+  window.location.href = 'thank-you.html';
+}
+
+function initPayPalButtons() {
+  const status = document.getElementById('checkoutStatus');
+  const container = document.getElementById('paypal-button-container');
+  if (!container) return;
+  if (typeof paypal === 'undefined') {
+    status.className = 'checkout-status err';
+    status.textContent = 'PayPal could not load. Check your connection or Client ID, then refresh.';
+    return;
+  }
+
+  paypal.Buttons({
+    style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal' },
+    onClick: function (data, actions) {
+      const v = validateCheckoutForm();
+      if (!v.ok) {
+        status.className = 'checkout-status err';
+        status.textContent = v.message;
+        return actions.reject();
+      }
+      status.textContent = '';
+      status.className = 'checkout-status';
+      return actions.resolve();
+    },
+    createOrder: function (data, actions) {
+      const totals = getCheckoutTotals();
+      if (!totals.cart.length || totals.total <= 0) {
+        throw new Error('Invalid order total');
+      }
+      return actions.order.create({
+        purchase_units: [{
+          description: 'HG Customs order',
+          amount: {
+            currency_code: PAYPAL_CURRENCY,
+            value: totals.total.toFixed(2)
+          }
+        }],
+        application_context: {
+          shipping_preference: 'NO_SHIPPING',
+          user_action: 'PAY_NOW',
+          brand_name: 'HG Customs'
+        }
+      });
+    },
+    onApprove: function (data, actions) {
+      const statusEl = document.getElementById('checkoutStatus');
+      const box = document.getElementById('paypal-button-container');
+      if (box) box.classList.add('paypal-busy');
+      statusEl.className = 'checkout-status ok';
+      statusEl.textContent = 'Confirming payment with PayPal…';
+      return actions.order.capture().then(function (details) {
+        const params = buildOrderParams(details);
+        return sendOrderEmails(params);
+      }).catch(function (err) {
+        console.error('PayPal/email error', err);
+        if (box) box.classList.remove('paypal-busy');
+        statusEl.className = 'checkout-status err';
+        var detail = (err && err.text) || (err && err.message) || String(err);
+        statusEl.textContent = 'Payment or email failed: ' + detail + ' — try again or WhatsApp +44 7702 498975';
+      });
+    },
+    onError: function (err) {
+      console.error('PayPal button error', err);
+      status.className = 'checkout-status err';
+      status.textContent = 'PayPal error — please refresh and try again, or WhatsApp +44 7702 498975';
+    },
+    onCancel: function () {
+      status.className = 'checkout-status';
+      status.textContent = 'Payment cancelled — your basket is unchanged.';
+    }
+  }).render('#paypal-button-container');
+}
+
+// Prevent accidental native form submit
+document.getElementById('checkoutForm')?.addEventListener('submit', function (e) {
+  e.preventDefault();
 });
+
+
 renderCart();
 
 
