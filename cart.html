@@ -911,14 +911,17 @@ function buildCustomerEmailBody(data) {
 function getCheckoutTotals() {
   const cart = getCart();
   const sub = cartSubtotal(cart);
-  const disc = getDiscount();
-  let discountAmt = 0;
-  if (disc && disc.type === 'percent') discountAmt = sub * (disc.value / 100);
-  else if (disc && disc.type === 'fixed') discountAmt = disc.value;
+  const discCode = getDiscount(); // code string e.g. "WELCOME10" or "POPPY90"
+  let discountAmt = getDiscountAmount(sub);
   discountAmt = Math.min(discountAmt, sub);
   const afterDisc = Math.max(0, sub - discountAmt);
-  const shipping = afterDisc >= 50 ? 0 : (cart.length ? 2.99 : 0);
+  const shipping = cart.length ? getShipping(afterDisc) : 0;
   const total = afterDisc + shipping;
+  let disc = null;
+  if (discCode && DISCOUNT_CODES[discCode]) {
+    const d = DISCOUNT_CODES[discCode];
+    disc = { code: discCode, type: d.type, value: d.value, label: d.label };
+  }
   return { cart, sub, disc, discountAmt, afterDisc, shipping, total };
 }
 
