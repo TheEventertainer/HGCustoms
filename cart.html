@@ -438,6 +438,86 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 
+
+/* Mobile cart: stack as cards, stop horizontal overflow */
+@media (max-width: 768px) {
+  .cart-page .main { padding: 24px 16px 40px; overflow-x: hidden; }
+  .cart-page .cart-items-scroll {
+    overflow-x: hidden;
+    border: none;
+  }
+  .cart-table { width: 100%; border-collapse: collapse; }
+  .cart-table thead { display: none; }
+  .cart-table, .cart-table tbody, .cart-table tr, .cart-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .cart-table tr {
+    border: 1px solid var(--border-color);
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #fff;
+  }
+  .cart-table td {
+    border: none;
+    padding: 4px 0;
+    text-align: left !important;
+  }
+  .cart-table td:nth-child(1) { padding-bottom: 8px; }
+  .cart-table td:nth-child(2)::before { content: "Price: "; font-weight: 600; color: #666; font-size: 12px; }
+  .cart-table td:nth-child(3)::before { content: "Qty: "; font-weight: 600; color: #666; font-size: 12px; }
+  .cart-table td:nth-child(4)::before { content: "Line total: "; font-weight: 600; color: #666; font-size: 12px; }
+  .cart-table td:nth-child(2),
+  .cart-table td:nth-child(3),
+  .cart-table td:nth-child(4) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+  }
+  .cart-item-info {
+    align-items: flex-start;
+    gap: 12px;
+    min-width: 0;
+  }
+  .cart-item-info img {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+  }
+  .cart-item-info > div {
+    min-width: 0;
+    flex: 1;
+  }
+  .cart-item-info h4 {
+    font-size: 14px;
+    word-break: break-word;
+  }
+  .cart-item-info .meta {
+    font-size: 11px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.35;
+  }
+  .cart-item-info .meta a.upload-link {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
+  }
+  .cart-summary {
+    max-width: none;
+    margin-left: 0;
+    padding: 16px;
+  }
+  .discount-row { flex-wrap: wrap; }
+  #paypal-button-container { max-width: 100% !important; }
+  .checkout-panel .row2 { grid-template-columns: 1fr; }
+}
+
 .checkout-panel {
   display: none;
   margin-top: 16px;
@@ -577,7 +657,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       <div class="row total"><span>Total</span><span id="cartTotal">£0.00</span></div>
       <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
       <button class="empty-btn" id="emptyBasket">Empty Basket</button>
-      <p style="font-size:12px;color:#555;margin-top:12px;line-height:1.5">UK delivery <strong>£2.99</strong> on orders under £50; <strong>free</strong> on orders £50+. Try code <strong>WELCOME10</strong> for 10% off. Delivery is calculated automatically.</p>
+      <p style="font-size:12px;color:#555;margin-top:12px;line-height:1.5">UK delivery <strong>£2.99</strong> on orders under £50; <strong>free</strong> on orders £50+. Delivery is calculated automatically.</p>
 
       <div class="checkout-panel" id="checkoutPanel">
         <h3>Checkout</h3>
@@ -610,7 +690,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </footer>
 <div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="https://www.paypal.com/sdk/js?client-id=BAAlc0b4GGz8ZZZpecF1kiINHu10Una6o2TAbMQcTfFpiu0B5h5ohU0_jMGs_cZ82sl-xPKRk1Xhe7el2E&currency=GBP&intent=capture" data-sdk-integration-source="button-factory"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=BAAlc0b4GGz8ZZZpecF1kiINHu10Una6o2TAbMQcTfFpiu0B5h5ohU0_jMGs_cZ82sl-xPKRk1Xhe7el2E&currency=GBP&intent=capture&enable-funding=applepay,venmo&components=buttons" data-sdk-integration-source="button-factory"></script>
 <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
 
 <script>
@@ -697,7 +777,11 @@ function renderCart() {
     if (item.backgroundColour) meta.push('Background: '+item.backgroundColour);
     if (item.size) meta.push('Size: '+item.size);
     if (item.notes) meta.push('Note: '+item.notes);
-    if (item.uploadUrl) meta.push('Upload: '+item.uploadUrl);
+    if (item.uploadUrl) {
+      const u = String(item.uploadUrl);
+      const short = u.length > 42 ? (u.slice(0, 28) + '…' + u.slice(-10)) : u;
+      meta.push('Upload: <a class="upload-link" href="'+u+'" target="_blank" rel="noopener">'+short+'</a>');
+    }
     if (item.bulk) meta.push('Bulk order');
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -705,7 +789,7 @@ function renderCart() {
         <img src="${item.image||''}" alt="" onerror="this.style.opacity=0.3">
         <div>
           <h4>${item.title||'Item'}</h4>
-          <div class="meta">${meta.join(' · ')}</div>
+          <div class="meta">${meta.join('<br>')}</div>
           <button class="remove-btn" data-idx="${idx}">Remove</button>
         </div>
       </div></td>
