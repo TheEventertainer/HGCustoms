@@ -618,7 +618,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 const CART_KEY = 'hg_cart';
 const DISCOUNT_KEY = 'hg_discount';
 const DISCOUNT_CODES = {
-  WELCOME10: { type: 'percent', value: 10, label: '10% off' }
+  WELCOME10: { type: 'percent', value: 10, label: '10% off' },
+  POPPY90: { type: 'percent', value: 90, label: '90% off (test)' }
 };
 function getCart() {
   try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; }
