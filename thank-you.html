@@ -393,6 +393,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 
 </style>
+<script src="analytics.js"></script>
 </head>
 <body>
 
@@ -514,12 +515,6 @@ function getCart() {
 function saveCart(cart) {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
   updateCartBadge();
-const ref = sessionStorage.getItem('hg_last_order_ref');
-if (ref) {
-  const el = document.getElementById('tyRef');
-  if (el) el.textContent = 'Order reference: ' + ref;
-}
-
 }
 function getDiscount() {
   try { return JSON.parse(localStorage.getItem(DISCOUNT_KEY)); } catch { return null; }
@@ -546,6 +541,7 @@ function addToCart(product, fromEl) {
   saveCart(cart);
   showToast('Added to basket');
   flyToCart(fromEl, product.image);
+  if (window.hgTrackAddToCart) window.hgTrackAddToCart(product);
 }
 function flyToCart(fromEl, imgSrc) {
   const cartIcon = document.querySelector('.cart-icon') || document.getElementById('cartBadge');
@@ -586,6 +582,14 @@ if (ref) {
   const el = document.getElementById('tyRef');
   if (el) el.textContent = 'Order reference: ' + ref;
 }
+try {
+  if (sessionStorage.getItem('hg_ga_purchase_pending') === '1') {
+    var raw = sessionStorage.getItem('hg_last_order');
+    var params = raw ? JSON.parse(raw) : { order_ref: ref };
+    if (window.hgTrackPurchase) window.hgTrackPurchase(params);
+    sessionStorage.removeItem('hg_ga_purchase_pending');
+  }
+} catch (e) {}
 
 
 </script>

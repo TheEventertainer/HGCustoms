@@ -549,6 +549,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 #paypal-button-container.paypal-busy { opacity: 0.6; pointer-events: none; }
 
 </style>
+<script src="analytics.js"></script>
 </head>
 <body class="cart-page">
 
@@ -733,6 +734,7 @@ function addToCart(product, fromEl) {
   saveCart(cart);
   showToast('Added to basket');
   flyToCart(fromEl, product.image);
+  if (window.hgTrackAddToCart) window.hgTrackAddToCart(product);
 }
 function flyToCart(fromEl, imgSrc) {
   const cartIcon = document.querySelector('.cart-icon') || document.getElementById('cartBadge');
@@ -893,6 +895,10 @@ document.getElementById('emptyBasket')?.addEventListener('click', () => {
 document.getElementById('checkoutBtn')?.addEventListener('click', () => {
   const cart = getCart();
   if (!cart.length) return;
+  try {
+    const totals = (typeof getCheckoutTotals === 'function') ? getCheckoutTotals() : { total: 0 };
+    if (window.hgTrackBeginCheckout) window.hgTrackBeginCheckout(cart, totals.total);
+  } catch (e) {}
   const panel = document.getElementById('checkoutPanel');
   panel.classList.add('open');
   panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1160,6 +1166,7 @@ async function sendOrderEmails(params) {
 
   sessionStorage.setItem('hg_last_order_ref', params.order_ref);
   sessionStorage.setItem('hg_last_order', JSON.stringify(params));
+  try { sessionStorage.setItem('hg_ga_purchase_pending', '1'); } catch (e) {}
   saveCart([]);
   saveDiscount(null);
   window.location.href = 'thank-you.html';
@@ -1228,7 +1235,15 @@ function initPayPalButtons() {
     onError: function (err) {
       console.error('PayPal button error', err);
       status.className = 'checkout-status err';
-      status.textContent = 'PayPal error — please refresh and try again, or WhatsApp +44 7702 498975';
+      var detail = '';
+      try {
+        if (err && typeof err === 'string') detail = err;
+        else if (err && err.message) detail = err.message;
+        else if (err && err.toString) detail = err.toString();
+        else detail = JSON.stringify(err);
+      } catch (e) { detail = 'unknown error'; }
+      if (detail && detail.length > 180) detail = detail.slice(0, 180) + '…';
+      status.textContent = 'PayPal error: ' + (detail || 'please refresh and try again') + ' — or WhatsApp +44 7702 498975';
     },
     onCancel: function () {
       status.className = 'checkout-status';

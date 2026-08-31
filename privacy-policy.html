@@ -398,6 +398,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .policy-content ul, .policy-content ol { margin: 0 0 16px 20px; }
 .policy-content a { text-decoration: underline; }
 </style>
+<script src="analytics.js"></script>
 </head>
 <body>
 
@@ -586,6 +587,7 @@ function addToCart(product, fromEl) {
   saveCart(cart);
   showToast('Added to basket');
   flyToCart(fromEl, product.image);
+  if (window.hgTrackAddToCart) window.hgTrackAddToCart(product);
 }
 function flyToCart(fromEl, imgSrc) {
   const cartIcon = document.querySelector('.cart-icon') || document.getElementById('cartBadge');

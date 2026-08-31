@@ -393,6 +393,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 
 </style>
+<script src="analytics.js"></script>
 </head>
 <body>
 
@@ -506,6 +507,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         <label>Size</label>
         <div class="size-row" id="sizeRow"></div>
       </div>
+      <div class="colour-section" id="packSection" style="display:none">
+        <label>Pack size</label>
+        <div class="size-row" id="packRow"></div>
+        <p class="bulk-qty-note" id="packNote" style="margin-top:8px"></p>
+      </div>
       <div class="colour-section" id="bulkSection" style="display:none">
         <label>Quantity (min 10, max 100)</label>
         <p class="bulk-qty-note">Bulk pricing is per unit. Minimum order 10 units.</p>
@@ -581,6 +587,7 @@ function addToCart(product, fromEl) {
   saveCart(cart);
   showToast('Added to basket');
   flyToCart(fromEl, product.image);
+  if (window.hgTrackAddToCart) window.hgTrackAddToCart(product);
 }
 function flyToCart(fromEl, imgSrc) {
   const cartIcon = document.querySelector('.cart-icon') || document.getElementById('cartBadge');
@@ -604,8 +611,8 @@ function flyToCart(fromEl, imgSrc) {
 
 
 const products = [
-  {"id": "HG-CO-CUS-001", "title": "Sublimated Picture Coaster", "price": 5, "desc": "Full-colour sublimation on a white square coaster. Upload your photo, logo or design.", "imgA": "custom-coaster.JPG", "imgB": "custom-coaster.JPG", "colours": false, "bgSplash": false, "upload": true, "sizes": false},
-  {"id": "HG-CO-CUS-002", "title": "Slate Etched Coaster", "price": 7, "desc": "Your design or photo etched onto natural grey slate (square). Upload your image and any wording in the notes.", "imgA": "pet-coaster.jpg", "imgB": "pet-coaster.jpg", "colours": false, "bgSplash": false, "upload": true, "sizes": false}
+  {"id": "HG-CO-CUS-001", "title": "Sublimated Picture Coaster", "price": 4, "desc": "Full-colour sublimation on a white square coaster. Upload your photo, logo or design. Choose a single coaster or a matching set of 4.", "imgA": "custom-coaster.JPG", "imgB": "custom-coaster.JPG", "colours": false, "bgSplash": false, "upload": true, "sizes": false, "packs": [{"id":"single","label":"Single coaster","price":4},{"id":"set4","label":"Matching set of 4","price":14}]},
+  {"id": "HG-CO-CUS-002", "title": "Slate Etched Coaster", "price": 5, "desc": "Your design or photo etched onto natural grey slate (square). Upload your image and any wording in the notes. Choose a single coaster or a matching set of 4.", "imgA": "pet-coaster.jpg", "imgB": "pet-coaster.jpg", "colours": false, "bgSplash": false, "upload": true, "sizes": false, "packs": [{"id":"single","label":"Single coaster","price":5},{"id":"set4","label":"Matching set of 4","price":18}]}
 ];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
@@ -615,6 +622,7 @@ let selectedMugColour = mugColours[0];
 let selectedBgColour = bgColours[0];
 let selectedSize = 'M';
 let qty = 1;
+let selectedPack = null;
 let uploadedUrl = '';
 let uploading = false;
 
@@ -626,7 +634,7 @@ products.forEach((p, i) => {
     <div class="img-wrap"><img src="${p.imgA}" alt="${p.title}" onerror="this.style.opacity=0.3"></div>
     <div class="info">
       <h3>${p.title}</h3>
-      <div class="price">£${Number(p.price).toFixed(2)}</div>
+      <div class="price">${p.packs ? 'From £' + Number(p.price).toFixed(2) : '£' + Number(p.price).toFixed(2)}</div>
       <button class="btn" data-index="${i}">${p.upload || p.colours || p.sizes || p.bulk ? 'Personalise' : 'View / Add'}</button>
     </div>`;
   grid.appendChild(card);
@@ -646,11 +654,46 @@ function openModal(p) {
   selectedSize = 'M';
   document.getElementById('modalImg').src = p.imgB || p.imgA;
   document.getElementById('modalTitle').textContent = p.title;
-  document.getElementById('modalPrice').textContent = '£' + Number(p.price).toFixed(2);
+  selectedPack = (p.packs && p.packs[0]) ? p.packs[0] : null;
+  const startPrice = selectedPack ? selectedPack.price : p.price;
+  document.getElementById('modalPrice').textContent = '£' + Number(startPrice).toFixed(2);
   document.getElementById('modalDesc').textContent = p.desc;
   document.getElementById('qtyValue').textContent = '1';
   document.getElementById('notesField').value = '';
   document.getElementById('uploadStatus').style.display = 'none';
+
+  const packSec = document.getElementById('packSection');
+  const packRow = document.getElementById('packRow');
+  const packNote = document.getElementById('packNote');
+  if (packSec && packRow) {
+    packRow.innerHTML = '';
+    if (p.packs && p.packs.length) {
+      packSec.style.display = 'block';
+      p.packs.forEach((pk, i) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'size-btn' + (i === 0 ? ' selected' : '');
+        b.textContent = pk.label + ' — £' + Number(pk.price).toFixed(2);
+        b.onclick = () => {
+          packRow.querySelectorAll('.size-btn').forEach(x => x.classList.remove('selected'));
+          b.classList.add('selected');
+          selectedPack = pk;
+          document.getElementById('modalPrice').textContent = '£' + Number(pk.price).toFixed(2);
+          if (packNote) {
+            packNote.textContent = pk.id === 'set4'
+              ? 'All four coasters in the set use the same design/upload.'
+              : 'One coaster with your design.';
+          }
+        };
+        packRow.appendChild(b);
+      });
+      if (packNote) packNote.textContent = 'One coaster with your design.';
+    } else {
+      packSec.style.display = 'none';
+      if (packNote) packNote.textContent = '';
+    }
+  }
+
 
   const mugSec = document.getElementById('mugColourSection');
   const mugSw = document.getElementById('mugSwatches');
@@ -789,15 +832,23 @@ document.getElementById('addToBasketBtn').onclick = function() {
   if (!currentProduct) return;
   const isBulk = !!currentProduct.bulk;
   const finalQty = isBulk ? Math.min(100, Math.max(10, parseInt(document.getElementById('bulkQty').value,10)||10)) : qty;
+  const pack = selectedPack;
+  const unitPrice = pack ? pack.price : currentProduct.price;
+  const packLabel = pack ? pack.label : null;
+  const lineTitle = packLabel
+    ? (currentProduct.title + ' (' + packLabel + ')')
+    : currentProduct.title;
+  const lineSku = pack ? (currentProduct.id + '-' + pack.id.toUpperCase()) : currentProduct.id;
   addToCart({
-    id: currentProduct.id,
-    sku: currentProduct.id,
-    title: currentProduct.title,
-    price: currentProduct.price,
+    id: lineSku,
+    sku: lineSku,
+    title: lineTitle,
+    price: unitPrice,
     qty: finalQty,
     colour: currentProduct.colours ? selectedMugColour.name : null,
     backgroundColour: currentProduct.bgSplash ? selectedBgColour.name : null,
     size: currentProduct.sizes ? selectedSize : null,
+    pack: packLabel,
     notes: document.getElementById('notesField').value.trim(),
     image: currentProduct.imgA,
     uploadUrl: uploadedUrl,
