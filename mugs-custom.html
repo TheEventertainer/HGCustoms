@@ -627,7 +627,7 @@ products.forEach((p, i) => {
     <div class="info">
       <h3>${p.title}</h3>
       <div class="price">£${Number(p.price).toFixed(2)}</div>
-      <button class="btn" data-index="${i}">${p.upload || p.colours || p.sizes || p.bulk ? 'Personalise' : 'View / Add'}</button>
+      <button class="btn" data-index="${i}">${p.upload || p.notes === true || p.sizes || p.bulk ? 'Personalise' : 'Buy Now'}</button>
     </div>`;
   grid.appendChild(card);
 });
