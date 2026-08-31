@@ -514,9 +514,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         <span id="qtyValue">1</span>
         <button type="button" id="qtyPlus">+</button>
       </div>
-      <div class="notes-field"><textarea id="notesField" placeholder="Add a note for personalisation (optional)"></textarea></div>
+      <div class="notes-field" id="notesSection"><textarea id="notesField" placeholder="Add a note for personalisation (optional)"></textarea></div>
       <div class="upload-area" id="uploadArea" style="display:none">
-        Click to upload your photo / design
+        <span id="uploadLabel">Click to upload your photo / design</span>
         <input type="file" id="fileInput" accept="image/*" style="display:none">
         <div class="upload-status" id="uploadStatus"></div>
       </div>
@@ -602,7 +602,7 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-MUG-TV-001", "title": "World's Best Boss Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "worlds-best-boss-mug.jpg", "imgB": "worlds-best-boss-mug.jpg", "colours": false, "bgSplash": false, "upload": false}, {"id": "HG-MUG-TV-002", "title": "World's Greatest Lawyer Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "worlds-greatest-lawyer-mug.jpg", "imgB": "worlds-greatest-lawyer-mug.jpg", "colours": false, "bgSplash": false, "upload": false}, {"id": "HG-MUG-TV-003", "title": "Chicken Brothers Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "chicken-brothers-mug.jpg", "imgB": "chicken-brothers-mug.jpg", "colours": false, "bgSplash": false, "upload": false}];
+const products = [{"id": "HG-MUG-TV-001", "title": "World's Best Boss Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "worlds-best-boss-mug.jpg", "imgB": "worlds-best-boss-mug.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-TV-002", "title": "World's Greatest Lawyer Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "worlds-greatest-lawyer-mug.jpg", "imgB": "worlds-greatest-lawyer-mug.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-TV-003", "title": "Chicken Brothers Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "chicken-brothers-mug.jpg", "imgB": "chicken-brothers-mug.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-TV-004", "title": "Stark Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "mug-tvfilm-stark.PNG", "imgB": "mug-tvfilm-stark.PNG", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-TV-005", "title": "Vance Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "mug-tvfilm-vance.PNG", "imgB": "mug-tvfilm-vance.PNG", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-TV-006", "title": "Sacred Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "mug-tvfilm-sacred.PNG", "imgB": "mug-tvfilm-sacred.PNG", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-TV-007", "title": "JJ's Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "mug-tvfilm-JJ.PNG", "imgB": "mug-tvfilm-JJ.PNG", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-TV-008", "title": "99 Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "mug-tvfilm-99.PNG", "imgB": "mug-tvfilm-99.PNG", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-TV-009", "title": "Arrested Mug", "price": 9.0, "desc": "If you know, you know.", "imgA": "mug-tv-film-arrest.PNG", "imgB": "mug-tv-film-arrest.PNG", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
@@ -727,7 +727,19 @@ function openModal(p) {
   } else {
     bulkSec.style.display = 'none'; qtyRow.style.display = 'flex';
   }
-  document.getElementById('uploadArea').style.display = p.upload ? 'block' : 'none';
+  const notesSec = document.getElementById('notesSection');
+  if (notesSec) notesSec.style.display = (p.notes === false) ? 'none' : 'block';
+  const upArea = document.getElementById('uploadArea');
+  const upLabel = document.getElementById('uploadLabel');
+  const fileInput = document.getElementById('fileInput');
+  if (upArea) {
+    upArea.style.display = p.upload ? 'block' : 'none';
+    if (upLabel) upLabel.textContent = p.uploadLabel || 'Click to upload your photo / design';
+    if (fileInput) {
+      if (p.uploadMax && p.uploadMax > 1) fileInput.setAttribute('multiple', 'multiple');
+      else fileInput.removeAttribute('multiple');
+    }
+  }
   document.getElementById('productModal').classList.add('open');
 }
 

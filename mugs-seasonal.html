@@ -514,9 +514,9 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         <span id="qtyValue">1</span>
         <button type="button" id="qtyPlus">+</button>
       </div>
-      <div class="notes-field"><textarea id="notesField" placeholder="Add a note for personalisation (optional)"></textarea></div>
+      <div class="notes-field" id="notesSection"><textarea id="notesField" placeholder="Add a note for personalisation (optional)"></textarea></div>
       <div class="upload-area" id="uploadArea" style="display:none">
-        Click to upload your photo / design
+        <span id="uploadLabel">Click to upload your photo / design</span>
         <input type="file" id="fileInput" accept="image/*" style="display:none">
         <div class="upload-status" id="uploadStatus"></div>
       </div>
@@ -602,7 +602,7 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-MUG-SEA-001", "title": "Cat Spooky Season Mug", "price": 8.0, "desc": "Black cat, pumpkin and bat design for cosy autumn mornings.", "imgA": "cat-spooky-season-mug.jpg", "imgB": "cat-spooky-season-mug.jpg", "colours": false, "bgSplash": false, "upload": false}, {"id": "HG-MUG-SEA-002", "title": "Stay Spooky Mug", "price": 8.0, "desc": "Ghosts, bats, pumpkins and a black cat.", "imgA": "stay-spooky-mug.jpg", "imgB": "stay-spooky-mug.jpg", "colours": false, "bgSplash": false, "upload": false}, {"id": "HG-MUG-SEA-003", "title": "Hocus Pocus Mug", "price": 8.0, "desc": "“It’s Just a Bunch of Hocus Pocus” Halloween design.", "imgA": "hocus-pocus-mug.jpg", "imgB": "hocus-pocus-mug.jpg", "colours": false, "bgSplash": false, "upload": false}, {"id": "HG-MUG-SEA-004", "title": "Spooky Season Double Ghost Mug", "price": 8.0, "desc": "Two cute ghosts with pumpkins, bats and stars.", "imgA": "spooky-season-double-ghost-mug.jpg", "imgB": "spooky-season-double-ghost-mug.jpg", "colours": false, "bgSplash": false, "upload": false}, {"id": "HG-MUG-SEA-005", "title": "Spooky Season Ghost Mug", "price": 8.0, "desc": "A cute ghost with bats, stars and a crescent moon.", "imgA": "spooky-season-ghost-mug.jpg", "imgB": "spooky-season-ghost-mug.jpg", "colours": false, "bgSplash": false, "upload": false}, {"id": "HG-MUG-SEA-006", "title": "Witches Brew Mug", "price": 8.0, "desc": "Black cat, cauldron, spell books and potions.", "imgA": "witches-brew-mug.jpg", "imgB": "witches-brew-mug.jpg", "colours": false, "bgSplash": false, "upload": false}, {"id": "HG-MUG-SEA-007", "title": "Spooky Season Cauldron Mug", "price": 8.0, "desc": "Cauldron, pumpkins and spooky nighttime details.", "imgA": "spooky-season-cauldron-mug.jpg", "imgB": "spooky-season-cauldron-mug.jpg", "colours": false, "bgSplash": false, "upload": false}, {"id": "HG-MUG-SEA-008", "title": "Trick or Treat Mug", "price": 8.0, "desc": "Black cat, pumpkins, bats and lanterns.", "imgA": "trick-or-treat-mug.jpg", "imgB": "trick-or-treat-mug.jpg", "colours": false, "bgSplash": false, "upload": false}];
+const products = [{"id": "HG-MUG-SEA-001", "title": "Cat Spooky Season Mug", "price": 9.0, "desc": "Celebrate Halloween with this cute cat design, perfect for those cosy nights in.", "imgA": "cat-spooky-season-mug.jpg", "imgB": "cat-spooky-season-mug.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-SEA-002", "title": "Stay Spooky Mug", "price": 9.0, "desc": "Halloween is not just for October. Stay spooky all year round.", "imgA": "stay-spooky-mug.jpg", "imgB": "stay-spooky-mug.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-SEA-003", "title": "Hocus Pocus Mug", "price": 9.0, "desc": "Some say that Halloween “is just a bunch of Hocus Pocus”.", "imgA": "hocus-pocus-mug.jpg", "imgB": "hocus-pocus-mug.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-SEA-004", "title": "Spooky Season Double Ghost Mug", "price": 9.0, "desc": "Celebrate Halloween in style with this classic design.", "imgA": "spooky-season-double-ghost-mug.jpg", "imgB": "spooky-season-double-ghost-mug.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-SEA-005", "title": "Spooky Season Ghost Mug", "price": 9.0, "desc": "Why drink alone when our friendly ghost can join you?", "imgA": "spooky-season-ghost-mug.jpg", "imgB": "spooky-season-ghost-mug.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-SEA-006", "title": "Witches Brew Mug", "price": 9.0, "desc": "Black cat, cauldron, spell books and potions.", "imgA": "witches-brew-mug.jpg", "imgB": "witches-brew-mug.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-SEA-007", "title": "Spooky Season Cauldron Mug", "price": 9.0, "desc": "Celebrate Halloween in style with this classic design.", "imgA": "spooky-season-cauldron-mug.jpg", "imgB": "spooky-season-cauldron-mug.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-SEA-008", "title": "Trick or Treat Mug", "price": 9.0, "desc": "After a hard day’s trick or treating, cosy up with a brew in the perfect mug.", "imgA": "trick-or-treat-mug.jpg", "imgB": "trick-or-treat-mug.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
@@ -727,7 +727,19 @@ function openModal(p) {
   } else {
     bulkSec.style.display = 'none'; qtyRow.style.display = 'flex';
   }
-  document.getElementById('uploadArea').style.display = p.upload ? 'block' : 'none';
+  const notesSec = document.getElementById('notesSection');
+  if (notesSec) notesSec.style.display = (p.notes === false) ? 'none' : 'block';
+  const upArea = document.getElementById('uploadArea');
+  const upLabel = document.getElementById('uploadLabel');
+  const fileInput = document.getElementById('fileInput');
+  if (upArea) {
+    upArea.style.display = p.upload ? 'block' : 'none';
+    if (upLabel) upLabel.textContent = p.uploadLabel || 'Click to upload your photo / design';
+    if (fileInput) {
+      if (p.uploadMax && p.uploadMax > 1) fileInput.setAttribute('multiple', 'multiple');
+      else fileInput.removeAttribute('multiple');
+    }
+  }
   document.getElementById('productModal').classList.add('open');
 }
 
