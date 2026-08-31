@@ -498,13 +498,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 <main class="main">
   <h1 class="page-title">Occasions</h1>
-  <p class="page-intro">New designs are on the way — check back soon.</p>
-  <div class="how-to-banner holding-banner">
-    <img class="how-to-desktop" src="desktop-banner.png" alt="Mug designs coming soon">
-    <img class="how-to-mobile" src="mobile-banner.png" alt="Mug designs coming soon">
-  </div>
-  <p class="holding-cta">In the meantime, you can design your own mug here.<br><a href="mugs-custom.html">Design your own mug</a></p>
-  <div class="product-grid" id="productGrid" style="display:none"></div>
+  <p class="page-intro">Birthday, retirement and adventure mugs — ready to gift or personalise.</p>
+  <div class="product-grid" id="productGrid"></div>
 </main>
 <div class="modal-overlay" id="productModal">
   <div class="modal">
@@ -542,7 +537,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       </div>
       <div class="notes-field"><textarea id="notesField" placeholder="Add a note for personalisation (optional)"></textarea></div>
       <div class="upload-area" id="uploadArea" style="display:none">
-        Click to upload your photo / design
+        <span id="uploadLabel">Click to upload your photo / design</span>
         <input type="file" id="fileInput" accept="image/*" style="display:none">
         <div class="upload-status" id="uploadStatus"></div>
       </div>
@@ -628,7 +623,14 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [];
+const products = [
+  {"id": "HG-MUG-OCC-001", "title": "Officially Old Birthday Mug", "price": 10.0, "desc": "With our ready-to-go birthday design, give a cheeky gift that will be treasured.", "imgA": "occasions-birthday.jpg", "imgB": "occasions-birthday.jpg", "colours": true, "bgSplash": false, "upload": false, "colourLabel": "Mug Colour (Inner & Handle)"},
+  {"id": "HG-MUG-OCC-002", "title": "Vintage Year Personalised Mug", "price": 10.0, "desc": "The perfect birthday gift — add the year of birth in the notes for a personalised mug they will love.", "imgA": "occasions-vintage.jpg", "imgB": "occasions-vintage.jpg", "colours": true, "bgSplash": false, "upload": false, "colourLabel": "Mug Colour (Inner & Handle)"},
+  {"id": "HG-MUG-OCC-003", "title": "Retired Not My Problem Mug", "price": 10.0, "desc": "Reaching retirement doesn’t mean they won’t still enjoy a coffee, and with this mug they will remember you every time.", "imgA": "occasions-retirement.jpg", "imgB": "occasions-retirement.jpg", "colours": true, "bgSplash": false, "upload": false, "colourLabel": "Mug Colour (Inner & Handle)"},
+  {"id": "HG-MUG-OCC-004", "title": "Retired From Giving A Sh!t Mug", "price": 10.0, "desc": "A cheeky way to say goodbye, guaranteeing they will remember you for longer.", "imgA": "occasions-retirement-2.jpg", "imgB": "occasions-retirement-2.jpg", "colours": true, "bgSplash": false, "upload": false, "colourLabel": "Mug Colour (Inner & Handle)"},
+  {"id": "HG-MUG-OCC-005", "title": "Our Adventures Personalised Mug", "price": 10.0, "desc": "An alternative way to celebrate a retirement or new venture. Customise with your own photos — please upload 3 images for this design.", "imgA": "occasions-adventure-awaits-a.jpg", "imgB": "occasions-adventure-awaits-b.jpg", "colours": true, "bgSplash": false, "upload": true, "uploadMax": 3, "uploadLabel": "Click to upload 3 photos for this design", "colourLabel": "Mug Colour (Inner & Handle)"},
+  {"id": "HG-MUG-OCC-006", "title": "Adventure Awaits Personalised Mug", "price": 10.0, "desc": "An alternative way to celebrate a retirement or new venture. Customise with your own photo.", "imgA": "occasions-our-adventure-a.jpg", "imgB": "occasions-our-adventure-b.jpg", "colours": true, "bgSplash": false, "upload": true, "uploadMax": 1, "uploadLabel": "Click to upload your photo", "colourLabel": "Mug Colour (Inner & Handle)"}
+];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
@@ -753,7 +755,17 @@ function openModal(p) {
   } else {
     bulkSec.style.display = 'none'; qtyRow.style.display = 'flex';
   }
-  document.getElementById('uploadArea').style.display = p.upload ? 'block' : 'none';
+  const upArea = document.getElementById('uploadArea');
+  const upLabel = document.getElementById('uploadLabel');
+  const fileInput = document.getElementById('fileInput');
+  if (upArea) {
+    upArea.style.display = p.upload ? 'block' : 'none';
+    if (upLabel) upLabel.textContent = p.uploadLabel || 'Click to upload your photo / design';
+    if (fileInput) {
+      if (p.uploadMax && p.uploadMax > 1) fileInput.setAttribute('multiple', 'multiple');
+      else fileInput.removeAttribute('multiple');
+    }
+  }
   document.getElementById('productModal').classList.add('open');
 }
 
@@ -770,43 +782,50 @@ document.getElementById('uploadArea').onclick = () => {
   if (!uploading) document.getElementById('fileInput').click();
 };
 document.getElementById('fileInput').onchange = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
   const status = document.getElementById('uploadStatus');
   status.style.display = 'block';
+  const max = (currentProduct && currentProduct.uploadMax) ? currentProduct.uploadMax : 1;
+  const chosen = files.slice(0, max);
 
   if (!CLOUDINARY_CLOUD_NAME || CLOUDINARY_CLOUD_NAME.includes('HERE') ||
       !CLOUDINARY_UPLOAD_PRESET || CLOUDINARY_UPLOAD_PRESET.includes('HERE')) {
-    uploadedUrl = file.name;
+    uploadedUrl = chosen.map(f => f.name).join('\n');
     status.style.color = '#a33';
     status.textContent = 'Upload saved as filename only — Cloudinary not configured yet.';
     return;
   }
 
   uploading = true;
-  status.style.color = '#555';
-  status.textContent = 'Uploading ' + file.name + '…';
-
+  const urls = [];
   try {
-    const body = new FormData();
-    body.append('file', file);
-    body.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-    body.append('folder', 'hg-customs-orders');
-
-    const res = await fetch(
-      'https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD_NAME + '/image/upload',
-      { method: 'POST', body }
-    );
-    const data = await res.json();
-    if (!res.ok || !data.secure_url) {
-      throw new Error(data.error && data.error.message ? data.error.message : 'Upload failed');
+    for (let i = 0; i < chosen.length; i++) {
+      const file = chosen[i];
+      status.style.color = '#555';
+      status.textContent = 'Uploading ' + (i+1) + ' of ' + chosen.length + ': ' + file.name + '…';
+      const body = new FormData();
+      body.append('file', file);
+      body.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      body.append('folder', 'hg-customs-orders');
+      const res = await fetch(
+        'https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD_NAME + '/image/upload',
+        { method: 'POST', body }
+      );
+      const data = await res.json();
+      if (!res.ok || !data.secure_url) {
+        throw new Error(data.error && data.error.message ? data.error.message : 'Upload failed');
+      }
+      urls.push(data.secure_url);
     }
-    uploadedUrl = data.secure_url;
+    uploadedUrl = urls.join('\n');
     status.style.color = '#2d5a3d';
-    status.textContent = '✓ Photo uploaded — ready to add to basket';
+    status.textContent = urls.length > 1
+      ? '✓ ' + urls.length + ' photos uploaded — ready to add to basket'
+      : '✓ Photo uploaded — ready to add to basket';
   } catch (err) {
     console.error(err);
-    uploadedUrl = '';
+    uploadedUrl = urls.join('\n');
     status.style.color = '#a33';
     status.textContent = 'Upload failed. Please try another image or WhatsApp us the photo.';
   } finally {
