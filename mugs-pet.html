@@ -540,8 +540,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
       </div>
       <div class="notes-field"><textarea id="notesField" placeholder="Add a note for personalisation (optional)"></textarea></div>
       <div class="upload-area" id="uploadArea" style="display:none">
-        Click to upload your photo / design
-        <input type="file" id="fileInput" accept="image/*" style="display:none">
+        Click to upload your photo / print (you can select more than one)
+        <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
         <div class="upload-status" id="uploadStatus"></div>
       </div>
       <button class="add-btn" id="addToBasketBtn">Add to Basket</button>
@@ -626,7 +626,7 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-MUG-PET-001", "title": "Colour Splash Personalised Pet Mug", "price": 10.0, "desc": "Turn your pets into a mug you\u2019ll treasure! Upload a photo and we\u2019ll transform it into a beautiful colour-splash portrait design.", "imgA": "colour-splash-pet-mug-a.jpg", "imgB": "colour-splash-pet-mug-b.jpg", "colours": true, "bgSplash": true, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-002", "title": "Trouble Maker Personalised Pet Mug", "price": 10.0, "desc": "Celebrate your mischievous pets with a detailed illustrated portrait finished with the playful \u201cEstablished Troublemakers\u201d design.", "imgA": "trouble-maker-pet-mug-a.jpg", "imgB": "trouble-maker-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-003", "title": "Life is Better Personalised Pet Mug", "price": 10.0, "desc": "A beautiful personalised illustrated portrait finished with \u201cLife is better with you\u201d.", "imgA": "life-is-better-pet-mug-a.jpg", "imgB": "life-is-better-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-004", "title": "Flower Field Personalised Pet Mug", "price": 10.0, "desc": "A floral portrait design surrounded by delicate wildflowers.", "imgA": "flower-field-pet-mug-a.jpg", "imgB": "flower-field-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-005", "title": "My Shadow Personalised Pet Mug", "price": 10.0, "desc": "Personalised illustrated portrait with \u201cMy Shadows, My Heart\u201d.", "imgA": "my-shadow-pet-mug-a.jpg", "imgB": "my-shadow-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}];
+const products = [{"id": "HG-MUG-PET-006", "title": "Pet Nose / Paw Print", "price": 10.0, "desc": "Capture your loved ones forever by sending us a paw print or nose print. The colour of the mug selected will be the colour of the print — unless you specify otherwise in the notes.", "imgA": "mugs-pet-printsA.JPG", "imgB": "mugs-pet-printsB.JPG", "colours": true, "bgSplash": false, "upload": true, "uploadMax": 6, "notes": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-007", "title": "Always By Your Side", "price": 10.0, "desc": "Immortalise your pets or the memory of a loved one with these customised mugs. Upload photos of your pet, a favourite toy and collar details.", "imgA": "mugs-pet-alwaysA.JPG", "imgB": "mugs-pet-alwaysB.JPG", "colours": true, "bgSplash": true, "upload": true, "uploadMax": 6, "notes": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-001", "title": "Colour Splash Personalised Pet Mug", "price": 10.0, "desc": "Turn your pets into a mug you\u2019ll treasure! Upload a photo and we\u2019ll transform it into a beautiful colour-splash portrait design.", "imgA": "colour-splash-pet-mug-a.jpg", "imgB": "colour-splash-pet-mug-b.jpg", "colours": true, "bgSplash": true, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-002", "title": "Trouble Maker Personalised Pet Mug", "price": 10.0, "desc": "Celebrate your mischievous pets with a detailed illustrated portrait finished with the playful \u201cEstablished Troublemakers\u201d design.", "imgA": "trouble-maker-pet-mug-a.jpg", "imgB": "trouble-maker-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-003", "title": "Life is Better Personalised Pet Mug", "price": 10.0, "desc": "A beautiful personalised illustrated portrait finished with \u201cLife is better with you\u201d.", "imgA": "life-is-better-pet-mug-a.jpg", "imgB": "life-is-better-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-004", "title": "Flower Field Personalised Pet Mug", "price": 10.0, "desc": "A floral portrait design surrounded by delicate wildflowers.", "imgA": "flower-field-pet-mug-a.jpg", "imgB": "flower-field-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-005", "title": "My Shadow Personalised Pet Mug", "price": 10.0, "desc": "Personalised illustrated portrait with \u201cMy Shadows, My Heart\u201d.", "imgA": "my-shadow-pet-mug-a.jpg", "imgB": "my-shadow-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
@@ -639,9 +639,9 @@ let uploadedUrl = '';
 let uploading = false;
 
 const grid = document.getElementById('productGrid');
-if (products.length === 5) grid.classList.add('center-odd');
-else if (products.length === 2) grid.classList.add('grid-2');
+if (products.length === 2) grid.classList.add('grid-2');
 else if (products.length === 1) grid.classList.add('grid-1');
+else if (products.length % 3 !== 0) grid.classList.add('center-odd');
 products.forEach((p, i) => {
   const card = document.createElement('div');
   card.className = 'product-card';
@@ -771,40 +771,47 @@ document.getElementById('uploadArea').onclick = () => {
   if (!uploading) document.getElementById('fileInput').click();
 };
 document.getElementById('fileInput').onchange = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
   const status = document.getElementById('uploadStatus');
   status.style.display = 'block';
+  const max = (currentProduct && currentProduct.uploadMax) ? currentProduct.uploadMax : 1;
+  const chosen = files.slice(0, max);
 
   if (!CLOUDINARY_CLOUD_NAME || CLOUDINARY_CLOUD_NAME.includes('HERE') ||
       !CLOUDINARY_UPLOAD_PRESET || CLOUDINARY_UPLOAD_PRESET.includes('HERE')) {
-    uploadedUrl = file.name;
+    uploadedUrl = chosen.map(f => f.name).join('\n');
     status.style.color = '#a33';
     status.textContent = 'Upload saved as filename only — Cloudinary not configured yet.';
     return;
   }
 
   uploading = true;
-  status.style.color = '#555';
-  status.textContent = 'Uploading ' + file.name + '…';
-
+  const urls = [];
   try {
-    const body = new FormData();
-    body.append('file', file);
-    body.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-    body.append('folder', 'hg-customs-orders');
-
-    const res = await fetch(
-      'https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD_NAME + '/image/upload',
-      { method: 'POST', body }
-    );
-    const data = await res.json();
-    if (!res.ok || !data.secure_url) {
-      throw new Error(data.error && data.error.message ? data.error.message : 'Upload failed');
+    for (let i = 0; i < chosen.length; i++) {
+      const file = chosen[i];
+      status.style.color = '#555';
+      status.textContent = 'Uploading ' + (i+1) + ' of ' + chosen.length + ': ' + file.name + '…';
+      const body = new FormData();
+      body.append('file', file);
+      body.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      body.append('folder', 'hg-customs-orders');
+      const res = await fetch(
+        'https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD_NAME + '/image/upload',
+        { method: 'POST', body }
+      );
+      const data = await res.json();
+      if (!res.ok || !data.secure_url) {
+        throw new Error(data.error && data.error.message ? data.error.message : 'Upload failed');
+      }
+      urls.push(data.secure_url);
     }
-    uploadedUrl = data.secure_url;
+    uploadedUrl = urls.join('\n');
     status.style.color = '#2d5a3d';
-    status.textContent = '✓ Photo uploaded — ready to add to basket';
+    status.textContent = chosen.length > 1
+      ? '✓ ' + chosen.length + ' photos uploaded — ready to add to basket'
+      : '✓ Photo uploaded — ready to add to basket';
   } catch (err) {
     console.error(err);
     uploadedUrl = '';
@@ -812,6 +819,7 @@ document.getElementById('fileInput').onchange = async (e) => {
     status.textContent = 'Upload failed. Please try another image or WhatsApp us the photo.';
   } finally {
     uploading = false;
+    e.target.value = '';
   }
 };
 document.getElementById('addToBasketBtn').onclick = function() {
