@@ -4,8 +4,8 @@
    Then upload this file to the repo root (same place as index.html).
 */
 (function () {
-  var GA4_ID = 'G-XXXXXXXXXX';
-  var CLARITY_ID = 'CLARITY_PROJECT_ID';
+  var GA4_ID = 'G-TP2LN9TJ8L';
+  var CLARITY_ID = 'yaxinhjour';
 
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
