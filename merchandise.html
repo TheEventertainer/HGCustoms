@@ -393,6 +393,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 
+
+.print-method-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+.print-method-btn {
+  flex:1; min-width:140px; border:1px solid var(--border-color,#e5e5e5);
+  background:#fff; padding:10px 12px; cursor:pointer; text-align:left; font-size:13px; line-height:1.35;
+}
+.print-method-btn strong { display:block; font-size:13px; margin-bottom:2px; }
+.print-method-btn span { display:block; color:#666; font-size:11px; }
+.print-method-btn.selected { border-color:#111; box-shadow:0 0 0 1px #111; }
+
 </style>
 <script src="analytics.js"></script>
 </head>
@@ -505,6 +515,21 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         <div class="swatches" id="bgSwatches"></div>
         <div class="selected-colour-label" id="selectedBgLabel"></div>
       </div>
+      
+      <div class="colour-section" id="printMethodSection" style="display:none">
+        <label>Print method</label>
+        <div class="print-method-row" id="printMethodRow">
+          <button type="button" class="print-method-btn selected" data-method="Sublimation">
+            <strong>Sublimation</strong>
+            <span>Full colour photo or graphic</span>
+          </button>
+          <button type="button" class="print-method-btn" data-method="Vinyl">
+            <strong>Heat-transfer vinyl</strong>
+            <span>Simple logos and text</span>
+          </button>
+        </div>
+      </div>
+
       <div class="colour-section" id="sizeSection" style="display:none">
         <label>Size</label>
         <div class="size-row" id="sizeRow"></div>
@@ -607,8 +632,29 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-BULK-MUG", "title": "Bulk Order Mugs", "price": 8.0, "desc": "Custom mugs in bulk. Min 10, max 100.", "imgA": "bulk-order-mugs.jpg", "imgB": "bulk-order-mugs.jpg", "colours": true, "bgSplash": false, "upload": true, "bulk": true, "colourLabel": "Mug Colour"}, {"id": "HG-BULK-COASTER", "title": "Bulk Order Coasters", "price": 3.5, "desc": "Custom coasters in bulk (sublimated or slate). Price shown is per unit based on sublimated coasters (20% off). Min 10, max 100. Note slate etched in order notes if required.", "imgA": "bulk-order-coaster.jpg", "imgB": "bulk-order-coaster.jpg", "colours": false, "bgSplash": false, "upload": true, "bulk": true}, {"id": "HG-BULK-TSHIRT", "title": "Bulk Order T-Shirts", "price": 10.0, "desc": "Custom tees in bulk. Min 10, max 100. Sizes selected in notes if mixed.", "imgA": "bulk-order-tshirts.jpg", "imgB": "bulk-order-tshirts.jpg", "colours": true, "bgSplash": false, "upload": true, "bulk": true, "sizes": true, "colourLabel": "Garment Colour"}];
+const products = [{"id": "HG-BULK-MUG", "title": "Bulk Order Mugs", "price": 8.0, "desc": "Custom mugs in bulk. Min 10, max 100.", "imgA": "bulk-order-mugs.jpg", "imgB": "bulk-order-mugs.jpg", "colours": true, "bgSplash": false, "upload": true, "bulk": true, "colourLabel": "Mug Colour"}, {"id": "HG-BULK-COASTER", "title": "Bulk Order Coasters", "price": 3.5, "desc": "Custom coasters in bulk (sublimated or slate). Price shown is per unit based on sublimated coasters (20% off). Min 10, max 100. Note slate etched in order notes if required.", "imgA": "bulk-order-coaster.jpg", "imgB": "bulk-order-coaster.jpg", "colours": false, "bgSplash": false, "upload": true, "bulk": true}, {"id": "HG-BULK-TSHIRT", "title": "Bulk Order T-Shirts", "price": 10.0, "desc": "Upload your design, logo or photo. Select whether you wish your design to be a full colour sublimated graphic, or for simple logos and text — heat transferred vinyl. Be sure to update the notes on your order with as many details as you can. Minimum order 10, maximum 100.", "imgA": "bulk-order-tshirts.jpg", "imgB": "bulk-order-tshirts.jpg", "colours": true, "bgSplash": false, "upload": true, "bulk": true, "sizes": true, "colourLabel": "T-Shirt Colour", "printMethod": true, "colourSet": "tshirt"}, {"id": "HG-BULK-HOODIE", "title": "Bulk Order Hoodies", "price": 15.0, "desc": "Upload your design, logo or photo. Select whether you wish your design to be a full colour sublimated graphic, or for simple logos and text — heat transferred vinyl. Be sure to update the notes on your order with as many details as you can. Minimum order 10, maximum 100.", "imgA": "bulk-order-hoodies.jpg", "imgB": "bulk-order-hoodies.jpg", "colours": true, "bgSplash": false, "upload": true, "bulk": true, "sizes": true, "printMethod": true, "colourLabel": "Hoodie Colour", "colourSet": "hoodie"}];
 const bottleColours = [{"name": "Black", "hex": "#1a1a1a"}, {"name": "White", "hex": "#ffffff"}, {"name": "Silver", "hex": "#c0c0c0"}, {"name": "Pink", "hex": "#f4a7b9"}, {"name": "Blue", "hex": "#4a90d9"}, {"name": "Green", "hex": "#3d8b6e"}, {"name": "Yellow", "hex": "#f5c518"}, {"name": "Purple", "hex": "#7b5ea7"}, {"name": "Red", "hex": "#c0392b"}, {"name": "Orange", "hex": "#e67e22"}];
+
+const tshirtColours = [
+  {"name": "Black", "hex": "#1a1a1a"},
+  {"name": "White", "hex": "#ffffff"},
+  {"name": "Light Grey", "hex": "#c8c8c8"},
+  {"name": "Classic Olive", "hex": "#5c5a3c"},
+  {"name": "Navy", "hex": "#1b2a4a"},
+  {"name": "Red", "hex": "#c41e3a"},
+  {"name": "Zinc", "hex": "#6e7168"},
+  {"name": "Khaki", "hex": "#b8a882"},
+  {"name": "Sky", "hex": "#7eb8d9"}
+];
+const hoodieColours = [
+  {"name": "Black", "hex": "#1a1a1a"},
+  {"name": "Light Grey", "hex": "#c8c8c8"},
+  {"name": "Navy", "hex": "#1b2a4a"},
+  {"name": "Charcoal", "hex": "#3d3d3d"},
+  {"name": "Blue", "hex": "#2b5a9e"},
+  {"name": "Burgundy", "hex": "#6b1e2e"}
+];
+
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
@@ -616,6 +662,7 @@ let currentProduct = null;
 let selectedMugColour = mugColours[0];
 let selectedBgColour = bgColours[0];
 let selectedSize = 'M';
+let selectedPrintMethod = 'Sublimation';
 let qty = 1;
 let uploadedUrl = '';
 let uploading = false;
@@ -669,7 +716,7 @@ function openModal(p) {
   if (p.colours) {
     mugSec.style.display = 'block';
     document.getElementById('colourLabel').textContent = p.colourLabel || 'Colour';
-    const colourList = (p.colourSet === 'bottle') ? bottleColours : mugColours;
+    const colourList = p.colourSet === 'tshirt' ? tshirtColours : p.colourSet === 'hoodie' ? hoodieColours : (p.colourSet === 'bottle') ? bottleColours : mugColours;
     selectedMugColour = colourList[0];
     colourList.forEach((c, i) => {
       const s = document.createElement('div');
@@ -713,6 +760,14 @@ function openModal(p) {
   const sizeSec = document.getElementById('sizeSection');
   const sizeRow = document.getElementById('sizeRow');
   sizeRow.innerHTML = '';
+  const printSec = document.getElementById('printMethodSection');
+  if (printSec) {
+    printSec.style.display = p.printMethod ? 'block' : 'none';
+    selectedPrintMethod = 'Sublimation';
+    printSec.querySelectorAll('.print-method-btn').forEach(b => {
+      b.classList.toggle('selected', b.dataset.method === selectedPrintMethod);
+    });
+  }
   if (p.sizes) {
     sizeSec.style.display = 'block';
     sizes.forEach(sz => {
@@ -810,6 +865,7 @@ document.getElementById('addToBasketBtn').onclick = function() {
     colour: currentProduct.colours ? selectedMugColour.name : null,
     backgroundColour: currentProduct.bgSplash ? selectedBgColour.name : null,
     size: currentProduct.sizes ? selectedSize : null,
+    printMethod: currentProduct.printMethod ? selectedPrintMethod : null,
     notes: document.getElementById('notesField').value.trim(),
     image: currentProduct.imgA,
     uploadUrl: uploadedUrl,
@@ -818,6 +874,14 @@ document.getElementById('addToBasketBtn').onclick = function() {
   document.getElementById('productModal').classList.remove('open');
 };
 
+
+
+document.getElementById('printMethodRow')?.addEventListener('click', (e) => {
+  const btn = e.target.closest('.print-method-btn');
+  if (!btn) return;
+  selectedPrintMethod = btn.dataset.method;
+  document.querySelectorAll('#printMethodRow .print-method-btn').forEach(b => b.classList.toggle('selected', b === btn));
+});
 
 document.getElementById('menu-toggle')?.addEventListener('click', () => {
   document.getElementById('mobileNav').classList.toggle('open');
