@@ -778,6 +778,7 @@ function renderCart() {
     if (item.colour) meta.push('Colour: '+item.colour);
     if (item.backgroundColour) meta.push('Background: '+item.backgroundColour);
     if (item.size) meta.push('Size: '+item.size);
+    if (item.printMethod) meta.push('Print: '+item.printMethod);
     if (item.notes) meta.push('Note: '+item.notes);
     if (item.uploadUrl) {
       const u = String(item.uploadUrl);
@@ -935,6 +936,7 @@ function buildOrderLines(cart) {
     if (item.colour) lines.push('   Colour: ' + item.colour);
     if (item.backgroundColour) lines.push('   Background: ' + item.backgroundColour);
     if (item.size) lines.push('   Size: ' + item.size);
+    if (item.printMethod) lines.push('   Print: ' + item.printMethod);
     if (item.notes) lines.push('   Notes: ' + item.notes);
     if (item.uploadUrl) lines.push('   Upload: ' + item.uploadUrl);
     return lines.join('\n');
@@ -951,6 +953,7 @@ function buildOrderLinesHtml(cart) {
     if (item.colour) rows.push('Colour: ' + item.colour);
     if (item.backgroundColour) rows.push('Background: ' + item.backgroundColour);
     if (item.size) rows.push('Size: ' + item.size);
+    if (item.printMethod) rows.push('Print: ' + item.printMethod);
     if (item.notes) rows.push('Notes: ' + item.notes);
     if (item.uploadUrl) rows.push('Upload: ' + item.uploadUrl);
     return '<div style="margin:0 0 16px;padding:0 0 12px;border-bottom:1px solid #eee;font-size:14px;line-height:1.55;color:#333;">' + rows.join('<br>') + '</div>';
@@ -1091,6 +1094,7 @@ function buildOrderParams(paypalDetails) {
     if (item.colour) lines.push('   Colour: ' + item.colour);
     if (item.backgroundColour) lines.push('   Background: ' + item.backgroundColour);
     if (item.size) lines.push('   Size: ' + item.size);
+    if (item.printMethod) lines.push('   Print: ' + item.printMethod);
     if (item.notes) lines.push('   Notes: ' + item.notes);
     if (item.uploadUrl) lines.push('   Upload: ' + item.uploadUrl);
     return lines.join('\n');

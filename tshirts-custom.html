@@ -425,6 +425,16 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 
+
+.print-method-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+.print-method-btn {
+  flex:1; min-width:140px; border:1px solid var(--border-color,#e5e5e5);
+  background:#fff; padding:10px 12px; cursor:pointer; text-align:left; font-size:13px; line-height:1.35;
+}
+.print-method-btn strong { display:block; font-size:13px; margin-bottom:2px; }
+.print-method-btn span { display:block; color:#666; font-size:11px; }
+.print-method-btn.selected { border-color:#111; box-shadow:0 0 0 1px #111; }
+
 </style>
 <script src="analytics.js"></script>
 </head>
@@ -536,6 +546,21 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
         <div class="swatches" id="bgSwatches"></div>
         <div class="selected-colour-label" id="selectedBgLabel"></div>
       </div>
+      
+      <div class="colour-section" id="printMethodSection" style="display:none">
+        <label>Print method</label>
+        <div class="print-method-row" id="printMethodRow">
+          <button type="button" class="print-method-btn selected" data-method="Sublimation">
+            <strong>Sublimation</strong>
+            <span>Full colour photo or graphic</span>
+          </button>
+          <button type="button" class="print-method-btn" data-method="Vinyl">
+            <strong>Heat-transfer vinyl</strong>
+            <span>Simple logos and text</span>
+          </button>
+        </div>
+      </div>
+
       <div class="colour-section" id="sizeSection" style="display:none">
         <label>Size</label>
         <div class="size-row" id="sizeRow"></div>
@@ -650,10 +675,7 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [
-  {"id": "HG-TS-CUS-001", "title": "Create Your Own T-Shirt", "price": 12, "desc": "Upload your design, logo or photo. Choose from nine garment colours. Sizes XS–XXXL.", "imgA": "create-your-own-tshirt-a.jpg", "imgB": "create-your-own-tshirt-a.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "T-Shirt Colour", "colourSet": "tshirt"},
-  {"id": "HG-TS-CUS-002", "title": "Create Your Own Hoodie", "price": 19, "desc": "Pullover hoodie with your artwork. Choose from six colours. Sizes XS–XXXL.", "imgA": "create-your-own-hoodie.jpg", "imgB": "create-your-own-hoodie.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Hoodie Colour", "colourSet": "hoodie"}
-];
+const products = [{"id": "HG-TS-CUS-001", "title": "Create Your Own T-Shirt", "price": 12, "desc": "Upload your design, logo or photo. Select whether you wish your design to be a full colour sublimated graphic, or for simple logos and text — heat transferred vinyl. Be sure to update the notes on your order with as many details as you can.", "imgA": "create-your-own-tshirt-a.jpg", "imgB": "create-your-own-tshirt-a.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "T-Shirt Colour", "colourSet": "tshirt", "printMethod": true}, {"id": "HG-TS-CUS-002", "title": "Create Your Own Hoodie", "price": 19, "desc": "Upload your design, logo or photo. Select whether you wish your design to be a full colour sublimated graphic, or for simple logos and text — heat transferred vinyl. Be sure to update the notes on your order with as many details as you can.", "imgA": "create-your-own-hoodie.jpg", "imgB": "create-your-own-hoodie.jpg", "colours": true, "bgSplash": false, "upload": true, "sizes": true, "colourLabel": "Hoodie Colour", "colourSet": "hoodie", "printMethod": true}];
 const tshirtColours = [
   {"name": "Black", "hex": "#1a1a1a"},
   {"name": "White", "hex": "#ffffff"},
@@ -744,6 +766,7 @@ let currentProduct = null;
 let selectedMugColour = tshirtColours[0];
 let selectedBgColour = bgColours[0];
 let selectedSize = 'M';
+let selectedPrintMethod = 'Sublimation';
 let qty = 1;
 let uploadedUrl = '';
 let uploading = false;
@@ -752,6 +775,8 @@ const grid = document.getElementById('productGrid');
 products.forEach((p, i) => {
   const card = document.createElement('div');
   card.className = 'product-card';
+  card.dataset.index = String(i);
+  card.style.cursor = 'pointer';
   card.innerHTML = `
     <div class="img-wrap"><img src="${p.imgA}" alt="${p.title}" onerror="this.style.opacity=0.3"></div>
     <div class="info">
@@ -833,11 +858,27 @@ function openModal(p) {
   const sizeSec = document.getElementById('sizeSection');
   const sizeRow = document.getElementById('sizeRow');
   const guidePanel = document.getElementById('sizeGuidePanel');
-  const guideToggle = document.getElementById('sizeGuideToggle');
+  const guideToggle = 
+document.getElementById('printMethodRow')?.addEventListener('click', (e) => {
+  const btn = e.target.closest('.print-method-btn');
+  if (!btn) return;
+  selectedPrintMethod = btn.dataset.method;
+  document.querySelectorAll('#printMethodRow .print-method-btn').forEach(b => b.classList.toggle('selected', b === btn));
+});
+
+document.getElementById('sizeGuideToggle');
   sizeRow.innerHTML = '';
   if (guidePanel) {
     guidePanel.classList.remove('open');
     guidePanel.setAttribute('aria-hidden', 'true');
+  }
+  const printSec = document.getElementById('printMethodSection');
+  if (printSec) {
+    printSec.style.display = (p.printMethod || p.sizes) ? 'block' : 'none';
+    selectedPrintMethod = 'Sublimation';
+    printSec.querySelectorAll('.print-method-btn').forEach(b => {
+      b.classList.toggle('selected', b.dataset.method === selectedPrintMethod);
+    });
   }
   if (p.sizes) {
     sizeSec.style.display = 'block';
@@ -943,6 +984,7 @@ document.getElementById('addToBasketBtn').onclick = function() {
     colour: currentProduct.colours ? selectedMugColour.name : null,
     backgroundColour: currentProduct.bgSplash ? selectedBgColour.name : null,
     size: currentProduct.sizes ? selectedSize : null,
+    printMethod: (currentProduct.printMethod || currentProduct.sizes) ? selectedPrintMethod : null,
     notes: document.getElementById('notesField').value.trim(),
     image: currentProduct.imgA,
     uploadUrl: uploadedUrl,

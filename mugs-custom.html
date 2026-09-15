@@ -623,6 +623,8 @@ const grid = document.getElementById('productGrid');
 products.forEach((p, i) => {
   const card = document.createElement('div');
   card.className = 'product-card';
+  card.dataset.index = String(i);
+  card.style.cursor = 'pointer';
   card.innerHTML = `
     <div class="img-wrap"><img src="${p.imgA}" alt="${p.title}" onerror="this.style.opacity=0.3"></div>
     <div class="info">

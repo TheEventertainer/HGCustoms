@@ -645,6 +645,8 @@ else if (products.length % 3 !== 0) grid.classList.add('center-odd');
 products.forEach((p, i) => {
   const card = document.createElement('div');
   card.className = 'product-card';
+  card.dataset.index = String(i);
+  card.style.cursor = 'pointer';
   card.innerHTML = `
     <div class="img-wrap"><img src="${p.imgA}" alt="${p.title}" onerror="this.style.opacity=0.3"></div>
     <div class="info">
