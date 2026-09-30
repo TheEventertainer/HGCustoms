@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>T-Shirts & Hoodies | HG Customs</title>
-  <meta name="description" content="Personalised T-shirts and hoodies from HG Customs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
@@ -394,7 +393,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 
 </style>
-<script src="analytics.js"></script>
 </head>
 <body>
 
@@ -418,6 +416,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           <a href="mugs-occasions.html">Occasions</a>
           <a href="mugs-seasonal.html">Seasonal</a>
           <a href="mugs-custom.html">Custom Designs</a>
+          <a href="mugs-adult.html">Adult Humour</a>
         </div>
       </li>
       <li>
@@ -459,6 +458,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <a href="mugs-occasions.html" class="sub">Occasions</a>
   <a href="mugs-seasonal.html" class="sub">Seasonal</a>
   <a href="mugs-custom.html" class="sub">Custom Designs</a>
+  <a href="mugs-adult.html" class="sub">Adult Humour</a>
   <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
   <a href="tshirts-pet.html" class="sub">Pet</a>
   <a href="tshirts-our-designs.html" class="sub">Our Designs</a>
@@ -481,19 +481,19 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <p class="page-intro">Personalised apparel — choose a collection below.</p>
   <div class="hub-grid hub-4">
     <a href="tshirts-pet.html" class="hub-tile">
-      <img src="Pet-tshirt-hub.png" alt="Pet" onerror="this.parentElement.style.background='#f0f0f0'">
+      <img src="clothing-pet.jpg" alt="Pet" onerror="this.parentElement.style.background='#f0f0f0'">
       <div class="overlay"><h3>Pet</h3><span>Wear your pet’s portrait</span></div>
     </a>
     <a href="tshirts-our-designs.html" class="hub-tile">
-      <img src="our-design-tshirt-hub.png" alt="Our Designs" onerror="this.parentElement.style.background='#f0f0f0'">
+      <img src="clothing-ourdesigns.jpg" alt="Our Designs" onerror="this.parentElement.style.background='#f0f0f0'">
       <div class="overlay"><h3>Our Designs</h3><span>Ready-to-wear graphics</span></div>
     </a>
     <a href="tshirts-occasions.html" class="hub-tile">
-      <img src="occasion-tshirt-hub.jpg" alt="Occasions & Events" onerror="this.parentElement.style.background='#f0f0f0'">
+      <img src="clothing-occasions.jpg" alt="Occasions & Events" onerror="this.parentElement.style.background='#f0f0f0'">
       <div class="overlay"><h3>Occasions & Events</h3><span>Birthdays, teams & more</span></div>
     </a>
     <a href="tshirts-custom.html" class="hub-tile">
-      <img src="create-your-own-tshirt-a.jpg" alt="Custom Designs" onerror="this.parentElement.style.background='#f0f0f0'">
+      <img src="clothing-custom.jpg" alt="Custom Designs" onerror="this.parentElement.style.background='#f0f0f0'">
       <div class="overlay"><h3>Custom Designs</h3><span>Upload your artwork</span></div>
     </a>
   </div>
@@ -553,7 +553,6 @@ function addToCart(product, fromEl) {
   saveCart(cart);
   showToast('Added to basket');
   flyToCart(fromEl, product.image);
-  if (window.hgTrackAddToCart) window.hgTrackAddToCart(product);
 }
 function flyToCart(fromEl, imgSrc) {
   const cartIcon = document.querySelector('.cart-icon') || document.getElementById('cartBadge');

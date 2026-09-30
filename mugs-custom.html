@@ -418,6 +418,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           <a href="mugs-occasions.html">Occasions</a>
           <a href="mugs-seasonal.html">Seasonal</a>
           <a href="mugs-custom.html">Custom Designs</a>
+          <a href="mugs-adult.html">Adult Humour</a>
         </div>
       </li>
       <li>
@@ -459,6 +460,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <a href="mugs-occasions.html" class="sub">Occasions</a>
   <a href="mugs-seasonal.html" class="sub">Seasonal</a>
   <a href="mugs-custom.html" class="sub">Custom Designs</a>
+  <a href="mugs-adult.html" class="sub">Adult Humour</a>
   <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
   <a href="tshirts-pet.html" class="sub">Pet</a>
   <a href="tshirts-our-designs.html" class="sub">Our Designs</a>
@@ -480,8 +482,8 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <h1 class="page-title">Custom Designs</h1>
   <p class="page-intro">Your idea, your mug.</p>
   <div class="how-to-banner">
-    <img class="how-to-desktop" src="custom-mug-banner-desktop.JPG" alt="How to create your very own mug">
-    <img class="how-to-mobile" src="custom-mug-banner-mobile.JPG" alt="How to create your very own mug">
+    <img class="how-to-desktop" src="desktop-banner.png" alt="How to create your very own mug">
+    <img class="how-to-mobile" src="mobile-banner.png" alt="How to create your very own mug">
   </div>
   <div class="product-grid grid-1" id="productGrid"></div>
 </main>
@@ -607,7 +609,7 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-MUG-CUS-001", "title": "Create Your Own Mug", "price": 10.0, "desc": "Upload your own text, logo, photo or design.", "imgA": "create-your-own-mug-a.jpg", "imgB": "create-your-own-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "notes": true, "colourLabel": "Mug Colour (Inner & Handle)"}];
+const products = [{"id": "HG-MUG-CUS-001", "title": "Create Your Own Mug", "price": 10.0, "desc": "Upload your own text, logo, photo or design.", "imgA": "create-your-own-mug-a.jpg", "imgB": "create-your-own-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "notes": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-CUS-002", "title": "Design Template 1", "price": 10.0, "desc": "Add your heading and three photos. We will lay them out to this template — the more detail you add in the notes, the better.", "imgA": "custom-template-mug-1.jpg", "imgB": "custom-template-mug-1.jpg", "colours": true, "bgSplash": false, "upload": true, "notes": true, "colourLabel": "Mug Colour (Inner & Handle)", "uploadMax": 3, "uploadLabel": "Upload 3 photos for this layout", "notesPlaceholder": "Add the text to print at the top, plus any layout notes."}, {"id": "HG-MUG-CUS-003", "title": "Design Template 2", "price": 10.0, "desc": "Three photo layout with no printed heading. Upload three images and we will build this template for you.", "imgA": "custom-template-mug-2.jpg", "imgB": "custom-template-mug-2.jpg", "colours": true, "bgSplash": false, "upload": true, "notes": true, "colourLabel": "Mug Colour (Inner & Handle)", "uploadMax": 3, "uploadLabel": "Upload 3 photos for this layout"}, {"id": "HG-MUG-CUS-004", "title": "Design Template 3", "price": 10.0, "desc": "Four photo grid. Upload four images and we will print them in this layout.", "imgA": "custom-template-mug-3.jpg", "imgB": "custom-template-mug-3.jpg", "colours": true, "bgSplash": false, "upload": true, "notes": true, "colourLabel": "Mug Colour (Inner & Handle)", "uploadMax": 4, "uploadLabel": "Upload 4 photos for this layout"}, {"id": "HG-MUG-CUS-005", "title": "Design Template 4", "price": 10.0, "desc": "Four photo grid plus a heading. Upload four images and add the text you want printed at the top.", "imgA": "custom-template-mug-4.jpg", "imgB": "custom-template-mug-4.jpg", "colours": true, "bgSplash": false, "upload": true, "notes": true, "colourLabel": "Mug Colour (Inner & Handle)", "uploadMax": 4, "uploadLabel": "Upload 4 photos for this layout", "notesPlaceholder": "Add the text to print at the top, plus any layout notes."}];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
@@ -763,8 +765,9 @@ document.getElementById('uploadArea').onclick = () => {
   if (!uploading) document.getElementById('fileInput').click();
 };
 document.getElementById('fileInput').onchange = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
+  const file = files[0];
   const status = document.getElementById('uploadStatus');
   status.style.display = 'block';
 
@@ -794,9 +797,20 @@ document.getElementById('fileInput').onchange = async (e) => {
     if (!res.ok || !data.secure_url) {
       throw new Error(data.error && data.error.message ? data.error.message : 'Upload failed');
     }
-    uploadedUrl = data.secure_url;
+    const urls = [data.secure_url];
+    for (let fi = 1; fi < files.length; fi++) {
+      status.textContent = 'Uploading ' + files[fi].name + ' (' + (fi+1) + '/' + files.length + ')…';
+      const body2 = new FormData();
+      body2.append('file', files[fi]);
+      body2.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      body2.append('folder', 'hg-customs-orders');
+      const res2 = await fetch('https://api.cloudinary.com/v1_1/' + CLOUDINARY_CLOUD_NAME + '/image/upload', { method: 'POST', body: body2 });
+      const data2 = await res2.json();
+      if (data2.secure_url) urls.push(data2.secure_url);
+    }
+    uploadedUrl = urls.join('\n');
     status.style.color = '#2d5a3d';
-    status.textContent = '✓ Photo uploaded — ready to add to basket';
+    status.textContent = '✓ ' + urls.length + ' photo(s) uploaded — ready to add to basket';
   } catch (err) {
     console.error(err);
     uploadedUrl = '';

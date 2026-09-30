@@ -573,6 +573,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           <a href="mugs-occasions.html">Occasions</a>
           <a href="mugs-seasonal.html">Seasonal</a>
           <a href="mugs-custom.html">Custom Designs</a>
+          <a href="mugs-adult.html">Adult Humour</a>
         </div>
       </li>
       <li>
@@ -614,6 +615,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <a href="mugs-occasions.html" class="sub">Occasions</a>
   <a href="mugs-seasonal.html" class="sub">Seasonal</a>
   <a href="mugs-custom.html" class="sub">Custom Designs</a>
+  <a href="mugs-adult.html" class="sub">Adult Humour</a>
   <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
   <a href="tshirts-pet.html" class="sub">Pet</a>
   <a href="tshirts-our-designs.html" class="sub">Our Designs</a>
@@ -699,9 +701,18 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 const CART_KEY = 'hg_cart';
 const DISCOUNT_KEY = 'hg_discount';
 const DISCOUNT_CODES = {
-  WELCOME10: { type: 'percent', value: 10, label: '10% off' },
-  POPPY90: { type: 'percent', value: 90, label: '90% off (test)' }
+  HOLLYFAM20: { type: 'percent', value: 20, label: '20% off sitewide' },
+  FIRST10: { type: 'percent', value: 10, label: '10% off sitewide', expires: '2026-10-31' }
 };
+function isCodeActive(code) {
+  const d = DISCOUNT_CODES[code];
+  if (!d) return false;
+  if (d.expires) {
+    const end = new Date(d.expires + 'T23:59:59');
+    if (Date.now() > end.getTime()) return false;
+  }
+  return true;
+}
 function getCart() {
   try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; }
 }
@@ -825,7 +836,7 @@ const NUDGE_FROM = 30; // show "add £X more for free delivery" from this amount
 
 function getDiscountAmount(sub) {
   const disc = getDiscount();
-  if (disc && DISCOUNT_CODES[disc]) {
+  if (disc && isCodeActive(disc)) {
     const d = DISCOUNT_CODES[disc];
     if (d.type === 'percent') return sub * (d.value / 100);
     return d.value;
@@ -844,8 +855,10 @@ function updateTotals() {
   const disc = getDiscount();
   let discountAmt = getDiscountAmount(sub);
   let label = '—';
-  if (disc && DISCOUNT_CODES[disc]) {
+  if (disc && isCodeActive(disc)) {
     label = disc + ' (' + DISCOUNT_CODES[disc].label + ')';
+  } else if (disc && DISCOUNT_CODES[disc] && !isCodeActive(disc)) {
+    saveDiscount(null);
   }
   const afterDiscount = Math.max(0, sub - discountAmt);
   const shipping = cart.length ? getShipping(afterDiscount) : 0;
@@ -876,10 +889,15 @@ function updateTotals() {
 document.getElementById('applyDiscount')?.addEventListener('click', () => {
   const code = (document.getElementById('discountCode').value || '').trim().toUpperCase();
   const msg = document.getElementById('discountMsg');
-  if (DISCOUNT_CODES[code]) {
+  if (DISCOUNT_CODES[code] && isCodeActive(code)) {
     saveDiscount(code);
     msg.textContent = 'Code applied: ' + DISCOUNT_CODES[code].label;
     msg.className = 'discount-msg ok';
+    updateTotals();
+  } else if (DISCOUNT_CODES[code] && !isCodeActive(code)) {
+    saveDiscount(null);
+    msg.textContent = 'This code has expired';
+    msg.className = 'discount-msg err';
     updateTotals();
   } else {
     saveDiscount(null);
@@ -1004,7 +1022,8 @@ function buildCustomerEmailBody(data) {
 function getCheckoutTotals() {
   const cart = getCart();
   const sub = cartSubtotal(cart);
-  const discCode = getDiscount(); // code string e.g. "WELCOME10" or "POPPY90"
+  const discCode = getDiscount();
+
   let discountAmt = getDiscountAmount(sub);
   discountAmt = Math.min(discountAmt, sub);
   const afterDisc = Math.max(0, sub - discountAmt);

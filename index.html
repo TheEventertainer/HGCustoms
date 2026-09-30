@@ -3,14 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="google-site-verification" content="RPepSSyvRtONh-sfxm73pBXB1piDfY5UmCLE38KHLDg">
-  <title>HG Customs | Custom Mugs, Apparel & Merchandise</title>
-  <meta name="description" content="Hand-finished personalised mugs, coasters and apparel from HG Customs. Upload your photo or choose a ready-made design. Free UK delivery over £50.">
-  <meta property="og:title" content="HG Customs | Custom Mugs, Apparel & Merchandise">
-  <meta property="og:description" content="Thoughtfully made, uniquely yours. Personalised mugs, coasters and apparel.">
-  <meta property="og:image" content="https://www.hgcustoms.co.uk/logo.png">
-  <meta property="og:url" content="https://www.hgcustoms.co.uk/">
-  <meta property="og:type" content="website">
+<title>HG Customs | Custom Mugs, Apparel & Merchandise</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,500&family=Allura&display=swap" rel="stylesheet">
@@ -537,7 +530,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 </style>
-<script src="analytics.js"></script>
 </head>
 <body class="home-page">
 
@@ -561,6 +553,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           <a href="mugs-occasions.html">Occasions</a>
           <a href="mugs-seasonal.html">Seasonal</a>
           <a href="mugs-custom.html">Custom Designs</a>
+          <a href="mugs-adult.html">Adult Humour</a>
         </div>
       </li>
       <li>
@@ -602,6 +595,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <a href="mugs-occasions.html" class="sub">Occasions</a>
   <a href="mugs-seasonal.html" class="sub">Seasonal</a>
   <a href="mugs-custom.html" class="sub">Custom Designs</a>
+  <a href="mugs-adult.html" class="sub">Adult Humour</a>
   <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
   <a href="tshirts-pet.html" class="sub">Pet</a>
   <a href="tshirts-our-designs.html" class="sub">Our Designs</a>
@@ -631,10 +625,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 <main class="main">
   <h2 class="section-title">Shop by Category</h2>
   <div class="categories-grid">
-    <a href="mugs.html" class="category-card"><div class="img-wrap"><img src="home-mugs.JPG" alt="Mugs" onerror="this.style.display='none'"></div><h3>Mugs</h3></a>
-    <a href="t-shirts.html" class="category-card"><div class="img-wrap"><img src="home-tshirts.JPG" alt="T-Shirts" onerror="this.style.display='none'"></div><h3>T-Shirts & Hoodies</h3></a>
-    <a href="coasters.html" class="category-card"><div class="img-wrap"><img src="home-coasters.JPG" alt="Coasters" onerror="this.style.display='none'"></div><h3>Coasters</h3></a>
-    <a href="merchandise.html" class="category-card"><div class="img-wrap"><img src="home-merch.JPG" alt="Merch" onerror="this.style.display='none'"></div><h3>Merch & Bulk</h3></a>
+    <a href="mugs.html" class="category-card"><div class="img-wrap"><img src="cat-mugs.jpg" alt="Mugs" onerror="this.style.display='none'"></div><h3>Mugs</h3></a>
+    <a href="t-shirts.html" class="category-card"><div class="img-wrap"><img src="home-clothing.jpg" alt="T-Shirts" onerror="this.style.display='none'"></div><h3>T-Shirts & Hoodies</h3></a>
+    <a href="coasters.html" class="category-card"><div class="img-wrap"><img src="cat-coasters.jpg" alt="Coasters" onerror="this.style.display='none'"></div><h3>Coasters</h3></a>
+    <a href="merchandise.html" class="category-card"><div class="img-wrap"><img src="cat-merch.jpg" alt="Merch" onerror="this.style.display='none'"></div><h3>Merch & Bulk</h3></a>
   </div>
 </main>
 
@@ -692,7 +686,6 @@ function addToCart(product, fromEl) {
   saveCart(cart);
   showToast('Added to basket');
   flyToCart(fromEl, product.image);
-  if (window.hgTrackAddToCart) window.hgTrackAddToCart(product);
 }
 function flyToCart(fromEl, imgSrc) {
   const cartIcon = document.querySelector('.cart-icon') || document.getElementById('cartBadge');

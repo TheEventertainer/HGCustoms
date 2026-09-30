@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Shipping Info | HG Customs</title>
-  <meta name="description" content="UK delivery with Evri or Royal Mail. £2.99 under £50, free over £50. Standard 3–5 days.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
@@ -399,7 +398,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .policy-content ul, .policy-content ol { margin: 0 0 16px 20px; }
 .policy-content a { text-decoration: underline; }
 </style>
-<script src="analytics.js"></script>
 </head>
 <body>
 
@@ -423,6 +421,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           <a href="mugs-occasions.html">Occasions</a>
           <a href="mugs-seasonal.html">Seasonal</a>
           <a href="mugs-custom.html">Custom Designs</a>
+          <a href="mugs-adult.html">Adult Humour</a>
         </div>
       </li>
       <li>
@@ -464,6 +463,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <a href="mugs-occasions.html" class="sub">Occasions</a>
   <a href="mugs-seasonal.html" class="sub">Seasonal</a>
   <a href="mugs-custom.html" class="sub">Custom Designs</a>
+  <a href="mugs-adult.html" class="sub">Adult Humour</a>
   <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
   <a href="tshirts-pet.html" class="sub">Pet</a>
   <a href="tshirts-our-designs.html" class="sub">Our Designs</a>
@@ -567,7 +567,6 @@ function addToCart(product, fromEl) {
   saveCart(cart);
   showToast('Added to basket');
   flyToCart(fromEl, product.image);
-  if (window.hgTrackAddToCart) window.hgTrackAddToCart(product);
 }
 function flyToCart(fromEl, imgSrc) {
   const cartIcon = document.querySelector('.cart-icon') || document.getElementById('cartBadge');

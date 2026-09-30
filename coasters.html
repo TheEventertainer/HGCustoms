@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coasters | HG Customs</title>
-  <meta name="description" content="Personalised pet coasters and custom square coasters from HG Customs.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
@@ -393,29 +392,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 
 
-
-.holding-cta {
-  text-align: center;
-  margin: 8px 0 36px;
-  font-size: 15px;
-  line-height: 1.5;
-  color: #333;
-}
-.holding-cta a {
-  display: inline-block;
-  margin-top: 12px;
-  background: #111;
-  color: #fff;
-  padding: 12px 22px;
-  text-decoration: none;
-  font-size: 13px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-.holding-cta a:hover { background: #333; }
-
 </style>
-<script src="analytics.js"></script>
 </head>
 <body>
 
@@ -439,6 +416,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           <a href="mugs-occasions.html">Occasions</a>
           <a href="mugs-seasonal.html">Seasonal</a>
           <a href="mugs-custom.html">Custom Designs</a>
+          <a href="mugs-adult.html">Adult Humour</a>
         </div>
       </li>
       <li>
@@ -480,6 +458,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <a href="mugs-occasions.html" class="sub">Occasions</a>
   <a href="mugs-seasonal.html" class="sub">Seasonal</a>
   <a href="mugs-custom.html" class="sub">Custom Designs</a>
+  <a href="mugs-adult.html" class="sub">Adult Humour</a>
   <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
   <a href="tshirts-pet.html" class="sub">Pet</a>
   <a href="tshirts-our-designs.html" class="sub">Our Designs</a>
@@ -499,15 +478,23 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 <main class="main">
   <h1 class="page-title">Coasters</h1>
-  <p class="page-intro">Personalised pet portraits or create your own design.</p>
+  <p class="page-intro">Etched grey slate coasters — personalised or ready-made.</p>
   <div class="hub-grid hub-4">
     <a href="coasters-pet.html" class="hub-tile">
-      <img src="colour-splash-pet-coaster-a.jpg" alt="Pet Coasters" onerror="this.parentElement.style.background='#f0f0f0'">
-      <div class="overlay"><h3>Pet Coasters</h3><span>Personalised pet portraits</span></div>
+      <img src="coaster-pet-luna.jpg" alt="Pet" onerror="this.parentElement.style.background='#f0f0f0'">
+      <div class="overlay"><h3>Pet</h3><span>Your pet on slate</span></div>
+    </a>
+    <a href="coasters-our-designs.html" class="hub-tile">
+      <img src="coaster-design-1.jpg" alt="Our Designs" onerror="this.parentElement.style.background='#f0f0f0'">
+      <div class="overlay"><h3>Our Designs</h3><span>Ready-made motifs</span></div>
+    </a>
+    <a href="coasters-seasonal.html" class="hub-tile">
+      <img src="coaster-seasonal-1.jpg" alt="Seasonal" onerror="this.parentElement.style.background='#f0f0f0'">
+      <div class="overlay"><h3>Seasonal</h3><span>Seasonal etched designs</span></div>
     </a>
     <a href="coasters-custom.html" class="hub-tile">
-      <img src="custom-coaster.JPG" alt="Create your own custom coaster" onerror="this.parentElement.style.background='#f0f0f0'">
-      <div class="overlay"><h3>Create Your Own Custom Coaster</h3><span>Upload your photo or design</span></div>
+      <img src="coaster-custom-1.jpg" alt="Custom Designs" onerror="this.parentElement.style.background='#f0f0f0'">
+      <div class="overlay"><h3>Custom Designs</h3><span>Upload any photo or logo</span></div>
     </a>
   </div>
 </main>
@@ -566,7 +553,6 @@ function addToCart(product, fromEl) {
   saveCart(cart);
   showToast('Added to basket');
   flyToCart(fromEl, product.image);
-  if (window.hgTrackAddToCart) window.hgTrackAddToCart(product);
 }
 function flyToCart(fromEl, imgSrc) {
   const cartIcon = document.querySelector('.cart-icon') || document.getElementById('cartBadge');

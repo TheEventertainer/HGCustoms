@@ -393,7 +393,6 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 
 </style>
-<script src="analytics.js"></script>
 </head>
 <body>
 
@@ -417,6 +416,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
           <a href="mugs-occasions.html">Occasions</a>
           <a href="mugs-seasonal.html">Seasonal</a>
           <a href="mugs-custom.html">Custom Designs</a>
+          <a href="mugs-adult.html">Adult Humour</a>
         </div>
       </li>
       <li>
@@ -458,6 +458,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   <a href="mugs-occasions.html" class="sub">Occasions</a>
   <a href="mugs-seasonal.html" class="sub">Seasonal</a>
   <a href="mugs-custom.html" class="sub">Custom Designs</a>
+  <a href="mugs-adult.html" class="sub">Adult Humour</a>
   <a href="t-shirts.html"><strong>T-Shirts & Hoodies</strong></a>
   <a href="tshirts-pet.html" class="sub">Pet</a>
   <a href="tshirts-our-designs.html" class="sub">Our Designs</a>
@@ -515,6 +516,12 @@ function getCart() {
 function saveCart(cart) {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
   updateCartBadge();
+const ref = sessionStorage.getItem('hg_last_order_ref');
+if (ref) {
+  const el = document.getElementById('tyRef');
+  if (el) el.textContent = 'Order reference: ' + ref;
+}
+
 }
 function getDiscount() {
   try { return JSON.parse(localStorage.getItem(DISCOUNT_KEY)); } catch { return null; }
@@ -541,7 +548,6 @@ function addToCart(product, fromEl) {
   saveCart(cart);
   showToast('Added to basket');
   flyToCart(fromEl, product.image);
-  if (window.hgTrackAddToCart) window.hgTrackAddToCart(product);
 }
 function flyToCart(fromEl, imgSrc) {
   const cartIcon = document.querySelector('.cart-icon') || document.getElementById('cartBadge');
@@ -582,14 +588,6 @@ if (ref) {
   const el = document.getElementById('tyRef');
   if (el) el.textContent = 'Order reference: ' + ref;
 }
-try {
-  if (sessionStorage.getItem('hg_ga_purchase_pending') === '1') {
-    var raw = sessionStorage.getItem('hg_last_order');
-    var params = raw ? JSON.parse(raw) : { order_ref: ref };
-    if (window.hgTrackPurchase) window.hgTrackPurchase(params);
-    sessionStorage.removeItem('hg_ga_purchase_pending');
-  }
-} catch (e) {}
 
 
 </script>
