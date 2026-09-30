@@ -112,6 +112,13 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   justify-content: center;
   gap: 28px;
 }
+.product-grid.grid-odd {
+  grid-template-columns: repeat(6, 1fr);
+}
+.product-grid.grid-odd .product-card { grid-column: span 2; }
+.product-grid.remainder-2 .product-card:nth-last-child(2) { grid-column: 2 / span 2; }
+.product-grid.remainder-2 .product-card:last-child { grid-column: 4 / span 2; }
+.product-grid.remainder-1 .product-card:last-child { grid-column: 3 / span 2; }
 .product-card {
   border: 1px solid var(--border-color); background: #fff;
   display: flex; flex-direction: column;
@@ -375,6 +382,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .product-grid, .hub-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
   .product-grid.grid-1 { grid-template-columns: minmax(0, 1fr); max-width: 320px; }
   .product-grid.grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .product-grid.grid-odd { grid-template-columns: repeat(2, 1fr); }
+  .product-grid.grid-odd .product-card,
+  .product-grid.remainder-1 .product-card:last-child,
+  .product-grid.remainder-2 .product-card:nth-last-child(2),
+  .product-grid.remainder-2 .product-card:last-child { grid-column: auto; }
   .hub-grid.hub-4 { grid-template-columns: repeat(2, 1fr); }
   .categories-grid { grid-template-columns: repeat(2, 1fr); }
   .modal { grid-template-columns: 1fr; }
@@ -388,7 +400,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .how-to-banner .how-to-mobile { display: block !important; }
 }
 @media (max-width: 520px) {
-  .product-grid:not(.grid-1):not(.grid-2), .hub-grid, .categories-grid { grid-template-columns: 1fr; }
+  .product-grid:not(.grid-1):not(.grid-2), .product-grid.grid-odd, .hub-grid, .categories-grid { grid-template-columns: 1fr; }
   .announcement-bar { padding: 5px 6px; font-size: 8px; }
 }
 
@@ -622,6 +634,12 @@ let uploadedUrl = '';
 let uploading = false;
 
 const grid = document.getElementById('productGrid');
+const rem = products.length % 3;
+if (products.length === 1) grid.classList.add('grid-1');
+else if (products.length === 2) grid.classList.add('grid-2');
+else if (rem === 1) grid.classList.add('grid-odd', 'remainder-1');
+else if (rem === 2) grid.classList.add('grid-odd', 'remainder-2');
+else if (products.length > 3) grid.classList.add('grid-odd');
 products.forEach((p, i) => {
   const card = document.createElement('div');
   card.className = 'product-card';
