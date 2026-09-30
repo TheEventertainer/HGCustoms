@@ -130,6 +130,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .product-card .btn:hover { background: #333; }
 
 .hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.hub-grid .hub-tile:last-child:nth-child(7) { grid-column: 2; }
 .hub-grid.hub-4 { grid-template-columns: repeat(2, 1fr); max-width: 720px; margin: 0 auto; }
 .hub-tile {
   position: relative; display: block; overflow: hidden;
@@ -372,6 +373,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   }
   .nav-links { display: none; }
   .product-grid, .hub-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .hub-grid .hub-tile:last-child:nth-child(7) { grid-column: 1 / -1; max-width: 50%; justify-self: center; width: 100%; }
   .product-grid.grid-1 { grid-template-columns: minmax(0, 1fr); max-width: 320px; }
   .product-grid.grid-2 { grid-template-columns: repeat(2, 1fr); }
   .hub-grid.hub-4 { grid-template-columns: repeat(2, 1fr); }
@@ -388,6 +390,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 }
 @media (max-width: 520px) {
   .product-grid:not(.grid-1):not(.grid-2), .hub-grid, .categories-grid { grid-template-columns: 1fr; }
+  .hub-grid .hub-tile:last-child:nth-child(7) { grid-column: auto; max-width: none; }
   .announcement-bar { padding: 5px 6px; font-size: 8px; }
 }
 
