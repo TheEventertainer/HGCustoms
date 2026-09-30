@@ -394,8 +394,10 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 
 
-.age-gate { display:none; position:fixed; inset:0; background:rgba(0,0,0,.72); z-index:4000; align-items:center; justify-content:center; padding:20px; }
+.age-gate { display:none; position:fixed; inset:0; background:#f4f1ec; z-index:4000; align-items:center; justify-content:center; padding:20px; }
 .age-gate.open { display:flex; }
+body.adult-locked .main,
+body.adult-locked .product-grid { visibility: hidden !important; }
 .age-gate-card { background:#fff; max-width:420px; width:100%; padding:28px 24px; text-align:center; border:1px solid #ddd; }
 .age-gate-card h2 { margin:0 0 12px; font-size:20px; }
 .age-gate-card p { margin:0 0 20px; font-size:15px; line-height:1.5; color:#333; }
@@ -407,7 +409,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 </style>
 <script src="analytics.js"></script>
 </head>
-<body>
+<body class="adult-locked">
 
 <div class="age-gate open" id="ageGate" role="dialog" aria-modal="true">
   <div class="age-gate-card">
@@ -503,7 +505,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 
 <main class="main">
   <h1 class="page-title">Adult Humour</h1>
-  <p class="page-intro">Spooky season favourites and seasonal designs.</p>
+  <p class="page-intro">Offensive, sarcastic designs. Confirm you are over 18 to view.</p>
   <div class="product-grid" id="productGrid"></div>
 </main>
 <div class="modal-overlay" id="productModal">
@@ -870,11 +872,13 @@ updateCartBadge();
   if (!gate) return;
   if (sessionStorage.getItem(KEY) === '1') {
     gate.classList.remove('open');
+    document.body.classList.remove('adult-locked');
     return;
   }
   document.getElementById('ageYes').onclick = function(){
     sessionStorage.setItem(KEY, '1');
     gate.classList.remove('open');
+    document.body.classList.remove('adult-locked');
   };
   document.getElementById('ageNo').onclick = function(){
     if (document.referrer && document.referrer.indexOf(location.host) !== -1) history.back();
