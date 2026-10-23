@@ -112,6 +112,12 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   justify-content: center;
   gap: 28px;
 }
+
+.product-grid.grid-odd { grid-template-columns: repeat(6, 1fr); }
+.product-grid.grid-odd .product-card { grid-column: span 2; }
+.product-grid.remainder-1 .product-card:last-child { grid-column: 3 / span 2; }
+.product-grid.remainder-2 .product-card:nth-last-child(2) { grid-column: 2 / span 2; }
+.product-grid.remainder-2 .product-card:last-child { grid-column: 4 / span 2; }
 .product-card {
   border: 1px solid var(--border-color); background: #fff;
   display: flex; flex-direction: column;
@@ -373,6 +379,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   }
   .nav-links { display: none; }
   .product-grid, .hub-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .product-grid.grid-odd { grid-template-columns: repeat(2, 1fr); }
+  .product-grid.grid-odd .product-card,
+  .product-grid.remainder-1 .product-card:last-child,
+  .product-grid.remainder-2 .product-card:nth-last-child(2),
+  .product-grid.remainder-2 .product-card:last-child { grid-column: auto; }
   .product-grid.grid-1 { grid-template-columns: minmax(0, 1fr); max-width: 320px; }
   .product-grid.grid-2 { grid-template-columns: repeat(2, 1fr); }
   .hub-grid.hub-4 { grid-template-columns: repeat(2, 1fr); }
@@ -388,7 +399,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   .how-to-banner .how-to-mobile { display: block !important; }
 }
 @media (max-width: 520px) {
-  .product-grid:not(.grid-1):not(.grid-2), .hub-grid, .categories-grid { grid-template-columns: 1fr; }
+  .product-grid:not(.grid-1):not(.grid-2), .product-grid.grid-odd, .hub-grid, .categories-grid { grid-template-columns: 1fr; }
   .announcement-bar { padding: 5px 6px; font-size: 8px; }
 }
 
@@ -634,7 +645,7 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-MUG-ADU-001", "title": "Please Choke On Your Opinion", "price": 8.0, "desc": "For when the meeting could have been an email — and still would have been wrong.", "imgA": "Adult mug 1.jpg", "imgB": "Adult mug 1.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-ADU-002", "title": "Fresh Out Of Fucks", "price": 8.0, "desc": "Stock check complete. Quantity: zero.", "imgA": "Adult mug 2.jpg", "imgB": "Adult mug 2.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-ADU-003", "title": "I Like My Coffee Like My Humour Dark", "price": 8.0, "desc": "Strong, unapologetic, and best served first thing.", "imgA": "Adult Mug 3.jpg", "imgB": "Adult Mug 3.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-ADU-004", "title": "Go Fuck Yourself — Kind Regards", "price": 8.0, "desc": "Professional sign-off. Unprofessional sentiment. Ready to gift.", "imgA": "Adult mug 5.jpg", "imgB": "Adult mug 5.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-ADU-005", "title": "Mentally Fucking Exhausted", "price": 8.0, "desc": "A boxed-in reminder that the tank is empty and the brew is non-negotiable.", "imgA": "Adult mug 6.jpg", "imgB": "Adult mug 6.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-ADU-006", "title": "CUNT", "price": 8.0, "desc": "The handle does the talking. A wraparound design for those who prefer fewer letters.", "imgA": "Adult mug 7.jpg", "imgB": "Adult mug 7.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}];
+const products = [{"id": "HG-MUG-ADU-002", "title": "Fresh Out Of Fucks", "price": 8.0, "desc": "Stock check complete. Quantity: zero.", "imgA": "Adult mug 2.jpg", "imgB": "Adult mug 2.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-ADU-003", "title": "I Like My Coffee Like My Humour Dark", "price": 8.0, "desc": "Strong, unapologetic, and best served first thing.", "imgA": "Adult Mug 3.jpg", "imgB": "Adult Mug 3.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-ADU-004", "title": "Go Fuck Yourself — Kind Regards", "price": 8.0, "desc": "Professional sign-off. Unprofessional sentiment. Ready to gift.", "imgA": "Adult mug 5.jpg", "imgB": "Adult mug 5.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-ADU-005", "title": "Mentally Fucking Exhausted", "price": 8.0, "desc": "A boxed-in reminder that the tank is empty and the brew is non-negotiable.", "imgA": "Adult mug 6.jpg", "imgB": "Adult mug 6.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-ADU-006", "title": "CUNT", "price": 8.0, "desc": "The handle does the talking. A wraparound design for those who prefer fewer letters.", "imgA": "Adult mug 7.jpg", "imgB": "Adult mug 7.jpg", "colours": true, "bgSplash": false, "upload": false, "notes": false, "colourLabel": "Mug Colour (Inner & Handle)"}];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
@@ -647,6 +658,11 @@ let uploadedUrl = '';
 let uploading = false;
 
 const grid = document.getElementById('productGrid');
+const rem = products.length % 3;
+if (products.length === 1) grid.classList.add('grid-1');
+else if (products.length === 2) grid.classList.add('grid-2');
+else if (rem === 1) grid.classList.add('grid-odd', 'remainder-1');
+else if (rem === 2) grid.classList.add('grid-odd', 'remainder-2');
 products.forEach((p, i) => {
   const card = document.createElement('div');
   card.className = 'product-card';
