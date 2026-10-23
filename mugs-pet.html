@@ -177,8 +177,18 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 @media (max-width: 768px) {
   .modal-close { top: 8px; right: 8px; width: 44px; height: 44px; font-size: 28px; box-shadow: 0 3px 14px rgba(0,0,0,0.35); }
 }
-.modal-image { background: var(--bg-light); }
+.modal-image { background: var(--bg-light); position: relative; touch-action: pan-y; }
 .modal-image img { width: 100%; height: 100%; object-fit: cover; min-height: 320px; }
+.modal-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.94); color: #111; font-size: 22px; line-height: 1;
+  display: none; align-items: center; justify-content: center; cursor: pointer; z-index: 6;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.22);
+}
+.modal-nav.next { right: 10px; }
+.modal-nav.prev { left: 10px; }
+.modal-nav:hover { background: #111; color: #fff; }
 .modal-body { padding: 28px; }
 .modal-body h2 { font-size: 20px; margin-bottom: 6px; }
 .modal-price { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
@@ -509,7 +519,11 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 <div class="modal-overlay" id="productModal">
   <div class="modal">
     <button class="modal-close" id="closeModal" aria-label="Close">×</button>
-    <div class="modal-image"><img id="modalImg" src="" alt=""></div>
+    <div class="modal-image" id="modalImageWrap">
+      <img id="modalImg" src="" alt="">
+      <button type="button" class="modal-nav prev" id="modalPrev" aria-label="Previous image">&#8249;</button>
+      <button type="button" class="modal-nav next" id="modalNext" aria-label="Next image">&#8250;</button>
+    </div>
     <div class="modal-body">
       <h2 id="modalTitle"></h2>
       <div class="modal-price" id="modalPrice"></div>
@@ -628,7 +642,7 @@ function flyToCart(fromEl, imgSrc) {
 }
 
 
-const products = [{"id": "HG-MUG-PET-006", "title": "Pet Nose / Paw Print Personalised Pet Mug", "price": 9.0, "desc": "Capture your loved ones forever by sending us a paw print or nose print. The colour of the mug selected will be the colour of the print — unless you specify otherwise in the notes.", "imgA": "mugs-pet-printsA.JPG", "imgB": "mugs-pet-printsB.JPG", "colours": true, "bgSplash": false, "upload": true, "uploadMax": 6, "notes": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-007", "title": "Always By Your Side Personalised Pet Mug", "price": 9.0, "desc": "Immortalise your pets or the memory of a loved one with these customised mugs. Upload photos of your pet, a favourite toy and collar details.", "imgA": "mugs-pet-alwaysA.JPG", "imgB": "mugs-pet-alwaysB.JPG", "colours": true, "bgSplash": true, "upload": true, "uploadMax": 6, "notes": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-001", "title": "Colour Splash Personalised Pet Mug", "price": 9.0, "desc": "Turn your pets into a mug you’ll treasure! Upload a photo and we’ll transform it into a beautiful colour-splash portrait design.", "imgA": "colour-splash-pet-mug-a.jpg", "imgB": "colour-splash-pet-mug-b.jpg", "colours": true, "bgSplash": true, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-002", "title": "Trouble Maker Personalised Pet Mug", "price": 9.0, "desc": "Celebrate your mischievous pets with a detailed illustrated portrait finished with the playful “Established Troublemakers” design.", "imgA": "trouble-maker-pet-mug-a.jpg", "imgB": "trouble-maker-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-003", "title": "Life is Better Personalised Pet Mug", "price": 9.0, "desc": "A beautiful personalised illustrated portrait finished with “Life is better with you”.", "imgA": "life-is-better-pet-mug-a.jpg", "imgB": "life-is-better-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-004", "title": "Flower Field Personalised Pet Mug", "price": 9.0, "desc": "A floral portrait design surrounded by delicate wildflowers.", "imgA": "flower-field-pet-mug-a.jpg", "imgB": "flower-field-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-005", "title": "My Shadow Personalised Pet Mug", "price": 9.0, "desc": "Personalised illustrated portrait with “My Shadows, My Heart”.", "imgA": "my-shadow-pet-mug-a.jpg", "imgB": "my-shadow-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}];
+const products = [{"id": "HG-MUG-PET-006", "title": "Pet Nose / Paw Print Personalised Pet Mug", "price": 9.0, "desc": "Capture your loved ones forever by sending us a paw print or nose print. The colour of the mug selected will be the colour of the print — unless you specify otherwise in the notes.", "imgA": "mugs-pet-printsA.JPG", "imgB": "mugs-pet-printsB.JPG", "colours": true, "bgSplash": false, "upload": true, "uploadMax": 6, "notes": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-007", "title": "Always By Your Side Personalised Pet Mug", "price": 9.0, "desc": "Immortalise your pets or the memory of a loved one with these customised mugs. Upload photos of your pet, a favourite toy and collar details.", "imgA": "mugs-pet-alwaysA.JPG", "imgB": "mugs-pet-alwaysB.JPG", "colours": true, "bgSplash": true, "upload": true, "uploadMax": 6, "notes": true, "colourLabel": "Mug Colour (Inner & Handle)"}, {"id": "HG-MUG-PET-001", "title": "Colour Splash Personalised Pet Mug", "price": 9.0, "desc": "Turn your pets into a mug you’ll treasure! Upload a photo and we’ll transform it into a beautiful colour-splash portrait design.", "imgA": "colour-splash-pet-mug-a.jpg", "imgB": "colour-splash-pet-mug-b.jpg", "colours": true, "bgSplash": true, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)", "slides": ["colour-splash-pet-mug-b.jpg", "colour-splash-pet-mug-d.jpg", "colour-splash-pet-mug-c.jpg"]}, {"id": "HG-MUG-PET-002", "title": "Trouble Maker Personalised Pet Mug", "price": 9.0, "desc": "Celebrate your mischievous pets with a detailed illustrated portrait finished with the playful “Established Troublemakers” design.", "imgA": "trouble-maker-pet-mug-a.jpg", "imgB": "trouble-maker-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)", "slides": ["trouble-maker-pet-mug-b.jpg", "trouble-maker-pet-mug-d.jpg", "trouble-maker-pet-mug-c.jpg"]}, {"id": "HG-MUG-PET-003", "title": "Life is Better Personalised Pet Mug", "price": 9.0, "desc": "A beautiful personalised illustrated portrait finished with “Life is better with you”.", "imgA": "life-is-better-pet-mug-a.jpg", "imgB": "life-is-better-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)", "slides": ["life-is-better-pet-mug-b.jpg", "life-is-better-pet-mug-e.jpg", "life-is-better-pet-mug-c.jpg", "life-is-better-pet-mug-d.jpg"]}, {"id": "HG-MUG-PET-004", "title": "Flower Field Personalised Pet Mug", "price": 9.0, "desc": "A floral portrait design surrounded by delicate wildflowers.", "imgA": "flower-field-pet-mug-a.jpg", "imgB": "flower-field-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)", "slides": ["flower-field-pet-mug-b.jpg", "flower-field-pet-mug-c.jpg"]}, {"id": "HG-MUG-PET-005", "title": "My Shadow Personalised Pet Mug", "price": 9.0, "desc": "Personalised illustrated portrait with “My Shadows, My Heart”.", "imgA": "my-shadow-pet-mug-a.jpg", "imgB": "my-shadow-pet-mug-b.jpg", "colours": true, "bgSplash": false, "upload": true, "colourLabel": "Mug Colour (Inner & Handle)"}];
 const mugColours = [{"name": "White", "hex": "#ffffff"}, {"name": "Black", "hex": "#1a1a1a"}, {"name": "Grey", "hex": "#8a8a8a"}, {"name": "Dark Green", "hex": "#2d5a3d"}, {"name": "Dark Blue", "hex": "#1e3a6e"}, {"name": "Pink", "hex": "#e8a0b0"}, {"name": "Sage", "hex": "#9caf88"}];
 const bgColours = [{"name": "Beige", "hex": "#D6B597"}, {"name": "Grey", "hex": "#B9BDC4"}, {"name": "Sage Green", "hex": "#B7BFA8"}, {"name": "Dusty Pink", "hex": "#D1B2B6"}, {"name": "Taupe", "hex": "#B7A08C"}, {"name": "Dusty Blue", "hex": "#8FA3BE"}, {"name": "Lavender", "hex": "#C2B3D1"}, {"name": "Terracotta", "hex": "#C78F7B"}, {"name": "Cream", "hex": "#F0E5D1"}, {"name": "Olive Green", "hex": "#8E9480"}, {"name": "Caramel", "hex": "#B78D6B"}, {"name": "Slate Blue", "hex": "#6E778E"}, {"name": "Muted Mint", "hex": "#B7C7C2"}, {"name": "Warm Sand", "hex": "#E2C9AA"}, {"name": "Mauve", "hex": "#B9A6B8"}, {"name": "Charcoal", "hex": "#585858"}];
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
@@ -671,7 +685,9 @@ function openModal(p) {
   selectedMugColour = mugColours[0];
   selectedBgColour = bgColours[0];
   selectedSize = 'M';
-  document.getElementById('modalImg').src = p.imgB || p.imgA;
+  modalSlides = (p.slides && p.slides.length) ? p.slides.slice() : [p.imgB || p.imgA];
+  modalIndex = 0;
+  showModalSlide();
   document.getElementById('modalTitle').textContent = p.title;
   document.getElementById('modalPrice').textContent = '£' + Number(p.price).toFixed(2);
   document.getElementById('modalDesc').textContent = p.desc;
@@ -859,6 +875,39 @@ if (backBtn) {
   });
   backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
+
+let modalSlides = [];
+let modalIndex = 0;
+function showModalSlide() {
+  const img = document.getElementById('modalImg');
+  const prev = document.getElementById('modalPrev');
+  const next = document.getElementById('modalNext');
+  if (!modalSlides.length) return;
+  img.src = modalSlides[modalIndex];
+  const multi = modalSlides.length > 1;
+  prev.style.display = multi && modalIndex > 0 ? 'flex' : 'none';
+  next.style.display = multi && modalIndex < modalSlides.length - 1 ? 'flex' : 'none';
+}
+document.getElementById('modalNext').addEventListener('click', function(e) {
+  e.stopPropagation();
+  if (modalIndex < modalSlides.length - 1) { modalIndex++; showModalSlide(); }
+});
+document.getElementById('modalPrev').addEventListener('click', function(e) {
+  e.stopPropagation();
+  if (modalIndex > 0) { modalIndex--; showModalSlide(); }
+});
+(function() {
+  const wrap = document.getElementById('modalImageWrap');
+  let startX = 0;
+  wrap.addEventListener('touchstart', function(e) { startX = e.changedTouches[0].clientX; }, {passive: true});
+  wrap.addEventListener('touchend', function(e) {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) < 40) return;
+    if (dx < 0 && modalIndex < modalSlides.length - 1) { modalIndex++; showModalSlide(); }
+    if (dx > 0 && modalIndex > 0) { modalIndex--; showModalSlide(); }
+  }, {passive: true});
+})();
+
 updateCartBadge();
 
 </script>
